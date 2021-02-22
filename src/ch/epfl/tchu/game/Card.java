@@ -74,10 +74,8 @@ public enum Card {
 	 * @return the color of the card's type if it's a wagon card. null if not.
 	 */
 	public Color color() {
-		for(int i = 0; i < (Card.values()).length; ++i) {
-			return (((Card.values())[i]).colorName() == null) ?  null :  this.colorName();	
-			
-	    }
+		
+		return (this.colorName() == null) ?  null :  this.colorName();	
 	}
 	
 /*private static List<Card> removed() {

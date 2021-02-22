@@ -22,10 +22,10 @@ public final class Trip {
 	
 	
 	/**
-	 * Public constructor 
-	 * @param from
-	 * @param to
-	 * @param points
+	 * Public constructor of a Trip
+	 * @param from (Station) the departure Station of the Trip
+	 * @param to (Station) the arrival Station of the Trip
+	 * @param points (int) the worth pf th
 	 */
 	public Trip(Station from, Station to, int points) { //NOTE FOR ME : REVERIFIE IMMUABILITE DE STATION
 		Preconditions.checkArgument(points>0);
