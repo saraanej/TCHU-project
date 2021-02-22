@@ -4,6 +4,8 @@ import java.util.List;
 
 /**
  * 
+ * 
+ * 
  * enum type represents the colors used in the game 
  * for the cards and paths.
  *
