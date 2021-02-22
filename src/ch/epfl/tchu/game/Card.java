@@ -1,5 +1,5 @@
 package ch.epfl.tchu.game;
 
-public class Card {
+public enum Card {
 
 }

@@ -1,11 +1,9 @@
 package ch.epfl.tchu.game;
 
-public class Color {
+import java.util.List;
+
+public enum Color {
 	
-	public final static List<Color> ALL;
-	public final static int COUNT
-	
-	public enum colorCards{
 		BLACK,
 		VIOLET,
 		BLUE,
@@ -14,6 +12,8 @@ public class Color {
 		ORANGE,
 		RED,
 		WHITE;
-	}
+	
+	public final static List<Color> ALL;
+	public final static int COUNT; 
 
 }
