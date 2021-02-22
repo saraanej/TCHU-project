@@ -35,21 +35,6 @@ public enum Card {
 
 	
 	/**
-	 * Constructor initializing the color of the wagon cards. 
-	 * @param color
-	 */
-	private Card(Color color) {
-		colorName = color;
-	}
-	
-	private Color colorName;
-	
-	private Color colorName() {
-		return colorName;
-	}
-	
-	
-	/**
 	 * 
 	 * @param color : the card's color.
 	 * @return the type of the corresponding wagon card depending on the card's color.
@@ -70,6 +55,21 @@ public enum Card {
 		}
 		
 	}
+	
+	/**
+	 * Constructor initializing the color of the wagon cards. 
+	 * @param color
+	 */
+	private Card(Color color) {
+		colorName = color;
+	}
+	
+	private Color colorName;
+	
+	private Color colorName() {
+		return colorName;
+	}
+	
 	
 	/**
 	 * 
