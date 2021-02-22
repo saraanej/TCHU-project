@@ -6,8 +6,8 @@ package ch.epfl.tchu.game;
 /**
  * Modelizes the connection between two stations of the player
  * 
- * @author Yasmin Ben Rahhal
- * @author Sara Anejjar
+ * @author Yasmin Ben Rahhal (329912)
+ * @author Sara Anejjar (329905)
  *
  */
 public interface StationConnectivity {

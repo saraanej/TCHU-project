@@ -6,8 +6,8 @@ import ch.epfl.tchu.Preconditions;
 /**
  * Modelizes a station of the game
  * 
- * @author Yasmin Benrahhal
- * @author Sara Anejjar
+ * @author Yasmin Benrahhal (329912)
+ * @author Sara Anejjar (329905)
  */
 public final class Station {
 	private final int NUMBER_STATIONS = 51;
@@ -26,8 +26,8 @@ public final class Station {
 	public Station (int id, String name) {
 		Preconditions.checkArgument(id>=0 && id<NUMBER_STATIONS);
 		
-		this.id=id;
-		this.name=name;
+		this.id = id;
+		this.name = name;
 	}
 	
 	/**
