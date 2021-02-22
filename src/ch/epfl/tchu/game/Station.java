@@ -10,6 +10,7 @@ import ch.epfl.tchu.Preconditions;
  * @author Sara Anejjar
  */
 public final class Station {
+	private final int NUMBER_STATIONS = 51;
 	
 	private final int id; 
 	private final String name; 
@@ -23,7 +24,7 @@ public final class Station {
 	 * @throws IllegalArgumentException if the identification number is not between 0 and 50
 	 */
 	public Station (int id, String name) {
-		Preconditions.checkArgument(id>=0 && id<=50);
+		Preconditions.checkArgument(id>=0 && id<NUMBER_STATIONS);
 		
 		this.id=id;
 		this.name=name;
