@@ -28,7 +28,7 @@ public enum Card {
 	
 	public final static List<Card> ALL = List.of(Card.values());
 	public final static int COUNT = ALL.size(); 
-	public final static List<Card> CARS = Arrays.asList(
+	public final static List<Card> CARS = List.of(
 	BLACK, VIOLET, BLUE, GREEN, YELLOW, ORANGE, RED, WHITE);
 
 	private Color colorName;
