@@ -6,8 +6,8 @@ import ch.epfl.tchu.Preconditions;
 /**
  * Modelizes a station of the game
  * 
- * @author Yasmin Benrahhal
- * @author Sara Anejjar
+ * @author Yasmin Benrahhal (329912)
+ * @author Sara Anejjar (329905)
  */
 public final class Station {
 	private final int NUMBER_STATIONS = 51;

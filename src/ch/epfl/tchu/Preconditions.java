@@ -4,8 +4,8 @@ package ch.epfl.tchu;
  * class Preconditions - cannot be instanciated
  * 
  * 
- * @author Yasmin Benrahhal
- * @author Sara Anejjar
+ * @author Yasmin Benrahhal (329912)
+ * @author Sara Anejjar (329905)
  *
  */
 public final class Preconditions {
