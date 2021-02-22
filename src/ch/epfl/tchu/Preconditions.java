@@ -19,10 +19,9 @@ public final class Preconditions {
 	/**
 	 * checks preconditions are satisfied 
 	 * 
-	 * @throws an IllegalArgumentException if the preconditions are not satisfied
-	 * 
 	 * @param shouldBeTrue (boolean) the precondition to satisfy
 	 * 
+	 * @throws IllegalArgumentException if the preconditions are not satisfied
 	 */
 	public static void checkArgument (boolean shouldBeTrue) {
 		
