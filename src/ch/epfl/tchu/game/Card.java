@@ -30,7 +30,7 @@ public enum Card {
 	/**
 	 * List only containing the wagon cards
 	 */
-	public final static List<Card> CARS = Arrays.asList(
+	public final static List<Card> CARS = List.of(
 
 	BLACK, VIOLET, BLUE, GREEN, YELLOW, ORANGE, RED, WHITE);
 
