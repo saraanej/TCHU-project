@@ -39,7 +39,7 @@ public final class Ticket implements Comparable<Ticket> {
 		this.from = trips.get(0).from();
 		
 		for ( Trip t : trips) {
-			Preconditions.checkArgument(t.from().equals(this.from));
+			Preconditions.checkArgument(t.from().name().equals(this.from.name()));
 		}
 		this.trips = trips;
 		this.Text = computeText(this.trips); 
@@ -78,7 +78,7 @@ public final class Ticket implements Comparable<Ticket> {
 						                    t.points()));
 			}
 			
-			String arrivals = String.join(",", countries);
+			String arrivals = String.join(", ", countries);
 			
 			text = String.format("%s - {%s}", 
 		            trips.get(0).from().name(), 
@@ -104,6 +104,7 @@ public final class Ticket implements Comparable<Ticket> {
 			
 			int pts = t.points(connectivity);
 			Points.add(pts);
+			System.out.println(pts);
 		}
 		
 		maxPoints = Collections.max(Points);
