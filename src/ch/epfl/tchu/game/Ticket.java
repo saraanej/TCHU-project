@@ -3,6 +3,7 @@ package ch.epfl.tchu.game;
 import java.util.ArrayList;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.TreeSet;
 
@@ -94,8 +95,22 @@ public final class Ticket implements Comparable<Ticket> {
 	}
 	
 	public int points(StationConnectivity connectivity) {
-	//	return connectivity.connected(from, s2);
-		return 0;
+	
+		int maxPoints;
+		int minPoints;
+		List<Integer> Points = new ArrayList<Integer>();
+		
+		for (Trip t : trips ) {
+			
+			int pts = t.points(connectivity);
+			Points.add(pts);
+		}
+		
+		maxPoints = Collections.max(Points);
+		minPoints = Collections.min(Points);
+		
+		return maxPoints > 0 ? maxPoints : minPoints;
+		
 	}
 	 
 	
