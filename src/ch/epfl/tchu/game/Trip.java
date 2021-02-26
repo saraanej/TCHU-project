@@ -30,8 +30,8 @@ public final class Trip {
 	 * @param to (Station) the arrival Station of the Trip
 	 * @param points (int) the number of points associated to the Trip
 	 */
-	public Trip(Station from, Station to, int points) { //NOTE FOR ME : REVERIFIE IMMUABILITE DE STATION
-		Preconditions.checkArgument(points>0);
+	public Trip(Station from, Station to, int points) { 
+		Preconditions.checkArgument(points>0 && from!= null && to != null && from != to);
 		
 		this.from = Objects.requireNonNull(from);
 		this.to = Objects.requireNonNull(to);
@@ -50,7 +50,7 @@ public final class Trip {
 	 * @return (List<Trip>) all the Trips possible from a Station of the first list "from" to the station of the second list "to"
 	 */
 	public static List<Trip> all(List<Station> from, List<Station>to, int points){
-		Preconditions.checkArgument(from != null && to != null && points > 0);
+		Preconditions.checkArgument(from != null && to != null && points > 0 && from != to);
 		
 		List<Trip> all = new ArrayList<Trip>();
 		
@@ -88,7 +88,7 @@ public final class Trip {
 	}
 	
 	/**
-	 * Getter for the number of points depending fo the connectivity of the departure's and arrival's Station 
+	 * Getter for the number of points depending on the connectivity of the departure's and arrival's Station 
 	 * @param connectivity (StationConnectivity) 
 	 * 
 	 * @return (int) points if the Stations are connected, -points if not

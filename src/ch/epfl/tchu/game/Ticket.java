@@ -1,8 +1,12 @@
 package ch.epfl.tchu.game;
 
 import java.util.ArrayList;
+
 import java.util.Arrays;
 import java.util.List;
+
+
+import ch.epfl.tchu.Preconditions;
 
 
 /**
@@ -12,8 +16,9 @@ import java.util.List;
  * @author Sara Anejjar (329905)
  *
  */
-public final class Ticket implements Comparable<Ticket> { //NOTE rendre immutable apres
+public final class Ticket implements Comparable<Ticket> { 
 
+	private final Station from;
 	private final List<Trip> trips;
 	private final String Text;
 	
@@ -22,14 +27,21 @@ public final class Ticket implements Comparable<Ticket> { //NOTE rendre immutabl
 	 * Public default constructor of a Ticket
 	 * 
 	 * @param trips (List<Trip>) all the Trips that the Ticket covers
+	 * 
+	 * @throws IllegalArgumentException if List<Trips> is empty
 	 */
 	public Ticket(List<Trip> trips){
-		if(trips.size() == 0) {
-			throw new IllegalArgumentException();
-		} else {
-			this.trips = trips;
-		}		
-		this.Text = computeText(); 
+
+		Preconditions.checkArgument(trips != null);
+		
+		this.from = trips.get(0).from();
+		
+		for ( Trip t : trips) {
+			assert t.from().equals(this.from);
+		}
+		this.trips = trips;
+		this.Text = computeText(this.trips); 
+
 	}
 	
 	
@@ -44,13 +56,16 @@ public final class Ticket implements Comparable<Ticket> { //NOTE rendre immutabl
 		this(List.of(new Trip(from, to, points)));
 	}
 	
-//	lieu de départ commum
-//	lieux d'arrivées ordre alphabétique Treeset<String>
+
+	
 	private static String computeText(List<Trip> trips) {
-		if(trips.size() == 1) {
-			return 
-		}
 		
+		if (trips.size() == 1) {
+			
+		} else {
+			
+		}
+
 		
 		return null;
 	}
@@ -61,7 +76,7 @@ public final class Ticket implements Comparable<Ticket> { //NOTE rendre immutabl
 	}
 	
 	public int points(StationConnectivity connectivity) {
-	//	return connectivity.connected(, s2);
+	//	return connectivity.connected(from, s2);
 		return 0;
 	}
 	 
