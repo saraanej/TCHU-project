@@ -2,7 +2,6 @@ package ch.epfl.tchu.game;
 
 import java.util.ArrayList;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.TreeSet;
@@ -30,7 +29,8 @@ public final class Ticket implements Comparable<Ticket> {
 	 * @param trips (List<Trip>) all the Trips that the Ticket covers
 	 * 
 	 * @throws IllegalArgumentException 
-	           if List<Trips> is empty or if all the departure's stations don't have the same name
+	             if List<Trips> is empty 
+	             if all the departure's stations don't have the same name
 	 */
 	public Ticket(List<Trip> trips){
 
@@ -60,40 +60,20 @@ public final class Ticket implements Comparable<Ticket> {
 	
 
 	
-	private static String computeText(List<Trip> trips) {
-		
-		String text ;
-		
-		if (trips.size() == 1) {			
-			text = String.format("%s - %s (%s)", 
-					            trips.get(0).from().name(), 
-					            trips.get(0).to().name(), 
-					            trips.get(0).points());
-		} else {
-			
-			TreeSet<String> countries = new TreeSet<>();
-			for (Trip t : trips ) {
-				countries.add(String.format("%s (%s)", 
-						                    t.to().name(),
-						                    t.points()));
-			}
-			
-			String arrivals = String.join(", ", countries);
-			
-			text = String.format("%s - {%s}", 
-		            trips.get(0).from().name(), 
-		            arrivals);
-		}
 
-		
-		return text;
-	}
-	
-	
+	/**
+	 * 
+	 * @return (String) the textual representation of the Ticket
+	 */
 	public String text() {
 		return Text;
 	}
-	
+	/**
+	 * 
+	 * @param connectivity (StationConnectivity) 
+	 * @return (int) the maximal points if at least two Stations are connected, 
+	                 - minimal points possible if none of the Stations are connected
+	 */
 	public int points(StationConnectivity connectivity) {
 	
 		int maxPoints;
@@ -111,15 +91,58 @@ public final class Ticket implements Comparable<Ticket> {
 		
 	}
 	 
-	
+	/**
+	 * Compares alphabetically this ticket's text with another Ticket's text 
+	 * @param that (Ticket) the Ticket to compare
+	 * @return (int) a strictly positive number if this is bigger than that
+	                 a strictly negative number if this is smaller than that
+	                 0 if they are equal
+	 */
 	@Override
 	public int compareTo(Ticket that) {
 		return this.Text.compareTo(that.Text);
 	}
-	
+	/**
+	 * Overrides the toString() method
+	 * @return (String) the textual representation of the Ticket
+	 */
 	@Override 
 	public String toString() {
 		return text();
 	}
 
+	/**
+	 * Private method to compute the textual representation of the Ticket
+	 * @param trips (List<Trip>) all the Trips that the Ticket covers 
+	 * @return (String) the textual representation of the Ticket
+	 */
+	private static String computeText(List<Trip> trips) {
+		
+		String text ;
+		
+		if (trips.size() == 1) {			
+			text = String.format("%s - %s (%s)", 
+					             trips.get(0).from().name(), 
+					             trips.get(0).to().name(), 
+					             trips.get(0).points());
+		} else {
+			
+			TreeSet<String> countries = new TreeSet<>();
+			for (Trip t : trips ) {
+				countries.add(String.format("%s (%s)", 
+						                    t.to().name(),
+						                    t.points()));
+			}
+			
+			String arrivals = String.join(", ", countries);
+			
+			text = String.format("%s - {%s}", 
+		                         trips.get(0).from().name(), 
+		                         arrivals);
+		}
+
+		
+		return text;
+	}
+	
 }

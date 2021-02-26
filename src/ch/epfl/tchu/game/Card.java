@@ -5,8 +5,7 @@ import java.util.List;
 
 /**
  * 
- * Modelizes the different types of cards 
- * used in the game
+ * Modelizes the different types of cards used in the game
  * 
  * @author Yasmin Benrahhal (329912)
  * @author Sara Anejjar (329905)
@@ -28,7 +27,7 @@ public enum Card {
 	public final static int COUNT = ALL.size(); 
 	
 	/**
-	 * List only containing the wagon cards
+	 * List containing only the wagon cards
 	 */
 	public final static List<Card> CARS = List.of(
 
@@ -37,7 +36,7 @@ public enum Card {
 	
 	/**
 	 * 
-	 * @param color : the card's color.
+	 * @param color (Color) : the card's color.
 	 * @return the type of the corresponding wagon card depending on the card's color.
 	 */
 	
@@ -59,7 +58,7 @@ public enum Card {
 	
 	/**
 	 * Constructor initializing the color of the wagon cards. 
-	 * @param color
+	 * @param color (Color)
 	 */
 	private Card(Color color) {
 		colorName = color;
@@ -74,7 +73,7 @@ public enum Card {
 	
 	/**
 	 * 
-	 * @return the color of the card's type if it's a wagon card. null if not.
+	 * @return (Color) the color of the card's type if it's a wagon card. null if not.
 	 */
 	public Color color() {
 		return (this.colorName() == null) ?  null :  this.colorName();	

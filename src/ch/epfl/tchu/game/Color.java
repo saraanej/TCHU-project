@@ -4,8 +4,7 @@ import java.util.List;
 
 /**
  * 
- * Modelizes the colors used in the game 
- * for the cards and paths.
+ * Modelizes the colors used in the game for the cards and paths.
  * 
  * @author Yasmin Benrahhal (329912)
  * @author Sara Anejjar (329905)
@@ -29,7 +28,7 @@ public enum Color {
 	public final static List<Color> ALL = List.of(Color.values());
 	
 	/**
-	 * integer containing the number of the enum type values.
+	 * Integer containing the number of the enum type values.
 	 */
 	public final static int COUNT = ALL.size(); 
 
