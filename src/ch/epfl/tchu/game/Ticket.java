@@ -24,7 +24,11 @@ public final class Ticket implements Comparable<Ticket> { //NOTE rendre immutabl
 	 * @param trips (List<Trip>) all the Trips that the Ticket covers
 	 */
 	public Ticket(List<Trip> trips){
-		this.trips = trips;
+		if(trips.size() == 0) {
+			throw new IllegalArgumentException();
+		} else {
+			this.trips = trips;
+		}		
 		this.Text = computeText(); 
 	}
 	
@@ -40,8 +44,14 @@ public final class Ticket implements Comparable<Ticket> { //NOTE rendre immutabl
 		this(List.of(new Trip(from, to, points)));
 	}
 	
-	
-	private static String computeText() {
+//	lieu de départ commum
+//	lieux d'arrivées ordre alphabétique Treeset<String>
+	private static String computeText(List<Trip> trips) {
+		if(trips.size() == 1) {
+			return 
+		}
+		
+		
 		return null;
 	}
 	
