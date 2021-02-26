@@ -24,7 +24,7 @@ public final class Station {
 	 * @throws IllegalArgumentException if the identification number is not between 0 and 50
 	 */
 	public Station (int id, String name) {
-		Preconditions.checkArgument(id>=0 && id<NUMBER_STATIONS && name != null);
+		Preconditions.checkArgument(id>=0 && name != null);
 		
 		this.id = id;
 		this.name = name;
