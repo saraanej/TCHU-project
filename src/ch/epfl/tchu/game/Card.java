@@ -80,19 +80,5 @@ public enum Card {
 		return (this.colorName() == null) ?  null :  this.colorName();	
 	}
 	
-	
-	
-	
-/*private static List<Card> removed() {
-		
-		 List<Card> wagonCards = null;
-		
-		for(int i = 0; i < (Card.values()).length; ++i) {
-			if(((Card.values())[i]).colorName() != null) {
-				wagonCards.add((Card.values())[i]);
-			}
-		}
-		return wagonCards;
-	}*/
 }
 
