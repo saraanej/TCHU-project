@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import java.util.Arrays;
 import java.util.List;
-
+import java.util.TreeSet;
 
 import ch.epfl.tchu.Preconditions;
 
@@ -63,14 +63,29 @@ public final class Ticket implements Comparable<Ticket> {
 		
 		String text ;
 		
-		if (trips.size() == 1) {
-			
+		if (trips.size() == 1) {			
+			text = String.format("%s - %s (%s)", 
+					            trips.get(0).from().name(), 
+					            trips.get(0).to().name(), 
+					            trips.get(0).points());
 		} else {
 			
+			TreeSet<String> countries = new TreeSet<>();
+			for (Trip t : trips ) {
+				countries.add(String.format("%s (%s)", 
+						                    t.to().name(),
+						                    t.points()));
+			}
+			
+			String arrivals = String.join(",", countries);
+			
+			text = String.format("%s - {%s}", 
+		            trips.get(0).from().name(), 
+		            arrivals);
 		}
 
 		
-		return null;
+		return text;
 	}
 	
 	
