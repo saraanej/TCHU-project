@@ -28,16 +28,17 @@ public final class Ticket implements Comparable<Ticket> {
 	 * 
 	 * @param trips (List<Trip>) all the Trips that the Ticket covers
 	 * 
-	 * @throws IllegalArgumentException if List<Trips> is empty
+	 * @throws IllegalArgumentException 
+	           if List<Trips> is empty or if all the departure's stations don't have the same name
 	 */
 	public Ticket(List<Trip> trips){
 
-		Preconditions.checkArgument(trips != null);
+		Preconditions.checkArgument(trips != null && trips.size() != 0);
 		
 		this.from = trips.get(0).from();
 		
 		for ( Trip t : trips) {
-			assert t.from().equals(this.from);
+			Preconditions.checkArgument(t.from().equals(this.from));
 		}
 		this.trips = trips;
 		this.Text = computeText(this.trips); 
@@ -59,6 +60,8 @@ public final class Ticket implements Comparable<Ticket> {
 
 	
 	private static String computeText(List<Trip> trips) {
+		
+		String text ;
 		
 		if (trips.size() == 1) {
 			

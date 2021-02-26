@@ -29,9 +29,17 @@ public final class Trip {
 	 * @param from (Station) the departure Station of the Trip
 	 * @param to (Station) the arrival Station of the Trip
 	 * @param points (int) the number of points associated to the Trip
+	 * 
+	 * @throws IllegalArgumentException
+	            if the points are negative 
+	            if the departure's station is the same as the arrival's station
+	 * 
+	 * @throws NullPointerException 
+	 *          if the departure's station (to) 
+	 *          if the arrival's station(from) is empty
 	 */
 	public Trip(Station from, Station to, int points) { 
-		Preconditions.checkArgument(points>0 && from!= null && to != null && from != to);
+		Preconditions.checkArgument(points>0 && from != to);
 		
 		this.from = Objects.requireNonNull(from);
 		this.to = Objects.requireNonNull(to);
@@ -48,6 +56,12 @@ public final class Trip {
 	 * @param points (int) points attributed to the Trips
 	 * 
 	 * @return (List<Trip>) all the Trips possible from a Station of the first list "from" to the station of the second list "to"
+	 * 
+	 * @throws IllegalArgumentException 
+	 *         if the departure's station is empty 
+	 *         if the arrival's station is empty 
+	 *         if the points are negative
+	 *         if the departure's station is the same as the arrival's station 
 	 */
 	public static List<Trip> all(List<Station> from, List<Station>to, int points){
 		Preconditions.checkArgument(from != null && to != null && points > 0 && from != to);
