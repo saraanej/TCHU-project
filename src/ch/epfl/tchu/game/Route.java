@@ -51,15 +51,16 @@ public final class Route { // Note : rendre la classe immuable
 	 */
 	public Route(String id, Station station1, Station station2, int length, Level level, Color color){
 		Preconditions.checkArgument(!station1.equals(station2) 
-				                   && length>= Constants.MIN_ROUTE_LENGTH 
+				                   && length >= Constants.MIN_ROUTE_LENGTH 
 				                   && length <= Constants.MAX_ROUTE_LENGTH);
 		
 		this.id = Objects.requireNonNull(id);
 		this.station1 = Objects.requireNonNull(station1);
 		this.station2 = Objects.requireNonNull(station2);
-		this.length = length;
 		this.level = Objects.requireNonNull(level);
 		this.color = color;
+		this.length = length;
+
 	}
 	
 	/**
@@ -139,7 +140,28 @@ public final class Route { // Note : rendre la classe immuable
 	                                   sorted in increasing order of the number of locomotive cards and the by color
 	 */
 	public List<SortedBag<Card>> possibleClaimCards(){
-		return null;
+		
+		List<SortedBag<Card>> tab = new ArrayList<SortedBag<Card>>();
+		
+		if(level.equals(Level.OVERGROUND)) {
+			if(color.equals(null)) {
+				for(Card c : Card.CARS) {
+					tab.add(SortedBag.of(length, c));
+				}
+			} else {
+				tab.add(SortedBag.of(length, Card.of(color)));
+			}
+		}
+        if(level.equals(Level.UNDERGROUND)) {
+			if(color.equals(null)) {
+				for(Card c : Card.CARS) {
+		        	tab.add(SortedBag.of(length, c, length, Card.LOCOMOTIVE));
+				}
+		    } else {
+	            tab.add(SortedBag.of(length, Card.of(color), length, Card.LOCOMOTIVE));
+		    }
+        }
+		return tab;
 	}
 	
 	/**
@@ -151,6 +173,8 @@ public final class Route { // Note : rendre la classe immuable
 	             if the route is not a tunnel or if drawnCards doesn't contain exactly three cards
 	 */
 	public int additionalClaimCardsCount(SortedBag<Card> claimCards, SortedBag<Card> drawnCards) {
+		Preconditions.checkArgument(level.equals(Level.UNDERGROUND) && drawnCards.size() == 3);
+		
 		return 0;
 	}
 	
@@ -158,7 +182,13 @@ public final class Route { // Note : rendre la classe immuable
 	 * @return (int) the points of construction earned by the player when he/she gets the route
 	 */
 	public int claimPoints() {
-		return 0;
+		if(length == 1) {return 1;}
+		if(length == 2) {return 2;}
+		if(length == 3) {return 4;}
+		if(length == 4) {return 7;}
+		if(length == 5) {return 10;}
+		if(length == 6) {return 15;}
+		else {return 0;}
 	}
 
 }
