@@ -59,9 +59,10 @@ public final class Trail { // Note : rendre la classe immuable
 		}
 		
 		
-		List<Trail> trails = List.of(); //unomidifiable?
+		List<Trail> trails = List.of(); //unmodifiable?
 		for (Route r : routes) {
 			trails.add(new Trail(r.station1(),r.station2(),List.of(r)));
+			trails.add(new Trail(r.station2(),r.station1(),List.of(r)));
 		}
 		
 		while (trails.size()!=0) {
@@ -80,7 +81,8 @@ public final class Trail { // Note : rendre la classe immuable
 				for (Route r : road ) {
 					List<Route> newRoad = t.routes;
 					newRoad.add(r); // route t prolongee de r
-					cs.add(new Trail(t.station1,r.station2(),newRoad)); // nouveau chemin prolonge
+					cs.add(new Trail(t.station1,r.stationOpposite(t.station2),newRoad));  // nouveau chemin prolonge
+					
 				}
 			}
 			

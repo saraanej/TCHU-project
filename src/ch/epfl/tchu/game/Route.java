@@ -51,8 +51,8 @@ public final class Route { // Note : rendre la classe immuable
 	 */
 	public Route(String id, Station station1, Station station2, int length, Level level, Color color){
 		Preconditions.checkArgument(!station1.equals(station2) 
-				                   && length >= Constants.MIN_ROUTE_LENGTH 
-				                   && length <= Constants.MAX_ROUTE_LENGTH);
+				                    && length >= Constants.MIN_ROUTE_LENGTH 
+				                    && length <= Constants.MAX_ROUTE_LENGTH);
 		
 		this.id = Objects.requireNonNull(id);
 		this.station1 = Objects.requireNonNull(station1);
