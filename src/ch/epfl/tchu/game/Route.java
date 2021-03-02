@@ -182,13 +182,14 @@ public final class Route { // Note : rendre la classe immuable
 	 * @return (int) the points of construction earned by the player when he/she gets the route
 	 */
 	public int claimPoints() {
-		if(length == 1) {return 1;}
-		if(length == 2) {return 2;}
-		if(length == 3) {return 4;}
-		if(length == 4) {return 7;}
-		if(length == 5) {return 10;}
-		if(length == 6) {return 15;}
-		else {return 0;}
+		switch(length) {
+		case(1): return 1;
+		case(2): return 2;
+		case(3): return 4;
+		case(4): return 7;
+		case(5): return 10;
+		case(6): return 15;
+		default : return 0;}
 	}
 
 }
