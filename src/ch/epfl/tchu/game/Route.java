@@ -242,19 +242,4 @@ public final class Route { // Note : rendre la classe immuable
 		case(6): return 15;
 		default: return 0;}
 	}
-	
-/**	private static final Station NEU = new Station(19, "Neuchâtel");
-    private static final Station YVE = new Station(31, "Yverdon");
-    private static final Station BER = new Station(3, "Berne");
-    private static final Station LUC = new Station(16, "Lucerne");
-
-
-    private static final Route A = new Route("NEU_YVE_1", NEU, YVE, 6, Level.UNDERGROUND, Color.WHITE);
-	
-	public final static class Main {
-		public static void main(String[] args) {
-			System.out.println(A.possibleClaimCards());
-		}
-	}
-*/
 }

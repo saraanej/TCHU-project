@@ -36,7 +36,7 @@ class TrailTest {
 	void toStringWorksOnNormalTrail() {
 		TestMap map = new TestMap();
 		List<Route> routes = List.of(map.A, map.B, map.C, map.D, map.D, map.E, map.F, map.G);
-		assertEquals("Fribourg - Lucerne (13)", Trail.longest(routes).toString());
+		assertEquals("Lucerne - Fribourg (13)", Trail.longest(routes).toString());
 	}
 	
 	@Test
@@ -45,7 +45,7 @@ class TrailTest {
 		List<Route> routes = List.of(map.A, map.B, map.C, map.D, map.F);
 		Trail trail = Trail.longest(routes); 
 		
-		assertEquals("Fribourg - Berne (9)", trail.toString());
+		assertEquals("Yverdon - Neuchâtel (10)", trail.toString());
 	}
 	
 	@Test
@@ -53,7 +53,15 @@ class TrailTest {
 		TestMap map = new TestMap();
 		List<Route> routes = List.of( map.B, map.C, map.D,map.G);
 		Trail trail = Trail.longest(routes); 
-		assertEquals("Olten - Soleure (9)", trail.toString());
+		assertEquals("Soleure - Olten (9)", trail.toString());
+	}
+	
+	@Test
+	void toStringWorksOnTrivialTrail4() {
+		TestMap map = new TestMap();
+		List<Route> routes = List.of( map.A, map.B);
+		Trail trail = Trail.longest(routes); 
+		assertEquals("Yverdon - Soleure (6)", trail.toString());
 	}
 	
 	

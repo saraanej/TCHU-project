@@ -44,35 +44,30 @@ public final class Trail { // Note : rendre la classe immuable
 			return new Trail(null, null,null);
 		}
 		
-		List<Trail> allTrails = new ArrayList<>();		
 		List<Trail> trails = new ArrayList<>(); 
 		for (Route r : routes) {
 			trails.add(new Trail(r.station1(),r.station2(),List.of(r)));
 			trails.add(new Trail(r.station2(),r.station1(),List.of(r)));
 		}
-				
+		Trail longestTrail = trails.get(0);
 		while (trails.size()!= 0) {
-			allTrails.addAll(trails); // on ajoute tous les trails actuels
 			List<Trail> cs = new ArrayList<>();
 			for (Trail t : trails) {	
 				List<Route> road = new ArrayList<>(routes);
 				road.removeAll(t.routes);
 				for (Route r : road) { 
-					if ((r.station1().equals(t.station2)) || (r.station2().equals(t.station2))) { // enleve routes ne  pouvant pas prolonger t
+					if ((r.station1().equals(t.station2)) || (r.station2().equals(t.station2))) { 
 						List<Route> newRoad = new ArrayList<>(t.routes);
-						newRoad.add(r); // route t prolongee de r
-						cs.add(new Trail(t.station1, r.stationOpposite(t.station2), newRoad));  // nouveau chemin prolonge
+						newRoad.add(r); 
+						Trail newTrail = new Trail(t.station1, r.stationOpposite(t.station2), newRoad);
+						cs.add(newTrail); 
+						if (longestTrail.lenght < newTrail.lenght) {
+							longestTrail = newTrail;
+						}
 					}
 				}
 			}
 			trails = cs;
-		}
-		Trail longestTrail = allTrails.get(0);
-		int maxLenght = 0;
-		for (Trail t : allTrails) {
-			if (maxLenght < t.lenght) {
-				longestTrail = t;
-			}
 		}
 		return longestTrail;
 	}
