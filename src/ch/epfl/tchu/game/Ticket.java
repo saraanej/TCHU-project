@@ -25,9 +25,7 @@ public final class Ticket implements Comparable<Ticket> {
 	
 	/**
 	 * Public default constructor of a Ticket
-	 * 
 	 * @param trips (List<Trip>) all the Trips that the Ticket covers
-	 * 
 	 * @throws IllegalArgumentException 
 	             if List<Trips> is empty 
 	             if all the departure's stations don't have the same name
