@@ -7,6 +7,7 @@ import java.util.Objects;
 
 import ch.epfl.tchu.Preconditions;
 import ch.epfl.tchu.SortedBag;
+import ch.epfl.tchu.game.Route.Level;
 
 /**
  * Modelizes a route
@@ -141,27 +142,52 @@ public final class Route { // Note : rendre la classe immuable
 	 */
 	public List<SortedBag<Card>> possibleClaimCards(){
 		
-		List<SortedBag<Card>> tab = new ArrayList<SortedBag<Card>>();
+		List<SortedBag<Card>> possibleClaimCard = new ArrayList<SortedBag<Card>>();
 		
 		if(level.equals(Level.OVERGROUND)) {
-			if(color.equals(null)) {
+			
+			if(color == null) {
+				
 				for(Card c : Card.CARS) {
-					tab.add(SortedBag.of(length, c));
-				}
+					possibleClaimCard.add(SortedBag.of(length, c));}
+				
 			} else {
-				tab.add(SortedBag.of(length, Card.of(color)));
-			}
+				possibleClaimCard.add(SortedBag.of(length, Card.of(color)));}
 		}
+		
         if(level.equals(Level.UNDERGROUND)) {
-			if(color.equals(null)) {
+        	
+			if(color == null) {
+				
 				for(Card c : Card.CARS) {
-		        	tab.add(SortedBag.of(length, c, length, Card.LOCOMOTIVE));
+					
+					for(int i = 0; i < this.length ; ++i) {
+						possibleClaimCard.add(SortedBag.of(length - i, c, i , Card.LOCOMOTIVE));}
+			    	
 				}
+				
+				possibleClaimCard.add(SortedBag.of(length, Card.LOCOMOTIVE));
+				
 		    } else {
-	            tab.add(SortedBag.of(length, Card.of(color), length, Card.LOCOMOTIVE));
+		    	
+		    	for(int i = 0; i <= this.length ; ++i) {
+		    		
+		    		int NbCard = length - i;
+		    		int NbLoco = i;
+		    	
+		    		if(NbLoco == 0) { 
+		    			possibleClaimCard.add(SortedBag.of(NbCard, Card.of(color)));}
+		    		
+		    		if(NbCard == 0) {
+		    			possibleClaimCard.add(SortedBag.of(NbLoco , Card.LOCOMOTIVE));}
+		    		
+		    		else if (NbLoco!=0 && NbCard!=0){
+		    			possibleClaimCard.add(SortedBag.of(NbCard, Card.of(color), NbLoco , Card.LOCOMOTIVE));}
+		    	}
 		    }
         }
-		return tab;
+        
+		return possibleClaimCard;
 	}
 	
 	/**
@@ -189,7 +215,21 @@ public final class Route { // Note : rendre la classe immuable
 		case(4): return 7;
 		case(5): return 10;
 		case(6): return 15;
-		default : return 0;}
+		default: return 0;}
+	}
+	
+	private static final Station NEU = new Station(19, "Neuchâtel");
+    private static final Station YVE = new Station(31, "Yverdon");
+    private static final Station BER = new Station(3, "Berne");
+    private static final Station LUC = new Station(16, "Lucerne");
+
+
+    private static final Route A = new Route("NEU_YVE_1", NEU, YVE, 6, Level.UNDERGROUND, null);
+	
+	public final static class Main {
+		public static void main(String[] args) {
+			System.out.println(A.possibleClaimCards());
+		}
 	}
 
 }
