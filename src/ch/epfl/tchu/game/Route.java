@@ -201,7 +201,32 @@ public final class Route { // Note : rendre la classe immuable
 	public int additionalClaimCardsCount(SortedBag<Card> claimCards, SortedBag<Card> drawnCards) {
 		Preconditions.checkArgument(level.equals(Level.UNDERGROUND) && drawnCards.size() == 3);
 		
-		return 0;
+		int additionalClaimCardsCount = 0;
+		
+		for(int i = 0; i < drawnCards.size(); ++i) {
+			
+	    if(claimCards.get(0).equals(Card.LOCOMOTIVE)) { //case if claimCards only contains locomotives
+	    	
+	    	if(drawnCards.get(i).equals(Card.LOCOMOTIVE)) {
+				++additionalClaimCardsCount;}
+	    }
+				
+	    else {
+				
+	    if(drawnCards.get(0).color() != null) {
+	    		
+	    	if(drawnCards.get(0).color().equals(claimCards.get(0).color())) {
+					++additionalClaimCardsCount;
+		}
+		
+		if(drawnCards.get(i).equals(Card.LOCOMOTIVE)) {
+					++additionalClaimCardsCount;}
+		   }
+			
+		}
+		}
+	  return additionalClaimCardsCount;
+	  
 	}
 	
 	/**
@@ -218,18 +243,18 @@ public final class Route { // Note : rendre la classe immuable
 		default: return 0;}
 	}
 	
-	private static final Station NEU = new Station(19, "Neuchâtel");
+/**	private static final Station NEU = new Station(19, "Neuchâtel");
     private static final Station YVE = new Station(31, "Yverdon");
     private static final Station BER = new Station(3, "Berne");
     private static final Station LUC = new Station(16, "Lucerne");
 
 
-    private static final Route A = new Route("NEU_YVE_1", NEU, YVE, 6, Level.UNDERGROUND, null);
+    private static final Route A = new Route("NEU_YVE_1", NEU, YVE, 6, Level.UNDERGROUND, Color.WHITE);
 	
 	public final static class Main {
 		public static void main(String[] args) {
 			System.out.println(A.possibleClaimCards());
 		}
 	}
-
+*/
 }

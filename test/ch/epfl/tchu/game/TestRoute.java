@@ -2,6 +2,7 @@ package ch.epfl.tchu.game;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
@@ -77,11 +78,13 @@ public class TestRoute {
 	@Test
 	void additional() {
 		
-		SortedBag<Card> claimcards = SortedBag.of(3,Card.BLACK);
+		SortedBag<Card> claimcards = SortedBag.of(2, Card.LOCOMOTIVE);
+		
 		SortedBag<Card> drawncards = SortedBag.of(3,Card.LOCOMOTIVE);
-
-
-		assertThrows(IllegalArgumentException.class, () -> {A.additionalClaimCardsCount(claimcards,drawncards);});
+		
+//		assertTrue(claimcards.isEmpty());
+//		assertThrows(IllegalArgumentException.class, () -> {A.additionalClaimCardsCount(claimcards,drawncards);});
+	    assertEquals(2,E.additionalClaimCardsCount(claimcards,drawncards));
 	}
 	
 
