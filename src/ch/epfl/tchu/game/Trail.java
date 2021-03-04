@@ -34,7 +34,7 @@ public final class Trail { // Note : rendre la classe immuable
 	}
 
 	private int computeLenght() {
-		if (routes.equals(null) || routes.size() == 0) {
+		if (routes == (null) || routes.size() == 0) {
 			return 0;
 		}
 		
@@ -53,27 +53,25 @@ public final class Trail { // Note : rendre la classe immuable
 	 * @return (Trail) the longest path in the given list of routes
 	 */
 	public static Trail longest(List<Route> routes) {
-		if (routes.equals(null) || routes.size() == 0) {
+		if (routes == (null) && routes.size() == 0) {
 			return new Trail(null, null,null);
 		}
 		
-		List<Trail> allTrails = List.of();		
-		List<Trail> trails = List.of(); //unmodifiable?
+		List<Trail> allTrails = new ArrayList<>();		
+		List<Trail> trails = new ArrayList<>(); 
 		for (Route r : routes) {
 			trails.add(new Trail(r.station1(),r.station2(),List.of(r)));
 			trails.add(new Trail(r.station2(),r.station1(),List.of(r)));
 		}
-		while (trails.size()!=0) {
+		while (trails.size()!= 0 || trails != null) {
 			allTrails.addAll(trails);
-			List<Trail> cs = List.of();
+			List<Trail> cs = new ArrayList<>();
 			for (Trail t : trails) {	
-				List<Route> road = routes;
+				List<Route> road = new ArrayList<>(routes);
 				road.removeAll(t.routes); // enleve routes deja presentes dans "t"
 				for (Route r : road) { 
-					if (!(r.station1().equals(t.station2)) && !(r.station2().equals(t.station2))) { // enleve routes ne  pouvant pas prolonger t
-						road.remove(r);
-					} else {
-						List<Route> newRoad = t.routes;
+					if ((r.station1().equals(t.station2)) || (r.station2().equals(t.station2))) { // enleve routes ne  pouvant pas prolonger t
+						List<Route> newRoad = new ArrayList<>(t.routes);
 						newRoad.add(r); // route t prolongee de r
 						cs.add(new Trail(t.station1, r.stationOpposite(t.station2), newRoad));  // nouveau chemin prolonge
 					}
@@ -88,7 +86,6 @@ public final class Trail { // Note : rendre la classe immuable
 				longestTrail = t;
 			}
 		}
-		
 		return longestTrail;
 	}
 	
