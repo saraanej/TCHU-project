@@ -17,7 +17,7 @@ import ch.epfl.tchu.game.Route.Level;
  * @author Sara Anejjar (329905)
  *
  */
-public final class Route { // Note : rendre la classe immuable
+public final class Route {
 	
 	
 	private final String id;
@@ -36,15 +36,12 @@ public final class Route { // Note : rendre la classe immuable
 	
 	/**
 	 * public default constructor of a route
-	 * 
 	 * @param (String) id : the route's identity
 	 * @param (Station) station1 : the first station of the route
 	 * @param (Station) station2 : the second station of the route
 	 * @param (int) length : the route's length
 	 * @param (Level) level : the level to which the route belongs
 	 * @param (Color) color : the route's color, null when it's a neutral route
-	 * 
-	 * 
 	 * @throws IllegalArgumentException 
 	             if the first station is the same as the second one or when the length of the route exceed the length it's supposed to have in the game 
 	 * @throws NullPointerException 
@@ -98,7 +95,6 @@ public final class Route { // Note : rendre la classe immuable
 	
 	/**
 	 * public getter for the level to which the route belongs
-	 * 
 	 * @return (Level) the level to which the route belongs
 	 */
 	public Level level() {
@@ -107,7 +103,6 @@ public final class Route { // Note : rendre la classe immuable
 	
 	/**
 	 * public getter for the route's color
-	 * 
 	 * @return (Color) the route's color, null if it's a neutral route
 	 */
 	public Color color() {
@@ -127,7 +122,6 @@ public final class Route { // Note : rendre la classe immuable
 	/**
 	 * @param station (Station) to which we want its opposite one
 	 * @return (Station) the opposite station to the one given in the parameters
-	 * 
 	 * @throws IllegalArgumentException 
 	             if the station given in parameters doesn't correspond to any of the stations of the actual route
 	 */
@@ -194,7 +188,6 @@ public final class Route { // Note : rendre la classe immuable
 	 * @param (SortedBag<Card>) claimCards : cards that the player already used
 	 * @param (SortedBag<Card>) drawnCards : the three cards drawn from the top of the deck
 	 * @return (int) the number of additional cards to play to get the route in the tunnel
-	 * 
 	 * @throws IllegalArgumentException
 	             if the route is not a tunnel or if drawnCards doesn't contain exactly three cards
 	 */
