@@ -11,10 +11,18 @@ import ch.epfl.tchu.game.Route.Level;
 class TrailTest {
 	
 	
+	@Test
 	void longestTrailWorksWithSomeRoutes() {
 		TestMap map = new TestMap();
 		List<Route> routes = List.of(map.A, map.B, map.C, map.D, map.D, map.E, map.F, map.G);
-		assertEquals(12, Trail.longest(routes).length());
+		assertEquals(13, Trail.longest(routes).length());
+	}
+	
+	@Test
+	void longestTrailWorksWithSomeRoutes2() {
+		TestMap map = new TestMap();
+		List<Route> routes = List.of(map.A, map.B, map.C, map.D, map.D, map.E, map.F, map.G);
+		assertEquals(13, Trail.longest(routes).length());
 	}
 	
 	@Test
@@ -28,8 +36,57 @@ class TrailTest {
 	void toStringWorksOnNormalTrail() {
 		TestMap map = new TestMap();
 		List<Route> routes = List.of(map.A, map.B, map.C, map.D, map.D, map.E, map.F, map.G);
-		assertEquals("Yverdon - Lucerne (12)", Trail.longest(routes).toString());
+		assertEquals("Fribourg - Lucerne (13)", Trail.longest(routes).toString());
 	}
+	
+	@Test
+	void toStringWorksOnTrivialTrail2() {
+		TestMap map = new TestMap();
+		List<Route> routes = List.of(map.A, map.B, map.C, map.D, map.F);
+		Trail trail = Trail.longest(routes); 
+		
+		assertEquals("Fribourg - Berne (9)", trail.toString());
+	}
+	
+	@Test
+	void toStringWorksOnTrivialTrail3() {
+		TestMap map = new TestMap();
+		List<Route> routes = List.of( map.B, map.C, map.D,map.G);
+		Trail trail = Trail.longest(routes); 
+		assertEquals("Olten - Soleure (9)", trail.toString());
+	}
+	
+	
+	@Test
+	void toStringWorksWithNullTrail() {
+		Trail nullTrail = Trail.longest(null);
+		assertEquals("", nullTrail.toString());
+
+	}
+	
+	@Test
+	void lenghtWorksWithNullTrail() {
+		Trail nullTrail = Trail.longest(null);
+		assertEquals(0, nullTrail.length());
+
+	}
+	
+	@Test
+	void station1WorksWithNullTrail() {
+		Trail nullTrail = Trail.longest(null);
+		assertEquals(null, nullTrail.station1());
+
+	}
+	
+	@Test
+	void station2WorksWithNullTrail() {
+		Trail nullTrail = Trail.longest(null);
+		assertEquals(null, nullTrail.station2());
+
+	}
+	
+	
+	
 	
 
 	 private static final class TestMap {

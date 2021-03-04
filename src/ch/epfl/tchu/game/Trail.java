@@ -27,24 +27,11 @@ public final class Trail { // Note : rendre la classe immuable
 	 * @param routes (List<Route>) all the roads taken by the Trail 
 	 */
 	private Trail(Station station1, Station station2, List<Route> routes) {
-		this.lenght = computeLenght();
 		this.station1 = station1;
 		this.station2 = station2;
 		this.routes = routes;
+		this.lenght = computeLenght();
 	}
-
-	private int computeLenght() {
-		if (routes == (null) || routes.size() == 0) {
-			return 0;
-		}
-		
-		int l=0;
-		for (Route r : routes){
-			l += r.length();
-		}
-		return l;
-	}
-	
 	
 	
 	/**
@@ -53,7 +40,7 @@ public final class Trail { // Note : rendre la classe immuable
 	 * @return (Trail) the longest path in the given list of routes
 	 */
 	public static Trail longest(List<Route> routes) {
-		if (routes == (null) && routes.size() == 0) {
+		if (routes == (null) || routes.size() == 0) {
 			return new Trail(null, null,null);
 		}
 		
@@ -63,12 +50,13 @@ public final class Trail { // Note : rendre la classe immuable
 			trails.add(new Trail(r.station1(),r.station2(),List.of(r)));
 			trails.add(new Trail(r.station2(),r.station1(),List.of(r)));
 		}
-		while (trails.size()!= 0 || trails != null) {
-			allTrails.addAll(trails);
+				
+		while (trails.size()!= 0) {
+			allTrails.addAll(trails); // on ajoute tous les trails actuels
 			List<Trail> cs = new ArrayList<>();
 			for (Trail t : trails) {	
 				List<Route> road = new ArrayList<>(routes);
-				road.removeAll(t.routes); // enleve routes deja presentes dans "t"
+				road.removeAll(t.routes);
 				for (Route r : road) { 
 					if ((r.station1().equals(t.station2)) || (r.station2().equals(t.station2))) { // enleve routes ne  pouvant pas prolonger t
 						List<Route> newRoad = new ArrayList<>(t.routes);
@@ -79,7 +67,7 @@ public final class Trail { // Note : rendre la classe immuable
 			}
 			trails = cs;
 		}
-		Trail longestTrail = null;
+		Trail longestTrail = allTrails.get(0);
 		int maxLenght = 0;
 		for (Trail t : allTrails) {
 			if (maxLenght < t.lenght) {
@@ -116,12 +104,30 @@ public final class Trail { // Note : rendre la classe immuable
     	return this.station2;
 	}
     
+    public List<Route> routes(){
+    	return this.routes;
+    }
+    
     @Override
     public String toString() {
-    	if (routes.size() == 0 || routes.equals(null)) {
-    		return " ";
+ 
+    	if (lenght == 0) {
+    		return "";
     	}
     	return String.format("%s - %s (%s)", station1, station2, lenght);
     }
+    
+
+	private int computeLenght() {
+		if (routes == null) {
+			return 0;
+		}
+		int l=0;
+		for (Route r : routes){
+			l += r.length();
+		}
+		return l;
+	}
+	
 
 }
