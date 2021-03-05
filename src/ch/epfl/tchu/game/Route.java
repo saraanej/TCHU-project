@@ -116,7 +116,7 @@ public final class Route {
 		List<Station> stations = new ArrayList<Station>();
 		stations.add(station1);
 		stations.add(station2);
-		return Collections.unmodifiableList(stations);
+		return Collections.unmodifiableList(new ArrayList<>(stations));
 	}
 	
 	/**
