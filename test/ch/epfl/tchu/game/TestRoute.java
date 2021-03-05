@@ -4,6 +4,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.jupiter.api.Test;
 
 import ch.epfl.tchu.SortedBag;
@@ -74,6 +77,16 @@ public class TestRoute {
 		assertEquals(15, E.claimPoints());
 	}
 	
+	@Test
+	void claim() {
+	    Route R = new Route("NEU_YVE_1", NEU, YVE, 1, Level.UNDERGROUND, Color.BLACK);
+
+		List<SortedBag<Card>> possibleClaimCard = new ArrayList<SortedBag<Card>>();
+		possibleClaimCard.add(SortedBag.of(1, Card.BLACK));
+		possibleClaimCard.add(SortedBag.of(1, Card.LOCOMOTIVE));
+		assertEquals(possibleClaimCard, R.possibleClaimCards());
+
+	}
 	
 	@Test
 	void additional() {
@@ -84,7 +97,7 @@ public class TestRoute {
 		
 //		assertTrue(claimcards.isEmpty());
 //		assertThrows(IllegalArgumentException.class, () -> {A.additionalClaimCardsCount(claimcards,drawncards);});
-	    assertEquals(2,E.additionalClaimCardsCount(claimcards,drawncards));
+	    assertEquals(3,E.additionalClaimCardsCount(claimcards,drawncards));
 	}
 	
 

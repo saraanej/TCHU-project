@@ -198,25 +198,23 @@ public final class Route {
 		
 		for(int i = 0; i < drawnCards.size(); ++i) {
 			
-	    if(claimCards.get(0).equals(Card.LOCOMOTIVE)) { //case if claimCards only contains locomotives
+	         if(claimCards.get(0).equals(Card.LOCOMOTIVE)) { //case if claimCards only contains locomotives
 	    	
-	    	if(drawnCards.get(i).equals(Card.LOCOMOTIVE)) {
-				++additionalClaimCardsCount;}
+	    	       if(drawnCards.get(i).equals(Card.LOCOMOTIVE)) {
+				         ++additionalClaimCardsCount;}
 	    }
 				
 	    else {
 				
-	    if(drawnCards.get(0).color() != null) {
+	         if(drawnCards.get(0).color() != null) {
 	    		
-	    	if(drawnCards.get(0).color().equals(claimCards.get(0).color())) {
-					++additionalClaimCardsCount;
-		}
+	    	      if(drawnCards.get(0).color().equals(claimCards.get(0).color())) {
+					   ++additionalClaimCardsCount;}
 		
-		if(drawnCards.get(i).equals(Card.LOCOMOTIVE)) {
-					++additionalClaimCardsCount;}
-		   }
-			
-		}
+		     if(drawnCards.get(i).equals(Card.LOCOMOTIVE)) {
+					   ++additionalClaimCardsCount;}
+		       }
+		    }
 		}
 	  return additionalClaimCardsCount;
 	  
