@@ -30,7 +30,7 @@ public final class Trail {
 	private Trail(Station station1, Station station2, List<Route> routes) {
 		this.station1 = station1;
 		this.station2 = station2;
-		this.routes = Collections.unmodifiableList(routes);
+		this.routes = routes;
 		this.length = computeLength();
 	}
 	
@@ -42,8 +42,9 @@ public final class Trail {
 	 */
 	public static Trail longest(List<Route> routes) {
 		
-		Trail longestTrail = new Trail(null, null,null);
-		if (routes == (null) || routes.size() == 0) {
+		Trail longestTrail = new Trail(null, null, List.of());
+		
+		if (routes == (null) || routes.isEmpty()) {
 			return longestTrail;
 		}
 		
@@ -52,7 +53,7 @@ public final class Trail {
 			trails.add(new Trail(r.station1(),r.station2(),List.of(r)));
 			trails.add(new Trail(r.station2(),r.station1(),List.of(r)));
 		}
-		while (trails.size()!= 0) {
+		while (!trails.isEmpty()) {
 			List<Trail> cs = new ArrayList<>();
 			for (Trail t : trails) {	
 				List<Route> road = new ArrayList<>(routes);
@@ -85,9 +86,6 @@ public final class Trail {
 	 * @return (Station) the first station of the trail. null if the trail's length is zero
 	 */
 	public Station station1() {
-		if (length == 0) {
-			return null;
-		}
 		return this.station1;
 	}
 	
@@ -95,22 +93,11 @@ public final class Trail {
 	 * @return (Station) the last station of the trail. null if the trail's length is zero
 	 */
     public Station station2() {
-    	if (length == 0) {
-			return null;
-		}
     	return this.station2;
 	}
-    /**
-     * 
-     * @return (List<Routes>) the roads used by the Trail
-     */
-    public List<Route> routes(){
-    	return Collections.unmodifiableList(routes);
-    }
     
     @Override
     public String toString() {
- 
     	if (length == 0) {
     		return "";
     	}
@@ -119,7 +106,7 @@ public final class Trail {
     
 
 	private int computeLength() {
-		if (routes == null) {
+		if (routes == null || routes.isEmpty()) {
 			return 0;
 		}
 		int l=0;
