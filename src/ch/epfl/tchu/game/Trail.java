@@ -1,6 +1,7 @@
 package ch.epfl.tchu.game;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -11,9 +12,9 @@ import java.util.List;
  *
  */
 
-public final class Trail { // Note : rendre la classe immuable
+public final class Trail { 
 	
-	private final int lenght;
+	private final int length;
 	private final Station station1;
 	private final Station station2;
 	private final List<Route> routes;
@@ -29,8 +30,8 @@ public final class Trail { // Note : rendre la classe immuable
 	private Trail(Station station1, Station station2, List<Route> routes) {
 		this.station1 = station1;
 		this.station2 = station2;
-		this.routes = routes;
-		this.lenght = computeLenght();
+		this.routes = Collections.unmodifiableList(routes);
+		this.length = computeLength();
 	}
 	
 	
@@ -40,8 +41,10 @@ public final class Trail { // Note : rendre la classe immuable
 	 * @return (Trail) the longest path in the given list of routes
 	 */
 	public static Trail longest(List<Route> routes) {
+		
+		Trail longestTrail = new Trail(null, null,null);
 		if (routes == (null) || routes.size() == 0) {
-			return new Trail(null, null,null);
+			return longestTrail;
 		}
 		
 		List<Trail> trails = new ArrayList<>(); 
@@ -49,7 +52,6 @@ public final class Trail { // Note : rendre la classe immuable
 			trails.add(new Trail(r.station1(),r.station2(),List.of(r)));
 			trails.add(new Trail(r.station2(),r.station1(),List.of(r)));
 		}
-		Trail longestTrail = trails.get(0);
 		while (trails.size()!= 0) {
 			List<Trail> cs = new ArrayList<>();
 			for (Trail t : trails) {	
@@ -61,10 +63,10 @@ public final class Trail { // Note : rendre la classe immuable
 						newRoad.add(r); 
 						Trail newTrail = new Trail(t.station1, r.stationOpposite(t.station2), newRoad);
 						cs.add(newTrail); 
-						if (longestTrail.lenght < newTrail.lenght) {
-							longestTrail = newTrail;
-						}
 					}
+				}
+				if (longestTrail.length < t.length) {
+					longestTrail = t;
 				}
 			}
 			trails = cs;
@@ -76,14 +78,14 @@ public final class Trail { // Note : rendre la classe immuable
 	 * @return (int) the trail's length
 	 */
 	public int length() {
-		return this.lenght;
+		return this.length;
 	}
 	
 	/**
 	 * @return (Station) the first station of the trail. null if the trail's length is zero
 	 */
 	public Station station1() {
-		if (lenght == 0) {
+		if (length == 0) {
 			return null;
 		}
 		return this.station1;
@@ -93,27 +95,30 @@ public final class Trail { // Note : rendre la classe immuable
 	 * @return (Station) the last station of the trail. null if the trail's length is zero
 	 */
     public Station station2() {
-    	if (lenght == 0) {
+    	if (length == 0) {
 			return null;
 		}
     	return this.station2;
 	}
-    
+    /**
+     * 
+     * @return (List<Routes>) the roads used by the Trail
+     */
     public List<Route> routes(){
-    	return this.routes;
+    	return Collections.unmodifiableList(routes);
     }
     
     @Override
     public String toString() {
  
-    	if (lenght == 0) {
+    	if (length == 0) {
     		return "";
     	}
-    	return String.format("%s - %s (%s)", station1, station2, lenght);
+    	return String.format("%s - %s (%s)", station1, station2, length);
     }
     
 
-	private int computeLenght() {
+	private int computeLength() {
 		if (routes == null) {
 			return 0;
 		}
