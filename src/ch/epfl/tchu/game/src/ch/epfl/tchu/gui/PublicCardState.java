@@ -27,11 +27,9 @@ public class PublicCardState {
 	
 	/**
 	 * default constructor for the card's state
-	 * 
 	 * @param (List<Card>) faceUpCards : the list of the visible cards
 	 * @param (int) deckSize : the deck's size
 	 * @param (int) discardsSize : the discard pile's size
-	 * 
 	 * @throws IllegalArgumentException 
 	 *                if the list of the visible cards doesn't contain exactly three cards
 	 *                if the sizes of the deck or the discard pile are negative                 
@@ -48,7 +46,6 @@ public class PublicCardState {
 	}
 	
 	/**
-	 * 
 	 * @return (int) the number of cards that the players don't possess
 	 */
 	public int totalSize() {
@@ -57,7 +54,6 @@ public class PublicCardState {
 	
 	
 	/**
-	 * 
 	 * @return (List<Card>) the five visible cards in a list containing five elements
 	 */
 	public List<Card> faceUpCards(){		
@@ -66,12 +62,9 @@ public class PublicCardState {
 	
 	
 	/**
-	 * 
-	 * @param (int) slot : index of the visible card 
-	 * 
+	 * @param (int) slot : index of the visible card
 	 * @throws IndexOutOfBoundsException 
 	 *             if slot is less than 0 or bigger or equal than 5
-	 * 
 	 * @return (Card) the visible card in the slot-th position
 	 */
 	public Card faceUpCard(int slot) {

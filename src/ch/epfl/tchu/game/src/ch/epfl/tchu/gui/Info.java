@@ -21,19 +21,15 @@ public final class Info {
 
 	/**
 	 * Default constructor of the messages linked to the player's name
-	 * 
 	 * @param (String) playerName : the player's name
 	 */
-	
 	public Info(String playerName) {
 		this.playerName = playerName;
 	}
 	
 	/**
-	 * 
 	 * @param (Card) card : the given card
 	 * @param (int) count : value determining the plurality of the string
-	 
 	 * @return (String) the French name of the given card
 	 */
 	public static String cardName(Card card, int count) {
@@ -57,10 +53,8 @@ public final class Info {
 	}
 	
 	/**
-	 *  
 	 * @param (String) playerNames : the players' names
 	 * @param (int) points : the points that each one of the players won
-	 
 	 * @return (String) the message declaring that the players have finished the game ex aequo 
 	 *         and that each one of them won the given points
 	 */
@@ -72,7 +66,6 @@ public final class Info {
 	}
 	
 	/**
-	 * 
 	 * @return (String) the message declaring the first player to play
 	 */
 	public String willPlayFirst() {
@@ -80,9 +73,7 @@ public final class Info {
 	}
 	
 	/**
-	 * 
 	 * @param (int) count : the number of cards the player kept
-	 * 
 	 * @return (String) the message declaring that the player kept the number of cards given
 	 */
 	public String keptTickets(int count) {
@@ -93,7 +84,6 @@ public final class Info {
 	}
 	
 	/**
-	 * 
 	 * @return (String) the message declaring that the player can play
 	 */
 	
@@ -102,7 +92,6 @@ public final class Info {
 	}
 	
 	/**
-	 * 
 	 * @param (int) count : number of tickets the player took
 	 * @return (String) the message declaring that the player took the given number of tickets
 	 */
@@ -114,7 +103,6 @@ public final class Info {
 	}
 	
 	/**
-	 * 
 	 * @return (String) the message declaring the player took a card from the deck
 	 */
 	public String drewBlindCard() {
@@ -122,7 +110,6 @@ public final class Info {
 	}
 	
 	/**
-	 * 
 	 * @return (String) the message declaring the player took the given visible card
 	 */
 	public String drewVisibleCard(Card card) {
@@ -133,10 +120,8 @@ public final class Info {
 	}
 	
 	/**
-	 * 
 	 * @param (Route) route : the route that the player took over 
 	 * @param (SortedBag<Card>) cards : the cards the player played to take over the route
-	 * 
 	 * @return (String) the message declaring that the player took over the given route
 	 *                  by playing the given cards
 	 */
@@ -147,10 +132,8 @@ public final class Info {
 	}
 	
 	/**
-	 * 
 	 * @param (Route) route : the tunnel route the player wants to take over
 	 * @param (SortedBag<Card>) initialCards : the cards the player will play to get the tunnel route
-	 * 
 	 * @return (String) the message declaring that the player wants to take over the given tunnel route
 	 *                  using the given cards
 	 */
@@ -162,10 +145,8 @@ public final class Info {
 	}
 	
 	/**
-	 * 
 	 * @param (SortedBag<Card>) drawnCards : the additional cards that the player drew
 	 * @param (int) additionalCost : the additional cost for the given cards
-	 * 
 	 * @return (String) the message declaring that the player drew three additional cards
 	 *                  and that they involve an additional cost of the given number of cards 
 	 */
@@ -187,9 +168,7 @@ public final class Info {
 	
 	
 	/**
-	 * 
 	 * @param (Route) route : the given tunnel route
-	 * 
 	 * @return (String) the message declaring that the player couldn't 
 	 *                  or didn't want to take over the given tunnel route
 	 */
@@ -200,9 +179,7 @@ public final class Info {
 	}
 	
 	/**
-	 * 
 	 * @param (int) carCount : the number of wagon cards the player has left
-	 * 
 	 * @return (String) the message declaring that the player has only the given number of wagon cards
 	 *                  and that the last tour will begin
 	 */
@@ -215,9 +192,7 @@ public final class Info {
 	}
 	
 	/**
-	 * 
 	 * @param (Trail) longestTrail : the trail that made the player earn the final game bonus
-	 * 
 	 * @return (String) the message declaring that the player obtains the final game bonus
 	 *                  thanks to the given trail which the longest or one of the longest
 	 */
@@ -231,10 +206,8 @@ public final class Info {
 	}
 	
 	/**
-	 * 
 	 * @param (int) points : the points earned by the player in the game
 	 * @param (int) loserPoints : the points made by the player's opponent in the game
-	 * 
 	 * @return (String) the message declaring that the player won with the given points
 	 *                  while his opponent lost with the given "loserPoints"
 	 */
@@ -248,9 +221,7 @@ public final class Info {
 	}
 	
 	/**
-	 * 
 	 * @param (Route) route : the given route
-	 * 
 	 * @return (String) the message declaring the details of the route
 	 */
 	private static String routeName(Route route) {
@@ -263,9 +234,7 @@ public final class Info {
 	}
 	
 	/**
-	 * 
-	 * @param (SortedBag<Card>) cards : the given list of cards 
-	 * 
+	 * @param (SortedBag<Card>) cards : the given list of cards
 	 * @return (String) the message containing all the specifics of the cards
 	 *                  contained in the given list
 	 */
