@@ -22,7 +22,6 @@ public final class Deck<C extends Comparable<C>> { //  immuable
 	 * @param <C>
 	 * @param cards
 	 * @param rng
-	 * 
 	 * @return a bunch of cards 
 	 */
 	public static <C extends Comparable<C>> Deck<C> of(SortedBag<C> cards, Random rng){
