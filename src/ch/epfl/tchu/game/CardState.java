@@ -79,6 +79,8 @@ public final class CardState extends PublicCardState {
 	/**
 	 *
 	 * @return (CardState)
+	 * @throws IllegalArgumentException
+	            if the deck is empty
 	 */
 	public CardState withoutTopDeckCard(){
 		Preconditions.checkArgument(!deck.isEmpty());
