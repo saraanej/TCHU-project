@@ -62,9 +62,9 @@ public class PublicCardState {
 	
 	/**
 	 * @param (int) slot : index of the visible card
-	 * @throws IndexOutOfBoundsException 
-	 *             if slot is less than 0 or bigger or equal than 5
 	 * @return (Card) the visible card in the slot-th position
+	 * @throws IndexOutOfBoundsException
+	             if slot is less than 0 or bigger or equal than 5
 	 */
 	public Card faceUpCard(int slot) {
 		return faceUpCards().get(Objects.checkIndex(slot,5));
