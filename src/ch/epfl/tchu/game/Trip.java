@@ -37,7 +37,6 @@ public final class Trip {
 	 */
 	public Trip(Station from, Station to, int points) { 
 		Preconditions.checkArgument(points>0 && from != to);
-		
 		this.from = Objects.requireNonNull(from);
 		this.to = Objects.requireNonNull(to);
 		this.points = points;
@@ -59,15 +58,12 @@ public final class Trip {
 	 */
 	public static List<Trip> all(List<Station> from, List<Station>to, int points){
 		Preconditions.checkArgument(from != null && to != null && points > 0 && from != to);
-		
 		List<Trip> all = new ArrayList<Trip>();
-		
 		for (Station f : from ) {
 			for (Station t : to) {
 				all.add(new Trip(f,t,points));
 			}
 		}
-		
 		return all;
 	}
 	
@@ -98,9 +94,9 @@ public final class Trip {
 	/**
 	 * Getter for the number of points depending on the connectivity of the departure's and arrival's Station 
 	 * @param connectivity (StationConnectivity) 
-	 * @return points (int) if the Stations are connected, -points if not
+	 * @return points (int) if the Stations are connected, - points if not
 	 */
 	public int points(StationConnectivity connectivity) {
-		return connectivity.connected(to, from) ? points : -points;
+		return connectivity.connected(to, from) ? points : - points;
 	}
 }

@@ -1,6 +1,5 @@
-package ch.epfl.tchu.game.src.ch.epfl.tchu.gui;
+package ch.epfl.tchu.game;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
@@ -39,6 +38,10 @@ public final class Deck<C extends Comparable<C>> {
 		List<C> shuffledCards = cards.toList();
 		Collections.shuffle(shuffledCards,rng);
 		return new Deck<C>(shuffledCards);
+	}
+
+	public int size(){
+		return size;
 	}
 
 	/**

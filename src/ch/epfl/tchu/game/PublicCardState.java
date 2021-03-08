@@ -1,4 +1,4 @@
-package ch.epfl.tchu.game.src.ch.epfl.tchu.gui;
+package ch.epfl.tchu.game;
 
 import java.util.ArrayList;
 import java.util.Collections;
