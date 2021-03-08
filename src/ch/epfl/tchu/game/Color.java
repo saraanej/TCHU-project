@@ -1,5 +1,6 @@
 package ch.epfl.tchu.game;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -25,7 +26,7 @@ public enum Color {
 	/**
 	 * List containing all the values of the enum type. 
 	 */
-	public final static List<Color> ALL = List.of(Color.values());
+	public final static List<Color> ALL = Collections.unmodifiableList(List.of(Color.values()));
 	
 	/**
 	 * Integer containing the number of the enum type values.

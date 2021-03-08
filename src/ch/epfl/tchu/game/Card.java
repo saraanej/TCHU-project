@@ -1,6 +1,7 @@
 package ch.epfl.tchu.game;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -23,15 +24,14 @@ public enum Card {
 	WHITE (Color.WHITE),
 	LOCOMOTIVE (null);
 	
-	public final static List<Card> ALL = List.of(Card.values());
+	public final static List<Card> ALL = Collections.unmodifiableList(List.of(Card.values()));
 	public final static int COUNT = ALL.size(); 
 	
 	/**
 	 * List containing only the wagon cards
 	 */
-	public final static List<Card> CARS = List.of(
-
-	BLACK, VIOLET, BLUE, GREEN, YELLOW, ORANGE, RED, WHITE);
+	public final static List<Card> CARS = Collections.unmodifiableList(List.of(
+	BLACK, VIOLET, BLUE, GREEN, YELLOW, ORANGE, RED, WHITE));
 
 	
 	/**
