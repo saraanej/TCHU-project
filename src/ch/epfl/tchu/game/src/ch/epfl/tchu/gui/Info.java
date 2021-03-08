@@ -34,22 +34,20 @@ public final class Info {
 	 */
 	public static String cardName(Card card, int count) {
 		
-		String cardName;
+		String plural = StringsFr.plural(count);
 		
 		switch(card.color()) {
-		case BLACK: cardName = StringsFr.BLACK_CARD;
-		case BLUE: cardName =  StringsFr.BLUE_CARD;
-		case GREEN: cardName = StringsFr.GREEN_CARD;
-		case ORANGE: cardName = StringsFr.ORANGE_CARD;
-		case RED: cardName = StringsFr.RED_CARD;
-		case VIOLET: cardName = StringsFr.VIOLET_CARD;
-		case WHITE: cardName = StringsFr.WHITE_CARD;
-		case YELLOW: cardName = StringsFr.YELLOW_CARD;
-		default : cardName = null;
+		case BLACK: return StringsFr.BLACK_CARD + plural;
+		case BLUE: return StringsFr.BLUE_CARD + plural;
+		case GREEN: return StringsFr.GREEN_CARD + plural;
+		case ORANGE: return StringsFr.ORANGE_CARD + plural;
+		case RED: return StringsFr.RED_CARD + plural;
+		case VIOLET: return StringsFr.VIOLET_CARD + plural;
+		case WHITE: return StringsFr.WHITE_CARD + plural;
+		case YELLOW: return StringsFr.YELLOW_CARD + plural;
+		default : return "";
 		}
 		
-		cardName += StringsFr.plural(count);
-	    return cardName;
 	}
 	
 	/**
@@ -59,9 +57,8 @@ public final class Info {
 	 *         and that each one of them won the given points
 	 */
 	public static String draw(List<String> playerNames, int points) {
-		//AFFICHER ELEMENTS LIST
 		return String.format(StringsFr.DRAW, 
-				             playerNames, 
+				             elementStringList(playerNames), 
 				             points);
 	}
 	
@@ -128,7 +125,7 @@ public final class Info {
 	public String claimedRoute(Route route, SortedBag<Card> cards) {
 		return String.format(StringsFr.CLAIMED_ROUTE, playerName, 
 				             routeName(route), 
-				             elementList(cards));
+				             elementCardList(cards));
 	}
 	
 	/**
@@ -141,7 +138,7 @@ public final class Info {
 		return String.format(StringsFr.ATTEMPTS_TUNNEL_CLAIM,
 				             playerName, 
 				             routeName(route), 
-				             elementList(initialCards));
+				             elementCardList(initialCards));
 	}
 	
 	/**
@@ -152,7 +149,7 @@ public final class Info {
 	 */
 	public String drewAdditionalCards(SortedBag<Card> drawnCards, int additionalCost) {
 	
-		String cost = String.format(StringsFr.ADDITIONAL_CARDS_ARE, elementList(drawnCards));
+		String cost = String.format(StringsFr.ADDITIONAL_CARDS_ARE, elementCardList(drawnCards));
 		
 		if(additionalCost==0) {
 			cost += StringsFr.NO_ADDITIONAL_COST;
@@ -238,7 +235,7 @@ public final class Info {
 	 * @return (String) the message containing all the specifics of the cards
 	 *                  contained in the given list
 	 */
-	private static String elementList(SortedBag<Card> cards) {
+	private static String elementCardList(SortedBag<Card> cards) {
 		String elements = "";
 		for(int i = 0; i < cards.size(); ++i) {
 			
@@ -257,6 +254,14 @@ public final class Info {
 			}
 		}
 		return elements;
+	}
+	
+	private static String elementStringList(List<String> playerNames) {
+		String names = String.format("%s%s%s",
+				                     playerNames.get(0),
+				                     StringsFr.AND_SEPARATOR,
+				                     playerNames.get(1));
+		return names;
 	}
 
 }

@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Objects;
 
 import ch.epfl.tchu.Preconditions;
-import ch.epfl.tchu.game.Card;
 
 /**
  * Modelizes the public state of the wagon/locomotive cards
