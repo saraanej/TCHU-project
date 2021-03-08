@@ -30,7 +30,7 @@ public final class Trail {
 	private Trail(Station station1, Station station2, List<Route> routes) {
 		this.station1 = station1;
 		this.station2 = station2;
-		this.routes = routes;
+		this.routes = List.copyOf(routes);
 		this.length = computeLength();
 	}
 	

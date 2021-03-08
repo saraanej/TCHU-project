@@ -24,13 +24,13 @@ public enum Card {
 	WHITE (Color.WHITE),
 	LOCOMOTIVE (null);
 	
-	public final static List<Card> ALL = Collections.unmodifiableList(List.of(Card.values()));
+	public final static List<Card> ALL = List.copyOf(List.of(Card.values()));
 	public final static int COUNT = ALL.size(); 
 	
 	/**
 	 * List containing only the wagon cards
 	 */
-	public final static List<Card> CARS = Collections.unmodifiableList(List.of(
+	public final static List<Card> CARS = List.copyOf(List.of(
 	BLACK, VIOLET, BLUE, GREEN, YELLOW, ORANGE, RED, WHITE));
 
 	

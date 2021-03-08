@@ -12,7 +12,7 @@ import ch.epfl.tchu.game.Card;
  *
  */
 
-public final class CardState extends PublicCardState{ // immuable
+public final class CardState extends PublicCardState{
 
 	
 	public static CardState of(Deck<Card> deck) {
