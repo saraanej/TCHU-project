@@ -7,9 +7,22 @@ import java.util.List;
 
 import org.junit.Test;
 
+import ch.epfl.tchu.SortedBag;
+import ch.epfl.tchu.game.Route.Level;
 import ch.epfl.tchu.game.src.ch.epfl.tchu.gui.Info;
 
 public class InfoTest {
+	
+	 private static final Station NEU = new Station(19, "Neuchâtel");
+	 private static final Station YVE = new Station(31, "Yverdon");
+	 private static final Station BER = new Station(3, "Berne");
+	 private static final Station LUC = new Station(16, "Lucerne");
+
+
+	 private static final Route A = new Route("NEU_YVE_1", NEU, YVE, 2, Level.OVERGROUND, Color.BLACK);
+	 private static final Route E = new Route("BER_LUC_1", BER, LUC, 6, Level.UNDERGROUND, null);
+	    
+	 SortedBag<Card> claimcards = SortedBag.of(2, Card.LOCOMOTIVE);
 	
 	Info chris = new Info("Chris");
 	
@@ -53,7 +66,20 @@ public class InfoTest {
 	
 	@Test
 	public void TestDrewBlindCard() {
-		assertEquals("",);
+		assertEquals("Chris a tiré une carte de la pioche.\n",
+				     chris.drewBlindCard());
+	}
+	
+	@Test
+	public void TestDrewVisibleCard() {
+		assertEquals("Chris a tiré une carte jaune visible.\n",
+				    chris.drewVisibleCard(Card.YELLOW));
+	}
+	
+	@Test
+	public void TestClaimedRoute() {
+		assertEquals("Chris a pris possession de la route %s au moyen de %s.\n",
+				     chris.claimedRoute(A, claimcards));
 	}
 	
 	
