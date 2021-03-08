@@ -110,10 +110,9 @@ public final class Info {
 	 * @return (String) the message declaring the player took the given visible card
 	 */
 	public String drewVisibleCard(Card card) {
-		//COMMENT AFFICHER CARD
 		return String.format(StringsFr.DREW_VISIBLE_CARD, 
 				             playerName, 
-				             card);
+				             cardName(card,1));
 	}
 	
 	/**
@@ -123,7 +122,8 @@ public final class Info {
 	 *                  by playing the given cards
 	 */
 	public String claimedRoute(Route route, SortedBag<Card> cards) {
-		return String.format(StringsFr.CLAIMED_ROUTE, playerName, 
+		return String.format(StringsFr.CLAIMED_ROUTE,
+				             playerName, 
 				             routeName(route), 
 				             elementCardList(cards));
 	}
