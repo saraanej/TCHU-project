@@ -31,7 +31,7 @@ public final class Deck<C extends Comparable<C>> {
 	 * creates a Deck containing a shuffled version of the cards
 	 * @param <C> the type of cards, must extends Comparable<C>
 	 * @param cards (SortedBag<C>) the sorted collection of cards C to store in the Deck
-	 * @param rng (Random) random number generator
+	 * @param rng (Random) random number generator to shuffle the C-cards
 	 * @return a deck composed of the shuffled version of cards
 	 */
 	public static <C extends Comparable<C>> Deck<C> of(SortedBag<C> cards, Random rng){

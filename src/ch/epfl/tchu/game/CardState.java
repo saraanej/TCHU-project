@@ -77,32 +77,35 @@ public final class CardState extends PublicCardState {
 	}
 
 	/**
-	 *
-	 * @return (CardState)
+	 * @return (CardState) this CardState without the top card of its deck
 	 * @throws IllegalArgumentException
 	            if the deck is empty
 	 */
 	public CardState withoutTopDeckCard(){
 		Preconditions.checkArgument(!deck.isEmpty());
-		return null;
+		return new CardState(this.faceUpCards(), deck.withoutTopCard(),discard);
 	}
 
 	/**
-	 *
-	 * @param rng (Random)
-	 * @return (CardState)
+	 * @param rng (Random) random number generator to shuffle the discard's cards
+	 * @return (CardState) this CardState with the deck composed of the shuffled discard's Cards
+	 * @throws IllegalArgumentException
+	 	            if the deck is not empty
 	 */
 	public CardState withDeckRecreatedFromDiscards(Random rng){
-		return null;
+		Preconditions.checkArgument(deck.isEmpty());
+		return new CardState(this.faceUpCards(),Deck.of(discard,rng),SortedBag.of());
 	}
 
 	/**
-	 *
-	 * @param additionalDiscards (SortedBag<Card>)
-	 * @return (CardState)
+	 * @param additionalDiscards (SortedBag<Card>) the Cards to add to the discard
+	 * @return (CardState) this CardState with the additionalDiscards added to its discard
 	 */
 	public CardState withMoreDiscardedCards(SortedBag<Card> additionalDiscards){
-		return null;
+		SortedBag.Builder<Card> newDiscard = new SortedBag.Builder();
+		newDiscard.add(discard);
+		newDiscard.add(additionalDiscards);
+		return new CardState(this.faceUpCards(),this.deck, newDiscard.build());
 	}
 	
 }
