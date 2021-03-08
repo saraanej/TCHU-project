@@ -23,17 +23,17 @@ public final class Deck<C extends Comparable<C>> {
 	private final int size;
 	private final List<C> cards;
 
-	public Deck(List<C> cards) {
+	private Deck(List<C> cards) {
 		this.cards = Collections.unmodifiableList(new ArrayList<>(cards));
 		this.size = this.cards.size();
 	}
 
 	/**
-	 * 
-	 * @param <C>
-	 * @param cards
-	 * @param rng
-	 * @return a bunch of cards 
+	 * creates a Deck containing a shuffled version of the cards
+	 * @param <C> the type of cards, must extends Comparable<C>
+	 * @param cards (SortedBag<C>) the sorted collection of cards C to store in the Deck
+	 * @param rng (Random) random number generator
+	 * @return a deck composed of the shuffled version of cards
 	 */
 	public static <C extends Comparable<C>> Deck<C> of(SortedBag<C> cards, Random rng){
 		List<C> shuffledCards = cards.toList();
@@ -43,7 +43,7 @@ public final class Deck<C extends Comparable<C>> {
 
 	/**
 	 *
-	 * @return
+	 * @return (Deck) true iff the deck is empty
 	 */
 	public boolean isEmpty(){
 		return size == 0 ? true : false;
@@ -51,38 +51,54 @@ public final class Deck<C extends Comparable<C>> {
 
 	/**
 	 *
-	 * @return
+	 * @return (C) the first card of this Deck
 	 * @throws IllegalArgumentException
+	             if this deck is empty
 	 */
 	public C topCard(){
 		Preconditions.checkArgument(!this.isEmpty());
-		return null;
+		return cards.get(0);
 	}
 
 	/**
 	 *
-	 * @return
+	 * @return (Deck) a new deck without the first card
+	 * @throws IllegalArgumentException
+	              if this deck is empty
 	 */
 	public Deck<C> withoutTopCard(){
-		return null;
+		Preconditions.checkArgument(!this.isEmpty());
+		return new Deck<C>(cards.subList(1, cards.size()));
 	}
 
 	/**
 	 *
-	 * @param count
-	 * @return
+	 * @param count (int) the desired number of first cards from the deck
+	 * @return (SortedBag<C>) the sorted "count" first cards of the deck
+	 * @throws IllegalArgumentException
+	             if this deck is empty
+	             if the count is not between 0 and the size of the deck (included)
 	 */
 	public SortedBag<C> topCards(int count){
-		Preconditions.checkArgument(!this.isEmpty());
-		return null;
+		Preconditions.checkArgument(!this.isEmpty()
+				                    && count <= cards.size()
+				                    && count >= 0);
+
+		return SortedBag.of(cards.subList(0,count));
 	}
 
 	/**
 	 *
-	 * @param count
-	 * @return
+	 * @param count (int) the desired number of first cards from the deck to remove
+	 * @return (Deck) a new deck without the "count" first card
+	 * @throws IllegalArgumentException
+	             if this deck is empty
+	             if the count is not between 0 and the size of the deck (included)
 	 */
 	public Deck<C> withoutTopCards(int count){
-		return null;
+		Preconditions.checkArgument(!this.isEmpty()
+				                    && count <= cards.size()
+				                    && count >= 0);
+		return new Deck<C>(cards.subList(count, cards.size()));
 	}
 }
