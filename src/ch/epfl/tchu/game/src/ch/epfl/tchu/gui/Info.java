@@ -1,5 +1,6 @@
 package ch.epfl.tchu.game.src.ch.epfl.tchu.gui;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ch.epfl.tchu.SortedBag;
@@ -35,17 +36,30 @@ public final class Info {
 	public static String cardName(Card card, int count) {
 		
 		String plural = StringsFr.plural(count);
-		
+
+		if(card.equals(Card.LOCOMOTIVE)){
+			return StringsFr.LOCOMOTIVE_CARD + plural;
+		} else{
 		switch(card.color()) {
-		case BLACK: return StringsFr.BLACK_CARD + plural;
-		case BLUE: return StringsFr.BLUE_CARD + plural;
-		case GREEN: return StringsFr.GREEN_CARD + plural;
-		case ORANGE: return StringsFr.ORANGE_CARD + plural;
-		case RED: return StringsFr.RED_CARD + plural;
-		case VIOLET: return StringsFr.VIOLET_CARD + plural;
-		case WHITE: return StringsFr.WHITE_CARD + plural;
-		case YELLOW: return StringsFr.YELLOW_CARD + plural;
-		default : return "";
+			case BLACK:
+				return StringsFr.BLACK_CARD + plural;
+			case BLUE:
+				return StringsFr.BLUE_CARD + plural;
+			case GREEN:
+				return StringsFr.GREEN_CARD + plural;
+			case ORANGE:
+				return StringsFr.ORANGE_CARD + plural;
+			case RED:
+				return StringsFr.RED_CARD + plural;
+			case VIOLET:
+				return StringsFr.VIOLET_CARD + plural;
+			case WHITE:
+				return StringsFr.WHITE_CARD + plural;
+			case YELLOW:
+				return StringsFr.YELLOW_CARD + plural;
+			default:
+				return "";
+		    }
 		}
 		
 	}
@@ -58,7 +72,7 @@ public final class Info {
 	 */
 	public static String draw(List<String> playerNames, int points) {
 		return String.format(StringsFr.DRAW, 
-				             elementStringList(playerNames), 
+				             elementStringList(playerNames),
 				             points);
 	}
 	
@@ -181,7 +195,6 @@ public final class Info {
 	 *                  and that the last tour will begin
 	 */
 	public String lastTurnBegins(int carCount) {
-		//Faut il verifier que carCount<=2 ?
 		return String.format(StringsFr.LAST_TURN_BEGINS,
 				             playerName, 
 				             carCount, 
@@ -194,12 +207,9 @@ public final class Info {
 	 *                  thanks to the given trail which the longest or one of the longest
 	 */
 	public String getsLongestTrailBonus(Trail longestTrail) {
-		String trail = String.format("%s%s%s",
-				                     longestTrail.station1(), 
-				                     StringsFr.EN_DASH_SEPARATOR, 
-				                     longestTrail.station2());
-		
-		return String.format(StringsFr.GETS_BONUS, playerName, trail);
+		return String.format(StringsFr.GETS_BONUS,
+				             playerName,
+				             trailName(longestTrail));
 	}
 	
 	/**
@@ -211,8 +221,8 @@ public final class Info {
 	public String won(int points, int loserPoints) {
 		return String.format(StringsFr.WINS,
 				             playerName,
+				             points,
 				             StringsFr.plural(points),
-				             points, 
 				             loserPoints,
 				             StringsFr.plural(loserPoints));
 	}
@@ -229,6 +239,21 @@ public final class Info {
 				                  route.station2());
 		return routeName;
 	}
+
+	/**
+	 * @param (Trail) trail : the given trail
+	 * @return (String) the message declaring the details of the trail
+	 */
+
+	private static String trailName(Trail trail){
+
+		String trailName = String.format("%s%s%s" ,
+				           trail.station1(),
+				           StringsFr.EN_DASH_SEPARATOR,
+				           trail.station2());
+
+		return trailName;
+	}
 	
 	/**
 	 * @param (SortedBag<Card>) cards : the given list of cards
@@ -236,26 +261,40 @@ public final class Info {
 	 *                  contained in the given list
 	 */
 	private static String elementCardList(SortedBag<Card> cards) {
-		String elements = "";
-		for(int i = 0; i < cards.size(); ++i) {
-			
-			Card card = cards.get(i);
-			int number = cards.countOf(card);
-			
-			elements += String.format("%s %s", 
-					                  number, 
-					                  cardName(card, number));
-			
-			if(i == cards.size() - 2) {
-				elements += StringsFr.AND_SEPARATOR;
-			} 
-			if(i != (cards.size() -2 ) && i != (cards.size() -1 )) {
-				elements += ", ";
-			}
+		List<String> elements = new ArrayList<String>();
+		String fin = "";
+		String l = "";
+		List<String> sub = new ArrayList<String>();
+
+		for (Card c: cards.toSet()) {
+			int n = cards.countOf(c);
+			sub.add(String.format("%s %s",
+					                  n,
+					                  cardName(c, n)));
 		}
-		return elements;
+
+		if(sub.size() == 1){
+			return sub.get(0);
+		} else {
+
+			for (int j = 0; j < sub.size() - 1; j++) {
+				elements.add(sub.get(j));
+			}
+
+			fin += String.join(", ", elements);
+
+			l += String.format("%s%s%s", fin, StringsFr.AND_SEPARATOR, sub.get(sub.size() - 1));
+
+			return l;
+		}
 	}
-	
+
+	/**
+	 * @param (List<String>) playerNames : the given list of the players' names
+	 * @return (String) the message containing all the players' names
+	 *                  contained in the given list
+	 */
+
 	private static String elementStringList(List<String> playerNames) {
 		String names = String.format("%s%s%s",
 				                     playerNames.get(0),

@@ -35,10 +35,10 @@ public class PublicCardState {
 	 */
 	public PublicCardState(List<Card> faceUpCards, int deckSize, int discardsSize) {
 		Preconditions.checkArgument(faceUpCards.size() == 5 
-				                   && deckSize > 0 
-				                   && discardsSize > 0);
+				                   && deckSize >= 0
+				                   && discardsSize >= 0);
 		
-		this.faceUpCards = Collections.unmodifiableList(new ArrayList<>(faceUpCards));
+		this.faceUpCards = List.copyOf(faceUpCards);
 		this.deckSize = deckSize;
 		this.discardsSize = discardsSize;
 		
@@ -50,16 +50,14 @@ public class PublicCardState {
 	public int totalSize() {
 		return deckSize + discardsSize + faceUpCards().size();
 	}
-	
-	
+
 	/**
 	 * @return (List<Card>) the five visible cards in a list containing five elements
 	 */
 	public List<Card> faceUpCards(){		
-		return Collections.unmodifiableList(new ArrayList<>(faceUpCards));
+		return faceUpCards;
 	}
-	
-	
+
 	/**
 	 * @param (int) slot : index of the visible card
 	 * @return (Card) the visible card in the slot-th position
@@ -77,8 +75,7 @@ public class PublicCardState {
 	public int deckSize() {
 		return deckSize;
 	}
-	
-	
+
 	/** 
 	 * 
 	 * @return (boolean) true if the deck is empty. false if not.
@@ -86,8 +83,7 @@ public class PublicCardState {
 	public boolean isDeckEmpty() {
 		return deckSize() == 0 ? true : false;
 	}
-	
-	
+
 	/**
 	 * 
 	 * @return (int) the discard pile's size
@@ -95,6 +91,5 @@ public class PublicCardState {
 	public int discardsSize() {
 		return discardsSize;
 	}
-	
-	
+
 }
