@@ -3,11 +3,12 @@ package ch.epfl.tchu.game;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.testng.annotations.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.jupiter.api.Test;
+//import org.junit.jupiter.api.Test;
 
 import ch.epfl.tchu.SortedBag;
 import ch.epfl.tchu.game.Route.Level;
@@ -79,7 +80,7 @@ public class TestRoute {
 	
 	@Test
 	void claim() {
-	    Route R = new Route("NEU_YVE_1", NEU, YVE, 1, Level.UNDERGROUND, Color.BLACK);
+	    Route R = new Route("NEU_YVE_1", NEU, YVE, 2, Level.UNDERGROUND, null);
 
 		List<SortedBag<Card>> possibleClaimCard = new ArrayList<SortedBag<Card>>();
 		possibleClaimCard.add(SortedBag.of(1, Card.BLACK));
@@ -90,14 +91,17 @@ public class TestRoute {
 	
 	@Test
 	void additional() {
+
+		 Route route = new Route("BER_LUC_1", BER, LUC, 6, Level.UNDERGROUND, null);
+
+
+		SortedBag<Card> claimcards = SortedBag.of(1, Card.BLUE);
 		
-		SortedBag<Card> claimcards = SortedBag.of(2, Card.LOCOMOTIVE);
-		
-		SortedBag<Card> drawncards = SortedBag.of(3,Card.LOCOMOTIVE);
+		SortedBag<Card> drawncards = SortedBag.of(2,Card.LOCOMOTIVE, 1, Card.BLUE);
 		
 //		assertTrue(claimcards.isEmpty());
 //		assertThrows(IllegalArgumentException.class, () -> {A.additionalClaimCardsCount(claimcards,drawncards);});
-	    assertEquals(3,E.additionalClaimCardsCount(claimcards,drawncards));
+	    assertEquals(1,route.additionalClaimCardsCount(claimcards,drawncards));
 	}
 	
 
