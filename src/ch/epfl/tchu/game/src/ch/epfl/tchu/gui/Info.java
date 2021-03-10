@@ -262,9 +262,9 @@ public final class Info {
 	 */
 	private static String elementCardList(SortedBag<Card> cards) {
 		List<String> elements = new ArrayList<String>();
-		String fin = "";
-		String l = "";
 		List<String> sub = new ArrayList<String>();
+		String joinedElements = "";
+		String elementCardList = "";
 
 		for (Card c: cards.toSet()) {
 			int n = cards.countOf(c);
@@ -281,11 +281,11 @@ public final class Info {
 				elements.add(sub.get(j));
 			}
 
-			fin += String.join(", ", elements);
+			joinedElements += String.join(", ", elements);
 
-			l += String.format("%s%s%s", fin, StringsFr.AND_SEPARATOR, sub.get(sub.size() - 1));
+			elementCardList += String.format("%s%s%s", joinedElements, StringsFr.AND_SEPARATOR, sub.get(sub.size() - 1));
 
-			return l;
+			return elementCardList;
 		}
 	}
 
@@ -302,5 +302,4 @@ public final class Info {
 				                     playerNames.get(1));
 		return names;
 	}
-
 }

@@ -2,6 +2,7 @@ package ch.epfl.tchu.game;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import ch.epfl.tchu.Preconditions;
@@ -149,7 +150,7 @@ public final class Route {
 		
         if(level.equals(Level.UNDERGROUND)) {
         	
-			if(color == null) {
+			if(color == null) { // si route neutre
 				
 				for(Card c : Card.CARS) {
 					
@@ -162,7 +163,7 @@ public final class Route {
 				
 		    } else {
 		    	
-		    	for(int i = 0; i <= this.length ; ++i) {
+		    	for(int i = 0; i <= this.length ; ++i) { // si route de couleur précise
 		    		
 		    		int NbCard = length - i;
 		    		int NbLoco = i;
@@ -178,7 +179,6 @@ public final class Route {
 		    	}
 		    }
         }
-        
 		return possibleClaimCard;
 	}
 	
@@ -190,29 +190,21 @@ public final class Route {
 	             if the route is not a tunnel or if drawnCards doesn't contain exactly three cards
 	 */
 	public int additionalClaimCardsCount(SortedBag<Card> claimCards, SortedBag<Card> drawnCards) {
+
 		Preconditions.checkArgument(level.equals(Level.UNDERGROUND) && drawnCards.size() == 3);
 		
 		int additionalClaimCardsCount = 0;
-		
-		for(int i = 0; i < drawnCards.size(); ++i) {
-			
-	         if(claimCards.get(0).equals(Card.LOCOMOTIVE)) { //case if claimCards only contains locomotives
-	    	
-	    	       if(drawnCards.get(i).equals(Card.LOCOMOTIVE)) {
-				         ++additionalClaimCardsCount;}
-	    }
-				
-	    else {
-				
-	         if(drawnCards.get(0).color() != null) {
-	    		
-	    	      if(drawnCards.get(0).color().equals(claimCards.get(0).color())) {
-					   ++additionalClaimCardsCount;}
-		
-		     if(drawnCards.get(i).equals(Card.LOCOMOTIVE)) {
-					   ++additionalClaimCardsCount;}
-		       }
-		    }
+
+		for (Card c: drawnCards.toSet()) {
+			int n = drawnCards.countOf(c);
+			Map<Card, Integer> elements =
+					Map.of(c, n);
+
+			for(Card claim : claimCards.toSet()){
+				if(elements.containsKey(claim)){
+					additionalClaimCardsCount+=elements.get(claim);
+				}
+			}
 		}
 	  return additionalClaimCardsCount;
 	  
