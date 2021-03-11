@@ -1,9 +1,6 @@
 package ch.epfl.tchu.game;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 import ch.epfl.tchu.Preconditions;
 import ch.epfl.tchu.SortedBag;
@@ -194,18 +191,28 @@ public final class Route {
 		Preconditions.checkArgument(level.equals(Level.UNDERGROUND) && drawnCards.size() == 3);
 		
 		int additionalClaimCardsCount = 0;
+		Map<Card, Integer> drawnElements = new HashMap<>();
+		int loco = 0;
 
 		for (Card c: drawnCards.toSet()) {
 			int n = drawnCards.countOf(c);
-			Map<Card, Integer> elements =
+			drawnElements =
 					Map.of(c, n);
 
 			for(Card claim : claimCards.toSet()){
-				if(elements.containsKey(claim)){
-					additionalClaimCardsCount+=elements.get(claim);
+				if(claim.equals(Card.LOCOMOTIVE)){
+					++loco;
+				}
+				if(drawnElements.containsKey(claim)){
+					additionalClaimCardsCount+=drawnElements.get(claim);
 				}
 			}
+
+			if(drawnElements.containsKey(Card.LOCOMOTIVE) && loco == 0){
+				additionalClaimCardsCount+=drawnElements.get(Card.LOCOMOTIVE);
+			}
 		}
+
 	  return additionalClaimCardsCount;
 	  
 	}

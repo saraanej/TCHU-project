@@ -94,14 +94,25 @@ public class TestRoute {
 
 		 Route route = new Route("BER_LUC_1", BER, LUC, 6, Level.UNDERGROUND, null);
 
+		List<Card> drawncards = new ArrayList<>();
+		drawncards.add(Card.RED);
+		drawncards.add(Card.LOCOMOTIVE);
+		drawncards.add(Card.BLUE);
 
-		SortedBag<Card> claimcards = SortedBag.of(1, Card.BLUE);
-		
-		SortedBag<Card> drawncards = SortedBag.of(2,Card.LOCOMOTIVE, 1, Card.BLUE);
-		
+		SortedBag<Card> drawn = SortedBag.of(drawncards);
+
+		List<Card> claimcards = new ArrayList<>();
+		claimcards.add(Card.RED);
+		claimcards.add(Card.BLACK);
+		claimcards.add(Card.BLUE);
+		claimcards.add(Card.BLUE);
+		claimcards.add(Card.YELLOW);
+
+		SortedBag<Card> Cards = SortedBag.of(claimcards);
+
 //		assertTrue(claimcards.isEmpty());
 //		assertThrows(IllegalArgumentException.class, () -> {A.additionalClaimCardsCount(claimcards,drawncards);});
-	    assertEquals(1,route.additionalClaimCardsCount(claimcards,drawncards));
+	    assertEquals(3,route.additionalClaimCardsCount(Cards,drawn));
 	}
 	
 
