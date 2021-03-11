@@ -40,6 +40,10 @@ public final class Deck<C extends Comparable<C>> {
 		return new Deck<C>(shuffledCards);
 	}
 
+	/**
+	 * 
+	 * @return (int) the size of the Deck
+	 */
 	public int size(){
 		return size;
 	}
