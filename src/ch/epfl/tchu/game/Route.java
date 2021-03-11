@@ -176,7 +176,7 @@ public final class Route {
 		    	}
 		    }
 
-			possibleClaimCard = SortedList(inter);
+			possibleClaimCard = newSortedList(inter);
         }
 
 		return possibleClaimCard;
@@ -239,7 +239,7 @@ public final class Route {
 	 * @param LotsOfCards (List<SortedBag<Card>>) : the list we want to sort by the number of cards first and then by the priority in the enum type
 	 * @return (List<SortedBag<Card>>) the new sorted list
 	 */
-	private List<SortedBag<Card>> SortedList(List<SortedBag<Card>> LotsOfCards){
+	private List<SortedBag<Card>> newSortedList(List<SortedBag<Card>> LotsOfCards){
 
 		List<SortedBag<Card>> newList = new ArrayList<>();
 
