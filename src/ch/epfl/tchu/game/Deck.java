@@ -108,4 +108,9 @@ public final class Deck<C extends Comparable<C>> {
 				                    && count >= 0);
 		return new Deck<C>(cards.subList(count, cards.size()));
 	}
+
+	//A ENLEVER OUBLIE PAS
+	public List<C> cards(){
+		return cards;
+	}
 }

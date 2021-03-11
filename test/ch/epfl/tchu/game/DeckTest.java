@@ -24,6 +24,8 @@ public class DeckTest {
     @Test
     public void ofWorksOnNormalList(){
         List<Integer> l = List.of(0,1,2);
+        Deck<Integer> deck = Deck.of(SortedBag.of(l),NON_RANDOM);
+        System.out.println(deck.cards());
         assertEquals(l.get(0),Deck.of(SortedBag.of(l),NON_RANDOM).topCard());
         assertEquals(l.size(),Deck.of(SortedBag.of(l),NON_RANDOM).size());
 
@@ -47,6 +49,13 @@ public class DeckTest {
     public void WithouttopCardsWorks(){
         List<Integer> l = List.of(0,1,2,3,4,5);
         assertEquals(SortedBag.of(l.subList(3,6)),Deck.of(SortedBag.of(l),NON_RANDOM).withoutTopCards(3).topCards(3));
+
+    }
+
+    @Test
+    public void WithouttopCardWorks(){
+        List<Integer> l = List.of(0,1,2,3,4,5);
+       // assertEquals(,Deck.of(SortedBag.of(l),NON_RANDOM).withoutTopCard().topCard());
 
     }
     
@@ -106,7 +115,7 @@ public class DeckTest {
     }
     
     @Test
-    public void assertWithoutTopCardsThrowsIllegaArg() {
+    public void assertWithoutTopCardsThrowsIllegalArg() {
         List<Integer> l = List.of();
         List<Integer> l1 = List.of(1,2,3,4,5);
 
@@ -123,6 +132,22 @@ public class DeckTest {
     	assertThrows(IllegalArgumentException.class, () -> {
     		notEmpty.withoutTopCards(8);}
     	);
+    }
+
+    @Test
+    public void DeckWorksOnGivenExample(){
+        SortedBag<String> cards =
+                SortedBag.of(2, "as de pique", 3, "dame de cœur");
+        Deck<String> deck = Deck.of(cards, NON_RANDOM);
+       // System.out.println(deck.cards());
+
+        while (!deck.isEmpty()) {
+            String topCard = deck.topCard();
+            //System.out.println(topCard);
+            deck = deck.withoutTopCard();
+            //System.out.println(deck.cards());
+            //assertEquals(cards.get(n),topCard);
+            }
     }
 }
 
