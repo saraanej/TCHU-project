@@ -20,7 +20,7 @@ public class DeckTest {
     };
     
     public static Random RANDOM = new Random(6);
-
+/*
     @Test
     public void ofWorksOnNormalList(){
         List<Integer> l = List.of(0,1,2);
@@ -30,7 +30,7 @@ public class DeckTest {
         assertEquals(l.size(),Deck.of(SortedBag.of(l),NON_RANDOM).size());
 
     }
-    
+    */
     @Test
     public void ofshuffles(){
         List<Integer> l = List.of(0,1,2);

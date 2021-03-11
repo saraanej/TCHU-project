@@ -44,7 +44,7 @@ class CardStateTest {
         assertEquals(5, state.faceUpCards().size());
         assertTrue(state.discardsSize()==0);
     }
-
+/*
     @Test
     public void withDrawnFaceUpWorks(){
         Card topCard = state.deck().topCard();
@@ -76,9 +76,9 @@ class CardStateTest {
     }
 
     @Test
-    public void withoutTopDeckWorks(){
-        assertEquals(3,state.withoutTopDeckCard().deck().size());
-    }
+    public void withoutTopDeckWorks() {
+        assertEquals(3, state.withoutTopDeckCard().deck().size());
+    }*/
 
     @Test
     public void withDeckRecreatedFromDiscardsDiscardEmpty(){

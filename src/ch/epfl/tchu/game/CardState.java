@@ -111,9 +111,5 @@ public final class CardState extends PublicCardState {
 		return new CardState(this.faceUpCards(),this.deck, newDiscard.build());
 	}
 
-	//A ENLEVER OUBLIE PAS
-	public Deck<Card> deck(){
-		return deck;
-	}
 	
 }
