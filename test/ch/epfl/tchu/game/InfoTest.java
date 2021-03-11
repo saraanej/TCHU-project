@@ -142,6 +142,45 @@ public class InfoTest {
 	}
 
 	@Test
+	public void TestClaimedRouteWithLocomotiveCards() {
+		List<Card> cards = new ArrayList<Card>();
+		cards.add(Card.LOCOMOTIVE);
+		cards.add(Card.LOCOMOTIVE);
+		cards.add(Card.LOCOMOTIVE);
+		cards.add(Card.LOCOMOTIVE);
+
+		SortedBag<Card> claimCards = SortedBag.of(cards);
+
+		String equals = String.format("%s%s%s",
+				"Chris a pris possession de la route Neuchâtel",
+				StringsFr.EN_DASH_SEPARATOR,
+				"Yverdon au moyen de 4 locomotives.\n");
+
+		assertEquals(equals,
+				chris.claimedRoute(A, claimCards));
+	}
+
+	@Test
+	public void TestClaimedRouteWithColoredCardsOnly() {
+		List<Card> cards = new ArrayList<Card>();
+		cards.add(Card.RED);
+		cards.add(Card.WHITE);
+		cards.add(Card.RED);
+		cards.add(Card.VIOLET);
+		cards.add(Card.GREEN);
+
+		SortedBag<Card> claimCards = SortedBag.of(cards);
+
+		String equals = String.format("%s%s%s",
+				"Chris a pris possession de la route Neuchâtel",
+				StringsFr.EN_DASH_SEPARATOR,
+				"Yverdon au moyen de 1 violette, 1 verte, 2 rouges et 1 blanche.\n");
+
+		assertEquals(equals,
+				chris.claimedRoute(A, claimCards));
+	}
+
+	@Test
 	public void TestAttemptsTunnelClaimWitHOneCard(){
 		SortedBag<Card> claimcards = SortedBag.of(1, Card.LOCOMOTIVE);
 
@@ -185,6 +224,47 @@ public class InfoTest {
 
 
 				assertEquals(equals,
+				chris.attemptsTunnelClaim(A, claimCards));
+	}
+
+	@Test
+	public void TestAttemptsTunnelClaimWitHLocomotiveCards(){
+		List<Card> cards = new ArrayList<Card>();
+		cards.add(Card.LOCOMOTIVE);
+		cards.add(Card.LOCOMOTIVE);
+		cards.add(Card.LOCOMOTIVE);
+		cards.add(Card.LOCOMOTIVE);
+		cards.add(Card.LOCOMOTIVE);
+
+		SortedBag<Card> claimCards = SortedBag.of(cards);
+
+		String equals = String.format("%s%s%s",
+				"Chris tente de s'emparer du tunnel Neuchâtel",
+				StringsFr.EN_DASH_SEPARATOR,
+				"Yverdon au moyen de 5 locomotives !\n");
+
+
+		assertEquals(equals,
+				chris.attemptsTunnelClaim(A, claimCards));
+	}
+
+	@Test
+	public void TestAttemptsTunnelClaimWitHColoredCardsOnly(){
+		List<Card> cards = new ArrayList<Card>();
+		cards.add(Card.BLUE);
+		cards.add(Card.YELLOW);
+		cards.add(Card.BLUE);
+		cards.add(Card.WHITE);
+		cards.add(Card.YELLOW);
+
+		SortedBag<Card> claimCards = SortedBag.of(cards);
+
+		String equals = String.format("%s%s%s",
+				"Chris tente de s'emparer du tunnel Neuchâtel",
+				StringsFr.EN_DASH_SEPARATOR,
+				"Yverdon au moyen de 2 bleues, 2 jaunes et 1 blanche !\n");
+
+		assertEquals(equals,
 				chris.attemptsTunnelClaim(A, claimCards));
 	}
 

@@ -17,8 +17,7 @@ import ch.epfl.tchu.Preconditions;
  *
  */
 
-public class PublicCardState { 
-
+public class PublicCardState {
 	
 	private final List<Card> faceUpCards;
 	private final int deckSize;
@@ -30,11 +29,11 @@ public class PublicCardState {
 	 * @param (int) deckSize : the deck's size
 	 * @param (int) discardsSize : the discard pile's size
 	 * @throws IllegalArgumentException 
-	 *                if the list of the visible cards doesn't contain exactly three cards
+	 *                if the list of the visible cards doesn't contain exactly five cards
 	 *                if the sizes of the deck or the discard pile are negative                 
 	 */
 	public PublicCardState(List<Card> faceUpCards, int deckSize, int discardsSize) {
-		Preconditions.checkArgument(faceUpCards.size() == 5 
+		Preconditions.checkArgument(faceUpCards.size() == Constants.FACE_UP_CARDS_COUNT
 				                   && deckSize >= 0
 				                   && discardsSize >= 0);
 		
@@ -91,5 +90,4 @@ public class PublicCardState {
 	public int discardsSize() {
 		return discardsSize;
 	}
-
 }

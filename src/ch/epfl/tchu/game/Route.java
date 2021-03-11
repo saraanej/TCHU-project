@@ -14,8 +14,7 @@ import ch.epfl.tchu.SortedBag;
  *
  */
 public final class Route {
-	
-	
+
 	private final String id;
 	private final Station station1;
 	private final Station station2;
@@ -23,7 +22,7 @@ public final class Route {
 	private final Level level;
 	private final Color color;
 
-	
+
 	public enum Level{
 		
 		OVERGROUND,
@@ -128,7 +127,7 @@ public final class Route {
 	
 	/**
 	 * @return (List<SortedBag<Card>>) the list of all the cards that could be used to get the route
-	                                   sorted in increasing order of the number of locomotive cards and the by color
+	                                   sorted in increasing order of the number of locomotive cards and then by color
 	 */
 	public List<SortedBag<Card>> possibleClaimCards(){
 		
@@ -146,17 +145,18 @@ public final class Route {
 		}
 		
         if(level.equals(Level.UNDERGROUND)) {
-        	
-			if(color == null) { // si route neutre
+
+			List<SortedBag<Card>> inter = new ArrayList<SortedBag<Card>>();
+
+			if(color == null) {
 				
 				for(Card c : Card.CARS) {
 					
 					for(int i = 0; i < this.length ; ++i) {
-						possibleClaimCard.add(SortedBag.of(length - i, c, i , Card.LOCOMOTIVE));}
-			    	
+						inter.add(SortedBag.of(length - i, c, i , Card.LOCOMOTIVE));}
 				}
 				
-				possibleClaimCard.add(SortedBag.of(length, Card.LOCOMOTIVE));
+				inter.add(SortedBag.of(length, Card.LOCOMOTIVE));
 				
 		    } else {
 		    	
@@ -166,16 +166,19 @@ public final class Route {
 		    		int NbLoco = i;
 		    	
 		    		if(NbLoco == 0) { 
-		    			possibleClaimCard.add(SortedBag.of(NbCard, Card.of(color)));}
+		    			inter.add(SortedBag.of(NbCard, Card.of(color)));}
 		    		
 		    		if(NbCard == 0) {
-		    			possibleClaimCard.add(SortedBag.of(NbLoco , Card.LOCOMOTIVE));}
+		    			inter.add(SortedBag.of(NbLoco , Card.LOCOMOTIVE));}
 		    		
 		    		else if (NbLoco!=0 && NbCard!=0){
-		    			possibleClaimCard.add(SortedBag.of(NbCard, Card.of(color), NbLoco , Card.LOCOMOTIVE));}
+		    			inter.add(SortedBag.of(NbCard, Card.of(color), NbLoco , Card.LOCOMOTIVE));}
 		    	}
 		    }
+
+			possibleClaimCard = SortedList(inter);
         }
+
 		return possibleClaimCard;
 	}
 	
@@ -229,5 +232,27 @@ public final class Route {
 		case(5): return 10;
 		case(6): return 15;
 		default: return 0;}
+	}
+
+	/**
+	 *
+	 * @param LotsOfCards (List<SortedBag<Card>>) : the list we want to sort by the number of cards first and then by the priority in the enum type
+	 * @return (List<SortedBag<Card>>) the new sorted list
+	 */
+	private List<SortedBag<Card>> SortedList(List<SortedBag<Card>> LotsOfCards){
+
+		List<SortedBag<Card>> newList = new ArrayList<>();
+
+		for(int i = 0; i < length(); i++){
+			for(SortedBag<Card> sBag : LotsOfCards){
+				if(sBag.countOf(Card.LOCOMOTIVE) == i){
+					newList.add(sBag);
+				}
+			}
+		}
+
+		newList.add(SortedBag.of(length, Card.LOCOMOTIVE));
+
+		return newList;
 	}
 }

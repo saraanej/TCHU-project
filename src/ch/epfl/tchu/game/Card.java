@@ -56,7 +56,7 @@ public enum Card {
 	
 	/**
 	 * Constructor initializing the color of the wagon cards. 
-	 * @param color (Color)
+	 * @param color (Color) : the color of the wagon's cards
 	 */
 	private Card(Color color) {
 		colorName = color;
