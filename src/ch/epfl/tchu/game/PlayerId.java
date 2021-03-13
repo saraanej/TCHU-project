@@ -28,5 +28,4 @@ public enum PlayerId {
     public PlayerId next(){
         return this.equals(PLAYER_1) ? PLAYER_2 : PLAYER_1;
     }
-
 }
