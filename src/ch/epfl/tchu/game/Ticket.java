@@ -31,17 +31,13 @@ public final class Ticket implements Comparable<Ticket> {
 	             if all the departure's stations don't have the same name
 	 */
 	public Ticket(List<Trip> trips){
-
 		Preconditions.checkArgument(trips != null && trips.size() != 0);
-		
 		this.from = trips.get(0).from();
-		
 		for ( Trip t : trips) {
 			Preconditions.checkArgument(t.from().name().equals(this.from.name()));
 		}
 		this.trips = trips;
-		this.Text = computeText(this.trips); 
-
+		this.Text = computeText(this.trips);
 	}
 	
 	
@@ -73,18 +69,13 @@ public final class Ticket implements Comparable<Ticket> {
 	                 - minimal points possible if none of the Stations are connected
 	 */
 	public int points(StationConnectivity connectivity) {
-	
 		int maxPoints;
 		List<Integer> Points = new ArrayList<Integer>();
-		
 		for (Trip t : trips ) {
-			
 			int pts = t.points(connectivity);
 			Points.add(pts);
 		}
-		
 		maxPoints = Collections.max(Points);
-		
 		return maxPoints;
 		
 	}
@@ -115,31 +106,24 @@ public final class Ticket implements Comparable<Ticket> {
 	 * @return (String) the textual representation of the Ticket
 	 */
 	private static String computeText(List<Trip> trips) {
-		
 		String text ;
-		
 		if (trips.size() == 1) {			
 			text = String.format("%s - %s (%s)", 
 					             trips.get(0).from().name(), 
 					             trips.get(0).to().name(), 
 					             trips.get(0).points());
 		} else {
-			
 			TreeSet<String> countries = new TreeSet<>();
 			for (Trip t : trips ) {
 				countries.add(String.format("%s (%s)", 
 						                    t.to().name(),
 						                    t.points()));
 			}
-			
 			String arrivals = String.join(", ", countries);
-			
 			text = String.format("%s - {%s}", 
 		                         trips.get(0).from().name(), 
 		                         arrivals);
 		}
-
-		
 		return text;
 	}
 	

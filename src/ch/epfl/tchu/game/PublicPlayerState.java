@@ -14,7 +14,7 @@ import java.util.List;
  *
  */
 
-public final class PublicPlayerState {
+public class PublicPlayerState {
 
     private final int ticketCount;
     private final int cardCount;
@@ -72,7 +72,7 @@ public final class PublicPlayerState {
      * @return (int) the number of cards the player owns
      */
     public int cardCount() {
-        return carCount;
+        return cardCount;
     }
 
     /**

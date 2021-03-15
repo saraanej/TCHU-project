@@ -39,7 +39,7 @@ public final class CardState extends PublicCardState {
 	}
 
 	/**
-	 * constructs the private CardState for the Deck
+	 * constructs the private CardState for the Deck deck
 	 * @param deck (Deck<Card>) the deck of cards of the game
 	 * @return (CardState) the cardState corresponding to the deck
 	 * @throws IllegalArgumentException
@@ -54,7 +54,7 @@ public final class CardState extends PublicCardState {
 
 	/**
 	 * @param slot (int) index of the visible card
-	 * @return (CardState) this CardState with the slot-th card
+	 * @return (CardState) same as this CardState with the slot-th card
 	                       replaced with the top card of the deck
 	                       and its deck without the top card used
 	 * @throws IndexOutOfBoundsException
@@ -80,7 +80,7 @@ public final class CardState extends PublicCardState {
 	}
 
 	/**
-	 * @return (CardState) this CardState without the top card of its deck
+	 * @return (CardState) same as this CardState without the top card of its deck
 	 * @throws IllegalArgumentException
 	            if the deck is empty
 	 */
@@ -91,7 +91,7 @@ public final class CardState extends PublicCardState {
 
 	/**
 	 * @param rng (Random) random number generator to shuffle the discard's cards
-	 * @return (CardState) this CardState with the deck composed of the shuffled discard's Cards
+	 * @return (CardState) same as this CardState with the deck composed of the shuffled discard's Cards
 	 * @throws IllegalArgumentException
 	 	            if the deck is not empty
 	 */
@@ -102,7 +102,7 @@ public final class CardState extends PublicCardState {
 
 	/**
 	 * @param additionalDiscards (SortedBag<Card>) the Cards to add to the discard
-	 * @return (CardState) this CardState with the additionalDiscards added to its discard
+	 * @return (CardState) same as this CardState with the additionalDiscards added to its discard
 	 */
 	public CardState withMoreDiscardedCards(SortedBag<Card> additionalDiscards){
 		SortedBag.Builder<Card> newDiscard = new SortedBag.Builder<>();

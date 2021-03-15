@@ -69,7 +69,7 @@ public final class Deck<C extends Comparable<C>> {
 
 	/**
 	 *
-	 * @return (Deck) a new deck without the first card
+	 * @return (Deck) a new deck (same as this) without the first card
 	 * @throws IllegalArgumentException
 	              if this deck is empty
 	 */
@@ -94,7 +94,7 @@ public final class Deck<C extends Comparable<C>> {
 	/**
 	 *
 	 * @param count (int) the desired number of first cards from the deck to remove
-	 * @return (Deck) a new deck without the "count" first card
+	 * @return (Deck) a new deck (same as this) without the "count" first card
 	 * @throws IllegalArgumentException
 	             if the count is not between 0 and the size of the deck (included)
 	 */
