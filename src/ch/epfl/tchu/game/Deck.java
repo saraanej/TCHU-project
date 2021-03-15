@@ -99,7 +99,7 @@ public final class Deck<C extends Comparable<C>> {
 	             if the count is not between 0 and the size of the deck (included)
 	 */
 	public Deck<C> withoutTopCards(int count){
-		Preconditions.checkArgument(count <= cards.size())
+		Preconditions.checkArgument(count <= cards.size());
 		Preconditions.checkArgument(count >= 0);
 		return new Deck<C>(cards.subList(count, cards.size()));
 	}
