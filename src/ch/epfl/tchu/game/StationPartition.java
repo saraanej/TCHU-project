@@ -32,14 +32,6 @@ public final class StationPartition implements StationConnectivity{
 
 
     /**
-     * Dans le constructeur de StationPartition tu as un tableau reliant
-     * l'id de la gare(qui est l'index du tableau) avec celui de son représentent
-     * et 2 route reliées ont le même représentent.
-     *
-     *
-     * dans le cas où elles sont dans le réseaux tu dois simplement vérifier si les représentants des deux stations sont les mêmes
-     * et dans le cas contraire tu renvoies si oui ou non les id() sont les mêmes.
-     *
      * verifies if the two given stations are connected
      *
      * @param s1 (Station) the first given station
@@ -68,8 +60,7 @@ public final class StationPartition implements StationConnectivity{
      */
     public final static class Builder{
 
-        private final int stationCount;
-        private final int st[];
+        private final int stations[];
 
 
         /**
@@ -82,13 +73,12 @@ public final class StationPartition implements StationConnectivity{
         public Builder(int stationCount){
             Preconditions.checkArgument(stationCount >= 0);
 
-            this.stationCount = stationCount;
-            st = new int[ChMap.stations().size()];
+            stations = new int[stationCount];
 
-            for(int i = 0; i < ChMap.stations().size(); i++) {
-                st[i] = i;
+            for(int i = 0; i < stations.length; i++ ){
+                stations[i] = i;
             }
-            
+
         }
 
         /**
@@ -102,19 +92,27 @@ public final class StationPartition implements StationConnectivity{
          */
         public Builder connect(Station s1, Station s2){
 
+            int repS1 = representative(s1.id());
+
+            stations[s2.id()] = repS1;
+
             return this;
         }
 
         /**
          *
-         * aplatir la représentation puis
-         * appeler le constructeur de StationPartition avec cette version aplatie de la représentation
-         *
          * @return (StationPartition) the station partition corresponding to the profound partition that is being created
          */
         public StationPartition build(){
 
-            return null;
+            for(int i = 0; i < stations.length; i++){
+                if(stations[i] != representative(i)){
+                    stations[i] = representative(i);
+                }
+            }
+
+            StationPartition flattened = new StationPartition(stations);
+            return flattened;
         }
 
         /**
@@ -124,10 +122,23 @@ public final class StationPartition implements StationConnectivity{
          */
         private int representative(int stationId){
 
-            return st[stationId];
+            int representative = stations[stationId];
+            int index = stationId;
 
+            if(index == representative){
+
+                return stationId;
+
+            } else {
+
+                do{
+                    index = representative;
+                    representative = stations[index];
+
+                } while(representative != index);
+
+                return representative;
+            }
         }
-
-
     }
 }
