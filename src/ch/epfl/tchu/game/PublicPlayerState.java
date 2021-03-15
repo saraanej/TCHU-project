@@ -5,6 +5,7 @@ import ch.epfl.tchu.Preconditions;
 import java.util.List;
 
 public final class PublicPlayerState {
+
     private final int ticketCount;
     private final int cardCount;
     private final List<Route> routes;
