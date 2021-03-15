@@ -25,11 +25,7 @@ public final class StationPartition implements StationConnectivity{
      */
     private StationPartition(int[] links){
 
-        final int newTab[] = new int[links.length];
-
-        for(int i = 0; i < links.length; i++){
-            newTab[i] = links[i];
-        }
+        int[] newTab = (int[]) links.clone();
 
         this.links = newTab;
 
