@@ -18,7 +18,6 @@ public final class StationPartition implements StationConnectivity{
     private final int links[];
 
     /**
-     * index du tableau = id des stations
      *
      * private constructor
      *
@@ -26,7 +25,13 @@ public final class StationPartition implements StationConnectivity{
      */
     private StationPartition(int[] links){
 
-        this.links = links;
+        final int newTab[] = new int[links.length];
+
+        for(int i = 0; i < links.length; i++){
+            newTab[i] = links[i];
+        }
+
+        this.links = newTab;
 
     }
 
