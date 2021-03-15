@@ -83,14 +83,11 @@ public final class Deck<C extends Comparable<C>> {
 	 * @param count (int) the desired number of first cards from the deck
 	 * @return (SortedBag<C>) the sorted "count" first cards of the deck
 	 * @throws IllegalArgumentException
-	             if this deck is empty
 	             if the count is not between 0 and the size of the deck (included)
 	 */
 	public SortedBag<C> topCards(int count){
-		Preconditions.checkArgument(!this.isEmpty()
-				                    && count <= cards.size()
-				                    && count >= 0);
-
+		Preconditions.checkArgument(count <= cards.size());
+		Preconditions.checkArgument(count >= 0);
 		return SortedBag.of(cards.subList(0,count));
 	}
 
@@ -99,13 +96,11 @@ public final class Deck<C extends Comparable<C>> {
 	 * @param count (int) the desired number of first cards from the deck to remove
 	 * @return (Deck) a new deck without the "count" first card
 	 * @throws IllegalArgumentException
-	             if this deck is empty
 	             if the count is not between 0 and the size of the deck (included)
 	 */
 	public Deck<C> withoutTopCards(int count){
-		Preconditions.checkArgument(!this.isEmpty()
-				                    && count <= cards.size()
-				                    && count >= 0);
+		Preconditions.checkArgument(count <= cards.size())
+		Preconditions.checkArgument(count >= 0);
 		return new Deck<C>(cards.subList(count, cards.size()));
 	}
 

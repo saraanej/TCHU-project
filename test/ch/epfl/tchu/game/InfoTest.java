@@ -4,8 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import ch.epfl.tchu.SortedBag;
 import ch.epfl.tchu.game.Route.Level;
-import ch.epfl.tchu.game.src.ch.epfl.tchu.gui.Info;
-import ch.epfl.tchu.game.src.ch.epfl.tchu.gui.StringsFr;
+import ch.epfl.tchu.gui.Info;
+import ch.epfl.tchu.gui.StringsFr;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
