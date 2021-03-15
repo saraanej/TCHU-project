@@ -46,7 +46,7 @@ public final class CardState extends PublicCardState {
 	             if the deck's size is strictly smaller than 5
 	 */
 	public static CardState of(Deck<Card> deck) {
-		Preconditions.checkArgument(deck.size()>= Constants.FACE_UP_CARDS_COUNT);
+		Preconditions.checkArgument(deck.size() >= Constants.FACE_UP_CARDS_COUNT);
 		return new CardState(deck.topCards(Constants.FACE_UP_CARDS_COUNT).toList(),
 				deck.withoutTopCards(Constants.FACE_UP_CARDS_COUNT),
 				SortedBag.of());
@@ -105,7 +105,7 @@ public final class CardState extends PublicCardState {
 	 * @return (CardState) this CardState with the additionalDiscards added to its discard
 	 */
 	public CardState withMoreDiscardedCards(SortedBag<Card> additionalDiscards){
-		SortedBag.Builder<Card> newDiscard = new SortedBag.Builder();
+		SortedBag.Builder<Card> newDiscard = new SortedBag.Builder<>();
 		newDiscard.add(discard);
 		newDiscard.add(additionalDiscards);
 		return new CardState(this.faceUpCards(),this.deck, newDiscard.build());
