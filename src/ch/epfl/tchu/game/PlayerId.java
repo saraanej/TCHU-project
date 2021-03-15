@@ -17,7 +17,7 @@ public enum PlayerId {
     PLAYER_2;
 
 
-    public final static List<PlayerId> ALL = List.copyOf(List.of(PlayerId.values()));
+    public final static List<PlayerId> ALL = List.of(PlayerId.values());
     public final static int COUNT = ALL.size();
 
     /**
