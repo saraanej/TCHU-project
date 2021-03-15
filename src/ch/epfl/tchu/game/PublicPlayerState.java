@@ -4,6 +4,16 @@ import ch.epfl.tchu.Preconditions;
 
 import java.util.List;
 
+
+/**
+ * Modelizes the public player's State
+ *
+ *
+ * @author Yasmin Ben Rahhal (329912)
+ * @author Sara Anejjar (329905)
+ *
+ */
+
 public final class PublicPlayerState {
 
     private final int ticketCount;
