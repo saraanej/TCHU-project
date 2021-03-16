@@ -6,6 +6,7 @@ import ch.epfl.tchu.SortedBag;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Modelizes the player's State
@@ -100,39 +101,92 @@ public final class PlayerState extends PublicPlayerState {
         return new PlayerState(tickets, newCards.build(), routes());
     }
 
+    /**
+     *
+     * @param route (Route) the road to check if it can be claimed or not
+     * @return true if route can be claimed
+     */
     public boolean canClaimRoute(Route route) {
-        return false;
+        boolean contains = false;
+        for (SortedBag<Card> c : possibleClaimCards(route) ) {
+            if(cards.contains(c)) {
+                contains = true;
+            }
+        }
+        return carCount() == route.length() && contains;
     }
 
+    /**
+     *
+     * @param route (Route) the road to claim
+     * @return (List<SortedBag<Card>>) all the possible sets of cards to use to claim the road route
+     * @throws IllegalArgumentException
+                if the player doesn't have enough wagons to claim the road route
+     */
     public List<SortedBag<Card>> possibleClaimCards(Route route) {
-        return null;
+        Preconditions.checkArgument(carCount() == route.length());
+        return route.possibleClaimCards(); // demander a sara que fait exactement cette methode
     }
 
+    /**
+     *
+     * @param additionalCardsCount
+     * @param initialCards
+     * @param drawnCards
+     * @return
+     * @throws IllegalArgumentException
+                 if additionalCardsCount is not between 1 and 3 (included)
+                 if initialCards is empty
+                 if drawnCards doesn't contain exactly 3 cards
+     */
     public List<SortedBag<Card>> possibleAdditionalCards(int additionalCardsCount, SortedBag<Card> initialCards, SortedBag<Card> drawnCards) {
+        Preconditions.checkArgument(additionalCardsCount >=1 && additionalCardsCount<=3);
+        Preconditions.checkArgument(!initialCards.isEmpty());
+        Preconditions.checkArgument(drawnCards.size() == 3);
+
+        SortedBag<Card> cardsWithoutInitials = cards.difference(initialCards);
+        SortedBag.Builder<Card> canUse = new SortedBag.Builder<>(); //Cards which can be used for additional cards
+        for (Card c : cardsWithoutInitials) {
+            for (Card i : initialCards) {
+                if (c.equals(Card.LOCOMOTIVE) || c.equals(i)) {
+                    canUse.add(c);
+                }
+            }
+        }
+        Set<SortedBag<Card>> allSubSets = canUse.build().subsetsOfSize(additionalCardsCount);
+
+        
         return null;
     }
 
+    /**
+     *
+     * @param route (Route) the road to add to this PlayerState's roads
+     * @param claimCards (The cards used by this player to claim the road)
+     * @return (PlayerState) same as this PlayerState with the additional route added to its routes
+     *                       and with the claimCards removed from its list of cards
+     */
     public PlayerState withClaimedRoute(Route route, SortedBag<Card> claimCards) {
         List<Route> newRoutes = new ArrayList<>();
         newRoutes.addAll(routes());
         newRoutes.add(route);
-
         return new PlayerState(tickets, cards.difference(claimCards), newRoutes);
     }
 
+    /**
+     *
+     * @return (int) the points earned by the player with its tickets
+     */
     public int ticketPoints() {
         //faut utiliser stationpartition  builder
         return 0;
     }
 
+    /**
+     *
+     * @return (int) all the points earned by the player at the end of the game
+     */
     public int finalPoints() {
         return ticketPoints() + claimPoints();
     }
-
-
-
-
-
-
-
 }

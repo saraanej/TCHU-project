@@ -126,59 +126,41 @@ public final class Route {
 	}
 	
 	/**
-	 * @return (List<SortedBag<Card>>) the list of all the cards that could be used to get the route
+	 * @return (List<SortedBag<Card>>) the list of all the cards that could be used to get the route,
 	                                   sorted in increasing order of the number of locomotive cards and then by color
 	 */
 	public List<SortedBag<Card>> possibleClaimCards(){
-		
 		List<SortedBag<Card>> possibleClaimCard = new ArrayList<SortedBag<Card>>();
-		
 		if(level.equals(Level.OVERGROUND)) {
-			
 			if(color == null) {
-				
 				for(Card c : Card.CARS) {
 					possibleClaimCard.add(SortedBag.of(length, c));}
-				
 			} else {
 				possibleClaimCard.add(SortedBag.of(length, Card.of(color)));}
 		}
-		
         if(level.equals(Level.UNDERGROUND)) {
-
 			List<SortedBag<Card>> inter = new ArrayList<SortedBag<Card>>();
-
 			if(color == null) {
-				
 				for(Card c : Card.CARS) {
-					
 					for(int i = 0; i < this.length ; ++i) {
 						inter.add(SortedBag.of(length - i, c, i , Card.LOCOMOTIVE));}
 				}
-				
 				inter.add(SortedBag.of(length, Card.LOCOMOTIVE));
-				
 		    } else {
-		    	
 		    	for(int i = 0; i <= this.length ; ++i) { // si route de couleur précise
-		    		
 		    		int NbCard = length - i;
 		    		int NbLoco = i;
-		    	
+
 		    		if(NbLoco == 0) { 
 		    			inter.add(SortedBag.of(NbCard, Card.of(color)));}
-		    		
 		    		if(NbCard == 0) {
 		    			inter.add(SortedBag.of(NbLoco , Card.LOCOMOTIVE));}
-		    		
 		    		else if (NbLoco!=0 && NbCard!=0){
 		    			inter.add(SortedBag.of(NbCard, Card.of(color), NbLoco , Card.LOCOMOTIVE));}
 		    	}
 		    }
-
 			possibleClaimCard = newSortedList(inter);
         }
-
 		return possibleClaimCard;
 	}
 	
@@ -190,7 +172,6 @@ public final class Route {
 	             if the route is not a tunnel or if drawnCards doesn't contain exactly three cards
 	 */
 	public int additionalClaimCardsCount(SortedBag<Card> claimCards, SortedBag<Card> drawnCards) {
-
 		Preconditions.checkArgument(level.equals(Level.UNDERGROUND) && drawnCards.size() == 3);
 		
 		int additionalClaimCardsCount = 0;
@@ -210,12 +191,10 @@ public final class Route {
 					additionalClaimCardsCount+=drawnElements.get(claim);
 				}
 			}
-
 			if(drawnElements.containsKey(Card.LOCOMOTIVE) && loco == 0){
 				additionalClaimCardsCount+=drawnElements.get(Card.LOCOMOTIVE);
 			}
 		}
-
 	  return additionalClaimCardsCount;
 	  
 	}
@@ -240,9 +219,7 @@ public final class Route {
 	 * @return (List<SortedBag<Card>>) the new sorted list
 	 */
 	private List<SortedBag<Card>> newSortedList(List<SortedBag<Card>> LotsOfCards){
-
 		List<SortedBag<Card>> newList = new ArrayList<>();
-
 		for(int i = 0; i < length(); i++){
 			for(SortedBag<Card> sBag : LotsOfCards){
 				if(sBag.countOf(Card.LOCOMOTIVE) == i){
@@ -250,7 +227,6 @@ public final class Route {
 				}
 			}
 		}
-
 		newList.add(SortedBag.of(length, Card.LOCOMOTIVE));
 
 		return newList;
