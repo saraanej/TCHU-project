@@ -80,7 +80,7 @@ public final class StationPartition implements StationConnectivity{
 
             stations = new int[stationCount];
 
-            for(int i = 0; i < stations.length; i++ ){
+            for(int i = 0; i < stationCount; i++ ){
                 stations[i] = i;
             }
 
