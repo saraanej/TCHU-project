@@ -5,6 +5,7 @@ import ch.epfl.tchu.Preconditions;
 import ch.epfl.tchu.SortedBag;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 
@@ -107,13 +108,7 @@ public final class PlayerState extends PublicPlayerState {
      * @return true if route can be claimed
      */
     public boolean canClaimRoute(Route route) {
-        boolean contains = false;
-        for (SortedBag<Card> c : possibleClaimCards(route) ) {
-            if(cards.contains(c)) {
-                contains = true;
-            }
-        }
-        return carCount() == route.length() && contains;
+        return carCount()>= route.length() && !possibleClaimCards(route).isEmpty();
     }
 
     /**
@@ -124,8 +119,20 @@ public final class PlayerState extends PublicPlayerState {
                 if the player doesn't have enough wagons to claim the road route
      */
     public List<SortedBag<Card>> possibleClaimCards(Route route) {
-        Preconditions.checkArgument(carCount() == route.length());
-        return route.possibleClaimCards(); // demander a sara que fait exactement cette methode
+        Preconditions.checkArgument(carCount() >= route.length());
+        List<SortedBag<Card>> possiblesClaims = route.possibleClaimCards();
+        List<SortedBag<Card>> possiblePlayer = new ArrayList<>();
+        for (SortedBag<Card> pos : possiblesClaims) {
+            boolean contains = true;
+            for (Card c : pos){
+                if (!cards.contains(c)){
+                    contains = false;
+                }
+            }
+            if(contains) {possiblePlayer.add(pos);
+            }
+        }
+        return possiblePlayer;
     }
 
     /**
@@ -142,6 +149,8 @@ public final class PlayerState extends PublicPlayerState {
     public List<SortedBag<Card>> possibleAdditionalCards(int additionalCardsCount, SortedBag<Card> initialCards, SortedBag<Card> drawnCards) {
         Preconditions.checkArgument(additionalCardsCount >=1 && additionalCardsCount<=3);
         Preconditions.checkArgument(!initialCards.isEmpty());
+        Set<Card> initial = initialCards.toSet();
+        Preconditions.checkArgument(initial.size() <= 2);
         Preconditions.checkArgument(drawnCards.size() == 3);
 
         SortedBag<Card> cardsWithoutInitials = cards.difference(initialCards);
@@ -154,9 +163,10 @@ public final class PlayerState extends PublicPlayerState {
             }
         }
         Set<SortedBag<Card>> allSubSets = canUse.build().subsetsOfSize(additionalCardsCount);
+        List<SortedBag<Card>> all = new ArrayList<>(allSubSets);
+        all.sort(Comparator.comparingInt(cs -> cs.countOf(Card.LOCOMOTIVE)));
 
-        
-        return null;
+        return all;
     }
 
     /**
@@ -178,7 +188,6 @@ public final class PlayerState extends PublicPlayerState {
      * @return (int) the points earned by the player with its tickets
      */
     public int ticketPoints() {
-        //faut utiliser stationpartition  builder
         return 0;
     }
 
