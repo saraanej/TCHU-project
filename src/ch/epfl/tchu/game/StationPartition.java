@@ -23,7 +23,7 @@ public final class StationPartition implements StationConnectivity{
      *
      * @param links (int[]) : list containing the links linking each element to the representative of their subset
      */
-    private StationPartition(int[] links){
+    private StationPartition(int[] links){ // RENDRE PRIVATE
 
         int[] newTab = (int[]) links.clone();
 
@@ -61,8 +61,11 @@ public final class StationPartition implements StationConnectivity{
      */
     public final static class Builder{
 
-        private final int stations[];
+        private int stations[];
 
+        public int[] getStations() { // A SUPPRIMER
+            return stations;
+        }
 
         /**
          * default constructor
@@ -72,6 +75,7 @@ public final class StationPartition implements StationConnectivity{
          *             if the stationCount is a negative number
          */
         public Builder(int stationCount){
+
             Preconditions.checkArgument(stationCount >= 0);
 
             stations = new int[stationCount];
@@ -94,8 +98,9 @@ public final class StationPartition implements StationConnectivity{
         public Builder connect(Station s1, Station s2){
 
             int repS1 = representative(s1.id());
+            int repS2 = representative(s2.id());
 
-            stations[s2.id()] = repS1;
+            stations[repS2] = repS1;
 
             return this;
         }
@@ -107,12 +112,15 @@ public final class StationPartition implements StationConnectivity{
         public StationPartition build(){
 
             for(int i = 0; i < stations.length; i++){
+
                 if(stations[i] != representative(i)){
+
                     stations[i] = representative(i);
                 }
             }
 
             StationPartition flattened = new StationPartition(stations);
+
             return flattened;
         }
 
