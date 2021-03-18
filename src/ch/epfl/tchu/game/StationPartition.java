@@ -51,7 +51,7 @@ public final class StationPartition implements StationConnectivity{
 
         public int[] getStations() { // A SUPPRIMER
             return stations;
-        }
+        } //A supp
 
         /**
          * default constructor
