@@ -5,8 +5,7 @@ import ch.epfl.tchu.game.StationPartition.Builder;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class TestStationPartition {
 
@@ -103,6 +102,31 @@ public class TestStationPartition {
 
     //StationPartition s = new StationPartition(lu);
 
+    @Test
+    void TestConnectedStationPartition(){
+        StationPartition.Builder r = new StationPartition.Builder(4);
+
+        r.connect(two,one);
+
+        assertEquals(3, r.getStations()[3]);
+        assertEquals(2,r.getStations()[1]);
+
+
+        StationPartition fi = r.build();
+
+        assertTrue(fi.connected(one,two));
+
+        assertTrue(fi.connected(two,two));
+
+        assertTrue(fi.connected(five,five));
+
+        //assertTrue(fi.connected(five,one));
+
+        //assertTrue(fi.connected(zero,three));
+
+
+
+    }
 }
 
 
