@@ -22,9 +22,8 @@ public final class StationPartition implements StationConnectivity{
      * private constructor
      * @param links (int[]) : list containing the links linking each element to the representative of their subset
      */
-    private StationPartition(int[] links){ // RENDRE PRIVATE
-        int[] newTab = (int[]) links.clone();
-        this.links = newTab;
+    private StationPartition(int[] links){
+        this.links = links.clone();
     }
 
 
