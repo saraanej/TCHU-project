@@ -266,7 +266,7 @@ public final class SortedBag<E extends Comparable<E>> implements Iterable<E> {
     @Override
     public String toString() {
         var j = new StringJoiner(", ", "{", "}");
-        elements.forEach((e, n) -> j.add((n >= 1 ? n + "×" : "") + e));
+        elements.forEach((e, n) -> j.add((n > 1 ? n + "×" : "") + e));
         return j.toString();
     }
 
