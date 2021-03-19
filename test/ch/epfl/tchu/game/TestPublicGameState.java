@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class TestPublicGameState {
 
@@ -18,7 +18,10 @@ public class TestPublicGameState {
     private static final Route A = new Route("NEU_YVE_1", NEU, YVE, 2, Route.Level.OVERGROUND, Color.BLACK);
     private static final Route E = new Route("BER_LUC_1", BER, LUC, 6, Route.Level.UNDERGROUND, null);
 
-    List<Route> routes = List.of(A);
+    List<Route> routes1 = List.of(A);
+    List<Route> routes2 = List.of(E);
+    List<Route> routes3 = List.of(E, A);
+
 
     List<Card> faceCards = List.of(Card.BLUE, Card.VIOLET,Card.BLUE,Card.RED,Card.WHITE);
 
@@ -28,35 +31,69 @@ public class TestPublicGameState {
 
     PlayerId lastPlayer = PlayerId.PLAYER_2;
 
-    PublicPlayerState FirstPlayerState = new PublicPlayerState(4,6,routes);
+    PublicPlayerState FirstPlayerState = new PublicPlayerState(4,6,routes1);
 
-    Map<PlayerId, PublicPlayerState> playerState = Map.of(currentPlayerId, FirstPlayerState);
+    PublicPlayerState lastPlayerState = new PublicPlayerState(5,2,routes2);
+
+    PublicPlayerState anotherPlayerState = new PublicPlayerState(3,1, routes3);
+
+
+    Map<PlayerId, PublicPlayerState> playerState = Map.of(currentPlayerId, FirstPlayerState, lastPlayer, lastPlayerState);
+
+    PublicGameState tester = new PublicGameState(3,cardState,currentPlayerId, playerState, null);
 
     @Test
     void ConstrcutorWithRightArguments(){
-
+        //Nothing was thrown : Constructeur marche
         //assertThrows(NullPointerException .class, () -> {new PublicGameState(3,cardState,currentPlayerId, playerState, null);});
-
     }
 
     @Test
     void ConstructorWithNegativeDeckSize(){
-        int tickets = 0;
-
-
+        assertThrows(IllegalArgumentException .class, () -> {new PublicGameState(-2,cardState,currentPlayerId, playerState, null);});
     }
 
-    @Test
-    void ConstrcutorWithMoreThanTwoPairs(){
-
-    }
 
     @Test
     void ConstrcutorWithOnePairs(){
         Map<PlayerId, PublicPlayerState> playerStateOne = Map.of(currentPlayerId, FirstPlayerState);
-
         assertThrows(IllegalArgumentException .class, () -> {new PublicGameState(3,cardState,currentPlayerId, playerStateOne, null);});
     }
+
+    @Test
+    void GetterTicketsCount(){
+       assertEquals(3, tester.ticketsCount());
+    }
+
+    @Test
+    void BooleanCanDrawTicketsTrue(){
+        assertTrue(tester.canDrawTickets());
+    }
+
+    @Test
+    void BooleanCanDrawTicketsFalse(){
+        PublicGameState tester = new PublicGameState(0,cardState,currentPlayerId, playerState, null);
+        assertFalse(tester.canDrawTickets());
+    }
+
+    @Test
+    void CardStateWorks(){
+        assertEquals(cardState,tester.cardState());
+    }
+
+    @Test
+    void BooleanCanDrawCardsTrue(){
+        PublicCardState cardState = new PublicCardState(faceCards, 3, 6);
+        assertTrue(tester.canDrawCards());
+    }
+
+    @Test
+    void BooleanCanDrawCardsFalse(){
+        PublicCardState cardState = new PublicCardState(faceCards, 0, 4);
+        PublicGameState tester = new PublicGameState(3,cardState,currentPlayerId, playerState, null);
+        assertFalse(tester.canDrawCards());
+    }
+
 
 
 

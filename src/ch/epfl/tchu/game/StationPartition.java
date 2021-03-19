@@ -49,10 +49,6 @@ public final class StationPartition implements StationConnectivity{
     public final static class Builder{
         private int stations[];
 
-        public int[] getStations() { // A SUPPRIMER
-            return stations;
-        } //A supp
-
         /**
          * default constructor
          * @param stationCount (int) : the identity of the station partition
