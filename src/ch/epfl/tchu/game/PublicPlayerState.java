@@ -26,7 +26,7 @@ public class PublicPlayerState {
      * default public constructor of the PublicPlayerState
      * @param ticketCount (int) the number of tickets the play owns
      * @param cardCount (int) the number of cards the player owns
-     * @param routes (List<Routes) the roads the player owns
+     * @param routes (List<Routes>) the roads the player owns
      * @throws IllegalArgumentException
                  if the ticketCount is strictly negative
                  if the cardCount is strictly negative
@@ -56,7 +56,7 @@ public class PublicPlayerState {
         for (Route r : routes) {
             length += r.length();
         }
-        return 40 - length;
+        return Constants.INITIAL_CAR_COUNT - length;
     }
 
     /**
