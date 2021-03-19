@@ -4,10 +4,7 @@ package ch.epfl.tchu.game;
 import ch.epfl.tchu.Preconditions;
 import ch.epfl.tchu.SortedBag;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Modelizes the player's State
@@ -144,6 +141,7 @@ public final class PlayerState extends PublicPlayerState {
      * @throws IllegalArgumentException
                  if additionalCardsCount is not between 1 and 3 (included)
                  if initialCards is empty
+                 if initialCards contains more than two different cards
                  if drawnCards doesn't contain exactly 3 cards
      */
     public List<SortedBag<Card>> possibleAdditionalCards(int additionalCardsCount, SortedBag<Card> initialCards, SortedBag<Card> drawnCards) {
@@ -188,7 +186,22 @@ public final class PlayerState extends PublicPlayerState {
      * @return (int) the points earned by the player with its tickets
      */
     public int ticketPoints() {
-        return 0;
+        List<Integer> iDs = new ArrayList<>();
+        for(Route r : routes()){
+            iDs.add(r.station1().id());
+            iDs.add(r.station2().id());
+        }
+        StationPartition.Builder builder = new StationPartition.Builder(Collections.max(iDs)+1);
+        for(Route r : routes()){
+            builder.connect(r.station1(),r.station2());
+        }
+        StationPartition connectivity = builder.build();
+
+        int points = 0;
+        for (Ticket t : tickets){
+            points += t.points(connectivity);
+        }
+        return points;
     }
 
     /**
