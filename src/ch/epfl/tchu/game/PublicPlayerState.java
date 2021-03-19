@@ -37,7 +37,9 @@ public class PublicPlayerState {
 
         this.ticketCount = ticketCount;
         this.cardCount = cardCount;
-        this.routes = List.copyOf(routes);
+        if(routes == null){
+            this.routes = routes;
+        } else this.routes = List.copyOf(routes);
         this.carCount = computeCarCount();
         this.claimPoints = computeClaimPoints();
 
@@ -45,16 +47,20 @@ public class PublicPlayerState {
 
     private int computeClaimPoints() {
         int points = 0;
-        for (Route r : routes) {
-            points += r.claimPoints();
+        if(routes != null) {
+            for (Route r : routes) {
+                points += r.claimPoints();
+            }
         }
         return points;
     }
 
     private int computeCarCount() {
         int length = 0;
-        for (Route r : routes) {
-            length += r.length();
+        if(routes != null) {
+            for (Route r : routes) {
+                length += r.length();
+            }
         }
         return Constants.INITIAL_CAR_COUNT - length;
     }
