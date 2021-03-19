@@ -42,13 +42,12 @@ public class PublicGameState {
     public PublicGameState(int ticketsCount, PublicCardState cardState, PlayerId currentPlayerId, Map<PlayerId, PublicPlayerState> playerState, PlayerId lastPlayer){
 
         Preconditions.checkArgument(ticketsCount >= 0
-                                    && playerState.size() == 2
-                                    && playerState != null); //  A REVOIR
+                                    && playerState.size() == 2);
 
         this.ticketsCount = ticketsCount;
         this.cardState = Objects.requireNonNull(cardState);
         this.currentPlayerId = Objects.requireNonNull(currentPlayerId);
-        this.playerState = Map.copyOf(playerState);
+        this.playerState = Objects.requireNonNull(Map.copyOf(playerState));
         this.lastPlayer = lastPlayer;
     }
 

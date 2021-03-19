@@ -13,7 +13,7 @@ import java.util.Random;
  * @author Sara Anejjar (329905)
  *
  */
-public final class GameState {
+public final class GameState extends PublicGameState{
 
     // EXTENDS PUBLICGAMESTATE
     /**
@@ -26,6 +26,7 @@ public final class GameState {
     public static GameState initial(SortedBag<Ticket> tickets, Random rng){
         return null;
     }
+
 
 
 

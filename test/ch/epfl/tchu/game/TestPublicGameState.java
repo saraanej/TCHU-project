@@ -73,7 +73,7 @@ public class TestPublicGameState {
 
     @Test
     void ConstructorWithNullPlayerState(){
-        assertThrows(IllegalArgumentException .class, () -> {new PublicGameState(2,cardState,currentPlayerId, null, null);});
+        assertThrows(NullPointerException .class, () -> {new PublicGameState(2,cardState,currentPlayerId, null, null);});
     }
 
     @Test

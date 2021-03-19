@@ -96,7 +96,7 @@ public interface Player {
     /**
      *
      * @param options (List<SortedBag<Card>>) : the necessary cards the player has to choose between to take over a tunnel route
-     * @return (SortedBag<Card>)
+     * @return (SortedBag<Card>) the cards the player chose
      */
     abstract SortedBag<Card> chooseAdditionalCards(List<SortedBag<Card>> options);
 }
