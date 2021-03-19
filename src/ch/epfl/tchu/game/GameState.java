@@ -15,15 +15,18 @@ import java.util.Random;
  */
 public final class GameState {
 
+    // EXTENDS PUBLICGAMESTATE
     /**
-     * static constructor
+     * static constructor method
      *
-     * @param tickets (SortedBag<Ticket>) :
-     * @param rng (Random) :
+     * @param tickets (SortedBag<Ticket>) : the tickets' deck contains these given tickets
+     * @param rng (Random) : the given random generator
      * @return (GameState) the initial state of a Tchu's play
      */
     public static GameState initial(SortedBag<Ticket> tickets, Random rng){
         return null;
     }
+
+
 
 }
