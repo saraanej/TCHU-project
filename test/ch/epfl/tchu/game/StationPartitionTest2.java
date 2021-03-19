@@ -118,9 +118,9 @@ public class StationPartitionTest2 {
        builder.connect(DAV, BRU);
        builder.connect(BAL, BER);
        
-       assertEquals(5, builder.representative(0));
+       assertEquals(6, builder.representative(0));
        assertEquals(3, builder.representative(1));
-       assertEquals(7, builder.representative(2));
+       assertEquals(6, builder.representative(2));
        assertEquals(3, builder.representative(3));
        assertEquals(4, builder.representative(4));
        assertEquals(6, builder.representative(5));

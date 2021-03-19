@@ -74,7 +74,7 @@ public final class StationPartition implements StationConnectivity{
         public Builder connect(Station s1, Station s2){
             int repS1 = representative(s1.id());
             int repS2 = representative(s2.id());
-            stations[repS2] = repS1;
+            stations[repS1] = repS2;
             return this;
         }
 
@@ -95,12 +95,13 @@ public final class StationPartition implements StationConnectivity{
          * @param stationId (int) : a station identification number
          * @return the identification number of the representative of the subset containing the station
          */
-        private int representative(int stationId){
+        public int representative(int stationId){
             int representative = stations[stationId];
             int index = stationId;
             if(index == representative){
-                return stationId;
+                return representative;
             } else {
+
                 do{
                     index = representative;
                     representative = stations[index];
