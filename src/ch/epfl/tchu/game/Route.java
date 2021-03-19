@@ -24,7 +24,6 @@ public final class Route {
 
 
 	public enum Level{
-		
 		OVERGROUND,
 		UNDERGROUND;
 	}

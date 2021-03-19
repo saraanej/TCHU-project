@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * Modelizes the public part of the game's state
+ * Modelizes the public part of a Tchu's play state
  *
  *
  * @author Yasmin Ben Rahhal (329912)
@@ -42,7 +42,8 @@ public class PublicGameState {
     public PublicGameState(int ticketsCount, PublicCardState cardState, PlayerId currentPlayerId, Map<PlayerId, PublicPlayerState> playerState, PlayerId lastPlayer){
 
         Preconditions.checkArgument(ticketsCount >= 0
-                                    && playerState.size() == 2); //  A REVOIR
+                                    && playerState.size() == 2
+                                    && playerState != null); //  A REVOIR
 
         this.ticketsCount = ticketsCount;
         this.cardState = Objects.requireNonNull(cardState);
@@ -133,6 +134,4 @@ public class PublicGameState {
     public PlayerId lastPlayer(){
         return lastPlayer != null ? lastPlayer : null;
     }
-
-
 }

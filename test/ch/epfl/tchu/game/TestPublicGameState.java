@@ -2,6 +2,7 @@ package ch.epfl.tchu.game;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -40,7 +41,7 @@ public class TestPublicGameState {
 
     Map<PlayerId, PublicPlayerState> playerState = Map.of(currentPlayerId, FirstPlayerState, lastPlayer, lastPlayerState);
 
-    PublicGameState tester = new PublicGameState(3,cardState,currentPlayerId, playerState, null);
+    PublicGameState tester = new PublicGameState(3,cardState,currentPlayerId, playerState, lastPlayer);
 
     @Test
     void ConstrcutorWithRightArguments(){
@@ -58,6 +59,21 @@ public class TestPublicGameState {
     void ConstrcutorWithOnePairs(){
         Map<PlayerId, PublicPlayerState> playerStateOne = Map.of(currentPlayerId, FirstPlayerState);
         assertThrows(IllegalArgumentException .class, () -> {new PublicGameState(3,cardState,currentPlayerId, playerStateOne, null);});
+    }
+
+    @Test
+    void ConstructorWithNullFirstPlayer(){
+        assertThrows(NullPointerException .class, () -> {new PublicGameState(2,cardState,null, playerState, null);});
+    }
+
+    @Test
+    void ConstructorWithNullcardState(){
+        assertThrows(NullPointerException .class, () -> {new PublicGameState(2,null,currentPlayerId, playerState, null);});
+    }
+
+    @Test
+    void ConstructorWithNullPlayerState(){
+        assertThrows(IllegalArgumentException .class, () -> {new PublicGameState(2,cardState,currentPlayerId, null, null);});
     }
 
     @Test
@@ -89,12 +105,45 @@ public class TestPublicGameState {
 
     @Test
     void BooleanCanDrawCardsFalse(){
-        PublicCardState cardState = new PublicCardState(faceCards, 0, 4);
+        PublicCardState cardState = new PublicCardState(faceCards, 1, 3);
         PublicGameState tester = new PublicGameState(3,cardState,currentPlayerId, playerState, null);
         assertFalse(tester.canDrawCards());
     }
 
+    @Test
+    void TestCurrentPlayerId(){
+        assertEquals(PlayerId.PLAYER_1, tester.currentPlayerId());
+    }
 
+    @Test
+    void TestPlayerState(){
+        assertEquals(FirstPlayerState, tester.playerState(currentPlayerId));
+        assertEquals(lastPlayerState, tester.playerState(lastPlayer));
+    }
+
+    @Test
+    void TestCurrentPlayerState(){
+        assertEquals(FirstPlayerState, tester.currentPlayerState());
+    }
+
+    @Test
+    void TestListofClaimedRoutes(){
+        List<Route> rout = new ArrayList<>();
+        rout.add(A);
+        rout.add(E);
+        assertEquals(rout, tester.claimedRoutes());
+    }
+
+    @Test
+    void TestLastPlayerIdentityknown(){
+        assertEquals(lastPlayer, tester.lastPlayer());
+    }
+
+    @Test
+    void TestLastPlayerIdentityUnknown(){
+        PublicGameState tester = new PublicGameState(3,cardState,currentPlayerId, playerState, null);
+        assertEquals(null, tester.lastPlayer());
+    }
 
 
 }
