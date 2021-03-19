@@ -152,7 +152,7 @@ public final class PlayerState extends PublicPlayerState {
         Preconditions.checkArgument(drawnCards.size() == 3);
 
         SortedBag<Card> cardsWithoutInitials = cards.difference(initialCards);
-        SortedBag.Builder<Card> canUse = new SortedBag.Builder<>(); //Cards which can be used for additional cards
+        SortedBag.Builder<Card> canUse = new SortedBag.Builder<>();
         for (Card c : cardsWithoutInitials) {
             for (Card i : initialCards) {
                 if (c.equals(Card.LOCOMOTIVE) || c.equals(i)) {
@@ -160,9 +160,12 @@ public final class PlayerState extends PublicPlayerState {
                 }
             }
         }
-        Set<SortedBag<Card>> allSubSets = canUse.build().subsetsOfSize(additionalCardsCount);
-        List<SortedBag<Card>> all = new ArrayList<>(allSubSets);
-        all.sort(Comparator.comparingInt(cs -> cs.countOf(Card.LOCOMOTIVE)));
+        List<SortedBag<Card>> all = new ArrayList<>();
+        if(canUse.size() != 0) {
+            Set<SortedBag<Card>> allSubSets = canUse.build().subsetsOfSize(additionalCardsCount);
+            all.addAll(allSubSets);
+            all.sort(Comparator.comparingInt(cs -> cs.countOf(Card.LOCOMOTIVE)));
+        }
 
         return all;
     }

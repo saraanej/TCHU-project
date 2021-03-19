@@ -2,141 +2,129 @@ package ch.epfl.tchu.game;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class StationPartitionTest {
 
-    private Station LUC = new Station(16, "Lucerne");
-    private Station LUG = new Station(17, "Lugano");
-    private Station MAR = new Station(18, "Martigny");
-    private Station NEU = new Station(19, "Neuchâtel");
-    private Station OLT = new Station(20, "Olten");
-    private Station PFA = new Station(21, "Pfäffikon");
-    private Station SAR = new Station(22, "Sargans");
-    private Station SCE = new Station(23, "Schaffhouse");
-    private Station SCZ = new Station(24, "Schwyz");
+    //à mettre dans StationPartition pour récuperer le tableau avec les représentants
+    /*public int[] getLiens(){
+        return liens;
+    }*/
+
+    private static final Station OLT = new Station(20, "Olten");
+    private static final Station BER = new Station(3, "Berne");
+    private static final Station LUC = new Station(16, "Lucerne");
+    private static final Station BAD = new Station(0, "Baden");
+    private static final Station BAL = new Station(1, "Bâle");
+    private static final Station BEL = new Station(2, "Bellinzone");
+    private static final Station BRI = new Station(4, "Brigue");
+    private static final Station BRU = new Station(5, "Brusio");
+
+    //for method id out of bounds
+    private static final Station SCZ = new Station(24, "Schwyz");
+    private static final Station ZUR = new Station(33, "Zürich");
+
 
     @Test
-    void partitionWithOnlyOneConnection(){
-        StationPartition.Builder builder = new StationPartition.Builder(24);
-        builder.connect(LUC, NEU);
-        StationPartition thePartition = builder.build();
-        assertFalse(thePartition.connected(LUC, MAR));
-        assertTrue(thePartition.connected(LUC, NEU));
-        assertTrue(thePartition.connected(OLT, OLT));
+    public void stationPartitionBuilderTestWithTwoStations(){
+
+        StationPartition.Builder builder = new StationPartition.Builder(17);
+        builder.connect(BER, LUC);
+        StationPartition something = builder.build();
+        assertTrue(something.connected(BER, LUC));
+
+        //sameRepresentative
+        int[] liens = something.getLiens();
+        assertEquals(liens[16], liens[3]);
+        assertEquals(liens[3], liens[16]);
     }
 
     @Test
-    void partitionWithTwoConnectionsOfDifferentSets(){
-        StationPartition.Builder builder = new StationPartition.Builder(24);
-        builder.connect(LUC, NEU);
-        builder.connect(PFA, SAR);
-        StationPartition thePartition = builder.build();
-        assertFalse(thePartition.connected(LUC, MAR));
-        assertTrue(thePartition.connected(LUC, NEU));
-        assertTrue(thePartition.connected(OLT, OLT));
-        assertTrue(thePartition.connected(PFA, SAR));
-        assertFalse(thePartition.connected(LUC, SAR));
+    public void stationPartitionBuilderWithMultipleStations(){
+
+        //connect 7 stations
+        StationPartition.Builder builder = new StationPartition.Builder(17);
+        builder.connect(BER, LUC);
+        builder.connect(BER, BAD);
+        builder.connect(BAL, BEL);
+        builder.connect(BAL, BAD);
+        builder.connect(BER, BRI);
+        builder.connect(BAD, BRU);
+        StationPartition something = builder.build();
+        List<Station> stations = List.of(BER, LUC, BAD, BAL, BEL, BRI, BRU);
+
+        //methodConnect
+        for(Station station : stations){
+            for(Station s : stations){
+                assertTrue(something.connected(station, s));
+            }
+        }
+
+        //same representative
+        int[] liens = something.getLiens();
+
+        for(int i=0; i<6; i++){
+            assertEquals(liens[i], liens[0]);
+            assertEquals(liens[i], liens[1]);
+            assertEquals(liens[i], liens[2]);
+            assertEquals(liens[i], liens[3]);
+            assertEquals(liens[i], liens[4]);
+            assertEquals(liens[i], liens[5]);
+            assertEquals(liens[i], liens[16]);
+        }
+        for (int i = 16; i<17; i++){
+            assertEquals(liens[i], liens[0]);
+            assertEquals(liens[i], liens[1]);
+            assertEquals(liens[i], liens[2]);
+            assertEquals(liens[i], liens[3]);
+            assertEquals(liens[i], liens[4]);
+            assertEquals(liens[i], liens[5]);
+            assertEquals(liens[i], liens[16]);
+        }
+
+        //to be sure that the stations that are not connected are their own representative
+        for(int i = 6; i<16; i++){
+            assertEquals(liens[i], liens[i]);
+        }
     }
 
     @Test
-    void partitionWithTwoConnectionsOfTheSameSet(){
-        StationPartition.Builder builder = new StationPartition.Builder(24);
-        builder.connect(LUC, NEU);
-        builder.connect(NEU, SAR);
-        StationPartition thePartition = builder.build();
-        assertFalse(thePartition.connected(LUC, MAR));
-        assertTrue(thePartition.connected(LUC, NEU));
-        assertTrue(thePartition.connected(OLT, OLT));
-        assertFalse(thePartition.connected(PFA, SAR));
-        assertTrue(thePartition.connected(LUC, SAR));
-        assertTrue(thePartition.connected(SAR, NEU));
+    public void connectedStationIdOutOfBoundsOfChartGivenToConstructor(){
+
+        StationPartition.Builder builder = new StationPartition.Builder(17);
+        builder.connect(BER, LUC);
+        StationPartition something = builder.build();
+
+        //returns false with an id out of bounds
+        assertFalse(something.connected(BER, SCZ));
+        assertFalse(something.connected(BER, ZUR));
+        assertFalse(something.connected(LUC, SCZ));
+        assertFalse(something.connected(LUC, ZUR));
+
+        //both stations with id out of bounds
+        assertFalse(something.connected(ZUR, SCZ));
+
+        //returns true iff both stations have the same id
+        assertTrue(something.connected(SCZ, SCZ));
+
+
     }
 
     @Test
-    void partitionWithTwoConnectionsOfTheSameSetDifferentOrder(){
-        StationPartition.Builder builder = new StationPartition.Builder(24);
-        builder.connect(LUC, NEU);
-        builder.connect(SAR, NEU);
-        StationPartition thePartition = builder.build();
-        assertFalse(thePartition.connected(LUC, MAR));
-        assertTrue(thePartition.connected(LUC, NEU));
-        assertTrue(thePartition.connected(OLT, OLT));
-        assertFalse(thePartition.connected(PFA, SAR));
-        assertTrue(thePartition.connected(LUC, SAR));
-        assertTrue(thePartition.connected(SAR, NEU));
+    public void connectedReturnsFalseIfNotConnected(){
+        StationPartition.Builder builder = new StationPartition.Builder(17);
+        builder.connect(BER, LUC);
+        StationPartition something = builder.build();
+        assertFalse(something.connected(BER, BAD));
+        assertFalse(something.connected(LUC, BAD));
     }
 
     @Test
-    void partitionWithOneSetOfManyStations(){
-        StationPartition.Builder builder = new StationPartition.Builder(24);
-        builder.connect(LUC, NEU);
-        builder.connect(SAR, NEU);
-        builder.connect(SCE, MAR);
-        builder.connect(SCE,NEU);
-        builder.connect(MAR,OLT);
-        StationPartition thePartition = builder.build();
-        assertTrue(thePartition.connected(LUC, MAR));
-        assertTrue(thePartition.connected(LUC, NEU));
-        assertTrue(thePartition.connected(OLT, OLT));
-        assertTrue(thePartition.connected(LUC, OLT));
-        assertTrue(thePartition.connected(MAR, SAR));
-        assertFalse(thePartition.connected(PFA, SAR));
-        assertFalse(thePartition.connected(LUG, SCE));
-        assertFalse(thePartition.connected(LUG, PFA));
-        assertFalse(thePartition.connected(NEU, PFA));
-    }
-
-    @Test
-    void partitionWithManySets(){
-        StationPartition.Builder builder = new StationPartition.Builder(27);
-        //First Set
-        builder.connect(LUC, NEU);
-        //Second Set
-        builder.connect(SAR, MAR);
-        builder.connect(SCE, MAR);
-        //Third Set
-        builder.connect(OLT,PFA);
-        builder.connect(PFA,SCZ);
-        StationPartition thePartition = builder.build();
-        assertTrue(thePartition.connected(LUC, NEU));
-        assertTrue(thePartition.connected(SCE, SAR));
-        assertTrue(thePartition.connected(PFA, OLT));
-        assertTrue(thePartition.connected(SCZ, OLT));
-        assertTrue(thePartition.connected(MAR, MAR));
-        assertFalse(thePartition.connected(LUG, NEU));
-        assertFalse(thePartition.connected(OLT, LUC));
-        assertFalse(thePartition.connected(MAR, PFA));
-        assertFalse(thePartition.connected(LUC, SCZ));
-    }
-
-    @Test
-    void partitionWithManyTimesTheSameConnection(){
-        StationPartition.Builder builder = new StationPartition.Builder(24);
-        builder.connect(LUC, NEU);
-        builder.connect(NEU,LUC);
-        builder.connect(OLT,OLT);
-        StationPartition thePartition = builder.build();
-        assertFalse(thePartition.connected(LUC, MAR));
-        assertTrue(thePartition.connected(LUC, NEU));
-        assertFalse(thePartition.connected(OLT,NEU));
-        assertTrue(thePartition.connected(OLT, OLT));
-    }
-
-    @Test
-    void partitionWhenDoingNothing(){
-        StationPartition.Builder builder = new StationPartition.Builder(24);
-        StationPartition thePartition = builder.build();
-        assertFalse(thePartition.connected(LUC, MAR));
-        assertFalse(thePartition.connected(LUC, NEU));
-        assertFalse(thePartition.connected(OLT,NEU));
-        assertTrue(thePartition.connected(OLT, OLT));
-    }
-
-    @Test
-    void failWithNegativeStationCount(){
-        assertThrows(IllegalArgumentException .class, ()->{
-            StationPartition.Builder builder = new StationPartition.Builder(-2);
+    public void stationPartitionWithNegativeAmountOfStations(){
+        assertThrows(IllegalArgumentException.class, ()->{
+            new StationPartition.Builder(-1);
         });
     }
 

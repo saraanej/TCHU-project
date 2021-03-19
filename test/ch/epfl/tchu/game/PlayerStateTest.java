@@ -303,7 +303,7 @@ class PlayerStateTest {
     }
 
     // possibleClaimCards
-    @Test
+  /*  @Test
     void possibleClaimCardsException() {
         SortedBag.Builder<Ticket> tickets=new SortedBag.Builder<>();
         tickets.add(ChMap.tickets().get(0));
@@ -325,10 +325,11 @@ class PlayerStateTest {
         PlayerState playerState=new PlayerState(tickets.build(),playerCards,routes);
         // We don't have the necessary cards to possess this route. this should rise an exception
         Route routeToTake=ChMap.routes().get(3);
+        System.out.println(playerState.carCount());
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
             System.out.println(playerState.possibleClaimCards(routeToTake));
         });
-    }
+    }*/
     @Test
     void possibleClaimCards1() {
         SortedBag.Builder<Ticket> tickets=new SortedBag.Builder<>();
