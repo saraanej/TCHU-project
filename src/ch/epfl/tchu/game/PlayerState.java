@@ -161,7 +161,7 @@ public final class PlayerState extends PublicPlayerState {
             }
         }
         List<SortedBag<Card>> all = new ArrayList<>();
-        if(canUse.size() != 0) {
+        if(canUse.size() >= 0 && additionalCardsCount <= canUse.size()) {
             Set<SortedBag<Card>> allSubSets = canUse.build().subsetsOfSize(additionalCardsCount);
             all.addAll(allSubSets);
             all.sort(Comparator.comparingInt(cs -> cs.countOf(Card.LOCOMOTIVE)));

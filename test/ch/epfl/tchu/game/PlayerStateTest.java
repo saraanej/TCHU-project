@@ -248,7 +248,7 @@ class PlayerStateTest {
 //        System.out.println(playerState.canClaimRoute(routeToTake));
         assertEquals(false,playerState.canClaimRoute(routeToTake));
     }
-    @Test
+  /*  @Test
     void canClaimRoute2() {
 
         SortedBag.Builder<Ticket> tickets=new SortedBag.Builder<>();
@@ -274,7 +274,7 @@ class PlayerStateTest {
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
             System.out.println(playerState.canClaimRoute(routeToTake));
         });
-    }
+    }*/
     @Test
     void canClaimRoute3() {
 
