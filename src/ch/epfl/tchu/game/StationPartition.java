@@ -36,9 +36,9 @@ public final class StationPartition implements StationConnectivity{
     @Override
     public boolean connected(Station s1, Station s2) {
         if (s1.id() >= links.length || s2.id() >= links.length){
-            return s1.id() == s2.id() ? true : false; // comparer les id
+            return s1.id() == s2.id() ? true : false; // compare iDs
         }else{
-            return (links[s1.id()] == links[s2.id()]) ? true : false; // comparer les représentants
+            return (links[s1.id()] == links[s2.id()]) ? true : false; // compare representatives
         }
     }
 
@@ -84,9 +84,7 @@ public final class StationPartition implements StationConnectivity{
          */
         public StationPartition build(){
             for(int i = 0; i < stations.length; i++){
-                if(stations[i] != representative(i)){
                     stations[i] = representative(i);
-                }
             }
             StationPartition flattened = new StationPartition(stations);
             return flattened;

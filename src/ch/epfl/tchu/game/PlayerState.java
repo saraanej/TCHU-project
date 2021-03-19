@@ -121,10 +121,12 @@ public final class PlayerState extends PublicPlayerState {
         List<SortedBag<Card>> possiblePlayer = new ArrayList<>();
         for (SortedBag<Card> pos : possiblesClaims) {
             boolean contains = true;
+            List<Card> playerCards = cards.toList();
             for (Card c : pos){
-                if (!cards.contains(c)){
+                if (!playerCards.contains(c)){
                     contains = false;
                 }
+                playerCards.remove(c);
             }
             if(contains) {possiblePlayer.add(pos);
             }
@@ -134,10 +136,10 @@ public final class PlayerState extends PublicPlayerState {
 
     /**
      *
-     * @param additionalCardsCount
-     * @param initialCards
-     * @param drawnCards
-     * @return
+     * @param additionalCardsCount (int) the additional Cards for the player to add
+     * @param initialCards (SortedBag<Card>) the cards used by the player to claim a route
+     * @param drawnCards (SortedBag<Card>) the cards drawn by the player after claiming a route
+     * @return (List<SortedBag<Card>>) the list of Sorted additional cards the player can use to claim the route
      * @throws IllegalArgumentException
                  if additionalCardsCount is not between 1 and 3 (included)
                  if initialCards is empty
@@ -154,10 +156,8 @@ public final class PlayerState extends PublicPlayerState {
         SortedBag<Card> cardsWithoutInitials = cards.difference(initialCards);
         SortedBag.Builder<Card> canUse = new SortedBag.Builder<>();
         for (Card c : cardsWithoutInitials) {
-            for (Card i : initialCards) {
-                if (c.equals(Card.LOCOMOTIVE) || c.equals(i)) {
-                    canUse.add(c);
-                }
+            if (c.equals(Card.LOCOMOTIVE) || initialCards.contains(c)) {
+                canUse.add(c);
             }
         }
         List<SortedBag<Card>> all = new ArrayList<>();
@@ -166,7 +166,6 @@ public final class PlayerState extends PublicPlayerState {
             all.addAll(allSubSets);
             all.sort(Comparator.comparingInt(cs -> cs.countOf(Card.LOCOMOTIVE)));
         }
-
         return all;
     }
 
