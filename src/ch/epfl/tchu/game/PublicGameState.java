@@ -64,7 +64,7 @@ public class PublicGameState {
      * @return (boolean) true if the tickets'deck is not empty. false if not
      */
     public boolean canDrawTickets(){
-        return ticketsCount != 0 ? true : false;
+        return ticketsCount != 0;
     }
 
     /**
@@ -81,7 +81,7 @@ public class PublicGameState {
      */
     public boolean canDrawCards(){
         int cards = cardState.deckSize() + cardState.discardsSize();
-        return cards >= 5 ? true : false;
+        return cards >= 5;
     }
 
     /**
