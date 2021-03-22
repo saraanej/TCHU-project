@@ -261,7 +261,8 @@ public final class GameState extends PublicGameState{
 
     /**
      *
-     * @return (GameState) if lastTurn
+     * @return (GameState) same GameState as this but with the currentPlayer changed to the next one,
+                           furthermore, if the lastTurn should begin, the lastPlayer value is set to this currentPlayer
      */
     public GameState forNextTurn(){
         return lastTurnBegins() ? new GameState(gameDeck,
@@ -277,6 +278,10 @@ public final class GameState extends PublicGameState{
 
     }
 
+    /**
+     * copies the playerState immutable map into a mutable one
+     * @return Map<PlayerId, PlayerState> a mutable version of the playerState
+     */
     private Map<PlayerId, PlayerState> CopyPlayerState() {
         Map<PlayerId, PlayerState> newPlayerState = new EnumMap<>(PlayerId.class);
         newPlayerState.putAll(playerState);
