@@ -7,7 +7,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class PublicPlayerStateTest {
+class PublicPlayerStateTest5 {
 
     private static final Station BEL = new Station(2, "Bellinzone");
     private static final Station BER = new Station(3, "Berne");

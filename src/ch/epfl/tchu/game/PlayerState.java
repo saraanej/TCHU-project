@@ -193,7 +193,7 @@ public final class PlayerState extends PublicPlayerState {
             iDs.add(r.station1().id());
             iDs.add(r.station2().id());
         }
-        StationPartition.Builder builder = new StationPartition.Builder(Collections.max(iDs)+1);
+        StationPartition.Builder builder = new StationPartition.Builder(iDs.isEmpty() ? 0 : Collections.max(iDs)+1);
         for(Route r : routes()){
             builder.connect(r.station1(),r.station2());
         }
