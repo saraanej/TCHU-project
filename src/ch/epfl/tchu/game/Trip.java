@@ -21,8 +21,7 @@ public final class Trip {
 	private final Station from;
 	private final Station to;
 	private final int points;
-	
-	
+
 	/**
 	 * Public constructor of a Trip
 	 * @param from (Station) the departure Station of the Trip
@@ -36,14 +35,14 @@ public final class Trip {
 	 *          if the arrival's station(from) is empty
 	 */
 	public Trip(Station from, Station to, int points) { 
-		Preconditions.checkArgument(points>0 && from != to);
+		Preconditions.checkArgument(points>0);
+		Preconditions.checkArgument(from != to);
 		this.from = Objects.requireNonNull(from);
 		this.to = Objects.requireNonNull(to);
 		this.points = points;
 
 	}
-	
-	
+
 	/**
 	 * Returns all the Trips between a list of Stations and another
 	 * @param from (Station) the departure Stations of the Trips
@@ -57,7 +56,10 @@ public final class Trip {
 	 *         if the departure's station is the same as the arrival's station 
 	 */
 	public static List<Trip> all(List<Station> from, List<Station>to, int points){
-		Preconditions.checkArgument(from != null && to != null && points > 0 && from != to);
+		Preconditions.checkArgument(from != null);
+		Preconditions.checkArgument(to != null);
+		Preconditions.checkArgument( points > 0);
+		Preconditions.checkArgument(from != to);
 		List<Trip> all = new ArrayList<Trip>();
 		for (Station f : from ) {
 			for (Station t : to) {

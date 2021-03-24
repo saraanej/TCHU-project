@@ -21,8 +21,7 @@ public final class Ticket implements Comparable<Ticket> {
 	private final Station from;
 	private final List<Trip> trips;
 	private final String Text;
-	
-	
+
 	/**
 	 * Public default constructor of a Ticket
 	 * @param trips (List<Trip>) all the Trips that the Ticket covers
@@ -31,7 +30,8 @@ public final class Ticket implements Comparable<Ticket> {
 	             if all the departure's stations don't have the same name
 	 */
 	public Ticket(List<Trip> trips){
-		Preconditions.checkArgument(trips != null && trips.size() != 0);
+		Preconditions.checkArgument(trips != null);
+		Preconditions.checkArgument(trips.size() != 0);
 		this.from = trips.get(0).from();
 		for ( Trip t : trips) {
 			Preconditions.checkArgument(t.from().name().equals(this.from.name()));
@@ -39,11 +39,9 @@ public final class Ticket implements Comparable<Ticket> {
 		this.trips = trips;
 		this.Text = computeText(this.trips);
 	}
-	
-	
+
 	/**
 	 * Public constructor of a Ticket
-	 * 
 	 * @param from (Station) the departure Station of the Ticket's Trip
 	 * @param to (Station) the arrival Station of the Ticket's Trip
 	 * @param points (int) the number of points associated to the Ticket's Trip
@@ -51,19 +49,15 @@ public final class Ticket implements Comparable<Ticket> {
 	public Ticket(Station from, Station to, int points) {
 		this(List.of(new Trip(from, to, points)));
 	}
-	
-
-	
 
 	/**
-	 * 
 	 * @return (String) the textual representation of the Ticket
 	 */
 	public String text() {
 		return Text;
 	}
+
 	/**
-	 * 
 	 * @param connectivity (StationConnectivity) 
 	 * @return (int) the maximal points if at least two Stations are connected, 
 	                 - minimal points possible if none of the Stations are connected
@@ -91,6 +85,7 @@ public final class Ticket implements Comparable<Ticket> {
 	public int compareTo(Ticket that) {
 		return this.Text.compareTo(that.Text);
 	}
+
 	/**
 	 * Overrides the toString() method
 	 * @return (String) the textual representation of the Ticket

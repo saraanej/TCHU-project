@@ -171,12 +171,11 @@ public final class Route {
 	             if the route is not a tunnel or if drawnCards doesn't contain exactly three cards
 	 */
 	public int additionalClaimCardsCount(SortedBag<Card> claimCards, SortedBag<Card> drawnCards) {
-		Preconditions.checkArgument(level.equals(Level.UNDERGROUND) && drawnCards.size() == 3);
-		
+		Preconditions.checkArgument(level.equals(Level.UNDERGROUND));
+		Preconditions.checkArgument(drawnCards.size() == 3);
 		int additionalClaimCardsCount = 0;
 		Map<Card, Integer> drawnElements = new HashMap<>();
 		int loco = 0;
-
 		for (Card c: drawnCards.toSet()) {
 			int n = drawnCards.countOf(c);
 			drawnElements =

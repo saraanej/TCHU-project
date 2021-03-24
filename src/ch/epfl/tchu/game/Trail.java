@@ -18,10 +18,8 @@ public final class Trail {
 	private final Station station2;
 	private final List<Route> routes;
 	
-	
 	/**
 	 * private constructor for a Trail
-	 * 
 	 * @param station1 (Station) the departure's Station of the Trail
 	 * @param station2 (Station) the arrival's Station of the Trail
 	 * @param routes (List<Route>) all the roads taken by the Trail 
@@ -35,12 +33,10 @@ public final class Trail {
 	
 	
 	/**
-	 * 
-	 * @param routes (List<Route>) :
+	 * @param routes (List<Route>) : the routes owned by the player, used to determine the longest path
 	 * @return (Trail) the longest path in the given list of routes
 	 */
 	public static Trail longest(List<Route> routes) {
-		
 		Trail longestTrail = new Trail(null, null, List.of());
 		
 		if (routes == (null) || routes.isEmpty()) {
@@ -102,8 +98,11 @@ public final class Trail {
     	}
     	return String.format("%s - %s (%s)", station1, station2, length);
     }
-    
 
+	/**
+	 * computes the length of the Trail using the length of its routes
+	 * @return (int) the length of this Trail
+	 */
 	private int computeLength() {
 		if (routes == null || routes.isEmpty()) {
 			return 0;
