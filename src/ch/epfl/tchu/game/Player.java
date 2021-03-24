@@ -19,7 +19,7 @@ public interface Player {
     /**
      * represents the three types of actions that a player can make in a Tchu play
      */
-    public enum TurnKind{
+     public enum TurnKind{
 
         DRAW_TICKETS,
         DRAW_CARDS,

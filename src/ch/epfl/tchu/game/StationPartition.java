@@ -18,7 +18,6 @@ public final class StationPartition implements StationConnectivity{
     private final int links[];
 
     /**
-     *
      * private constructor
      * @param links (int[]) : list containing the links linking each element to the representative of their subset
      */
@@ -58,13 +57,12 @@ public final class StationPartition implements StationConnectivity{
         public Builder(int stationCount){
             Preconditions.checkArgument(stationCount >= 0);
             stations = new int[stationCount];
-            for(int i = 0; i < stationCount; ++i ){
+            for(int i = 0; i < stationCount; ++i){
                 stations[i] = i;
             }
         }
 
         /**
-         *
          * joins the subsets containing the two stations by electing one of the two representatives
          * as representative of the joined subset
          * @param s1 (Station) : the first given station
@@ -79,7 +77,6 @@ public final class StationPartition implements StationConnectivity{
         }
 
         /**
-         *
          * @return (StationPartition) the station partition corresponding to the profound partition that is being created
          */
         public StationPartition build(){
@@ -91,7 +88,6 @@ public final class StationPartition implements StationConnectivity{
         }
 
         /**
-         *
          * @param stationId (int) : a station identification number
          * @return the identification number of the representative of the subset containing the station
          */
@@ -101,8 +97,7 @@ public final class StationPartition implements StationConnectivity{
             if(index == representative){
                 return representative;
             } else {
-
-                do{
+                do {
                     index = representative;
                     representative = stations[index];
                 } while(representative != index);

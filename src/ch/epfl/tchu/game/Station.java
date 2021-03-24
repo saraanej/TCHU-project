@@ -15,7 +15,6 @@ public final class Station {
 	
 	/**
 	 * Public constructor of a station
-	 * 
 	 * @param id (int) Station's identification number, positive and specific to each station
 	 * @param name (String) Station's name, can be the same for different stations of a same country, cannot be null
 	 * 
@@ -23,8 +22,8 @@ public final class Station {
 	                 if the identification number is not between 0 and 50
 	 */
 	public Station (int id, String name) {
-		Preconditions.checkArgument(id>=0 && name != null);
-		
+		Preconditions.checkArgument(id>=0);
+		Preconditions.checkArgument(name != null);
 		this.id = id;
 		this.name = name;
 	}
