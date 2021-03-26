@@ -2,7 +2,9 @@ package ch.epfl.tchu.game;
 
 import ch.epfl.tchu.Preconditions;
 import ch.epfl.tchu.SortedBag;
+import ch.epfl.tchu.gui.Info;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -16,7 +18,7 @@ import java.util.Random;
  * @author Sara Anejjar (329905)
  *
  */
-public class Game implements Player{
+public class Game{
 
     /**
      * simulates a Tchu's play for the given players
@@ -32,60 +34,45 @@ public class Game implements Player{
         Preconditions.checkArgument(players.size() == 2);
         Preconditions.checkArgument(playerNames.size() == 2);
 
+        /*Info player1 = new Info(playerNames.get(PlayerId.PLAYER_1));
+        Info player2 = new Info(playerNames.get(PlayerId.PLAYER_2));*/
+
+
+        // L'ordre est important !!
+
+        players.forEach((key,value) -> { value.initPlayers(key,playerNames); });
+        //methode premier joueur
+        players.forEach((key,value) -> { value.setInitialTicketChoice(tickets); });
+        players.forEach((key,value) -> { value.chooseInitialTickets(); });
+        //methode receive info
+
+        Player currentPlayer = players.get(PlayerId.PLAYER_1); // A CHANGER
+
+        currentPlayer.nextTurn();
+
+        switch(currentPlayer.nextTurn()){
+            case DRAW_CARDS:
+                currentPlayer.drawSlot();
+                currentPlayer.drawSlot();
+            case DRAW_TICKETS:
+                currentPlayer.chooseTickets(tickets);
+            case CLAIM_ROUTE:
+                currentPlayer.claimedRoute();
+                currentPlayer.initialClaimCards();
+                if(currentPlayer.claimedRoute().equals(Route.Level.UNDERGROUND)
+                ) {
+                    //currentPlayer.chooseAdditionalCards();
+                }
+        }
+
+
+
+
+
+
+
+
     }
 
-    @Override
-    public void initPlayers(PlayerId ownId, Map<PlayerId, String> playerNames) {
 
-    }
-
-    @Override
-    public void receiveInfo(String info) {
-
-    }
-
-    @Override
-    public void updateState(PublicGameState newState, PlayerState ownState) {
-
-    }
-
-    @Override
-    public void setInitialTicketChoice(SortedBag<Ticket> tickets) {
-
-    }
-
-    @Override
-    public SortedBag<Ticket> chooseInitialTickets() {
-        return null;
-    }
-
-    @Override
-    public TurnKind nextTurn() {
-        return null;
-    }
-
-    @Override
-    public SortedBag<Ticket> chooseTickets(SortedBag<Ticket> options) {
-        return null;
-    }
-
-    @Override
-    public int drawSlot() {
-        return 0;
-    }
-
-    @Override
-    public Route claimedRoute() {
-        return null;
-    }
-
-    @Override
-    public SortedBag<Card> initialClaimCards() {
-        return null;
-    }
-
-    @Override
-    public SortedBag<Card> chooseAdditionalCards(List<SortedBag<Card>> options) {
-        return null;
-    }
 }
