@@ -4,10 +4,7 @@ import ch.epfl.tchu.Preconditions;
 import ch.epfl.tchu.SortedBag;
 import ch.epfl.tchu.gui.Info;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 /**
  * Modelizes a Tchu's play
@@ -34,44 +31,64 @@ public class Game{
         Preconditions.checkArgument(players.size() == 2);
         Preconditions.checkArgument(playerNames.size() == 2);
 
-        /*Info player1 = new Info(playerNames.get(PlayerId.PLAYER_1));
-        Info player2 = new Info(playerNames.get(PlayerId.PLAYER_2));*/
+        GameState gameState = GameState.initial(tickets,rng);
+
+        Player currentPlayer = players.get(gameState.currentPlayerId());
+        Player otherPlayer = players.get(gameState.currentPlayerId().next());
 
 
-        // L'ordre est important !!
+        Info infoCurrentPlayer = new Info(playerNames.get(gameState.currentPlayerId()));
+        Info infoOtherPlayer = new Info(playerNames.get(gameState.currentPlayerId().next()));
 
-        players.forEach((key,value) -> { value.initPlayers(key,playerNames); });
-        //methode premier joueur
-        players.forEach((key,value) -> { value.setInitialTicketChoice(tickets); });
-        players.forEach((key,value) -> { value.chooseInitialTickets(); });
-        //methode receive info
+        //DEBUT DE PARTIE
+        players.forEach((id,player) -> { player.initPlayers(id,playerNames); });
+        currentPlayer.receiveInfo(infoCurrentPlayer.willPlayFirst());
+        players.forEach((id,player) -> { player.setInitialTicketChoice(tickets); });
+        players.forEach((id,player) -> { player.chooseInitialTickets(); });
+        currentPlayer.receiveInfo(infoCurrentPlayer.keptTickets(currentPlayer.chooseTickets(tickets).size()));
+        otherPlayer.receiveInfo(infoOtherPlayer.keptTickets(otherPlayer.chooseTickets(tickets).size()));
 
-        Player currentPlayer = players.get(PlayerId.PLAYER_1); // A CHANGER
+
+        // MILIEU DE PARTIE
 
         currentPlayer.nextTurn();
 
         switch(currentPlayer.nextTurn()){
+            case DRAW_TICKETS:
+                currentPlayer.chooseTickets(tickets);
             case DRAW_CARDS:
                 currentPlayer.drawSlot();
                 currentPlayer.drawSlot();
-            case DRAW_TICKETS:
-                currentPlayer.chooseTickets(tickets);
             case CLAIM_ROUTE:
                 currentPlayer.claimedRoute();
                 currentPlayer.initialClaimCards();
                 if(currentPlayer.claimedRoute().equals(Route.Level.UNDERGROUND)
+
                 ) {
                     //currentPlayer.chooseAdditionalCards();
                 }
         }
 
+        if(gameState.lastTurnBegins()){
+
+        }
 
 
 
+    }
 
-
-
-
+    /**
+     *
+     * @param gameState (GameState) : the state of the actual play
+     * @param n (int) : number of topCards wanted with n excluded
+     * @return (SortedBag<Card>) the first n cards in the deck
+     */
+    private SortedBag<Card> topCards(GameState gameState, int n){
+        List<Card> topCards = new ArrayList<>();
+        for(int i = 0; i < n; ++i){
+            topCards.add(gameState.topCard());
+        }
+        return SortedBag.of(topCards);
     }
 
 

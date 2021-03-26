@@ -22,14 +22,14 @@ public final class GameState extends PublicGameState{
     /**
      * private constructor
      *
-     * @param gameDeck (Deck) : the ticket's deck
+     * @param gameDeck (Deck<Ticket>) : the ticket's deck
      * @param cardState (PublicCardState) : the public state of the cars and locomotives
      * @param currentPlayerId (PlayerId) : the current player's identity
      * @param playerState (Map<PlayerId, PlayerState>) : the public state of the players
      * @param lastPlayer (PlayerId) : the last player's identity. can be null
      *
      */
-    private GameState(Deck gameDeck, CardState cardState, PlayerId currentPlayerId, Map<PlayerId, PlayerState> playerState,  PlayerId lastPlayer){
+    private GameState(Deck<Ticket> gameDeck, CardState cardState, PlayerId currentPlayerId, Map<PlayerId, PlayerState> playerState,  PlayerId lastPlayer){
         super(gameDeck.size(), cardState, currentPlayerId, Map.copyOf(playerState), lastPlayer);
         this.gameDeck = gameDeck;
         this.cardState = cardState;
