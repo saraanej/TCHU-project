@@ -38,7 +38,6 @@ public final class GameState extends PublicGameState{
 
     /**
      * static constructor method
-     *
      * @param tickets (SortedBag<Ticket>) : the tickets' deck contains these given tickets
      * @param rng (Random) : the given random generator
      * @return (GameState) the initial state of a Tchu's play
@@ -52,11 +51,10 @@ public final class GameState extends PublicGameState{
         playerState.put(PlayerId.PLAYER_1, PlayerState.initial(initialCards1));
         playerState.put(PlayerId.PLAYER_2, PlayerState.initial(initialCards2));
         return new GameState(Deck.of(tickets,rng), CardState.of(deckCard),
-                             PlayerId.ALL.get(rng.nextInt(2)), playerState, null);
+                             PlayerId.ALL.get(rng.nextInt(PlayerId.COUNT)), playerState, null);
     }
 
     /**
-     *
      * @param playerId (PlayerId) : a game player
      * @return (PlayerState) the complete state of the given player
      */
