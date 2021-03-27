@@ -13,7 +13,6 @@ import ch.epfl.tchu.game.Trail;
  * 
  * @author Yasmin Ben Rahhal (329912)
  * @author Sara Anejjar (329905)
- *
  */
 
 public final class Info {
@@ -61,7 +60,6 @@ public final class Info {
 				return "";
 		    }
 		}
-		
 	}
 	
 	/**
@@ -97,7 +95,6 @@ public final class Info {
 	/**
 	 * @return (String) the message declaring that the player can play
 	 */
-	
 	public String canPlay() {
 		return String.format(StringsFr.CAN_PLAY, playerName);
 	}
@@ -165,19 +162,16 @@ public final class Info {
 	
 		String cost = String.format(StringsFr.ADDITIONAL_CARDS_ARE, elementCardList(drawnCards));
 		
-		if(additionalCost==0) {
+		if(additionalCost == 0) {
 			cost += StringsFr.NO_ADDITIONAL_COST;
-
 		} else {
 			cost += String.format(StringsFr.SOME_ADDITIONAL_COST, 
 					              additionalCost, 
 					              StringsFr.plural(additionalCost));
 		}
-		
-        return cost;	
+        return cost;
      }
-	
-	
+
 	/**
 	 * @param (Route) route : the given tunnel route
 	 * @return (String) the message declaring that the player couldn't 
@@ -232,7 +226,6 @@ public final class Info {
 	 * @return (String) the message declaring the details of the route
 	 */
 	private static String routeName(Route route) {
-
 		String routeName = String.format("%s%s%s" ,
 				                  route.station1(),
 				                  StringsFr.EN_DASH_SEPARATOR,
@@ -244,14 +237,11 @@ public final class Info {
 	 * @param (Trail) trail : the given trail
 	 * @return (String) the message declaring the details of the trail
 	 */
-
 	private static String trailName(Trail trail){
-
 		String trailName = String.format("%s%s%s" ,
 				           trail.station1(),
 				           StringsFr.EN_DASH_SEPARATOR,
 				           trail.station2());
-
 		return trailName;
 	}
 	
@@ -276,15 +266,11 @@ public final class Info {
 		if(sub.size() == 1){
 			return sub.get(0);
 		} else {
-
-			for (int j = 0; j < sub.size() - 1; j++) {
+			for (int j = 0; j < sub.size() - 1; ++j) {
 				elements.add(sub.get(j));
 			}
-
 			joinedElements += String.join(", ", elements);
-
 			elementCardList += String.format("%s%s%s", joinedElements, StringsFr.AND_SEPARATOR, sub.get(sub.size() - 1));
-
 			return elementCardList;
 		}
 	}
@@ -294,7 +280,6 @@ public final class Info {
 	 * @return (String) the message containing all the players' names
 	 *                  contained in the given list
 	 */
-
 	private static String elementStringList(List<String> playerNames) {
 		String names = String.format("%s%s%s",
 				                     playerNames.get(0),

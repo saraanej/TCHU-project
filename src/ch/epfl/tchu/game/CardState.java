@@ -14,7 +14,6 @@ import java.util.Random;
  * 
  * @author Yasmin Ben Rahhal (329912)
  * @author Sara Anejjar (329905)
- *
  */
 
 public final class CardState extends PublicCardState {
@@ -22,15 +21,12 @@ public final class CardState extends PublicCardState {
 	private final Deck<Card> deck;
 	private final SortedBag<Card> discard;
 
-
 	/**
 	 * default constructor for the card's state
+	 *
 	 * @param faceUpCards (List<Card>) the list of the visible cards
 	 * @param deck (Deck<Card>) contains the cards of the deck
 	 * @param discard (SortedBag<Card>) contains the discarded cards of the game
-	 * @throws IllegalArgumentException
-	             if the list of the visible cards doesn't contain exactly five cards
-	             if the sizes of the deck or the discard pile are negative
 	 */
 	private CardState(List<Card> faceUpCards, Deck<Card> deck, SortedBag<Card> discard) {
 		super(faceUpCards, deck.size(), discard.size());

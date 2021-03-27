@@ -8,21 +8,20 @@ import ch.epfl.tchu.SortedBag;
 /**
  * Modelizes a route
  * 
- * 
  * @author Yasmin Ben Rahhal (329912)
  * @author Sara Anejjar (329905)
- *
  */
 public final class Route {
 
 	private final String id;
-	private final Station station1;
-	private final Station station2;
+	private final Station station1, station2;
 	private final int length;
 	private final Level level;
 	private final Color color;
 
-
+	/**
+	 * Modelizses the route's level
+	 */
 	public enum Level{
 		OVERGROUND,
 		UNDERGROUND;
@@ -42,26 +41,23 @@ public final class Route {
 	             if the route's identity or first station or second station or level are equal to null
 	 */
 	public Route(String id, Station station1, Station station2, int length, Level level, Color color){
-		Preconditions.checkArgument(!station1.equals(station2) 
-				                    && length >= Constants.MIN_ROUTE_LENGTH 
-				                    && length <= Constants.MAX_ROUTE_LENGTH);
-		
+		Preconditions.checkArgument(!station1.equals(station2));
+		Preconditions.checkArgument(length >= Constants.MIN_ROUTE_LENGTH);
+		Preconditions.checkArgument(length <= Constants.MAX_ROUTE_LENGTH);
+
 		this.id = Objects.requireNonNull(id);
 		this.station1 = Objects.requireNonNull(station1);
 		this.station2 = Objects.requireNonNull(station2);
 		this.level = Objects.requireNonNull(level);
 		this.color = color;
 		this.length = length;
-
 	}
 	
 	/**
 	 * public getter for the route's identity
 	 * @return (String) the route's identity;
 	 */
-	public String id() {
-		return this.id;
-	}
+	public String id() { return this.id; }
 	
 	/**
 	 * public getter for the first station of the route
@@ -107,14 +103,12 @@ public final class Route {
 	 * @return (List<Station>) the list of the two stations of the route, in the same order as in the route's constructor
 	 */
 	public List<Station> stations(){
-		List<Station> stations = new ArrayList<Station>();
-		stations.add(station1);
-		stations.add(station2);
-		return List.copyOf(stations);
+		List<Station> stations = List.of(station1, station2);
+		return stations;
 	}
 	
 	/**
-	 * @param station (Station) to which we want its opposite one
+	 * @param station (Station) the station to which we want its opposite one
 	 * @return (Station) the opposite station to the one given in the parameters
 	 * @throws IllegalArgumentException 
 	             if the station given in parameters doesn't correspond to any of the stations of the actual route
@@ -129,7 +123,9 @@ public final class Route {
 	                                   sorted in increasing order of the number of locomotive cards and then by color
 	 */
 	public List<SortedBag<Card>> possibleClaimCards(){
+
 		List<SortedBag<Card>> possibleClaimCard = new ArrayList<SortedBag<Card>>();
+
 		if(level.equals(Level.OVERGROUND)) {
 			if(color == null) {
 				for(Card c : Card.CARS) {
@@ -137,6 +133,7 @@ public final class Route {
 			} else {
 				possibleClaimCard.add(SortedBag.of(length, Card.of(color)));}
 		}
+
         if(level.equals(Level.UNDERGROUND)) {
 			List<SortedBag<Card>> inter = new ArrayList<SortedBag<Card>>();
 			if(color == null) {
@@ -146,7 +143,8 @@ public final class Route {
 				}
 				inter.add(SortedBag.of(length, Card.LOCOMOTIVE));
 		    } else {
-		    	for(int i = 0; i <= this.length ; ++i) { // si route de couleur précise
+		    	for(int i = 0; i <= this.length ; ++i) {
+
 		    		int NbCard = length - i;
 		    		int NbLoco = i;
 
@@ -173,28 +171,29 @@ public final class Route {
 	public int additionalClaimCardsCount(SortedBag<Card> claimCards, SortedBag<Card> drawnCards) {
 		Preconditions.checkArgument(level.equals(Level.UNDERGROUND));
 		Preconditions.checkArgument(drawnCards.size() == 3);
+
 		int additionalClaimCardsCount = 0;
+		int nbLocoCards = 0;
 		Map<Card, Integer> drawnElements = new HashMap<>();
-		int loco = 0;
+
 		for (Card c: drawnCards.toSet()) {
 			int n = drawnCards.countOf(c);
-			drawnElements =
-					Map.of(c, n);
+			drawnElements = Map.of(c, n);
 
 			for(Card claim : claimCards.toSet()){
 				if(claim.equals(Card.LOCOMOTIVE)){
-					++loco;
+					++nbLocoCards;
 				}
 				if(drawnElements.containsKey(claim)){
-					additionalClaimCardsCount+=drawnElements.get(claim);
+					additionalClaimCardsCount += drawnElements.get(claim);
 				}
 			}
-			if(drawnElements.containsKey(Card.LOCOMOTIVE) && loco == 0){
-				additionalClaimCardsCount+=drawnElements.get(Card.LOCOMOTIVE);
+
+			if(drawnElements.containsKey(Card.LOCOMOTIVE) && nbLocoCards == 0){
+				additionalClaimCardsCount += drawnElements.get(Card.LOCOMOTIVE);
 			}
 		}
 	  return additionalClaimCardsCount;
-	  
 	}
 	
 	/**
@@ -212,14 +211,13 @@ public final class Route {
 	}
 
 	/**
-	 *
-	 * @param LotsOfCards (List<SortedBag<Card>>) : the list we want to sort by the number of cards first and then by the priority in the enum type
+	 * @param LotOfCards (List<SortedBag<Card>>) : the list we want to sort by the number of cards first and then by the priority in the enum type
 	 * @return (List<SortedBag<Card>>) the new sorted list
 	 */
-	private List<SortedBag<Card>> newSortedList(List<SortedBag<Card>> LotsOfCards){
+	private List<SortedBag<Card>> newSortedList(List<SortedBag<Card>> LotOfCards){
 		List<SortedBag<Card>> newList = new ArrayList<>();
 		for(int i = 0; i < length(); i++){
-			for(SortedBag<Card> sBag : LotsOfCards){
+			for(SortedBag<Card> sBag : LotOfCards){
 				if(sBag.countOf(Card.LOCOMOTIVE) == i){
 					newList.add(sBag);
 				}

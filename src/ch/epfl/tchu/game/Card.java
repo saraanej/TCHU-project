@@ -3,7 +3,6 @@ package ch.epfl.tchu.game;
 import java.util.List;
 
 /**
- * 
  * Modelizes the different types of cards used in the game
  * 
  * @author Yasmin Benrahhal (329912)
@@ -21,25 +20,37 @@ public enum Card {
 	RED (Color.RED),
 	WHITE (Color.WHITE),
 	LOCOMOTIVE (null);
-	
-	public final static List<Card> ALL = List.of(Card.values());
-	public final static int COUNT = ALL.size(); 
-	
+
+	private Color colorName;
+
 	/**
 	 * List containing only the wagon cards
 	 */
 	public final static List<Card> CARS = List.of(
-	BLACK, VIOLET, BLUE, GREEN, YELLOW, ORANGE, RED, WHITE);
+			BLACK, VIOLET, BLUE, GREEN, YELLOW, ORANGE, RED, WHITE);
+	public final static List<Card> ALL = List.of(Card.values());
+	public final static int COUNT = ALL.size();
 
+	/**
+	 * Constructor initializing the color of the wagon cards.
+	 * @param color (Color) : the color of the wagon's card
+	 */
+	Card(Color color) {
+		colorName = color;
+	}
+
+	/**
+	 * @return (Color) the color of the card's type if it's a wagon card. null if not.
+	 */
+	public Color color() {
+		return (this.colorName == null) ?  null :  this.colorName;
+	}
 	
 	/**
-	 * 
 	 * @param color (Color) : the card's color.
 	 * @return the type of the corresponding wagon card depending on the card's color.
 	 */
-	
 	public static Card of(Color color) {
-		
 		switch(color) {
 		case BLACK : return Card.BLACK;
 		case VIOLET : return Card.VIOLET; 
@@ -51,30 +62,6 @@ public enum Card {
 		case WHITE : return Card.WHITE;
 		default : return null;
 		}
-		
-	}
-	
-	/**
-	 * Constructor initializing the color of the wagon cards. 
-	 * @param color (Color) : the color of the wagon's cards
-	 */
-	private Card(Color color) {
-		colorName = color;
-	}
-	
-	private Color colorName;
-	
-	private Color colorName() {
-		return colorName;
-	}
-	
-	
-	/**
-	 * 
-	 * @return (Color) the color of the card's type if it's a wagon card. null if not.
-	 */
-	public Color color() {
-		return (this.colorName() == null) ?  null :  this.colorName();	
 	}
 	
 }
