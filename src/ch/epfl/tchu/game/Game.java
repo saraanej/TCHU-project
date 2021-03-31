@@ -15,7 +15,7 @@ import java.util.*;
  * @author Sara Anejjar (329905)
  *
  */
-public class Game{
+public class Game {
 
     /**
      * simulates a Tchu's play for the given players
