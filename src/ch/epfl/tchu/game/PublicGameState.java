@@ -100,13 +100,11 @@ public class PublicGameState {
      */
     public List<Route> claimedRoutes(){
         List<Route> routes = new ArrayList<>();
-        for(Route CProads : playerState(currentPlayerId).routes()){
+        for(Route CProads : currentPlayerState().routes()){
             routes.add(CProads);
         }
-        if(lastPlayer != null){
-            for(Route LProads : playerState(lastPlayer).routes()){
-                routes.add(LProads);
-            }
+        for(Route NProads : playerState(currentPlayerId.next()).routes()){
+            routes.add(NProads);
         }
         return routes;
     }
