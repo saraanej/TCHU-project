@@ -37,13 +37,15 @@ public class Game {
         GameState gameState = GameState.initial(tickets,rng);
 
         Player player1 = players.get(PlayerId.PLAYER_1);
-        Player player2 = players.get(PlayerId.PLAYER_1);
+        Player player2 = players.get(PlayerId.PLAYER_2);
 
+        Info infoPlayer1 = new Info(playerNames.get(PlayerId.PLAYER_1);
+        Info infoPlayer2 = new Info(playerNames.get(PlayerId.PLAYER_2);
 
         Player currentPlayer = players.get(gameState.currentPlayerId());
         Player otherPlayer = players.get(gameState.currentPlayerId().next());
 
-
+       //Le currentplayer change c est pas une valeur fixe pour initiliser les noms avec (fait plus haut avec playerID1 et 2 directemnt)
         Info infoCurrentPlayer = new Info(playerNames.get(gameState.currentPlayerId()));
         Info infoOtherPlayer = new Info(playerNames.get(gameState.currentPlayerId().next()));
 
@@ -68,9 +70,7 @@ public class Game {
 
         //players.forEach((id,player) -> { player.setInitialTicketChoice(tickets); });
         //players.forEach((id,player) -> { player.chooseInitialTickets(); });
-
-
-
+        
         currentPlayer.receiveInfo(infoCurrentPlayer.keptTickets(currentPlayer.chooseTickets(tickets).size())); //ARGUMENT tickets est faux
         otherPlayer.receiveInfo(infoOtherPlayer.keptTickets(otherPlayer.chooseTickets(tickets).size()));
 
