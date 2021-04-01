@@ -40,8 +40,6 @@ public class Game {
         // NOTE POUR RECEIVEINFO TROUVER LE MOYEN QU ELLE NE DEPENDE QUE DE PLAYER 1 OU 2 CA FACILITERA AU LIEU DE REMTTRE A JOUR A CHAQUE FOIS
 
         GameState gameState = GameState.initial(tickets,rng);
-        //  PublicGameState publicGameState =
-
 
         Player player1 = players.get(PlayerId.PLAYER_1);
         Player player2 = players.get(PlayerId.PLAYER_2);
@@ -73,17 +71,15 @@ public class Game {
         SortedBag<Ticket> initialTickets = gameState.topTickets(5);
         gameState = gameState.withoutTopTickets(5);
         player1.setInitialTicketChoice(initialTickets);
-
         //player 2 chooses tickets
         initialTickets = gameState.topTickets(5);
         gameState = gameState.withoutTopTickets(5);
         player2.setInitialTicketChoice(initialTickets);
 
-    //    player1.updateState(,gameState.playerState(PlayerId.PLAYER_1)); BESOIN DE CREER UN PUBLICGAMESTATE POUR LAPPELER (DECLARATION NON FINIE PLUS HAUT)
+        updateState(players,gameState);
         //tickets chosen added to player1
         SortedBag<Ticket> chosenTickets1 = player1.chooseInitialTickets();
         gameState = gameState.withInitiallyChosenTickets(PlayerId.PLAYER_1, chosenTickets1);
-
         //tickets chosen added to player 2
         SortedBag<Ticket> chosenTickets2 = player2.chooseInitialTickets();
         gameState = gameState.withInitiallyChosenTickets(PlayerId.PLAYER_2, chosenTickets2);
@@ -94,15 +90,21 @@ public class Game {
 
         // MILIEU DE PARTIE
 
+        SortedBag<Ticket> drawnTickets;
+        SortedBag<Ticket> chosenTickets;
+
         while(!gameState.lastTurnBegins()) {
-           // currentPlayer.nextTurn(); //il est deja appele a la ligne 93
-            gameState = gameState.forNextTurn(); // je suis pas sure si c est a appeler au debut ou a la fin de la boucle a voir apres avec les regles
-            currentPlayer = players.get(gameState.currentPlayerId());
+            updateState(players,gameState);
 
             switch (currentPlayer.nextTurn()) {
                 case DRAW_TICKETS:
-                    currentPlayer.chooseTickets(tickets);
+                    drawnTickets = gameState.topTickets(3);
+                    gameState = gameState.withoutTopTickets(3);
+                    chosenTickets = currentPlayer.chooseTickets(drawnTickets);
+                    gameState = gameState.withChosenAdditionalTickets(drawnTickets,chosenTickets);
                 case DRAW_CARDS:
+                    updateState(players,gameState);
+
                     currentPlayer.drawSlot();
                     currentPlayer.drawSlot();
                 case CLAIM_ROUTE:
@@ -117,6 +119,9 @@ public class Game {
                         //currentPlayer.chooseAdditionalCards();
                     }
             }
+
+            gameState = gameState.forNextTurn();
+            currentPlayer = players.get(gameState.currentPlayerId());
         }
 
         // FIN DE PARTIE
@@ -127,6 +132,10 @@ public class Game {
 
 
 
+    }
+
+    private static void updateState(Map<PlayerId, Player> players, GameState gameState){
+        players.forEach((id, player) -> {player.updateState(gameState, gameState.playerState(id));});
     }
 
     /**
