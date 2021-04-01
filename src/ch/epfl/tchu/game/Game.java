@@ -31,10 +31,6 @@ public class Game {
         Preconditions.checkArgument(players.size() == 2);
         Preconditions.checkArgument(playerNames.size() == 2);
 
-
-
-        // PROBLEME LE GAMESTATE CHANGE JAMS DU COUP LE CURRENTPLAYER NON PLUS
-
         //Faut creer la methode private de receiveinfo apres
 
         // NOTE POUR RECEIVEINFO TROUVER LE MOYEN QU ELLE NE DEPENDE QUE DE PLAYER 1 OU 2 CA FACILITERA AU LIEU DE REMTTRE A JOUR A CHAQUE FOIS
@@ -50,37 +46,32 @@ public class Game {
         Player currentPlayer = players.get(gameState.currentPlayerId());
         Player otherPlayer = players.get(gameState.currentPlayerId().next());
 
-       //Le currentplayer change c est pas une valeur fixe pour initiliser les noms avec (fait plus haut avec playerID1 et 2 directemnt)
+        //Le currentplayer change c est pas une valeur fixe pour initiliser les noms avec (fait plus haut avec playerID1 et 2 directemnt)
 
         Info infoCurrentPlayer = new Info(playerNames.get(gameState.currentPlayerId()));
         Info infoOtherPlayer = new Info(playerNames.get(gameState.currentPlayerId().next()));
 
-
         /*Map<Player, Info> playersInfo = new HashMap<>();
         playersInfo.put(player1, infoPlayer1);
         playersInfo.put(player2, infoPlayer2);*/
-
-
 
         //DEBUT DE PARTIE
 
         players.forEach((id,player) -> { player.initPlayers(id,playerNames); });
         players.forEach((id,player) -> { player.receiveInfo(infoCurrentPlayer.willPlayFirst()); });
 
-        //Player1 chooses tickets
+        //Player1 and 2 chooses tickets
         SortedBag<Ticket> initialTickets = gameState.topTickets(5);
         gameState = gameState.withoutTopTickets(5);
         player1.setInitialTicketChoice(initialTickets);
-        //player 2 chooses tickets
         initialTickets = gameState.topTickets(5);
         gameState = gameState.withoutTopTickets(5);
         player2.setInitialTicketChoice(initialTickets);
 
         updateState(players,gameState);
-        //tickets chosen added to player1
+        //tickets chosen added to player1 and 2
         SortedBag<Ticket> chosenTickets1 = player1.chooseInitialTickets();
         gameState = gameState.withInitiallyChosenTickets(PlayerId.PLAYER_1, chosenTickets1);
-        //tickets chosen added to player 2
         SortedBag<Ticket> chosenTickets2 = player2.chooseInitialTickets();
         gameState = gameState.withInitiallyChosenTickets(PlayerId.PLAYER_2, chosenTickets2);
 
@@ -104,16 +95,15 @@ public class Game {
                     gameState = gameState.withChosenAdditionalTickets(drawnTickets,chosenTickets);
                 case DRAW_CARDS:
                     updateState(players,gameState);
-
-                    currentPlayer.drawSlot();
-                    currentPlayer.drawSlot();
+                    gameState = gameState.withDrawnFaceUpCard(currentPlayer.drawSlot());
+                    gameState = gameState.withDrawnFaceUpCard(currentPlayer.drawSlot());
                 case CLAIM_ROUTE:
                     Route route = currentPlayer.claimedRoute();
                     SortedBag<Card> claimCards = currentPlayer.initialClaimCards();
-                    int nbAdditionalCards = route.additionalClaimCardsCount(claimCards, topCards(gameState,3));
+                    int nbAdditionalCards = route.additionalClaimCardsCount(claimCards, topCards(gameState,3,rng));
                     if (route.equals(Route.Level.UNDERGROUND)
                             && nbAdditionalCards >= 1
-                            && gameState.currentPlayerState().possibleAdditionalCards(nbAdditionalCards, claimCards,topCards(gameState,3)).contains(gameState.currentPlayerState().cards())
+                            && gameState.currentPlayerState().possibleAdditionalCards(nbAdditionalCards, claimCards,topCards(gameState,3,rng)).contains(gameState.currentPlayerState().cards())
                              // A MODIFIER IL FAUT VERIFIER QUE LES CARTES DU JOUEUR CONTIENNENT UNE DES COMPO DE POSSIBLEADDITIONALCARDS
                     ) {
                         //currentPlayer.chooseAdditionalCards();
@@ -144,10 +134,12 @@ public class Game {
      * @param n (int) : number of topCards wanted with n excluded
      * @return (SortedBag<Card>) the first n cards in the deck
      */
-    private static SortedBag<Card> topCards(GameState gameState, int n){
+    private static SortedBag<Card> topCards(GameState gameState, int n, Random rng){
+       GameState game = gameState;
         List<Card> topCards = new ArrayList<>();
         for(int i = 0; i < n; ++i){
-            topCards.add(gameState.topCard());
+            game = game.withCardsDeckRecreatedIfNeeded(rng); //Faut faire attention avec topcards faut le but dappeler topCARD TT SEUL A CHAQUE FOIS c pour pouvoir appeler withrecreatedDeckfromdiscard
+            topCards.add(game.topCard());
         }
         return SortedBag.of(topCards);
     }

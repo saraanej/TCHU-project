@@ -26,7 +26,7 @@ public interface Player {
         CLAIM_ROUTE;
 
         public final static List<TurnKind> ALL = List.of(TurnKind.values());
-        }
+     }
 
 
     /**

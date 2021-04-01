@@ -126,7 +126,7 @@ public final class GameState extends PublicGameState{
     /**
      *
      * @param discardedCards (SortedBag<Card>) : the cards that will be added in the discard pile
-     * @return (GameState) this state with the given cards added in the discrad pile
+     * @return (GameState) this state with the given cards added in the discard pile
      */
     public GameState withMoreDiscardedCards(SortedBag<Card> discardedCards){
         return new GameState(gameDeck, cardState.withMoreDiscardedCards(discardedCards),
@@ -224,7 +224,8 @@ public final class GameState extends PublicGameState{
 
     /**
      *
-     * @return (boolean) true if the identity of the last player is null and the current player has two cars left or less. false if not.
+     * @return (boolean) true if the identity of the last player is null and the current player has two cars left or less.
+     *                   false if not.
      */
     public boolean lastTurnBegins(){
         return lastPlayer() == null && currentPlayerState().carCount()<=2;
