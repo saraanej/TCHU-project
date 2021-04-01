@@ -31,6 +31,8 @@ public class Game {
         Preconditions.checkArgument(players.size() == 2);
         Preconditions.checkArgument(playerNames.size() == 2);
 
+
+
         // PROBLEME LE GAMESTATE CHANGE JAMS DU COUP LE CURRENTPLAYER NON PLUS
 
         //Faut creer la methode private de receiveinfo apres
@@ -54,6 +56,13 @@ public class Game {
 
         Info infoCurrentPlayer = new Info(playerNames.get(gameState.currentPlayerId()));
         Info infoOtherPlayer = new Info(playerNames.get(gameState.currentPlayerId().next()));
+
+
+        /*Map<Player, Info> playersInfo = new HashMap<>();
+        playersInfo.put(player1, infoPlayer1);
+        playersInfo.put(player2, infoPlayer2);*/
+
+
 
         //DEBUT DE PARTIE
 
