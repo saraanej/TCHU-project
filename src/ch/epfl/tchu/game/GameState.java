@@ -154,6 +154,7 @@ public final class GameState extends PublicGameState{
      * @throws IllegalArgumentException
      *                        if the given player has at least one ticket
      */
+
     public GameState withInitiallyChosenTickets(PlayerId playerId, SortedBag<Ticket> chosenTickets){
         Preconditions.checkArgument(playerState(playerId).tickets().size() == 0);
         Map<PlayerId, PlayerState> newPlayerState = CopyPlayerState();

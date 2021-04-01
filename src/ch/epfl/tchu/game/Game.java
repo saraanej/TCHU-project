@@ -31,7 +31,14 @@ public class Game {
         Preconditions.checkArgument(players.size() == 2);
         Preconditions.checkArgument(playerNames.size() == 2);
 
+
+        // PROBLEME LE GAMESTATE CHANGE JAMS DU COUP LE CURRENTPLAYER NON PLUS
+
         GameState gameState = GameState.initial(tickets,rng);
+
+        Player player1 = players.get(PlayerId.PLAYER_1);
+        Player player2 = players.get(PlayerId.PLAYER_1);
+
 
         Player currentPlayer = players.get(gameState.currentPlayerId());
         Player otherPlayer = players.get(gameState.currentPlayerId().next());
@@ -43,35 +50,58 @@ public class Game {
         //DEBUT DE PARTIE
         players.forEach((id,player) -> { player.initPlayers(id,playerNames); });
         currentPlayer.receiveInfo(infoCurrentPlayer.willPlayFirst());
-        players.forEach((id,player) -> { player.setInitialTicketChoice(tickets); });
-        players.forEach((id,player) -> { player.chooseInitialTickets(); });
-        currentPlayer.receiveInfo(infoCurrentPlayer.keptTickets(currentPlayer.chooseTickets(tickets).size()));
+
+//Choix de tickets (partie a ameliorer en lambda du coup)
+        //player 1 chooses tickets
+        SortedBag<Ticket> initialTickets = gameState.topTickets(5);
+        gameState = gameState.withoutTopTickets(5);
+        player1.setInitialTicketChoice(initialTickets);
+        SortedBag<Ticket> chosenTickets = player1.chooseInitialTickets();
+        gameState = gameState.withInitiallyChosenTickets(PlayerId.PLAYER_1, chosenTickets);
+
+        //player 2 chooses tickets
+        initialTickets = gameState.topTickets(5);
+        gameState = gameState.withoutTopTickets(5);
+        player2.setInitialTicketChoice(initialTickets);
+        chosenTickets = player2.chooseInitialTickets();
+        gameState = gameState.withInitiallyChosenTickets(PlayerId.PLAYER_2, chosenTickets);
+
+        //players.forEach((id,player) -> { player.setInitialTicketChoice(tickets); });
+        //players.forEach((id,player) -> { player.chooseInitialTickets(); });
+
+
+
+        currentPlayer.receiveInfo(infoCurrentPlayer.keptTickets(currentPlayer.chooseTickets(tickets).size())); //ARGUMENT tickets est faux
         otherPlayer.receiveInfo(infoOtherPlayer.keptTickets(otherPlayer.chooseTickets(tickets).size()));
 
 
         // MILIEU DE PARTIE
 
-        currentPlayer.nextTurn();
+        while(!gameState.lastTurnBegins()) {
+            currentPlayer.nextTurn();
 
-        switch(currentPlayer.nextTurn()){
-            case DRAW_TICKETS:
-                currentPlayer.chooseTickets(tickets);
-            case DRAW_CARDS:
-                currentPlayer.drawSlot();
-                currentPlayer.drawSlot();
-            case CLAIM_ROUTE:
-                currentPlayer.claimedRoute();
-                currentPlayer.initialClaimCards();
-                if(currentPlayer.claimedRoute().equals(Route.Level.UNDERGROUND)
+            switch (currentPlayer.nextTurn()) {
+                case DRAW_TICKETS:
+                    currentPlayer.chooseTickets(tickets);
+                case DRAW_CARDS:
+                    currentPlayer.drawSlot();
+                    currentPlayer.drawSlot();
+                case CLAIM_ROUTE:
+                    currentPlayer.claimedRoute();
+                    currentPlayer.initialClaimCards();
+                    if (currentPlayer.claimedRoute().equals(Route.Level.UNDERGROUND)
 
-                ) {
-                    //currentPlayer.chooseAdditionalCards();
-                }
+                    ) {
+                        //currentPlayer.chooseAdditionalCards();
+                    }
+            }
         }
 
-        if(gameState.lastTurnBegins()){
+        // FIN DE PARTIE
 
-        }
+      /*  if(gameState.lastTurnBegins()){
+        pas besoin avec le while
+        }*/
 
 
 
