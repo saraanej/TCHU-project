@@ -45,7 +45,7 @@ public interface Player {
     /**
      *
      * @param newState (PublicGameState) : the new state of the game
-     * @param ownState (PublicGameState) : the state of the game being played
+     * @param ownState (PlayerState) : the current state of this player
      */
     abstract void updateState(PublicGameState newState, PlayerState ownState);
 

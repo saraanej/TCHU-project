@@ -83,20 +83,24 @@ public class Game {
 
         SortedBag<Ticket> drawnTickets;
         SortedBag<Ticket> chosenTickets;
-
         while(!gameState.lastTurnBegins()) {
-            updateState(players,gameState);
-
+            updateCurrentPlayerState(currentPlayer,gameState, gameState.currentPlayerState());
             switch (currentPlayer.nextTurn()) {
                 case DRAW_TICKETS:
-                    drawnTickets = gameState.topTickets(3);
-                    gameState = gameState.withoutTopTickets(3);
+                    drawnTickets = gameState.topTickets(Constants.IN_GAME_TICKETS_COUNT);
+                    gameState = gameState.withoutTopTickets(Constants.IN_GAME_TICKETS_COUNT);
                     chosenTickets = currentPlayer.chooseTickets(drawnTickets);
                     gameState = gameState.withChosenAdditionalTickets(drawnTickets,chosenTickets);
+                    break;
                 case DRAW_CARDS:
-                    updateState(players,gameState);
-                    gameState = gameState.withDrawnFaceUpCard(currentPlayer.drawSlot());
-                    gameState = gameState.withDrawnFaceUpCard(currentPlayer.drawSlot());
+                    for(int i = 0 ; i < 2; ++i){
+                        updateCurrentPlayerState(currentPlayer,gameState, gameState.currentPlayerState());
+                        int slot = currentPlayer.drawSlot();
+                        if(slot == Constants.DECK_SLOT) gameState = gameState.withBlindlyDrawnCard();
+                        else if( slot <= Constants.FACE_UP_CARDS_COUNT-1 && slot >= 0)
+                            gameState = gameState.withDrawnFaceUpCard(slot);
+                        }
+                    break;
                 case CLAIM_ROUTE:
                     Route route = currentPlayer.claimedRoute();
                     SortedBag<Card> claimCards = currentPlayer.initialClaimCards();
@@ -108,8 +112,8 @@ public class Game {
                     ) {
                         //currentPlayer.chooseAdditionalCards();
                     }
+                    break;
             }
-
             gameState = gameState.forNextTurn();
             currentPlayer = players.get(gameState.currentPlayerId());
         }
@@ -121,9 +125,21 @@ public class Game {
         }*/
 
 
+        updateState(players,gameState);
 
     }
 
+
+    private static void updateCurrentPlayerState(Player current, GameState gameState, PlayerState ownState){
+        current.updateState(gameState, ownState);
+    }
+
+//ATTENTION VERIFIER SI FAUT TJRS UPDATE LES 2 JOUEURS OU JUSTE UN SEUL
+    /**
+     * update both players states
+     * @param players
+     * @param gameState
+     */
     private static void updateState(Map<PlayerId, Player> players, GameState gameState){
         players.forEach((id, player) -> {player.updateState(gameState, gameState.playerState(id));});
     }
