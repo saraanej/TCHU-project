@@ -145,6 +145,8 @@ public class Game {
         }
 
         // FIN DE PARTIE
+        updateState(players,gameState); // pas sur de sa position : ligne 148 ou 175
+
         int pointsPlayer1 = gameState.playerState(PlayerId.PLAYER_1).finalPoints();
         int pointsPlayer2 = gameState.playerState(PlayerId.PLAYER_2).finalPoints();
 
@@ -173,11 +175,8 @@ public class Game {
 
         List<String> names = new ArrayList<>();
         playerNames.forEach((id,name) -> { names.add(name);});
-
         if(winner == null) receiveInfo(players, Info.draw(names, pointsPlayer1));
         else receiveInfo(players, playersInfo.get(winner).won(maxPoints,loserPoints));
-
-        updateState(players,gameState);
     }
 
     private static int longest(Trail longestP1, Trail longestP2){
