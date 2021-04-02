@@ -37,7 +37,7 @@ public class Game {
 
         //Faut creer la methode private de receiveinfo apres
 
-        //NE PAS OUBLIER: AJOUTER LES DSICARDED CARDS
+        //NE PAS OUBLIER: AJOUTER LES DSICARDED CARDS, vheck pour les tickets je pense ca c ft ni ds les methodes de gamestate ni ds game ms a verifier d abord
 
         // NOTE POUR RECEIVEINFO TROUVER LE MOYEN QU ELLE NE DEPENDE QUE DE PLAYER 1 OU 2 CA FACILITERA AU LIEU DE REMTTRE A JOUR A CHAQUE FOIS
 
@@ -89,8 +89,7 @@ public class Game {
 
         SortedBag<Ticket> drawnTickets;
         SortedBag<Ticket> chosenTickets;
-        while(!gameState.lastTurnBegins() && gameState.lastPlayer().equals(gameState.currentPlayerId())) {
-            //updateCurrentPlayerState(currentPlayer,gameState, gameState.currentPlayerState()); il faut update l'état des 2 joueurs
+        while(!gameState.lastTurnBegins() && !gameState.lastPlayer().equals(gameState.currentPlayerId())) {
             updateState(players,gameState);
             switch (currentPlayer.nextTurn()) {
                 case DRAW_TICKETS:
@@ -141,10 +140,6 @@ public class Game {
         }
 
         // FIN DE PARTIE
-
-      /*  if(gameState.lastTurnBegins()){
-        pas besoin avec le while
-        }*/
 
         updateState(players,gameState);
 
