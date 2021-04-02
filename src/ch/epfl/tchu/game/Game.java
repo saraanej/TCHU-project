@@ -71,7 +71,7 @@ public class Game {
 
         // MILIEU DE PARTIE
         boolean lastTurnPlayed = false;
-        while(!gameState.lastPlayer().equals(gameState.currentPlayerId()) && !lastTurnPlayed) {
+        while(!lastTurnPlayed) {
             receiveInfo(players, playersInfo.get(currentPlayer).canPlay());
 
             updateState(players,gameState);
@@ -138,7 +138,7 @@ public class Game {
                     }
                     break;
             }
-            
+
             if (gameState.lastPlayer().equals(gameState.currentPlayerId())) lastTurnPlayed = true;
 
             gameState = gameState.forNextTurn();
