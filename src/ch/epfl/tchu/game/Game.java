@@ -17,6 +17,10 @@ import java.util.*;
  */
 public class Game {
 
+
+    private static final int DRAWN_CARDS_COUNT = 2;
+
+
     /**
      * simulates a Tchu's play for the given players
      *
@@ -32,6 +36,8 @@ public class Game {
         Preconditions.checkArgument(playerNames.size() == 2);
 
         //Faut creer la methode private de receiveinfo apres
+
+        //NE PAS OUBLIER: AJOUTER LES DSICARDED CARDS
 
         // NOTE POUR RECEIVEINFO TROUVER LE MOYEN QU ELLE NE DEPENDE QUE DE PLAYER 1 OU 2 CA FACILITERA AU LIEU DE REMTTRE A JOUR A CHAQUE FOIS
 
@@ -58,7 +64,7 @@ public class Game {
         //DEBUT DE PARTIE
 
         players.forEach((id,player) -> { player.initPlayers(id,playerNames); });
-        players.forEach((id,player) -> { player.receiveInfo(infoCurrentPlayer.willPlayFirst()); });
+        players.forEach((id,player) -> { player.receiveInfo(infoCurrentPlayer.willPlayFirst());});
 
         //Player1 and 2 chooses tickets
         SortedBag<Ticket> initialTickets = gameState.topTickets(Constants.INITIAL_TICKETS_COUNT);
@@ -83,7 +89,7 @@ public class Game {
 
         SortedBag<Ticket> drawnTickets;
         SortedBag<Ticket> chosenTickets;
-        while(!gameState.lastTurnBegins()) {
+        while(!gameState.lastTurnBegins() && gameState.lastPlayer().equals(gameState.currentPlayerId())) {
             //updateCurrentPlayerState(currentPlayer,gameState, gameState.currentPlayerState()); il faut update l'état des 2 joueurs
             updateState(players,gameState);
             switch (currentPlayer.nextTurn()) {
@@ -94,24 +100,39 @@ public class Game {
                     gameState = gameState.withChosenAdditionalTickets(drawnTickets,chosenTickets);
                     break;
                 case DRAW_CARDS:
-                    for(int i = 0 ; i < 2; ++i){
-                        updateState(players,gameState);
+                    for(int i = 0 ; i < DRAWN_CARDS_COUNT; ++i){
+                        updateCurrentPlayerState(currentPlayer,gameState, gameState.currentPlayerState());
                         int slot = currentPlayer.drawSlot();
-                        if(slot == Constants.DECK_SLOT) gameState = gameState.withBlindlyDrawnCard();
+                        if(slot == Constants.DECK_SLOT) {
+                            gameState = gameState.withCardsDeckRecreatedIfNeeded(rng);
+                            gameState = gameState.withBlindlyDrawnCard();
+                        }
                         else if( slot <= Constants.FACE_UP_CARDS_COUNT-1 && slot >= 0)
                             gameState = gameState.withDrawnFaceUpCard(slot);
-                        }
+                    }
                     break;
                 case CLAIM_ROUTE:
                     Route route = currentPlayer.claimedRoute();
-                    SortedBag<Card> claimCards = currentPlayer.initialClaimCards();
-                    int nbAdditionalCards = route.additionalClaimCardsCount(claimCards, topCards(gameState,3,rng));
-                    if (route.equals(Route.Level.UNDERGROUND)
-                            && nbAdditionalCards >= 1
-                            && gameState.currentPlayerState().possibleAdditionalCards(nbAdditionalCards, claimCards,topCards(gameState,3,rng)).contains(gameState.currentPlayerState().cards())
-                             // A MODIFIER IL FAUT VERIFIER QUE LES CARTES DU JOUEUR CONTIENNENT UNE DES COMPO DE POSSIBLEADDITIONALCARDS
-                    ) {
-                        //currentPlayer.chooseAdditionalCards();
+                    if(gameState.currentPlayerState().canClaimRoute(route)) {
+                        SortedBag<Card> claimCards = currentPlayer.initialClaimCards();
+
+                        if (route.equals(Route.Level.UNDERGROUND)){
+                            gameState = gameState.withCardsDeckRecreatedIfNeeded(rng);
+                            SortedBag<Card> drawnCards = topCards(gameState,Constants.ADDITIONAL_TUNNEL_CARDS);
+                            gameState = withoutTopCards(gameState,Constants.ADDITIONAL_TUNNEL_CARDS);
+                            int nbAdditionalCards = route.additionalClaimCardsCount(claimCards, drawnCards);
+                            if(nbAdditionalCards > 0) {
+                                List<SortedBag<Card>> options = gameState
+                                                                .currentPlayerState()
+                                                                .possibleAdditionalCards(nbAdditionalCards,claimCards,drawnCards);
+                                if(!options.isEmpty()){
+                                    SortedBag<Card> additional = currentPlayer.chooseAdditionalCards(options);
+                                    if(!additional.isEmpty()) {
+                                        gameState = gameState.withClaimedRoute(route, claimCards.union(additional));
+                                    }
+                                }
+                            }
+                        } else gameState = gameState.withClaimedRoute(route,claimCards);
                     }
                     break;
             }
@@ -125,7 +146,6 @@ public class Game {
         pas besoin avec le while
         }*/
 
-
         updateState(players,gameState);
 
     }
@@ -135,9 +155,9 @@ public class Game {
         current.updateState(gameState, ownState);
     }
 
-//ATTENTION VERIFIER SI FAUT TJRS UPDATE LES 2 JOUEURS OU JUSTE UN SEUL
+    //ATTENTION VERIFIER SI FAUT TJRS UPDATE LES 2 JOUEURS OU JUSTE UN SEUL
     /**
-     * update both players states
+     * update both players' states
      * @param players
      * @param gameState
      */
@@ -151,14 +171,19 @@ public class Game {
      * @param n (int) : number of topCards wanted with n excluded
      * @return (SortedBag<Card>) the first n cards in the deck
      */
-    private static SortedBag<Card> topCards(GameState gameState, int n, Random rng){
-       GameState game = gameState;
+    private static SortedBag<Card> topCards(GameState gameState, int n){
         List<Card> topCards = new ArrayList<>();
         for(int i = 0; i < n; ++i){
-            game = game.withCardsDeckRecreatedIfNeeded(rng); //Faut faire attention avec topcards faut le but dappeler topCARD TT SEUL A CHAQUE FOIS c pour pouvoir appeler withrecreatedDeckfromdiscard
-            topCards.add(game.topCard());
+            topCards.add(gameState.topCard());
         }
         return SortedBag.of(topCards);
+    }
+
+    private static GameState withoutTopCards(GameState gameState, int n){
+        for (int i = 0; i < n; ++i) {
+            gameState = gameState.withoutTopCard();
+        }
+        return gameState;
     }
     
 

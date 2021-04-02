@@ -28,7 +28,6 @@ public interface Player {
         public final static List<TurnKind> ALL = List.of(TurnKind.values());
      }
 
-
     /**
      *
      * @param ownId (PlayerId) : the identity of the player

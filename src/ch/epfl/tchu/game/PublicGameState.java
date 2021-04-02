@@ -113,6 +113,6 @@ public class PublicGameState {
      * @return (PlayerId) the last player's identity if known, null if not.
      */
     public PlayerId lastPlayer(){
-        return lastPlayer != null ? lastPlayer : null;
+        return lastPlayer;
     }
 }
