@@ -70,7 +70,8 @@ public class Game {
         receiveInfo(players, infoPlayer2.keptTickets(chosenTickets2.size()));
 
         // MILIEU DE PARTIE
-        while(!gameState.lastPlayer().equals(gameState.currentPlayerId())) {
+        boolean lastTurnPlayed = false;
+        while(!gameState.lastPlayer().equals(gameState.currentPlayerId()) && !lastTurnPlayed) {
             receiveInfo(players, playersInfo.get(currentPlayer).canPlay());
 
             updateState(players,gameState);
@@ -137,6 +138,9 @@ public class Game {
                     }
                     break;
             }
+            
+            if (gameState.lastPlayer().equals(gameState.currentPlayerId())) lastTurnPlayed = true;
+
             gameState = gameState.forNextTurn();
             currentPlayer = players.get(gameState.currentPlayerId());
 
