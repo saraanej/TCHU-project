@@ -61,11 +61,11 @@ public class Game {
         players.forEach((id,player) -> { player.receiveInfo(infoCurrentPlayer.willPlayFirst()); });
 
         //Player1 and 2 chooses tickets
-        SortedBag<Ticket> initialTickets = gameState.topTickets(5);
-        gameState = gameState.withoutTopTickets(5);
+        SortedBag<Ticket> initialTickets = gameState.topTickets(Constants.INITIAL_TICKETS_COUNT);
+        gameState = gameState.withoutTopTickets(Constants.INITIAL_TICKETS_COUNT);
         player1.setInitialTicketChoice(initialTickets);
-        initialTickets = gameState.topTickets(5);
-        gameState = gameState.withoutTopTickets(5);
+        initialTickets = gameState.topTickets(Constants.INITIAL_TICKETS_COUNT);
+        gameState = gameState.withoutTopTickets(Constants.INITIAL_TICKETS_COUNT);
         player2.setInitialTicketChoice(initialTickets);
 
         updateState(players,gameState);
@@ -84,7 +84,8 @@ public class Game {
         SortedBag<Ticket> drawnTickets;
         SortedBag<Ticket> chosenTickets;
         while(!gameState.lastTurnBegins()) {
-            updateCurrentPlayerState(currentPlayer,gameState, gameState.currentPlayerState());
+            //updateCurrentPlayerState(currentPlayer,gameState, gameState.currentPlayerState()); il faut update l'état des 2 joueurs
+            updateState(players,gameState);
             switch (currentPlayer.nextTurn()) {
                 case DRAW_TICKETS:
                     drawnTickets = gameState.topTickets(Constants.IN_GAME_TICKETS_COUNT);
@@ -94,7 +95,7 @@ public class Game {
                     break;
                 case DRAW_CARDS:
                     for(int i = 0 ; i < 2; ++i){
-                        updateCurrentPlayerState(currentPlayer,gameState, gameState.currentPlayerState());
+                        updateState(players,gameState);
                         int slot = currentPlayer.drawSlot();
                         if(slot == Constants.DECK_SLOT) gameState = gameState.withBlindlyDrawnCard();
                         else if( slot <= Constants.FACE_UP_CARDS_COUNT-1 && slot >= 0)
