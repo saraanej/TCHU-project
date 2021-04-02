@@ -184,9 +184,9 @@ public final class Info {
 	}
 	
 	/**
-	 * @param (int) carCount : the number of wagon cards the player has left
-	 * @return (String) the message declaring that the player has only the given number of wagon cards
-	 *                  and that the last tour will begin
+	 * @param (int) carCount : the number of wagon cars the player has left
+	 * @return (String) the message declaring that the player has only the given number of wagon cars
+	 *                  and that the last turn will begin
 	 */
 	public String lastTurnBegins(int carCount) {
 		return String.format(StringsFr.LAST_TURN_BEGINS,

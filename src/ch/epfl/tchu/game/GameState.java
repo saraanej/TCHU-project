@@ -197,7 +197,7 @@ public final class GameState extends PublicGameState{
 
     /**
      *
-     * @return (GmaeState) this state witht the top cards' deck added to the current player's hand
+     * @return (GmaeState) this state with the top cards' deck added to the current player's hand
      * @throws IllegalArgumentException
      *                        if it's not possible to draw a card
      */
