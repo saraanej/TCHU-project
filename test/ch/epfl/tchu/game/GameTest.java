@@ -2,6 +2,7 @@ package ch.epfl.tchu.game;
 
 import ch.epfl.tchu.SortedBag;
 
+import java.sql.SQLOutput;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -17,6 +18,11 @@ public class GameTest {
         private int turnCounter;
         private PlayerState ownState;
         private PublicGameState gameState;
+        private PlayerId ownId;
+        private Map<PlayerId, String> playerNames;
+
+        //For the initial ticket's choice
+        private SortedBag<Ticket> initialTicketChoice;
 
         // Lorsque nextTurn retourne CLAIM_ROUTE
         private Route routeToClaim;
@@ -30,12 +36,13 @@ public class GameTest {
 
         @Override
         public void initPlayers(PlayerId ownId, Map<PlayerId, String> playerNames) {
-            
+            this.ownId = ownId;
+            this.playerNames = playerNames;
         }
 
         @Override
         public void receiveInfo(String info) {
-
+            System.out.println(info);
         }
 
         @Override
@@ -46,12 +53,19 @@ public class GameTest {
 
         @Override
         public void setInitialTicketChoice(SortedBag<Ticket> tickets) {
-
+            initialTicketChoice = tickets;
         }
 
         @Override
         public SortedBag<Ticket> chooseInitialTickets() {
-            return null;
+            int numberOfTicketsToChoose = rng.nextInt(3) + 3;
+            SortedBag.Builder<Ticket> chosenTickets = new SortedBag.Builder<>();
+            for (int i = 0; i < numberOfTicketsToChoose; i++) {
+                Ticket chosen = initialTicketChoice.get(rng.nextInt(initialTicketChoice.size()));
+                chosenTickets.add(chosen);
+                initialTicketChoice.difference(SortedBag.of(chosen));
+            }
+            return chosenTickets.build();
         }
 
         @Override
@@ -77,27 +91,35 @@ public class GameTest {
 
         @Override
         public SortedBag<Ticket> chooseTickets(SortedBag<Ticket> options) {
-            return null;
+            int numberOfTicketsToChoose = rng.nextInt(3) + 1;
+            SortedBag.Builder<Ticket> chosenTickets = new SortedBag.Builder<>();
+            for (int i = 0; i < numberOfTicketsToChoose; i++) {
+                Ticket chosen = options.get(rng.nextInt(options.size()));
+                chosenTickets.add(chosen);
+                options.difference(SortedBag.of(chosen));
+            }
+            return chosenTickets.build();
         }
 
         @Override
         public int drawSlot() {
-            return 0;
+            return rng.nextInt(6);
         }
 
         @Override
         public Route claimedRoute() {
-            return null;
+            return routeToClaim;
         }
 
         @Override
         public SortedBag<Card> initialClaimCards() {
-            return null;
+            return initialClaimCards;
         }
 
         @Override
         public SortedBag<Card> chooseAdditionalCards(List<SortedBag<Card>> options) {
-            return null;
+            int chosen = rng.nextInt(options.size());
+            return options.get(chosen);
         }
     }
 }
