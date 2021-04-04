@@ -1,15 +1,18 @@
 package ch.epfl.tchu.game;
 
 import ch.epfl.tchu.SortedBag;
+import org.junit.jupiter.api.Test;
 
 import java.sql.SQLOutput;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class GameTest {
     private static final class TestPlayer implements Player {
         private static final int TURN_LIMIT = 1000;
+
+        private int nbInfosReceived = 0;
 
         private final Random rng;
         // Toutes les routes de la carte
@@ -34,6 +37,7 @@ public class GameTest {
             this.turnCounter = 0;
         }
 
+
         @Override
         public void initPlayers(PlayerId ownId, Map<PlayerId, String> playerNames) {
             this.ownId = ownId;
@@ -43,6 +47,7 @@ public class GameTest {
         @Override
         public void receiveInfo(String info) {
             System.out.println(info);
+            ++ nbInfosReceived;
         }
 
         @Override
@@ -75,7 +80,11 @@ public class GameTest {
                 throw new Error("Trop de tours joués !");
 
             // Détermine les routes dont ce joueur peut s'emparer
-            List<Route> claimableRoutes = /* ... */;
+            List<Route> claimableRoutes = new ArrayList<>();
+            for (Route r: allRoutes) {
+                if (ownState.canClaimRoute(r)) claimableRoutes.add(r);
+            }
+
             if (claimableRoutes.isEmpty()) {
                 return TurnKind.DRAW_CARDS;
             } else {
@@ -121,5 +130,42 @@ public class GameTest {
             int chosen = rng.nextInt(options.size());
             return options.get(chosen);
         }
+    }
+    public static final Random NON_RANDOM = new Random() {
+        @Override
+        public int nextInt(int i) {
+            return i-1;
+        }
+    };
+
+    public static Random RANDOM = new Random(6);
+
+
+    @Test
+    public void testPlay(){
+        TestPlayer Yasmin = new TestPlayer(1, ChMap.routes());
+        TestPlayer Sara = new TestPlayer(1, ChMap.routes());
+
+        Map<PlayerId, Player> players = new EnumMap<PlayerId, Player>(PlayerId.class);
+        players.put(PlayerId.PLAYER_1, Yasmin);
+        players.put(PlayerId.PLAYER_2, Sara);
+
+        Map<PlayerId, String> playerNames = new EnumMap<PlayerId, String>(PlayerId.class);
+        playerNames.put(PlayerId.PLAYER_1, "Yasmin");
+        playerNames.put(PlayerId.PLAYER_2, "Sara");
+
+        Game.play(players,playerNames,SortedBag.of(ChMap.tickets()),NON_RANDOM);
+        assertTrue(Yasmin.nbInfosReceived > 5 + 2* Yasmin.turnCounter);
+        assertTrue(Sara.nbInfosReceived > 5 + 2* Sara.turnCounter);
+
+
+
+    }
+
+    @Test
+    public void testPlayThrows(){
+        assertThrows(IllegalArgumentException.class, () -> {
+            //Game.play();
+        });
     }
 }

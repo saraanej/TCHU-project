@@ -139,7 +139,7 @@ public class Game {
                     break;
             }
 
-            if (gameState.lastPlayer().equals(gameState.currentPlayerId())) lastTurnPlayed = true;
+            if (gameState.lastPlayer() != null) lastTurnPlayed = true;
 
             gameState = gameState.forNextTurn();
             currentPlayer = players.get(gameState.currentPlayerId());
@@ -183,6 +183,11 @@ public class Game {
         else receiveInfo(players, playersInfo.get(winner).won(maxPoints,loserPoints));
     }
 
+    /**
+     * @param longestP1 the longest Trail of the player 1
+     * @param longestP2 the longest Trail of the player 2
+     * @return (int) 1 if P1 is the longest, 2, if P2 is the longest, 0 if both trails have the same length
+     */
     private static int longest(Trail longestP1, Trail longestP2){
         return longestP1.length() > longestP2.length() ? 1 :
                 longestP1.length() == longestP2.length() ? 0 : 2;
@@ -191,19 +196,23 @@ public class Game {
 
     /**
      * update both players' states
-     * @param players
-     * @param gameState
+     * @param players (Map<PlayerId, Player>) the players of the Tchu's play
+     * @param gameState (GameState) the new updated version of the current gameState
      */
     private static void updateState(Map<PlayerId, Player> players, GameState gameState){
         players.forEach((id, player) -> {player.updateState(gameState, gameState.playerState(id));});
     }
 
+    /**
+     * communicates the info str to the players
+     * @param players (Map<PlayerId, Player>) the players of the Tchu's play
+     * @param str (String) the info to communicate to the players
+     */
     private static void receiveInfo(Map<PlayerId, Player> players, String str){
         players.forEach((id,player) -> { player.receiveInfo(str);});
     }
 
     /**
-     *
      * @param gameState (GameState) : the state of the actual play
      * @param n (int) : number of topCards wanted with n excluded
      * @return (SortedBag<Card>) the first n cards in the deck
@@ -216,14 +225,15 @@ public class Game {
         return SortedBag.of(topCards);
     }
 
+    /**
+     * @param gameState (GameState) : the state of the actual play
+     * @param n (int) : number of topCards wanted with n excluded
+     * @return (GameState) the GameState gameState without the n TopCards
+     */
     private static GameState withoutTopCards(GameState gameState, int n){
         for (int i = 0; i < n; ++i) {
             gameState = gameState.withoutTopCard();
         }
         return gameState;
     }
-
-
-    
-
 }
