@@ -92,16 +92,15 @@ public class Game {
                     break;
                 case DRAW_CARDS:
                     for(int i = 0 ; i < DRAWN_CARDS_COUNT; ++i){
+                        gameState = gameState.withCardsDeckRecreatedIfNeeded(rng);
                         updateState(players,gameState);
 
                         int slot = currentPlayer.drawSlot();
                         if(slot == Constants.DECK_SLOT) {
-                            gameState = gameState.withCardsDeckRecreatedIfNeeded(rng);
                             gameState = gameState.withBlindlyDrawnCard();
                             receiveInfo(players, playersInfo.get(currentPlayer).drewBlindCard());
                         }
                         else if( slot <= Constants.FACE_UP_CARDS_COUNT-1 && slot >= 0) {
-                            gameState = gameState.withCardsDeckRecreatedIfNeeded(rng);
                             gameState = gameState.withDrawnFaceUpCard(slot);
                             receiveInfo(players, playersInfo.get(currentPlayer)
                                     .drewVisibleCard(gameState.cardState().faceUpCard(slot)));
