@@ -77,9 +77,10 @@ public class Game {
             updateState(players,gameState);
             switch (currentPlayer.nextTurn()) {
                 case DRAW_TICKETS:
-                    receiveInfo(players, playersInfo.get(currentPlayer).drewTickets(Constants.IN_GAME_TICKETS_COUNT));
 
                     SortedBag<Ticket> drawnTickets = gameState.topTickets(Constants.IN_GAME_TICKETS_COUNT);
+                    receiveInfo(players, playersInfo.get(currentPlayer).drewTickets(Constants.IN_GAME_TICKETS_COUNT));
+
                     gameState = gameState.withoutTopTickets(Constants.IN_GAME_TICKETS_COUNT);
                     SortedBag<Ticket> chosenTickets = currentPlayer.chooseTickets(drawnTickets);
                     gameState = gameState.withChosenAdditionalTickets(drawnTickets,chosenTickets);
@@ -163,12 +164,15 @@ public class Game {
         switch (longest(P1,P2)){
             case 1 : pointsPlayer1 += Constants.LONGEST_TRAIL_BONUS_POINTS;
                 receiveInfo(players, playersInfo.get(player1).getsLongestTrailBonus(P1));
+                break;
             case 2 : pointsPlayer2 += Constants.LONGEST_TRAIL_BONUS_POINTS;
                 receiveInfo(players, playersInfo.get(player2).getsLongestTrailBonus(P2));
+                break;
             case 0 : pointsPlayer1 += Constants.LONGEST_TRAIL_BONUS_POINTS;
                      pointsPlayer2 += Constants.LONGEST_TRAIL_BONUS_POINTS;
                 receiveInfo(players, playersInfo.get(player1).getsLongestTrailBonus(P1));
                 receiveInfo(players, playersInfo.get(player2).getsLongestTrailBonus(P2));
+                break;
         }
 
         Player winner = pointsPlayer1 > pointsPlayer2 ? player1 :

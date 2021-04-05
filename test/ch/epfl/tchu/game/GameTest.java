@@ -13,6 +13,7 @@ public class GameTest {
         private static final int TURN_LIMIT = 1000;
 
         private int nbInfosReceived = 0;
+        private int nbUpdateState = 0;
 
         private final Random rng;
         // Toutes les routes de la carte
@@ -54,6 +55,7 @@ public class GameTest {
         public void updateState(PublicGameState newState, PlayerState ownState) {
             this.gameState = newState;
             this.ownState = ownState;
+            ++nbUpdateState;
         }
 
         @Override
@@ -68,7 +70,19 @@ public class GameTest {
             for (int i = 0; i < numberOfTicketsToChoose; i++) {
                 Ticket chosen = initialTicketChoice.get(rng.nextInt(initialTicketChoice.size()));
                 chosenTickets.add(chosen);
-                initialTicketChoice.difference(SortedBag.of(chosen));
+                initialTicketChoice = initialTicketChoice.difference(SortedBag.of(chosen));
+            }
+            return chosenTickets.build();
+        }
+
+        @Override
+        public SortedBag<Ticket> chooseTickets(SortedBag<Ticket> options) {
+            int numberOfTicketsToChoose = rng.nextInt(3) + 1;
+            SortedBag.Builder<Ticket> chosenTickets = new SortedBag.Builder<>();
+            for (int i = 0; i < numberOfTicketsToChoose; i++) {
+                Ticket chosen = options.get(rng.nextInt(options.size()));
+                chosenTickets.add(chosen);
+                options = options.difference(SortedBag.of(chosen));
             }
             return chosenTickets.build();
         }
@@ -86,7 +100,11 @@ public class GameTest {
             }
 
             if (claimableRoutes.isEmpty()) {
-                return TurnKind.DRAW_CARDS;
+               /* if(gameState.canDrawTickets())
+                return TurnKind.ALL.get(rng.nextInt(2));
+                else */
+                    return TurnKind.DRAW_CARDS;
+                //return TurnKind.DRAW_CARDS;
             } else {
                 int routeIndex = rng.nextInt(claimableRoutes.size());
                 Route route = claimableRoutes.get(routeIndex);
@@ -95,24 +113,17 @@ public class GameTest {
                 routeToClaim = route;
                 initialClaimCards = cards.get(0);
                 return TurnKind.CLAIM_ROUTE;
-            }
+             //   return TurnKind.ALL.get(rng.nextInt(3));
+                }
+
+
         }
 
-        @Override
-        public SortedBag<Ticket> chooseTickets(SortedBag<Ticket> options) {
-            int numberOfTicketsToChoose = rng.nextInt(3) + 1;
-            SortedBag.Builder<Ticket> chosenTickets = new SortedBag.Builder<>();
-            for (int i = 0; i < numberOfTicketsToChoose; i++) {
-                Ticket chosen = options.get(rng.nextInt(options.size()));
-                chosenTickets.add(chosen);
-                options.difference(SortedBag.of(chosen));
-            }
-            return chosenTickets.build();
-        }
+
 
         @Override
         public int drawSlot() {
-            return rng.nextInt(6);
+            return rng.nextInt(6) - 1;
         }
 
         @Override
@@ -143,8 +154,8 @@ public class GameTest {
 
     @Test
     public void testPlay(){
-        TestPlayer Yasmin = new TestPlayer(1, ChMap.routes());
-        TestPlayer Sara = new TestPlayer(1, ChMap.routes());
+        TestPlayer Yasmin = new TestPlayer(40, ChMap.routes());
+        TestPlayer Sara = new TestPlayer(50, ChMap.routes());
 
         Map<PlayerId, Player> players = new EnumMap<PlayerId, Player>(PlayerId.class);
         players.put(PlayerId.PLAYER_1, Yasmin);
@@ -154,9 +165,12 @@ public class GameTest {
         playerNames.put(PlayerId.PLAYER_1, "Yasmin");
         playerNames.put(PlayerId.PLAYER_2, "Sara");
 
-        Game.play(players,playerNames,SortedBag.of(ChMap.tickets()),NON_RANDOM);
+        Game.play(players,playerNames,SortedBag.of(ChMap.tickets()),RANDOM);
         assertTrue(Yasmin.nbInfosReceived > 5 + 2* Yasmin.turnCounter);
         assertTrue(Sara.nbInfosReceived > 5 + 2* Sara.turnCounter);
+
+        assertTrue(Yasmin.nbUpdateState > 2 + Yasmin.turnCounter);
+        assertTrue(Sara.nbUpdateState > 2 + Sara.turnCounter);
 
 
 
