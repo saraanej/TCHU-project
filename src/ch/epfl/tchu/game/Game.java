@@ -17,7 +17,6 @@ import java.util.*;
  */
 public class Game {
 
-
     private static final int DRAWN_CARDS_COUNT = 2;
 
     private Game(){
@@ -131,9 +130,12 @@ public class Game {
                                 if(!options.isEmpty()){
                                     SortedBag<Card> additional = currentPlayer.chooseAdditionalCards(options);
                                     if(!additional.isEmpty()) {
-                                        gameState = gameState.withClaimedRoute(route, claimCards.union(additional));
-                                        receiveInfo(players, playersInfo.get(currentPlayer).claimedRoute(route, claimCards.union(additional)));
-                                    } else receiveInfo(players, playersInfo.get(currentPlayer).didNotClaimRoute(route));
+                                        gameState = gameState.withClaimedRoute(route, claimCards.union(additional)); 
+                                        receiveInfo(players, playersInfo.get(currentPlayer)
+                                                             .claimedRoute(route, claimCards.union(additional)));
+                                    } else {
+                                        receiveInfo(players, playersInfo.get(currentPlayer).didNotClaimRoute(route));
+                                    }
                                 }
                             }
                         } else{
