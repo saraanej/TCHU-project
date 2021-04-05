@@ -20,6 +20,10 @@ public class Game {
 
     private static final int DRAWN_CARDS_COUNT = 2;
 
+    private Game(){
+        throw new UnsupportedOperationException();
+    }
+
 
     /**
      * simulates a Tchu's play for the given players
