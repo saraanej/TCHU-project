@@ -202,7 +202,6 @@ public class Game {
                 longestP1.length() == longestP2.length() ? 0 : 2;
     }
 
-
     /**
      * update both players' states
      * @param players (Map<PlayerId, Player>) the players of the Tchu's play

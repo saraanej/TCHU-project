@@ -32,6 +32,10 @@ public class GameTest {
         private Route routeToClaim;
         private SortedBag<Card> initialClaimCards;
 
+        public static PlayerState playerOwnState(TestPlayer player){
+            return player.ownState;
+        }
+
         public TestPlayer(long randomSeed, List<Route> allRoutes) {
             this.rng = new Random(randomSeed);
             this.allRoutes = List.copyOf(allRoutes);
@@ -161,6 +165,7 @@ public class GameTest {
         players.put(PlayerId.PLAYER_1, Yasmin);
         players.put(PlayerId.PLAYER_2, Sara);
 
+
         Map<PlayerId, String> playerNames = new EnumMap<PlayerId, String>(PlayerId.class);
         playerNames.put(PlayerId.PLAYER_1, "Yasmin");
         playerNames.put(PlayerId.PLAYER_2, "Sara");
@@ -172,14 +177,25 @@ public class GameTest {
         assertTrue(Yasmin.nbUpdateState > 2 + Yasmin.turnCounter);
         assertTrue(Sara.nbUpdateState > 2 + Sara.turnCounter);
 
+        /*System.out.println(Yasmin.ownState.cards().size());
+        System.out.println(Sara.ownState.cards().size());
+        System.out.println(Sara.gameState.cardState().discardsSize());
+        System.out.println(Yasmin.gameState.cardState().deckSize());
+        System.out.println(Yasmin.gameState.cardState().faceUpCards().size());*/
 
+        int somme = Yasmin.ownState.cards().size() + Sara.ownState.cards().size() + Yasmin.gameState.cardState().discardsSize() +
+                Yasmin.gameState.cardState().deckSize() + Yasmin.gameState.cardState().faceUpCards().size();
 
+        assertEquals(Constants.ALL_CARDS.size(), somme);
     }
 
-    @Test
+
+   /* @Test
     public void testPlayThrows(){
         assertThrows(IllegalArgumentException.class, () -> {
             //Game.play();
         });
-    }
+    }*/
+
+  
 }
