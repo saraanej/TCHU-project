@@ -14,6 +14,7 @@ public class GameTest {
 
         private int nbInfosReceived = 0;
         private int nbUpdateState = 0;
+        private boolean initCalled = false;
 
         private final Random rng;
         // Toutes les routes de la carte
@@ -47,6 +48,7 @@ public class GameTest {
         public void initPlayers(PlayerId ownId, Map<PlayerId, String> playerNames) {
             this.ownId = ownId;
             this.playerNames = playerNames;
+            initCalled = true;
         }
 
         @Override
@@ -183,10 +185,24 @@ public class GameTest {
         System.out.println(Yasmin.gameState.cardState().deckSize());
         System.out.println(Yasmin.gameState.cardState().faceUpCards().size());*/
 
-        int somme = Yasmin.ownState.cards().size() + Sara.ownState.cards().size() + Yasmin.gameState.cardState().discardsSize() +
-                Yasmin.gameState.cardState().deckSize() + Yasmin.gameState.cardState().faceUpCards().size();
+        int somme = Yasmin.ownState.cards().size() + Sara.ownState.cards().size() + Yasmin.gameState.cardState().totalSize();
 
         assertEquals(Constants.ALL_CARDS.size(), somme);
+
+        int tickets = Yasmin.ownState.tickets().size() + Sara.ownState.tickets().size() + Yasmin.gameState.ticketsCount()
+                ;
+        assertEquals(ChMap.tickets().size(), tickets);
+
+        assertTrue(Yasmin.initCalled);
+        assertTrue(Sara.initCalled);
+
+        assertEquals(Yasmin.gameState.cardState().deckSize(),Sara.gameState.cardState().deckSize());
+        assertEquals(Yasmin.gameState.cardState().faceUpCards(),Sara.gameState.cardState().faceUpCards());
+        assertEquals(Yasmin.gameState.cardState().discardsSize(),Sara.gameState.cardState().discardsSize());
+        assertEquals(Yasmin.gameState.cardState().totalSize(),Sara.gameState.cardState().totalSize());
+        assertEquals(Yasmin.gameState.ticketsCount(),Sara.gameState.ticketsCount());
+
+
     }
 
 

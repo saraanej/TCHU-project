@@ -136,8 +136,12 @@ public class Game {
                                         receiveInfo(players, playersInfo.get(currentPlayer).didNotClaimRoute(route));
                                     }
                                 }
+                                //break; si fait sortir du case comme ca plus besoin du double else en bas
+                            } else {
+                                gameState = gameState.withClaimedRoute(route,claimCards);
+                                receiveInfo(players, playersInfo.get(currentPlayer).claimedRoute(route, claimCards));
                             }
-                        } else{
+                        } else{ // si on peut break plus haut, enlever ces doubles else et laisser uniquement l'instruction
                             gameState = gameState.withClaimedRoute(route,claimCards);
                             receiveInfo(players, playersInfo.get(currentPlayer).claimedRoute(route, claimCards));
                         }
