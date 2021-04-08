@@ -109,10 +109,12 @@ public class GameTest {
             }
 
             if (claimableRoutes.isEmpty()) {
-               if(gameState.canDrawTickets())
-                return TurnKind.ALL.get(rng.nextInt(2));
-                else
+//               if(gameState.canDrawTickets())
+//                return TurnKind.ALL.get(rng.nextInt(2));
+//                else
+                if(gameState.cardState().deckSize() + gameState.cardState().discardsSize() >= 6)
                    return TurnKind.DRAW_CARDS;
+                else return TurnKind.DRAW_TICKETS;
             } else {
                 int routeIndex = rng.nextInt(claimableRoutes.size());
                 Route route = claimableRoutes.get(routeIndex);

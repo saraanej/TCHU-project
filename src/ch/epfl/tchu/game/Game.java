@@ -122,9 +122,7 @@ public class Game {
                                 gameState = gameState.withoutTopCard();
 
                             }
-                           // gameState = gameState.withCardsDeckRecreatedIfNeeded(rng);
                             SortedBag<Card> drawnCards = SortedBag.of(drawn);
-                          //  gameState = withoutTopCards(gameState,Constants.ADDITIONAL_TUNNEL_CARDS);
 
 
                             int nbAdditionalCards = route.additionalClaimCardsCount(claimCards, drawnCards);

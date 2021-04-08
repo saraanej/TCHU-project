@@ -155,12 +155,13 @@ class GameTest2 {
             tempRoutes.removeAll(gameState.claimedRoutes());
             List<Route> claimableRoutes = tempRoutes;
 
-            int randNum = rng.nextInt(10);
+         //   int randNum = rng.nextInt(10);
 
             if (claimableRoutes.isEmpty()) {
+                if(gameState.cardState().deckSize() + gameState.cardState().discardsSize() >= 6){
                 return TurnKind.DRAW_CARDS;
-            } else if (randNum == 5){
-                return TurnKind.DRAW_TICKETS;
+            } else {
+                    return TurnKind.DRAW_TICKETS; }
             } else {
                 int routeIndex = rng.nextInt(claimableRoutes.size());
                 Route route = claimableRoutes.get(routeIndex);
