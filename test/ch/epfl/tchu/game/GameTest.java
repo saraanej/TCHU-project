@@ -79,7 +79,7 @@ public class GameTest {
                 chosenTickets.add(chosen);
                 initialTicketChoice = initialTicketChoice.difference(SortedBag.of(chosen));
             }
-            discardedTickets += initialTicketChoice.size() - chosenTickets.size();
+            discardedTickets += initialTicketChoice.size();
             return chosenTickets.build();
         }
 
@@ -92,7 +92,7 @@ public class GameTest {
                 chosenTickets.add(chosen);
                 options = options.difference(SortedBag.of(chosen));
             }
-            discardedTickets += options.size() - chosenTickets.size();
+            discardedTickets += options.size();
             return chosenTickets.build();
         }
 
@@ -109,11 +109,10 @@ public class GameTest {
             }
 
             if (claimableRoutes.isEmpty()) {
-               /* if(gameState.canDrawTickets())
+               if(gameState.canDrawTickets())
                 return TurnKind.ALL.get(rng.nextInt(2));
-                else */
-                    return TurnKind.DRAW_CARDS;
-                //return TurnKind.DRAW_CARDS;
+                else
+                   return TurnKind.DRAW_CARDS;
             } else {
                 int routeIndex = rng.nextInt(claimableRoutes.size());
                 Route route = claimableRoutes.get(routeIndex);
@@ -194,7 +193,7 @@ public class GameTest {
 
         System.out.println(Yasmin.discardedTickets);
         int tickets = Yasmin.ownState.tickets().size() + Sara.ownState.tickets().size() + Yasmin.gameState.ticketsCount()
-                + Yasmin.discardedTickets +Sara.discardedTickets;
+                + Yasmin.discardedTickets + Sara.discardedTickets;
         assertEquals(ChMap.tickets().size(), tickets);
 
         assertTrue(Yasmin.initCalled);
