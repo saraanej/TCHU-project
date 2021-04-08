@@ -113,7 +113,7 @@ public final class GameState extends PublicGameState{
 
     /**
      *
-     * @return (GameState) : this state without the top deck card
+     * @return (GameState) : this state without the top deck card 
      * @throws IllegalArgumentException
      *                            if the card's deck is empty
      */
@@ -214,6 +214,7 @@ public final class GameState extends PublicGameState{
      * @param route (Route) : the route the current player wants to take over
      * @param cards (SortedBag<Card>) : the cards used by the current player to get the route
      * @return (GameState) this state with the given route added to the current player's list of taken routes
+                           and the cards used by the player added to the cardState's discard
      */
     public GameState withClaimedRoute(Route route, SortedBag<Card> cards){
         Map<PlayerId, PlayerState> newPlayerState = CopyPlayerState();
