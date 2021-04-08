@@ -169,6 +169,7 @@ public final class GameState extends PublicGameState{
      * @param drawnTickets (SortedBag<Ticket>) : the drawn tickets
      * @param chosenTickets (SortedBag<Ticket>) : the tickets chosen by the player
      * @return (GameState) this state with the chosenTickets added to the current player's hand
+
      * @throws IllegalArgumentException
      *                        if the drawnTickets don't contain the chosenTickets
      */
@@ -176,8 +177,8 @@ public final class GameState extends PublicGameState{
         Preconditions.checkArgument(drawnTickets.contains(chosenTickets));
         Map<PlayerId, PlayerState> newPlayerState = CopyPlayerState();
         newPlayerState.put(currentPlayerId(), currentPlayerState().withAddedTickets(chosenTickets));
-        return new GameState(gameDeck, cardState, currentPlayerId(), newPlayerState,
-                             lastPlayer()).withoutTopTickets(drawnTickets.size());
+        return new GameState(gameDeck, cardState, currentPlayerId(), newPlayerState, lastPlayer())
+                   .withoutTopTickets(drawnTickets.size());
     }
 
     /**

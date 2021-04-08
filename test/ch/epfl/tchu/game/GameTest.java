@@ -191,7 +191,6 @@ public class GameTest {
 
         assertEquals(Constants.ALL_CARDS.size(), somme);
 
-        System.out.println(Yasmin.discardedTickets);
         int tickets = Yasmin.ownState.tickets().size() + Sara.ownState.tickets().size() + Yasmin.gameState.ticketsCount()
                 + Yasmin.discardedTickets + Sara.discardedTickets;
         assertEquals(ChMap.tickets().size(), tickets);

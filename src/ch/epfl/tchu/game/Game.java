@@ -84,7 +84,7 @@ public class Game {
                     SortedBag<Ticket> drawnTickets = gameState.topTickets(Constants.IN_GAME_TICKETS_COUNT);
                     receiveInfo(players, playersInfo.get(currentPlayer).drewTickets(Constants.IN_GAME_TICKETS_COUNT));
 
-                    gameState = gameState.withoutTopTickets(Constants.IN_GAME_TICKETS_COUNT);
+                   // gameState = gameState.withoutTopTickets(Constants.IN_GAME_TICKETS_COUNT);
                     SortedBag<Ticket> chosenTickets = currentPlayer.chooseTickets(drawnTickets);
                     gameState = gameState.withChosenAdditionalTickets(drawnTickets,chosenTickets);
 
