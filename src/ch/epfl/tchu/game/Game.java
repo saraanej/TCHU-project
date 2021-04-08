@@ -112,7 +112,7 @@ public class Game {
                     if(gameState.currentPlayerState().canClaimRoute(route)) {
                         SortedBag<Card> claimCards = currentPlayer.initialClaimCards();
 
-                        if (route.equals(Route.Level.UNDERGROUND)){
+                        if (route.level() == Route.Level.UNDERGROUND){
                             receiveInfo(players, playersInfo.get(currentPlayer).attemptsTunnelClaim(route, claimCards));
 
                             gameState = gameState.withCardsDeckRecreatedIfNeeded(rng);
@@ -120,6 +120,7 @@ public class Game {
                             gameState = withoutTopCards(gameState,Constants.ADDITIONAL_TUNNEL_CARDS);
                             int nbAdditionalCards = route.additionalClaimCardsCount(claimCards, drawnCards);
 
+                            System.out.println(nbAdditionalCards);
                             if(nbAdditionalCards > 0) {
                                 receiveInfo(players, playersInfo.get(currentPlayer).drewAdditionalCards(drawnCards, nbAdditionalCards));
 
