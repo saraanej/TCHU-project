@@ -116,7 +116,7 @@ public class Game {
                             receiveInfo(players, playersInfo.get(currentPlayer).attemptsTunnelClaim(route, claimCards));
 
                             List<Card> drawn = new ArrayList<>();
-                            for (int i = 0; i < Constants.ADDITIONAL_TUNNEL_CARDS; i++) {
+                            for (int i = 0; i < Constants.ADDITIONAL_TUNNEL_CARDS; ++i) {
                                 gameState = gameState.withCardsDeckRecreatedIfNeeded(rng);
                                 drawn.add(gameState.topCard());
                                 gameState = gameState.withoutTopCard();
@@ -139,7 +139,6 @@ public class Game {
                                         receiveInfo(players, playersInfo.get(currentPlayer)
                                                              .claimedRoute(route, claimCards.union(additional)));
                                     } else {
-                                        gameState = gameState.withMoreDiscardedCards(drawnCards); //attention just added
                                         receiveInfo(players, playersInfo.get(currentPlayer).didNotClaimRoute(route));
                                     }
                                 }
