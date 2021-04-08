@@ -19,10 +19,6 @@ public final class GameState extends PublicGameState{
     private final CardState cardState;
     private final Map<PlayerId, PlayerState> playerState;
 
-    public Deck<Ticket> getGameDeck(){
-        return gameDeck;
-    }
-
 
     /**
      * private constructor

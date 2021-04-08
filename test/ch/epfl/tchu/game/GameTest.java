@@ -15,6 +15,7 @@ public class GameTest {
         private int nbInfosReceived = 0;
         private int nbUpdateState = 0;
         private boolean initCalled = false;
+        private int discardedTickets = 0;
 
         private final Random rng;
         // Toutes les routes de la carte
@@ -78,6 +79,7 @@ public class GameTest {
                 chosenTickets.add(chosen);
                 initialTicketChoice = initialTicketChoice.difference(SortedBag.of(chosen));
             }
+            discardedTickets += initialTicketChoice.size() - chosenTickets.size();
             return chosenTickets.build();
         }
 
@@ -90,6 +92,7 @@ public class GameTest {
                 chosenTickets.add(chosen);
                 options = options.difference(SortedBag.of(chosen));
             }
+            discardedTickets += options.size() - chosenTickets.size();
             return chosenTickets.build();
         }
 
@@ -189,8 +192,9 @@ public class GameTest {
 
         assertEquals(Constants.ALL_CARDS.size(), somme);
 
+        System.out.println(Yasmin.discardedTickets);
         int tickets = Yasmin.ownState.tickets().size() + Sara.ownState.tickets().size() + Yasmin.gameState.ticketsCount()
-                ;
+                + Yasmin.discardedTickets +Sara.discardedTickets;
         assertEquals(ChMap.tickets().size(), tickets);
 
         assertTrue(Yasmin.initCalled);
