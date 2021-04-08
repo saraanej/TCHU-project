@@ -111,6 +111,8 @@ class GameTest2 {
             //int totalCars = ownState.carCount();
             //System.out.println("Total number of cars for 1 player: " + totalCars);
 
+            System.out.println("the faceUpCards of the game" + gameState.cardState().faceUpCards());
+
             int totalCards = ownState.cards().size() + gameState.cardState().totalSize(); //1) 4 the cards he has in his hand, 2) 102
             System.out.println("Total number of cards in the hand of "+ playerName +": " + ownState.cards().size() + " " + ownState.cards());
 
@@ -184,7 +186,7 @@ class GameTest2 {
         @Override
         public int drawSlot() {
             Random rand = new Random();
-            int randomNum = rand.nextInt(5)-1;
+            int randomNum = rand.nextInt(6)-1;
             if (randomNum == -1){
                 System.out.println("The player has decided to draw a card from the deck");
             } else {

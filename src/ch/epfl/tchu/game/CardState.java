@@ -50,7 +50,7 @@ public final class CardState extends PublicCardState {
 
 	/**
 	 * @param slot (int) index of the visible card
-	 * @return (CardState) same as this CardState with the slot-th card
+	 * @return (CardState) same as this CardState with the slot-th - 1 card
 	                       replaced with the top card of the deck
 	                       and its deck without the top card used
 	 * @throws IndexOutOfBoundsException
