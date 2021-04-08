@@ -122,6 +122,7 @@ public class Game {
                                 gameState = gameState.withoutTopCard();
                             }
                             SortedBag<Card> drawnCards = SortedBag.of(drawn);
+                            gameState = gameState.withMoreDiscardedCards(drawnCards);
 
                             int nbAdditionalCards = route.additionalClaimCardsCount(claimCards, drawnCards);
 
