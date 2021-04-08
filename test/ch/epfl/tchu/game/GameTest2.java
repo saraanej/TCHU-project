@@ -146,25 +146,34 @@ class GameTest2 {
                 throw new Error("Trop de tours joués !");
 
             // Détermine les routes dont ce joueur peut s'emparer
-            List<Route> tempRoutes = new ArrayList<>();
+            List<Route> claimableRoutes = new ArrayList<>();
             for (Route r : allRoutes){
-                if(ownState.canClaimRoute(r)){
-                    tempRoutes.add(r);
+                if(ownState.canClaimRoute(r )&& !gameState.claimedRoutes().contains(r)){
+                    claimableRoutes.add(r);
                 }
             }
-            tempRoutes.removeAll(gameState.claimedRoutes());
-            List<Route> claimableRoutes = tempRoutes;
 
          //   int randNum = rng.nextInt(10);
 
             if (claimableRoutes.isEmpty()) {
-                if(gameState.cardState().deckSize() + gameState.cardState().discardsSize() >= 6){
+                if(gameState.cardState().deckSize() + gameState.cardState().discardsSize() >= 2){
                 return TurnKind.DRAW_CARDS;
             } else {
                     return TurnKind.DRAW_TICKETS; }
             } else {
-                int routeIndex = rng.nextInt(claimableRoutes.size());
+                int routeIndex = 0;
+
                 Route route = claimableRoutes.get(routeIndex);
+                while (route.level().equals(Route.Level.UNDERGROUND)
+                        && gameState.cardState().discardsSize() + gameState.cardState().deckSize() < 3){
+                    route = claimableRoutes.get(routeIndex + 1);
+
+                    if (routeIndex == claimableRoutes.size() - 1) {
+                        if(gameState.cardState().deckSize() + gameState.cardState().discardsSize() >= 2)
+                        return TurnKind.DRAW_CARDS;
+                        else return TurnKind.DRAW_TICKETS;
+                    }
+                }
                 List<SortedBag<Card>> cards = ownState.possibleClaimCards(route);
 
                 routeToClaim = route;

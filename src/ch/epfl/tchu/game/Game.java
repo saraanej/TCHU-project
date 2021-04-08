@@ -120,10 +120,8 @@ public class Game {
                                 gameState = gameState.withCardsDeckRecreatedIfNeeded(rng);
                                 drawn.add(gameState.topCard());
                                 gameState = gameState.withoutTopCard();
-
                             }
                             SortedBag<Card> drawnCards = SortedBag.of(drawn);
-
 
                             int nbAdditionalCards = route.additionalClaimCardsCount(claimCards, drawnCards);
 
@@ -140,6 +138,7 @@ public class Game {
                                         receiveInfo(players, playersInfo.get(currentPlayer)
                                                              .claimedRoute(route, claimCards.union(additional)));
                                     } else {
+                                        gameState = gameState.withMoreDiscardedCards(drawnCards); //attention just added
                                         receiveInfo(players, playersInfo.get(currentPlayer).didNotClaimRoute(route));
                                     }
                                 }

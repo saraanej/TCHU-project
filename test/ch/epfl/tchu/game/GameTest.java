@@ -105,7 +105,8 @@ public class GameTest {
             // Détermine les routes dont ce joueur peut s'emparer
             List<Route> claimableRoutes = new ArrayList<>();
             for (Route r: allRoutes) {
-                if (ownState.canClaimRoute(r) && !gameState.claimedRoutes().contains(r)) claimableRoutes.add(r);
+                if (ownState.canClaimRoute(r) && !gameState.claimedRoutes().contains(r))
+                    claimableRoutes.add(r);
             }
 
             if (claimableRoutes.isEmpty()) {
