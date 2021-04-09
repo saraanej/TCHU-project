@@ -125,9 +125,10 @@ public class Game {
                             gameState = gameState.withMoreDiscardedCards(drawnCards);
 
                             int nbAdditionalCards = route.additionalClaimCardsCount(claimCards, drawnCards);
+                            receiveInfo(players, playersInfo.get(currentPlayer).drewAdditionalCards(drawnCards, nbAdditionalCards));
+
 
                             if(nbAdditionalCards > 0) {
-                                receiveInfo(players, playersInfo.get(currentPlayer).drewAdditionalCards(drawnCards, nbAdditionalCards));
 
                                 List<SortedBag<Card>> options = gameState
                                                                 .currentPlayerState()
