@@ -256,11 +256,11 @@ public final class Info {
 		String joinedElements = "";
 		String elementCardList = "";
 
-		for (Card c: cards.toSet()) {
-			int n = cards.countOf(c);
+		for (Card card: cards.toSet()) {
+			int n = cards.countOf(card);
 			sub.add(String.format("%s %s",
 					                  n,
-					                  cardName(c, n)));
+					                  cardName(card, n)));
 		}
 
 		if(sub.size() == 1){

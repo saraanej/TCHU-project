@@ -1,6 +1,7 @@
 package ch.epfl.tchu.game;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import ch.epfl.tchu.Preconditions;
 import ch.epfl.tchu.SortedBag;
@@ -123,42 +124,29 @@ public final class Route {
 	                                   sorted in increasing order of the number of locomotive cards and then by color
 	 */
 	public List<SortedBag<Card>> possibleClaimCards(){
-
-		List<SortedBag<Card>> possibleClaimCard = new ArrayList<SortedBag<Card>>();
+		List<SortedBag<Card>> possibleCards = new ArrayList<SortedBag<Card>>();
 
 		if(level.equals(Level.OVERGROUND)) {
 			if(color == null) {
 				for(Card c : Card.CARS) {
-					possibleClaimCard.add(SortedBag.of(length, c));}
+					possibleCards.add(SortedBag.of(length, c));}
 			} else {
-				possibleClaimCard.add(SortedBag.of(length, Card.of(color)));}
+				possibleCards.add(SortedBag.of(length, Card.of(color)));}
 		}
 
-        if(level.equals(Level.UNDERGROUND)) {
-			List<SortedBag<Card>> inter = new ArrayList<SortedBag<Card>>();
+        else if(level.equals(Level.UNDERGROUND)) {
 			if(color == null) {
-				for(Card c : Card.CARS) {
-					for(int i = 0; i < this.length ; ++i) {
-						inter.add(SortedBag.of(length - i, c, i , Card.LOCOMOTIVE));}
+				for(int i = 0; i < this.length ; ++i) {
+					for(Card c : Card.CARS) {
+						possibleCards.add(SortedBag.of(length - i, c, i , Card.LOCOMOTIVE));}
 				}
-				inter.add(SortedBag.of(length, Card.LOCOMOTIVE));
+				possibleCards.add(SortedBag.of(length, Card.LOCOMOTIVE));
 		    } else {
 		    	for(int i = 0; i <= this.length ; ++i) {
-
-		    		int NbCard = length - i;
-		    		int NbLoco = i;
-
-		    		if(NbLoco == 0) { 
-		    			inter.add(SortedBag.of(NbCard, Card.of(color)));}
-		    		if(NbCard == 0) {
-		    			inter.add(SortedBag.of(NbLoco , Card.LOCOMOTIVE));}
-		    		else if (NbLoco!=0 && NbCard!=0){
-		    			inter.add(SortedBag.of(NbCard, Card.of(color), NbLoco , Card.LOCOMOTIVE));}
-		    	}
+		    		possibleCards.add(SortedBag.of(i, Card.LOCOMOTIVE, length-i, Card.of(color))); }
 		    }
-			possibleClaimCard = newSortedList(inter);
         }
-		return possibleClaimCard;
+		return possibleCards;
 	}
 	
 	/**
@@ -172,28 +160,12 @@ public final class Route {
 		Preconditions.checkArgument(level.equals(Level.UNDERGROUND));
 		Preconditions.checkArgument(drawnCards.size() == 3);
 
-		int additionalClaimCardsCount = 0;
-		int nbLocoCards = 0;
-		Map<Card, Integer> drawnElements = new HashMap<>();
+		AtomicInteger additionalCards = new AtomicInteger(0);
+		drawnCards.forEach(drawnCard -> { if(claimCards.contains(drawnCard) || drawnCard == Card.LOCOMOTIVE) {
+			additionalCards.incrementAndGet(); }
+		});
 
-		for (Card c: drawnCards.toSet()) {
-			int n = drawnCards.countOf(c);
-			drawnElements = Map.of(c, n);
-
-			for(Card claim : claimCards.toSet()){
-				if(claim.equals(Card.LOCOMOTIVE)){
-					++nbLocoCards;
-				}
-				if(drawnElements.containsKey(claim)){
-					additionalClaimCardsCount += drawnElements.get(claim);
-				}
-			}
-
-			if(drawnElements.containsKey(Card.LOCOMOTIVE) && nbLocoCards == 0){
-				additionalClaimCardsCount += drawnElements.get(Card.LOCOMOTIVE);
-			}
-		}
-	  return additionalClaimCardsCount;
+	  return additionalCards.intValue();
 	}
 	
 	/**
@@ -208,23 +180,5 @@ public final class Route {
 		case(5): return 10;
 		case(6): return 15;
 		default: return 0;}
-	}
-
-	/**
-	 * @param LotOfCards (List<SortedBag<Card>>) : the list we want to sort by the number of cards first and then by the priority in the enum type
-	 * @return (List<SortedBag<Card>>) the new sorted list
-	 */
-	private List<SortedBag<Card>> newSortedList(List<SortedBag<Card>> LotOfCards){
-		List<SortedBag<Card>> newList = new ArrayList<>();
-		for(int i = 0; i < length(); i++){
-			for(SortedBag<Card> sBag : LotOfCards){
-				if(sBag.countOf(Card.LOCOMOTIVE) == i){
-					newList.add(sBag);
-				}
-			}
-		}
-		newList.add(SortedBag.of(length, Card.LOCOMOTIVE));
-
-		return newList;
 	}
 }
