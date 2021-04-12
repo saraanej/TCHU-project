@@ -151,11 +151,6 @@ public class Game {
 
             gameState = gameState.forNextTurn();
             currentPlayer = players.get(gameState.currentPlayerId());
-            
-            if (gameState.lastPlayer() != null) {
-                System.out.println(gameState.playerState(gameState.lastPlayer()).carCount());
-                System.out.println(playerNames.get(gameState.lastPlayer()));
-            }
         }
 
         // FIN DE PARTIE
