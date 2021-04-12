@@ -153,7 +153,7 @@ class GameTest2 {
                 }
             }
 
-         //   int randNum = rng.nextInt(10);
+         //
 
             if (claimableRoutes.isEmpty()) {
                 if(gameState.cardState().deckSize() + gameState.cardState().discardsSize() >= 2){
@@ -162,7 +162,7 @@ class GameTest2 {
                     return TurnKind.DRAW_TICKETS; }
             } else {
                 int routeIndex = 0;
-
+//                int randNum = rng.nextInt(10);
                 Route route = claimableRoutes.get(routeIndex);
                 while (route.level().equals(Route.Level.UNDERGROUND)
                         && gameState.cardState().discardsSize() + gameState.cardState().deckSize() < 3){

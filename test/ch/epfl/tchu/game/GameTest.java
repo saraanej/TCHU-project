@@ -104,21 +104,28 @@ public class GameTest {
 
             // Détermine les routes dont ce joueur peut s'emparer
             List<Route> claimableRoutes = new ArrayList<>();
+
             for (Route r: allRoutes) {
-                if (ownState.canClaimRoute(r) && !gameState.claimedRoutes().contains(r))
+                if (ownState.canClaimRoute(r) && !gameState.claimedRoutes().contains(r)) {
                     claimableRoutes.add(r);
+                }
             }
 
             if (claimableRoutes.isEmpty()) {
-//               if(gameState.canDrawTickets())
-//                return TurnKind.ALL.get(rng.nextInt(2));
-//                else
-                if(gameState.cardState().deckSize() + gameState.cardState().discardsSize() >= 6)
-                   return TurnKind.DRAW_CARDS;
-                else return TurnKind.DRAW_TICKETS;
+               if(gameState.canDrawTickets())
+                return TurnKind.ALL.get(rng.nextInt(2));
+                else return TurnKind.DRAW_CARDS;
+//                if(gameState.cardState().deckSize() + gameState.cardState().discardsSize() >= 6)
+//                   return TurnKind.DRAW_CARDS;
+//                else return TurnKind.DRAW_TICKETS;
             } else {
+                System.out.println();
+                for (Route r: claimableRoutes) {
+                    System.out.print(r.id() + " ");
+                }
+
                 int routeIndex = rng.nextInt(claimableRoutes.size());
-                Route route = claimableRoutes.get(routeIndex);
+                Route route = claimableRoutes.get(0);
                 List<SortedBag<Card>> cards = ownState.possibleClaimCards(route);
 
                 routeToClaim = route;
@@ -165,8 +172,8 @@ public class GameTest {
 
     @Test
     public void testPlay(){
-        TestPlayer Yasmin = new TestPlayer(40, ChMap.routes());
-        TestPlayer Sara = new TestPlayer(50, ChMap.routes());
+        TestPlayer Yasmin = new TestPlayer(100, ChMap.routes());
+        TestPlayer Sara = new TestPlayer(200, ChMap.routes());
 
         Map<PlayerId, Player> players = new EnumMap<PlayerId, Player>(PlayerId.class);
         players.put(PlayerId.PLAYER_1, Yasmin);

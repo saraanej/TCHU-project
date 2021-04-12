@@ -109,7 +109,6 @@ public final class PlayerState extends PublicPlayerState {
     }
 
     /**
-     *
      * @param route (Route) the road to claim
      * @return (List<SortedBag<Card>>) all the possible sets of cards to use to claim the road route
      * @throws IllegalArgumentException

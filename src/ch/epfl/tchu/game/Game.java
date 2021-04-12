@@ -41,40 +41,29 @@ public class Game {
         GameState gameState = GameState.initial(tickets,rng);
 
         Player player1 = players.get(PlayerId.PLAYER_1);
-        Player player2 = players.get(PlayerId.PLAYER_2);
+        Player player2 = players.get(PlayerId.PLAYER_2);  // a enlever qd on finit
         Player currentPlayer = players.get(gameState.currentPlayerId());
 
         Info infoPlayer1 = new Info(playerNames.get(PlayerId.PLAYER_1));
         Info infoPlayer2 = new Info(playerNames.get(PlayerId.PLAYER_2));
 
-        Map<Player, Info> playersInfo = new HashMap<>();
-        playersInfo.put(player1, infoPlayer1);
-        playersInfo.put(player2, infoPlayer2);
+        Map<PlayerId, Info> playersInfoId = new HashMap<>();
+        playersInfoId.put(PlayerId.PLAYER_1, infoPlayer1);
+        playersInfoId.put(PlayerId.PLAYER_2, infoPlayer2);
 
         //DEBUT DE PARTIE
-        players.forEach((id,player) -> { player.initPlayers(id,playerNames);});
-        receiveInfo(players, playersInfo.get(currentPlayer).willPlayFirst());
+        gameState = Begin(playerNames,playersInfoId,players,gameState);
 
-        SortedBag<Ticket> initialTickets = gameState.topTickets(Constants.INITIAL_TICKETS_COUNT);
-        gameState = gameState.withoutTopTickets(Constants.INITIAL_TICKETS_COUNT);
-        player1.setInitialTicketChoice(initialTickets);
-        initialTickets = gameState.topTickets(Constants.INITIAL_TICKETS_COUNT);
-        gameState = gameState.withoutTopTickets(Constants.INITIAL_TICKETS_COUNT);
-        player2.setInitialTicketChoice(initialTickets);
 
-        updateState(players,gameState);
+        Map<Player, Info> playersInfo = new HashMap<>();
+        playersInfo.put(players.get(PlayerId.PLAYER_1), infoPlayer1);
+        playersInfo.put(players.get(PlayerId.PLAYER_2), infoPlayer2);
 
-        SortedBag<Ticket> chosenTickets1 = player1.chooseInitialTickets();
-        gameState = gameState.withInitiallyChosenTickets(PlayerId.PLAYER_1, chosenTickets1);
-        SortedBag<Ticket> chosenTickets2 = player2.chooseInitialTickets();
-        gameState = gameState.withInitiallyChosenTickets(PlayerId.PLAYER_2, chosenTickets2);
-
-        receiveInfo(players, infoPlayer1.keptTickets(chosenTickets1.size()));
-        receiveInfo(players, infoPlayer2.keptTickets(chosenTickets2.size()));
 
         // MILIEU DE PARTIE
         boolean lastTurnPlayed = false;
         while(!lastTurnPlayed) {
+
             receiveInfo(players, playersInfo.get(currentPlayer).canPlay());
 
             updateState(players,gameState);
@@ -158,14 +147,18 @@ public class Game {
                     break;
             }
 
-            if (gameState.lastPlayer() != null) lastTurnPlayed = true;
+            if (gameState.lastPlayer() != null && gameState.currentPlayerId() == gameState.lastPlayer()) lastTurnPlayed = true;
 
             gameState = gameState.forNextTurn();
             currentPlayer = players.get(gameState.currentPlayerId());
 
-            if(gameState.lastTurnBegins())
+            if(gameState.lastTurnBegins()){
+                System.out.println("enters the if lastturnbegins");
                 receiveInfo(players, playersInfo.get(currentPlayer).lastTurnBegins(gameState.currentPlayerState().carCount()));
+            }
         }
+
+       System.out.println(gameState.playerState(gameState.lastPlayer()).carCount());
 
         // FIN DE PARTIE
         updateState(players,gameState);
@@ -205,6 +198,32 @@ public class Game {
         else receiveInfo(players, playersInfo.get(winner).won(maxPoints,loserPoints));
     }
 
+    private static GameState Begin(Map<PlayerId, String> playerNames, Map<PlayerId, Info> playersInfo, Map<PlayerId, Player> players, GameState gameState){
+        Player player1 = players.get(PlayerId.PLAYER_1);
+        Player player2 = players.get(PlayerId.PLAYER_2);
+
+        players.forEach((id,player) -> { player.initPlayers(id,playerNames);});
+        receiveInfo(players, playersInfo.get(gameState.currentPlayerId()).willPlayFirst());
+
+        SortedBag<Ticket> initialTickets = gameState.topTickets(Constants.INITIAL_TICKETS_COUNT);
+        gameState = gameState.withoutTopTickets(Constants.INITIAL_TICKETS_COUNT);
+        player1.setInitialTicketChoice(initialTickets);
+        initialTickets = gameState.topTickets(Constants.INITIAL_TICKETS_COUNT);
+        gameState = gameState.withoutTopTickets(Constants.INITIAL_TICKETS_COUNT);
+        player2.setInitialTicketChoice(initialTickets);
+
+        updateState(players,gameState);
+
+        SortedBag<Ticket> chosenTickets1 = player1.chooseInitialTickets();
+        gameState = gameState.withInitiallyChosenTickets(PlayerId.PLAYER_1, chosenTickets1);
+        SortedBag<Ticket> chosenTickets2 = player2.chooseInitialTickets();
+        gameState = gameState.withInitiallyChosenTickets(PlayerId.PLAYER_2, chosenTickets2);
+
+        receiveInfo(players, playersInfo.get(PlayerId.PLAYER_1).keptTickets(chosenTickets1.size()));
+        receiveInfo(players, playersInfo.get(PlayerId.PLAYER_2).keptTickets(chosenTickets2.size()));
+
+        return gameState;
+    }
     /**
      * @param longestP1 the longest Trail of the player 1
      * @param longestP2 the longest Trail of the player 2
