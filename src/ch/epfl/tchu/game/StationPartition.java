@@ -15,7 +15,7 @@ import java.util.List;
 
 public final class StationPartition implements StationConnectivity{
 
-    private final int links[];
+    private final int[] links;
 
     /**
      * private constructor
@@ -35,10 +35,8 @@ public final class StationPartition implements StationConnectivity{
     @Override
     public boolean connected(Station s1, Station s2) {
         if (s1.id() >= links.length || s2.id() >= links.length){
-            return s1.id() == s2.id() ? true : false; // compare iDs
-        }else{
-            return (links[s1.id()] == links[s2.id()]) ? true : false; // compare representatives
-        }
+            return s1.id() == s2.id(); // compare iDs
+        }else return links[s1.id()] == links[s2.id()]; // compare representatives
     }
 
 
@@ -46,7 +44,7 @@ public final class StationPartition implements StationConnectivity{
      * The station partition builder
      */
     public final static class Builder{
-        private int stations[];
+        private int[] stations;
 
         /**
          * default constructor
@@ -83,8 +81,7 @@ public final class StationPartition implements StationConnectivity{
             for(int i = 0; i < stations.length; i++){
                     stations[i] = representative(i);
             }
-            StationPartition flattened = new StationPartition(stations);
-            return flattened;
+            return new StationPartition(stations);
         }
 
         /**
@@ -94,15 +91,13 @@ public final class StationPartition implements StationConnectivity{
         public int representative(int stationId){
             int representative = stations[stationId];
             int index = stationId;
-            if(index == representative){
-                return representative;
-            } else {
+            if (index != representative) {
                 do {
                     index = representative;
                     representative = stations[index];
-                } while(representative != index);
-                return representative;
+                } while (representative != index);
             }
+            return representative;
         }
     }
 }

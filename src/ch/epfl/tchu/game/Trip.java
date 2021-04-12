@@ -1,6 +1,3 @@
-/**
- * 
- */
 package ch.epfl.tchu.game;
 
 import java.util.ArrayList;
@@ -60,7 +57,7 @@ public final class Trip {
 		Preconditions.checkArgument(to != null);
 		Preconditions.checkArgument( points > 0);
 		Preconditions.checkArgument(from != to);
-		List<Trip> all = new ArrayList<Trip>();
+		List<Trip> all = new ArrayList<>();
 		for (Station f : from ) {
 			for (Station t : to) {
 				all.add(new Trip(f,t,points));

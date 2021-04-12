@@ -19,5 +19,5 @@ public interface StationConnectivity {
 	 * @return (boolean) true if the stations s1 and s2 are connected
 	 * Note: needs to be Override
 	 */
-	abstract boolean connected(Station s1 ,Station s2);
+	 boolean connected(Station s1 ,Station s2);
 }

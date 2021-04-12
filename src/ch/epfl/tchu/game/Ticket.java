@@ -16,9 +16,8 @@ import ch.epfl.tchu.Preconditions;
  * @author Sara Anejjar (329905)
  *
  */
-public final class Ticket implements Comparable<Ticket> { 
+public final class Ticket implements Comparable<Ticket> {
 
-	private final Station from;
 	private final List<Trip> trips;
 	private final String Text;
 
@@ -32,9 +31,9 @@ public final class Ticket implements Comparable<Ticket> {
 	public Ticket(List<Trip> trips){
 		Preconditions.checkArgument(trips != null);
 		Preconditions.checkArgument(trips.size() != 0);
-		this.from = trips.get(0).from();
+		Station from = trips.get(0).from();
 		for ( Trip t : trips) {
-			Preconditions.checkArgument(t.from().name().equals(this.from.name()));
+			Preconditions.checkArgument(t.from().name().equals(from.name()));
 		}
 		this.trips = trips;
 		this.Text = computeText(this.trips);
@@ -64,7 +63,7 @@ public final class Ticket implements Comparable<Ticket> {
 	 */
 	public int points(StationConnectivity connectivity) {
 		int maxPoints;
-		List<Integer> Points = new ArrayList<Integer>();
+		List<Integer> Points = new ArrayList<>();
 		for (Trip t : trips ) {
 			int pts = t.points(connectivity);
 			Points.add(pts);

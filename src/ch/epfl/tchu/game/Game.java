@@ -112,7 +112,6 @@ public class Game {
         return gameState;
     }
 
-
     private static GameState drawTickets(Map<PlayerId, Info> playersInfo, Map<PlayerId, Player> players, GameState gameState){
         PlayerId currentPlayerId = gameState.currentPlayerId();
 
@@ -191,7 +190,6 @@ public class Game {
                         receiveInfo(players, playersInfo.get(currentPlayerId).didNotClaimRoute(route));
                     }
                     return gameState;
-                  //  break;
                 }
             }
             gameState = gameState.withClaimedRoute(route,claimCards);
@@ -211,10 +209,6 @@ public class Game {
         Trail P2 = Trail.longest(gameState.playerState(PlayerId.PLAYER_2)
                 .routes());
 
-        Map<PlayerId,Integer> playerPoints = new EnumMap<>(PlayerId.class);
-        playerPoints.put(PlayerId.PLAYER_1, pointsPlayer1);
-        playerPoints.put(PlayerId.PLAYER_2, pointsPlayer2);
-
         switch (longest(P1,P2)){
             case 1 : pointsPlayer1 += Constants.LONGEST_TRAIL_BONUS_POINTS;
                 receiveInfo(players, playersInfo.get(PlayerId.PLAYER_1).getsLongestTrailBonus(P1));
@@ -229,14 +223,17 @@ public class Game {
                 break;
         }
 
+        Map<PlayerId,Integer> playerPoints = new EnumMap<>(PlayerId.class);
+        playerPoints.put(PlayerId.PLAYER_1, pointsPlayer1);
+        playerPoints.put(PlayerId.PLAYER_2, pointsPlayer2);
+
         PlayerId winner = pointsPlayer1 > pointsPlayer2 ? PlayerId.PLAYER_1 :
                 pointsPlayer1 < pointsPlayer2 ? PlayerId.PLAYER_2 : null;
 
         int maxPoints = Math.max(pointsPlayer1, pointsPlayer2);
         int loserPoints = Math.min(pointsPlayer1, pointsPlayer2);
 
-        List<String> names = new ArrayList<>();
-        playerNames.forEach((id,name) -> names.add(name));
+        List<String> names = List.copyOf(playerNames.values());
         if(winner == null) receiveInfo(players, Info.draw(names, pointsPlayer1));
         else receiveInfo(players, playersInfo.get(winner).won(maxPoints,loserPoints));
     }
