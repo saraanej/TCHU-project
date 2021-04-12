@@ -134,21 +134,16 @@ public class Game {
                                 } else {
                                     receiveInfo(players, playersInfo.get(currentPlayer).didNotClaimRoute(route));
                                 }
-                                //break; si fait sortir du case comme ca plus besoin du double else en bas
-                            } else {
-                                gameState = gameState.withClaimedRoute(route,claimCards);
-                                receiveInfo(players, playersInfo.get(currentPlayer).claimedRoute(route, claimCards));
+                                break;
                             }
-                        } else { // si on peut break plus haut, enlever ces doubles else et laisser uniquement l'instruction
-                            gameState = gameState.withClaimedRoute(route,claimCards);
-                            receiveInfo(players, playersInfo.get(currentPlayer).claimedRoute(route, claimCards));
                         }
+                        gameState = gameState.withClaimedRoute(route,claimCards);
+                        receiveInfo(players, playersInfo.get(currentPlayer).claimedRoute(route, claimCards));
                     }
                     break;
             }
 
             if(gameState.lastTurnBegins()){
-                System.out.println("enters the if lastturnbegins");
                 receiveInfo(players, playersInfo.get(currentPlayer).lastTurnBegins(gameState.currentPlayerState().carCount()));
             }
 
@@ -156,20 +151,12 @@ public class Game {
 
             gameState = gameState.forNextTurn();
             currentPlayer = players.get(gameState.currentPlayerId());
-
-
+            
             if (gameState.lastPlayer() != null) {
                 System.out.println(gameState.playerState(gameState.lastPlayer()).carCount());
                 System.out.println(playerNames.get(gameState.lastPlayer()));
             }
-
-//            if(gameState.lastTurnBegins()){
-//                System.out.println("enters the if lastturnbegins");
-//                receiveInfo(players, playersInfo.get(currentPlayer).lastTurnBegins(gameState.currentPlayerState().carCount()));
-//            }
         }
-
-       System.out.println(gameState.playerState(gameState.lastPlayer()).carCount());
 
         // FIN DE PARTIE
         updateState(players,gameState);
