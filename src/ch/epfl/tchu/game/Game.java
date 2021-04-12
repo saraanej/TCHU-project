@@ -147,15 +147,26 @@ public class Game {
                     break;
             }
 
+            if(gameState.lastTurnBegins()){
+                System.out.println("enters the if lastturnbegins");
+                receiveInfo(players, playersInfo.get(currentPlayer).lastTurnBegins(gameState.currentPlayerState().carCount()));
+            }
+
             if (gameState.lastPlayer() != null && gameState.currentPlayerId() == gameState.lastPlayer()) lastTurnPlayed = true;
 
             gameState = gameState.forNextTurn();
             currentPlayer = players.get(gameState.currentPlayerId());
 
-            if(gameState.lastTurnBegins()){
-                System.out.println("enters the if lastturnbegins");
-                receiveInfo(players, playersInfo.get(currentPlayer).lastTurnBegins(gameState.currentPlayerState().carCount()));
+
+            if (gameState.lastPlayer() != null) {
+                System.out.println(gameState.playerState(gameState.lastPlayer()).carCount());
+                System.out.println(playerNames.get(gameState.lastPlayer()));
             }
+
+//            if(gameState.lastTurnBegins()){
+//                System.out.println("enters the if lastturnbegins");
+//                receiveInfo(players, playersInfo.get(currentPlayer).lastTurnBegins(gameState.currentPlayerState().carCount()));
+//            }
         }
 
        System.out.println(gameState.playerState(gameState.lastPlayer()).carCount());
