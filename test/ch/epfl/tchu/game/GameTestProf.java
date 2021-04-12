@@ -1,4 +1,4 @@
-/*
+
  package ch.epfl.tchu.game;
 
 import ch.epfl.tchu.SortedBag;
@@ -29,11 +29,11 @@ class GameTestProf {
         CHOOSE_ADDITIONAL_CARDS
     }
 
-//    @BeforeAll
-//    static void redirectSystemOut() {
-//        System.setOut(new PrintStream(OutputStream.nullOutputStream()));
-//        System.setErr(new PrintStream(OutputStream.nullOutputStream()));
-//    }
+    /*@BeforeAll
+    static void redirectSystemOut() {
+        System.setOut(new PrintStream(OutputStream.nullOutputStream()));
+        System.setErr(new PrintStream(OutputStream.nullOutputStream()));
+    }*/
 
     @Test
     void gamePlayFailsWithNotEnoughPlayers() {
@@ -90,8 +90,8 @@ class GameTestProf {
     void gamePlayCallsReceiveInfoOftenEnough() {
         var players = playRandomGame(2021);
 
-        var receiveInfo1 = (int) players.get(0).callSummary().get(RECEIVE_INFO);
-        var receiveInfo2 = (int) players.get(1).callSummary().get(RECEIVE_INFO);
+        var receiveInfo1 = (int) players.get(0).callSummary().get(PlayerMethod.RECEIVE_INFO);
+        var receiveInfo2 = (int) players.get(1).callSummary().get(PlayerMethod.RECEIVE_INFO);
         assertEquals(receiveInfo1, receiveInfo2);
         assertTrue(100 <= receiveInfo1 && receiveInfo1 <= 1_000);
     }
@@ -101,8 +101,8 @@ class GameTestProf {
     void gamePlayCallsUpdateStateOftenEnough() {
         var players = playRandomGame(2022);
 
-        var updateState1 = (int) players.get(0).callSummary().get(UPDATE_STATE);
-        var updateState2 = (int) players.get(1).callSummary().get(UPDATE_STATE);
+        var updateState1 = (int) players.get(0).callSummary().get(PlayerMethod.UPDATE_STATE);
+        var updateState2 = (int) players.get(1).callSummary().get(PlayerMethod.UPDATE_STATE);
         assertEquals(updateState1, updateState2);
         assertTrue(100 <= updateState1 && updateState1 <= 1_000);
     }
@@ -111,7 +111,7 @@ class GameTestProf {
     void gamePlayCallsSetInitialTicketChoice() {
         for (var player : playRandomGame(2023)) {
             var callSummary = player.callSummary();
-            assertEquals(1, callSummary.get(SET_INITIAL_TICKET_CHOICE));
+            assertEquals(1, callSummary.get(PlayerMethod.SET_INITIAL_TICKET_CHOICE));
             assertEquals(5, player.allTicketsSeen.getFirst().size());
         }
     }
@@ -120,11 +120,11 @@ class GameTestProf {
     void gamePlayCallsSetInitialTicketChoiceFirstThenChooseInitialTickets() {
         for (var player : playRandomGame(2024)) {
             var filteredCalls = player.calls.stream()
-                    .filter(m -> m != INIT_PLAYERS && m != RECEIVE_INFO && m != UPDATE_STATE)
+                    .filter(m -> m != PlayerMethod.INIT_PLAYERS && m != PlayerMethod.RECEIVE_INFO && m != PlayerMethod.UPDATE_STATE)
                     .limit(3)
                     .collect(Collectors.toList());
             assertEquals(
-                    List.of(SET_INITIAL_TICKET_CHOICE, CHOOSE_INITIAL_TICKETS, NEXT_TURN),
+                    List.of(PlayerMethod.SET_INITIAL_TICKET_CHOICE, PlayerMethod.CHOOSE_INITIAL_TICKETS, PlayerMethod.NEXT_TURN),
                     filteredCalls);
         }
     }
@@ -137,7 +137,7 @@ class GameTestProf {
                     .filter(Player.TurnKind.DRAW_TICKETS::equals)
                     .count();
             var chooseTicketsCallsCount = player.calls.stream()
-                    .filter(CHOOSE_TICKETS::equals)
+                    .filter(PlayerMethod.CHOOSE_TICKETS::equals)
                     .count();
             assertTrue(drawTicketsTurnsCount > 0);
             assertEquals(drawTicketsTurnsCount, chooseTicketsCallsCount);
@@ -152,13 +152,13 @@ class GameTestProf {
     void gamePlayUpdatesStateBetweenCardDraws() {
         for (var player : playRandomGame(2026)) {
             var filteredCallsIt = player.calls.stream()
-                    .filter(m -> m == UPDATE_STATE || m == DRAW_SLOT)
+                    .filter(m -> m == PlayerMethod.UPDATE_STATE || m == PlayerMethod.DRAW_SLOT)
                     .iterator();
-            var prevCall = UPDATE_STATE;
+            var prevCall = PlayerMethod.UPDATE_STATE;
             while (filteredCallsIt.hasNext()) {
                 var call = filteredCallsIt.next();
-                if (call == DRAW_SLOT)
-                    assertEquals(UPDATE_STATE, prevCall);
+                if (call == PlayerMethod.DRAW_SLOT)
+                    assertEquals(PlayerMethod.UPDATE_STATE, prevCall);
                 prevCall = call;
             }
         }
@@ -167,20 +167,20 @@ class GameTestProf {
     @Test
     void gamePlayCallsChooseAdditionalCardsAtLeastOnce() {
         for (var player : playRandomGame(2027))
-            assertNotEquals(0, player.callSummary().get(CHOOSE_ADDITIONAL_CARDS));
+            assertNotEquals(0, player.callSummary().get(PlayerMethod.CHOOSE_ADDITIONAL_CARDS));
     }
 
     @Test
     void gamePlayCallsChooseAdditionalCardsRightAfterClaimedRouteOrInitialClaimCardsOnly() {
         for (var player : playRandomGame(2028)) {
             var filteredCallsIt = player.calls.stream()
-                    .filter(m -> m != RECEIVE_INFO && m != UPDATE_STATE)
+                    .filter(m -> m != PlayerMethod.RECEIVE_INFO && m != PlayerMethod.UPDATE_STATE)
                     .iterator();
-            var prevCall = INIT_PLAYERS;
+            var prevCall = PlayerMethod.INIT_PLAYERS;
             while (filteredCallsIt.hasNext()) {
                 var call = filteredCallsIt.next();
-                if (call == CHOOSE_ADDITIONAL_CARDS)
-                    assertTrue(prevCall == CLAIMED_ROUTE || prevCall == INITIAL_CLAIM_CARDS);
+                if (call == PlayerMethod.CHOOSE_ADDITIONAL_CARDS)
+                    assertTrue(prevCall == PlayerMethod.CLAIMED_ROUTE || prevCall == PlayerMethod.INITIAL_CLAIM_CARDS);
                 prevCall = call;
             }
         }
@@ -334,20 +334,20 @@ class GameTestProf {
 
         @Override
         public void receiveInfo(String info) {
-            registerCall(RECEIVE_INFO);
+            registerCall(PlayerMethod.RECEIVE_INFO);
             allInfos.addLast(info);
         }
 
         @Override
         public void updateState(PublicGameState newState, PlayerState ownState) {
-            registerCall(UPDATE_STATE);
+            registerCall(PlayerMethod.UPDATE_STATE);
             allGameStates.addLast(newState);
             allOwnStates.addLast(ownState);
         }
 
         @Override
         public void setInitialTicketChoice(SortedBag<Ticket> tickets) {
-            registerCall(SET_INITIAL_TICKET_CHOICE);
+            registerCall(PlayerMethod.SET_INITIAL_TICKET_CHOICE);
             allTicketsSeen.addLast(tickets);
         }
 
@@ -645,4 +645,4 @@ class GameTestProf {
         }
     }
 }
-*/
+
