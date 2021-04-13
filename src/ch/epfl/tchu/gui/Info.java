@@ -159,7 +159,7 @@ public final class Info {
 	 *                  and that they involve an additional cost of the given number of cards 
 	 */
 	public String drewAdditionalCards(SortedBag<Card> drawnCards, int additionalCost) {
-	
+
 		String cost = String.format(StringsFr.ADDITIONAL_CARDS_ARE, elementCardList(drawnCards));
 		
 		if(additionalCost == 0) {

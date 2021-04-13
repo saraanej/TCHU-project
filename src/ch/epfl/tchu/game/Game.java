@@ -4,7 +4,9 @@ import ch.epfl.tchu.Preconditions;
 import ch.epfl.tchu.SortedBag;
 import ch.epfl.tchu.gui.Info;
 
+import java.awt.*;
 import java.util.*;
+import java.util.List;
 
 /**
  * Modelizes a Tchu's play
@@ -38,25 +40,18 @@ public class Game {
         Preconditions.checkArgument(players.size() == 2);
         Preconditions.checkArgument(playerNames.size() == 2);
 
-        GameState gameState = GameState.initial(tickets,rng);
-
-        Info infoPlayer1 = new Info(playerNames.get(PlayerId.PLAYER_1));
-        Info infoPlayer2 = new Info(playerNames.get(PlayerId.PLAYER_2));
-
         Map<PlayerId, Info> playersInfo = new HashMap<>();
-        playersInfo.put(PlayerId.PLAYER_1, infoPlayer1);
-        playersInfo.put(PlayerId.PLAYER_2, infoPlayer2);
+        for (PlayerId playerId: PlayerId.values()) {
+            playersInfo.put(playerId, new Info(playerNames.get(playerId)));
+        }
 
-        //DEBUT DE PARTIE
+        GameState gameState = GameState.initial(tickets,rng);
         gameState = Begin(playerNames,playersInfo,players,gameState);
 
-        // MILIEU DE PARTIE
         boolean lastTurnPlayed = false;
         while(!lastTurnPlayed) {
-
             receiveInfo(players, playersInfo.get(gameState.currentPlayerId()).canPlay());
             updateState(players,gameState);
-
             switch (players.get(gameState.currentPlayerId()).nextTurn()) {
                 case DRAW_TICKETS:
                     gameState = drawTickets(playersInfo,players,gameState);
@@ -68,18 +63,14 @@ public class Game {
                     gameState = claimRoute(playersInfo,players,gameState,rng);
                     break;
             }
-
             if(gameState.lastTurnBegins())
                 receiveInfo(players, playersInfo.get(gameState.currentPlayerId())
                                      .lastTurnBegins(gameState.currentPlayerState().carCount()));
-
             if (gameState.lastPlayer() != null && gameState.currentPlayerId() == gameState.lastPlayer())
                 lastTurnPlayed = true;
-
             gameState = gameState.forNextTurn();
         }
 
-        // FIN DE PARTIE
         finish(playerNames,playersInfo,players,gameState);
     }
 
@@ -92,6 +83,7 @@ public class Game {
         players.forEach((id,player) -> player.initPlayers(id,playerNames));
         receiveInfo(players, playersInfo.get(gameState.currentPlayerId()).willPlayFirst());
 
+        //ESSAYER AVEC LAMBDA
         SortedBag<Ticket> initialTickets = gameState.topTickets(Constants.INITIAL_TICKETS_COUNT);
         gameState = gameState.withoutTopTickets(Constants.INITIAL_TICKETS_COUNT);
         player1.setInitialTicketChoice(initialTickets);
@@ -171,9 +163,7 @@ public class Game {
                 int nbAdditionalCards = route.additionalClaimCardsCount(claimCards, drawnCards);
                 receiveInfo(players, playersInfo.get(currentPlayerId).drewAdditionalCards(drawnCards, nbAdditionalCards));
 
-
                 if(nbAdditionalCards > 0) {
-
                     List<SortedBag<Card>> options = gameState
                             .currentPlayerState()
                             .possibleAdditionalCards(nbAdditionalCards,claimCards,drawnCards);
@@ -198,55 +188,81 @@ public class Game {
         return gameState;
     }
 
+    /**
+     * 
+     * @param playerNames
+     * @param playersInfo
+     * @param players
+     * @param gameState
+     */
     private static void finish(Map<PlayerId, String> playerNames, Map<PlayerId, Info> playersInfo, Map<PlayerId, Player> players, GameState gameState){
         updateState(players,gameState);
 
-        int pointsPlayer1 = gameState.playerState(PlayerId.PLAYER_1).finalPoints();
-        int pointsPlayer2 = gameState.playerState(PlayerId.PLAYER_2).finalPoints();
+        Map<PlayerId,Integer> playersPoints = new EnumMap<>(PlayerId.class);
+        Map<PlayerId,Trail> playersTrail = new EnumMap<>(PlayerId.class);
 
-        Trail P1 = Trail.longest(gameState.playerState(PlayerId.PLAYER_1)
-                .routes());
-        Trail P2 = Trail.longest(gameState.playerState(PlayerId.PLAYER_2)
-                .routes());
-
-        switch (longest(P1,P2)){
-            case 1 : pointsPlayer1 += Constants.LONGEST_TRAIL_BONUS_POINTS;
-                receiveInfo(players, playersInfo.get(PlayerId.PLAYER_1).getsLongestTrailBonus(P1));
-                break;
-            case 2 : pointsPlayer2 += Constants.LONGEST_TRAIL_BONUS_POINTS;
-                receiveInfo(players, playersInfo.get(PlayerId.PLAYER_2).getsLongestTrailBonus(P2));
-                break;
-            case 0 : pointsPlayer1 += Constants.LONGEST_TRAIL_BONUS_POINTS;
-                pointsPlayer2 += Constants.LONGEST_TRAIL_BONUS_POINTS;
-                receiveInfo(players, playersInfo.get(PlayerId.PLAYER_1).getsLongestTrailBonus(P1));
-                receiveInfo(players, playersInfo.get(PlayerId.PLAYER_2).getsLongestTrailBonus(P2));
-                break;
+        for (PlayerId playerId: PlayerId.values()) {
+            playersPoints.put(playerId, gameState.playerState(playerId).finalPoints());
+            playersTrail.put(playerId,Trail.longest(gameState.playerState(playerId).routes()));
         }
 
-        Map<PlayerId,Integer> playerPoints = new EnumMap<>(PlayerId.class);
-        playerPoints.put(PlayerId.PLAYER_1, pointsPlayer1);
-        playerPoints.put(PlayerId.PLAYER_2, pointsPlayer2);
+        PlayerId bonusPlayer = longest(playersTrail);
 
-        PlayerId winner = pointsPlayer1 > pointsPlayer2 ? PlayerId.PLAYER_1 :
-                pointsPlayer1 < pointsPlayer2 ? PlayerId.PLAYER_2 : null;
+        if (bonusPlayer == null) {
+            playersPoints.forEach(((playerId, integer) ->
+                    playersPoints.put(playerId, integer + Constants.LONGEST_TRAIL_BONUS_POINTS)));
+            playersTrail.forEach(((playerId, trail) ->
+                    receiveInfo(players, playersInfo.get(playerId).getsLongestTrailBonus(trail))));
+        } else {
+            playersPoints.put(bonusPlayer, playersPoints.get(bonusPlayer) + Constants.LONGEST_TRAIL_BONUS_POINTS);
+            receiveInfo(players, playersInfo.get(bonusPlayer).getsLongestTrailBonus(playersTrail.get(bonusPlayer)));
+        }
 
-        int maxPoints = Math.max(pointsPlayer1, pointsPlayer2);
-        int loserPoints = Math.min(pointsPlayer1, pointsPlayer2);
+        int minPoints = playersPoints.values()
+                .stream()
+                .min(Integer::compare).get();
+        Map.Entry<PlayerId, Integer> winner = winner(playersPoints,minPoints);
 
         List<String> names = List.copyOf(playerNames.values());
-        if(winner == null) receiveInfo(players, Info.draw(names, pointsPlayer1));
-        else receiveInfo(players, playersInfo.get(winner).won(maxPoints,loserPoints));
+        if(winner.getKey() == null) receiveInfo(players, Info.draw(names, minPoints));
+        else receiveInfo(players, playersInfo.get(winner.getKey()).won(winner.getValue(), minPoints));
     }
 
+    /**
+     *
+     * @param playersPoints
+     * @param minPoints
+     * @return
+     */
+    private static Map.Entry<PlayerId, Integer> winner(Map<PlayerId,Integer> playersPoints, int minPoints){
+        Map.Entry<PlayerId, Integer> winner = null;
+
+        for (Map.Entry<PlayerId,Integer> entry : playersPoints.entrySet()) {
+            if(entry.getValue() > minPoints) {
+                minPoints = entry.getValue();
+                winner = entry;
+            }
+        }
+        return winner;
+    }
 
     /**
-     * @param longestP1 the longest Trail of the player 1
-     * @param longestP2 the longest Trail of the player 2
+     * @param playersTrail (Map<PlayerId,Trail>) the longest Trail of the player
      * @return (int) 1 if P1 is the longest, 2, if P2 is the longest, 0 if both trails have the same length
      */
-    private static int longest(Trail longestP1, Trail longestP2){
-        return longestP1.length() > longestP2.length() ? 1 :
-                longestP1.length() == longestP2.length() ? 0 : 2;
+    private static PlayerId longest(Map<PlayerId,Trail> playersTrail){
+        PlayerId winner = null;
+        int length = playersTrail.values()
+                .stream()
+                .min(Comparator.comparingInt(Trail::length)).get().length();;
+
+        for (Map.Entry<PlayerId,Trail> entry : playersTrail.entrySet()) {
+            if(entry.getValue().length() > length) {
+                length = entry.getValue().length();
+                winner = entry.getKey();
+            }
+        }
+        return winner;
     }
 
     /**
