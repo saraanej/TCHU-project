@@ -74,33 +74,25 @@ public class Game {
         finish(playerNames,playersInfo,players,gameState);
     }
 
-
-
     private static GameState Begin(Map<PlayerId, String> playerNames, Map<PlayerId, Info> playersInfo, Map<PlayerId, Player> players, GameState gameState){
-        Player player1 = players.get(PlayerId.PLAYER_1);
-        Player player2 = players.get(PlayerId.PLAYER_2);
-
         players.forEach((id,player) -> player.initPlayers(id,playerNames));
         receiveInfo(players, playersInfo.get(gameState.currentPlayerId()).willPlayFirst());
 
-        //ESSAYER AVEC LAMBDA
-        SortedBag<Ticket> initialTickets = gameState.topTickets(Constants.INITIAL_TICKETS_COUNT);
-        gameState = gameState.withoutTopTickets(Constants.INITIAL_TICKETS_COUNT);
-        player1.setInitialTicketChoice(initialTickets);
-        initialTickets = gameState.topTickets(Constants.INITIAL_TICKETS_COUNT);
-        gameState = gameState.withoutTopTickets(Constants.INITIAL_TICKETS_COUNT);
-        player2.setInitialTicketChoice(initialTickets);
+        SortedBag<Ticket> initialTickets;
+        for(PlayerId playerId : PlayerId.values()){
+            initialTickets = gameState.topTickets(Constants.INITIAL_TICKETS_COUNT);
+            gameState = gameState.withoutTopTickets(Constants.INITIAL_TICKETS_COUNT);
+            players.get(playerId).setInitialTicketChoice(initialTickets);
+        }
 
         updateState(players,gameState);
 
-        SortedBag<Ticket> chosenTickets1 = player1.chooseInitialTickets();
-        gameState = gameState.withInitiallyChosenTickets(PlayerId.PLAYER_1, chosenTickets1);
-        SortedBag<Ticket> chosenTickets2 = player2.chooseInitialTickets();
-        gameState = gameState.withInitiallyChosenTickets(PlayerId.PLAYER_2, chosenTickets2);
-
-        receiveInfo(players, playersInfo.get(PlayerId.PLAYER_1).keptTickets(chosenTickets1.size()));
-        receiveInfo(players, playersInfo.get(PlayerId.PLAYER_2).keptTickets(chosenTickets2.size()));
-
+        SortedBag<Ticket> chosenTickets;
+        for (PlayerId playerId: PlayerId.values()) {
+            chosenTickets = players.get(playerId).chooseInitialTickets();
+            gameState = gameState.withInitiallyChosenTickets(playerId, chosenTickets);
+            receiveInfo(players, playersInfo.get(playerId).keptTickets(chosenTickets.size()));
+        }
         return gameState;
     }
 
@@ -173,12 +165,11 @@ public class Game {
                             gameState = gameState.withClaimedRoute(route, claimCards.union(additional));
                             receiveInfo(players, playersInfo.get(currentPlayerId)
                                     .claimedRoute(route, claimCards.union(additional)));
-                        } else {
+                            //un break ici pour ps repeter 2 fois le else?
+                        } else
                             receiveInfo(players, playersInfo.get(currentPlayerId).didNotClaimRoute(route));
-                        }
-                    } else {
+                    } else
                         receiveInfo(players, playersInfo.get(currentPlayerId).didNotClaimRoute(route));
-                    }
                     return gameState;
                 }
             }
@@ -197,7 +188,6 @@ public class Game {
      */
     private static void finish(Map<PlayerId, String> playerNames, Map<PlayerId, Info> playersInfo, Map<PlayerId, Player> players, GameState gameState){
         updateState(players,gameState);
-
         Map<PlayerId,Integer> playersPoints = new EnumMap<>(PlayerId.class);
         Map<PlayerId,Trail> playersTrail = new EnumMap<>(PlayerId.class);
 
@@ -225,7 +215,8 @@ public class Game {
 
         List<String> names = List.copyOf(playerNames.values());
         if(winner.getKey() == null) receiveInfo(players, Info.draw(names, minPoints));
-        else receiveInfo(players, playersInfo.get(winner.getKey()).won(winner.getValue(), minPoints));
+        else receiveInfo(players, playersInfo.get(winner.getKey())
+                                             .won(winner.getValue(), minPoints));
     }
 
     /**
@@ -254,7 +245,7 @@ public class Game {
         PlayerId winner = null;
         int length = playersTrail.values()
                 .stream()
-                .min(Comparator.comparingInt(Trail::length)).get().length();;
+                .min(Comparator.comparingInt(Trail::length)).get().length();
 
         for (Map.Entry<PlayerId,Trail> entry : playersTrail.entrySet()) {
             if(entry.getValue().length() > length) {
