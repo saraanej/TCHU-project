@@ -8,16 +8,14 @@ import java.util.Map;
 /**
  * Modelizes a Tchu player
  *
- *
  * @author Yasmin Ben Rahhal (329912)
  * @author Sara Anejjar (329905)
- *
  */
 
 public interface Player {
 
     /**
-     * represents the three types of actions that a player can make in a Tchu play
+     * Represents the three types of actions that a player can make in a Tchu play
      */
      public enum TurnKind{
 
@@ -29,73 +27,61 @@ public interface Player {
      }
 
     /**
-     *
-     * @param ownId (PlayerId) : the identity of the player
-     * @param playerNames (Map<PlayerId, String>) : the names of all the players
+     * @param ownId (PlayerId) : The identity of the player
+     * @param playerNames (Map<PlayerId, String>) : The names of all the players
      */
     abstract void initPlayers(PlayerId ownId, Map<PlayerId, String> playerNames);
 
     /**
-     *
      * @param info (String) : The information that must be communicated to the player
      */
     abstract void receiveInfo(String info);
 
     /**
-     *
-     * @param newState (PublicGameState) : the new state of the game
-     * @param ownState (PlayerState) : the current state of this player
+     * @param newState (PublicGameState) : The new state of the game
+     * @param ownState (PlayerState) : The current state of this player
      */
     abstract void updateState(PublicGameState newState, PlayerState ownState);
 
     /**
-     *
-     * @param tickets (SortedBag<Ticket>) : the five tickets being distributed to the player
+     * @param tickets (SortedBag<Ticket>) : The five tickets being distributed to the player
      */
     abstract void setInitialTicketChoice(SortedBag<Ticket> tickets);
 
-
     /**
-     *
-     * @return (SortedBag<Ticket>) the tickets the player will choose between to keep them
-     */
-    abstract SortedBag<Ticket> chooseInitialTickets();
-
-    /**
-     *
-     * @return (TurnKind) the type of action the player wishes to do
+     * @return (TurnKind) The type of action the player wishes to do
      */
     abstract TurnKind nextTurn();
 
     /**
-     *
-     * @param options (SortedBag<Ticket>) : the tickets the player has to choose between
-     * @return (SortedBag<Ticket>) the tickets the player will keep
+     * @param options (SortedBag<Ticket>) : The tickets the player has to choose between
+     * @return (SortedBag<Ticket>) The tickets the player will keep
      */
     abstract SortedBag<Ticket> chooseTickets(SortedBag<Ticket> options);
 
     /**
-     *
-     * @return (int) the emplacement where the player wishes to draw his cards
+     * @return (SortedBag<Ticket>) The tickets the player will choose between to keep them
      */
-    abstract int drawSlot();
+    abstract SortedBag<Ticket> chooseInitialTickets();
 
     /**
-     *
-     * @return (Route) : the route the player decided or tried to take over
-     */
-    abstract Route claimedRoute();
-
-    /**
-     *
-     * @return (SortedBag<Card>) : the cards the player wishes to play to take over a route
+     * @return (SortedBag<Card>) : The cards the player wishes to play to take over a route
      */
     abstract SortedBag<Card> initialClaimCards();
 
     /**
-     *
-     * @param options (List<SortedBag<Card>>) : the necessary cards the player has to choose between to take over a tunnel route
-     * @return (SortedBag<Card>) the cards the player chose
+     * @param options (List<SortedBag<Card>>) : The necessary cards the player has to choose between to take over a tunnel route
+     * @return (SortedBag<Card>) The cards the player chose
      */
     abstract SortedBag<Card> chooseAdditionalCards(List<SortedBag<Card>> options);
+
+    /**
+     * @return (int) The emplacement where the player wishes to draw his cards
+     */
+    abstract int drawSlot();
+
+    /**
+     * @return (Route) : The route the player decided or tried to take over
+     */
+    abstract Route claimedRoute();
 }

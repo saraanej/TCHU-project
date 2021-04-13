@@ -19,9 +19,9 @@ public enum PlayerId {
 
     /**
      * @return (PlayerId) the identity of the player following the one to whom
-     *                    this method is applied
+     * this method is applied
      */
-    public PlayerId next(){
+    public PlayerId next() {
         return this.equals(PLAYER_1) ? PLAYER_2 : PLAYER_1;
     }
 }
