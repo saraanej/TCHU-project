@@ -21,13 +21,12 @@ public enum Color {
 	WHITE;
 
 	/**
-	 * List containing all the values of the enum type.
+	 * List containing all the values of the enum type Color.
 	 */
-	public final static List<Color> ALL = List.copyOf(List.of(Color.values())); //A CHANGER VOIR
+	public final static List<Color> ALL = List.of(Color.values());
 
 	/**
-	 * Integer containing the number of the enum type values.
+	 * Integer containing the size of the enum type Color.
 	 */
 	public final static int COUNT = ALL.size();
-
 }

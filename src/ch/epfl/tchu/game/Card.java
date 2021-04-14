@@ -3,7 +3,7 @@ package ch.epfl.tchu.game;
 import java.util.List;
 
 /**
- * Modelizes the different types of cards used in the game
+ * Modelizes the different types of cards used in the game.
  *
  * @author Yasmin Benrahhal (329912)
  * @author Sara Anejjar (329905)
@@ -21,11 +21,17 @@ public enum Card {
 	LOCOMOTIVE(null);
 
 	/**
-	 * List containing only the wagon cards
+	 * List containing only the wagon cards.
 	 */
 	public final static List<Card> CARS = List.of(
 			BLACK, VIOLET, BLUE, GREEN, YELLOW, ORANGE, RED, WHITE);
+	/**
+	 * List containing all the values of the enum type Card.
+	 */
 	public final static List<Card> ALL = List.of(Card.values());
+	/**
+	 * Integer containing the size of the enum type Card.
+	 */
 	public final static int COUNT = ALL.size();
 
 	/**
@@ -60,7 +66,7 @@ public enum Card {
 	/**
 	 * Constructor initializing the color of the wagon cards.
 	 *
-	 * @param color (Color) : The color of the wagon's card
+	 * @param color (Color) : The color of the wagon's card.
 	 */
 	Card(Color color) {
 		colorName = color;
@@ -70,9 +76,7 @@ public enum Card {
 	 * @return (Color) The color of the card's type if it's a wagon card. null if not.
 	 */
 	public Color color() {
-		return (this.colorName == null) ? null : this.colorName;
+		return colorName;
 	}
-
-
 }
 

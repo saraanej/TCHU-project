@@ -9,12 +9,10 @@ import ch.epfl.tchu.Preconditions;
 
 /**
  * Modelizes the public state of the wagon/locomotive cards
- * that the player doesn't possess
- * 
+ * that the player doesn't possess.
  * 
  * @author Yasmin Ben Rahhal (329912)
  * @author Sara Anejjar (329905)
- *
  */
 
 public class PublicCardState {
@@ -24,13 +22,13 @@ public class PublicCardState {
 	private final int discardsSize;
 	
 	/**
-	 * default constructor for the card's state
-	 * @param (List<Card>) faceUpCards : the list of the visible cards
-	 * @param (int) deckSize : the deck's size
-	 * @param (int) discardsSize : the discard pile's size
+	 * Default constructor for the card's state.
+	 * @param (List<Card>) faceUpCards : The visible cards.
+	 * @param (int) deckSize : The deck's size.
+	 * @param (int) discardsSize : The discard pile's size.
 	 * @throws IllegalArgumentException 
-	 *                if the list of the visible cards doesn't contain exactly five cards
-	 *                if the sizes of the deck or the discard pile are negative                 
+	 *                if the list of the visible cards doesn't contain exactly five cards,
+	 *                if the sizes of the deck or the discard pile are negative.
 	 */
 	public PublicCardState(List<Card> faceUpCards, int deckSize, int discardsSize) {
 		Preconditions.checkArgument(faceUpCards.size() == Constants.FACE_UP_CARDS_COUNT);
@@ -39,54 +37,50 @@ public class PublicCardState {
 		this.faceUpCards = List.copyOf(faceUpCards);
 		this.deckSize = deckSize;
 		this.discardsSize = discardsSize;
-		
-	}
-	
-	/**
-	 * @return (int) the number of cards that the players don't possess
-	 */
-	public int totalSize() {
-		return deckSize + discardsSize + faceUpCards().size();
 	}
 
 	/**
-	 * @return (List<Card>) the five visible cards in a list containing five elements
+	 * @return (boolean) true if the deck is empty. false if not.
 	 */
-	public List<Card> faceUpCards(){		
-		return faceUpCards;
+	public boolean isDeckEmpty() {
+		return deckSize == 0 ? true : false;
 	}
 
 	/**
-	 * @param (int) slot : index of the visible card
-	 * @return (Card) the visible card in the slot-th position
-	 * @throws IndexOutOfBoundsException
-	             if slot is less than 0 or bigger or equal than 5
-	 */
-	public Card faceUpCard(int slot) {
-		return faceUpCards().get(Objects.checkIndex(slot,5));
-	}
-	
-	/**
-	 * 
-	 * @return (int) the deck's size
+	 * @return (int) The deck's size.
 	 */
 	public int deckSize() {
 		return deckSize;
 	}
 
-	/** 
-	 * 
-	 * @return (boolean) true if the deck is empty. false if not.
-	 */
-	public boolean isDeckEmpty() {
-		return deckSize() == 0 ? true : false;
-	}
-
 	/**
-	 * 
-	 * @return (int) the discard pile's size
+	 * @return (int) The discard pile's size.
 	 */
 	public int discardsSize() {
 		return discardsSize;
+	}
+
+	/**
+	 * @return (int) The number of cards that the players don't possess.
+	 */
+	public int totalSize() {
+		return deckSize + discardsSize + faceUpCards.size();
+	}
+
+	/**
+	 * @return (List<Card>) The five visible cards in a list containing five elements.
+	 */
+	public List<Card> faceUpCards(){
+		return faceUpCards;
+	}
+
+	/**
+	 * @param (int) slot : Index of the visible card.
+	 * @return (Card) The visible card in the slot-th position.
+	 * @throws IndexOutOfBoundsException
+	             if slot is less than 0 or bigger or equal than 5.
+	 */
+	public Card faceUpCard(int slot) {
+		return faceUpCards().get(Objects.checkIndex(slot,5));
 	}
 }

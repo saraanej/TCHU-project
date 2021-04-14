@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * Modelizes the public part of a Tchu's play state
+ * Modelizes the public side of a Tchu's play state.
  *
  * @author Yasmin Ben Rahhal (329912)
  * @author Sara Anejjar (329905)
@@ -21,48 +21,34 @@ public class PublicGameState {
     private final Map<PlayerId, PublicPlayerState> playerState;
 
     /**
-     * Default constructor
+     * Default constructor.
      *
-     * @param ticketsCount (int) : the size of the tickets' deck
-     * @param cardState (PublicCardState) : the public state of the cars and locomotives
-     * @param currentPlayerId (PlayerId) : the current player's identity
-     * @param playerState (Map<PlayerId, PublicPlayerState>) : the public state of the players
-     * @param lastPlayer (PlayerId) : the last player's identity. Can be null
+     * @param ticketsCount (int) : The size of the tickets' deck.
+     * @param cardState (PublicCardState) : The public state of the cars and locomotives.
+     * @param currentPlayerId (PlayerId) : The current player's identity.
+     * @param playerState (Map<PlayerId, PublicPlayerState>) : The public state of the players.
+     * @param lastPlayer (PlayerId) : The last player's identity. Can be null.
      * @throws IllegalArgumentException
-     *                           if the size of the tickets' deck is negative
-     *                           if playerState doesn't contain exactly two pairs
+     *                           if the size of the tickets' deck is negative,
+     *                           if playerState doesn't contain exactly two pairs.
      * @throws NullPointerException
-     *                           if one of the arguments, except for lastPlayer, is null
+     *                           if one of the arguments, except for lastPlayer, is null.
      */
     public PublicGameState(int ticketsCount, PublicCardState cardState, PlayerId currentPlayerId, Map<PlayerId, PublicPlayerState> playerState, PlayerId lastPlayer){
         Preconditions.checkArgument(ticketsCount >= 0);
-        Preconditions.checkArgument(playerState.size() == 2);
-        this.ticketsCount = ticketsCount;
+        Preconditions.checkArgument(playerState.size() == PlayerId.COUNT);
         this.cardState = Objects.requireNonNull(cardState);
         this.currentPlayerId = Objects.requireNonNull(currentPlayerId);
         this.playerState = Objects.requireNonNull(Map.copyOf(playerState));
+        this.ticketsCount = ticketsCount;
         this.lastPlayer = lastPlayer;
     }
 
     /**
-     * @return (int) the size of the tickets' deck
-     */
-    public int ticketsCount(){
-        return ticketsCount;
-    }
-
-    /**
-     * @return (boolean) true if the tickets'deck is not empty. false if not
+     * @return (boolean) true if the tickets' deck is not empty. false if not.
      */
     public boolean canDrawTickets(){
         return ticketsCount != 0;
-    }
-
-    /**
-     * @return (PublicCardState) the public state of the cars and locomotives
-     */
-    public PublicCardState cardState(){
-        return cardState;
     }
 
     /**
@@ -74,41 +60,55 @@ public class PublicGameState {
     }
 
     /**
-     * @return (PlayerId) the identity of the current player
+     * @return (int) The size of the tickets' deck.
+     */
+    public int ticketsCount(){
+        return ticketsCount;
+    }
+
+    /**
+     * @return (PlayerId) The identity of the current player.
      */
     public PlayerId currentPlayerId(){
         return currentPlayerId;
     }
 
     /**
-     * @param playerId (PlayerId) : a game player's identity
-     * @return (PublicPlayerState) the public part of the given player's state
+     * @return (PlayerId) The last player's identity if known, null if not.
+     */
+    public PlayerId lastPlayer(){
+        return lastPlayer;
+    }
+
+    /**
+     * @return (PublicCardState) The public state of the cars and locomotives.
+     */
+    public PublicCardState cardState(){
+        return cardState;
+    }
+
+    /**
+     * @param playerId (PlayerId) : A game player's identity.
+     * @return (PublicPlayerState) The public part of the given player's state.
      */
     public PublicPlayerState playerState(PlayerId playerId){
         return playerState.get(playerId);
     }
 
     /**
-     * @return (PublicPlayerState) the public part of the current player's state
+     * @return (PublicPlayerState) The public part of the current player's state.
      */
     public PublicPlayerState currentPlayerState(){
         return playerState.get(currentPlayerId);
     }
 
     /**
-     * @return (List<Routes>) all the routes that the players took over
+     * @return (List<Routes>) All the routes that the players took over.
      */
     public List<Route> claimedRoutes(){
         List<Route> routes = new ArrayList<>();
         routes.addAll(currentPlayerState().routes());
         routes.addAll(playerState(currentPlayerId.next()).routes());
         return routes;
-    }
-
-    /**
-     * @return (PlayerId) the last player's identity if known, null if not.
-     */
-    public PlayerId lastPlayer(){
-        return lastPlayer;
     }
 }
