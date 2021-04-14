@@ -24,7 +24,6 @@ public enum Color {
 	 * List containing all the values of the enum type Color.
 	 */
 	public final static List<Color> ALL = List.of(Color.values());
-
 	/**
 	 * Integer containing the size of the enum type Color.
 	 */

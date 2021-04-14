@@ -20,6 +20,7 @@ public class PublicPlayerState {
     private final int claimPoints;
     private final List<Route> routes;
 
+
     /**
      * Default public constructor of the PublicPlayerState.
      * @param ticketCount (int): The number of tickets the player owns.
@@ -40,6 +41,7 @@ public class PublicPlayerState {
         this.claimPoints = computeClaimPoints();
     }
 
+
     /**
      * @return (int) The number of tickets the player owns.
      */
@@ -53,7 +55,6 @@ public class PublicPlayerState {
     public int cardCount() {
         return cardCount;
     }
-
 
     /**
      * @return (int) The number of wagons the player owns.
@@ -75,6 +76,7 @@ public class PublicPlayerState {
     public List<Route> routes(){
         return routes;
     }
+
 
     /**
      * @return (int) The number of construction's points earned by the player.

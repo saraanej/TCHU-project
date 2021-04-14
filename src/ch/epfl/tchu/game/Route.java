@@ -14,12 +14,6 @@ import ch.epfl.tchu.SortedBag;
  */
 public final class Route {
 
-	private final int length;
-	private final String id;
-	private final Station station1, station2;
-	private final Level level;
-	private final Color color;
-
 	/**
 	 * Modelizes the route's level.
 	 */
@@ -27,6 +21,13 @@ public final class Route {
 		OVERGROUND,
 		UNDERGROUND;
 	}
+
+	private final int length;
+	private final String id;
+	private final Station station1, station2;
+	private final Level level;
+	private final Color color;
+
 	
 	/**
 	 * Public default constructor of a route.
@@ -53,6 +54,7 @@ public final class Route {
 		this.color = color;
 		this.length = length;
 	}
+
 
 	/**
 	 * Public getter for the route's length.

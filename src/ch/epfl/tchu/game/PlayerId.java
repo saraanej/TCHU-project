@@ -23,6 +23,7 @@ public enum PlayerId {
      */
     public final static int COUNT = ALL.size();
 
+
     /**
      * @return (PlayerId) The identity of the player following the one to whom
      * this method is applied.

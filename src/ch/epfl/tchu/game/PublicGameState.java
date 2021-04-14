@@ -20,6 +20,7 @@ public class PublicGameState {
     private final PlayerId currentPlayerId, lastPlayer;
     private final Map<PlayerId, PublicPlayerState> playerState;
 
+
     /**
      * Default constructor.
      *
@@ -43,6 +44,7 @@ public class PublicGameState {
         this.ticketsCount = ticketsCount;
         this.lastPlayer = lastPlayer;
     }
+
 
     /**
      * @return (boolean) true if the tickets' deck is not empty. false if not.

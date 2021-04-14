@@ -61,7 +61,9 @@ public enum Card {
 		}
 	}
 
+
 	private Color colorName;
+
 
 	/**
 	 * Constructor initializing the color of the wagon cards.
@@ -71,6 +73,7 @@ public enum Card {
 	Card(Color color) {
 		colorName = color;
 	}
+
 
 	/**
 	 * @return (Color) The color of the card's type if it's a wagon card. null if not.

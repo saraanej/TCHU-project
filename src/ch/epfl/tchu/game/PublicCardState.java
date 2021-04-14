@@ -20,6 +20,7 @@ public class PublicCardState {
 	private final List<Card> faceUpCards;
 	private final int deckSize;
 	private final int discardsSize;
+
 	
 	/**
 	 * Default constructor for the card's state.
@@ -38,6 +39,7 @@ public class PublicCardState {
 		this.deckSize = deckSize;
 		this.discardsSize = discardsSize;
 	}
+
 
 	/**
 	 * @return (boolean) true if the deck is empty. false if not.
