@@ -21,13 +21,8 @@ public class Game {
 
     private static final int DRAWN_CARDS_COUNT = 2;
 
-    private Game(){
-        throw new UnsupportedOperationException();
-    }
-
-
     /**
-     * simulates a Tchu's play for the given players
+     * Simulates a Tchu's play for the given players
      *
      * @param players (Map<PlayerId, Player>) : the players of the Tchu's play
      * @param playerNames (Map<PlayerId, String>) : the player's names of the Tchu's play
@@ -210,9 +205,10 @@ public class Game {
 
         int minPoints = playersPoints.values()
                 .stream()
-                .min(Integer::compare).get();
-        Map.Entry<PlayerId, Integer> winner = winner(playersPoints,minPoints);
+                .min(Integer::compare)
+                .get();
 
+        Map.Entry<PlayerId, Integer> winner = winner(playersPoints,minPoints);
         List<String> names = List.copyOf(playerNames.values());
         if(winner.getKey() == null) receiveInfo(players, Info.draw(names, minPoints));
         else receiveInfo(players, playersInfo.get(winner.getKey())
@@ -272,5 +268,10 @@ public class Game {
      */
     private static void receiveInfo(Map<PlayerId, Player> players, String info){
         players.forEach((id,player) -> player.receiveInfo(info));
+    }
+
+
+    private Game(){
+        throw new UnsupportedOperationException();
     }
 }
