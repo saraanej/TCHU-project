@@ -112,9 +112,9 @@ public class GameTest {
             }
 
             if (claimableRoutes.isEmpty()) {
-               if(gameState.canDrawTickets())
-                return TurnKind.ALL.get(rng.nextInt(2));
-                else return TurnKind.DRAW_CARDS;
+              // if(gameState.canDrawTickets())
+               // return TurnKind.ALL.get(rng.nextInt(2));
+                 return TurnKind.DRAW_CARDS;
 //                if(gameState.cardState().deckSize() + gameState.cardState().discardsSize() >= 6)
 //                   return TurnKind.DRAW_CARDS;
 //                else return TurnKind.DRAW_TICKETS;

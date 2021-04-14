@@ -2,6 +2,7 @@ package ch.epfl.tchu.game;
 
 import java.util.ArrayList;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.TreeSet;
 
@@ -90,9 +91,7 @@ public final class Ticket implements Comparable<Ticket> {
             int pts = t.points(connectivity);
             Points.add(pts);
         }
-        maxPoints = Points.stream()
-				          .max(Integer::compare)
-				          .get();
+        maxPoints = Collections.max(Points);
         return maxPoints;
     }
 
