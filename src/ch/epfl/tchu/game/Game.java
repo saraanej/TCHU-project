@@ -20,20 +20,21 @@ import java.util.List;
 public class Game {
 
     private static final int DRAWN_CARDS_COUNT = 2;
+    private static final int NUMBER_OF_PLAYERS = 2;
 
     /**
-     * Simulates a Tchu's play for the given players
+     * Simulates a Tchu's play for the given players.
      *
      * @param players (Map<PlayerId, Player>) : the players of the Tchu's play
      * @param playerNames (Map<PlayerId, String>) : the player's names of the Tchu's play
      * @param tickets (SortedBag<Ticket>) : the available tickets for the game
-     * @param rng (Random) : a random generator
+     * @param rng (Random) : a random generator used to shuffle the decks
      * @throws IllegalArgumentException
      *                        if one of the maps' size is not equal to 2
      */
     public static void play(Map<PlayerId, Player> players, Map<PlayerId, String> playerNames, SortedBag<Ticket> tickets, Random rng){
-        Preconditions.checkArgument(players.size() == 2);
-        Preconditions.checkArgument(playerNames.size() == 2);
+        Preconditions.checkArgument(players.size() == NUMBER_OF_PLAYERS);
+        Preconditions.checkArgument(playerNames.size() == NUMBER_OF_PLAYERS);
 
         Map<PlayerId, Info> playersInfo = new HashMap<>();
         for (PlayerId playerId: PlayerId.values()) {
@@ -68,7 +69,11 @@ public class Game {
 
         finish(playerNames,playersInfo,players,gameState);
     }
-
+    /**
+     * Called to initialize the game : initializes players and lets the players choose their initial Tickets.
+     *
+     * @return the gameState after initializing the game.
+     */
     private static GameState Begin(Map<PlayerId, String> playerNames, Map<PlayerId, Info> playersInfo, Map<PlayerId, Player> players, GameState gameState){
         players.forEach((id,player) -> player.initPlayers(id,playerNames));
         receiveInfo(players, playersInfo.get(gameState.currentPlayerId()).willPlayFirst());
@@ -79,9 +84,7 @@ public class Game {
             gameState = gameState.withoutTopTickets(Constants.INITIAL_TICKETS_COUNT);
             players.get(playerId).setInitialTicketChoice(initialTickets);
         }
-
         updateState(players,gameState);
-
         SortedBag<Ticket> chosenTickets;
         for (PlayerId playerId: PlayerId.values()) {
             chosenTickets = players.get(playerId).chooseInitialTickets();
@@ -91,6 +94,11 @@ public class Game {
         return gameState;
     }
 
+    /**
+     * Called if the  current player wants to draw tickets.
+     *
+     * @return the gameState after the player finished drawing and choosing his tickets.
+     */
     private static GameState drawTickets(Map<PlayerId, Info> playersInfo, Map<PlayerId, Player> players, GameState gameState){
         PlayerId currentPlayerId = gameState.currentPlayerId();
 
@@ -105,6 +113,11 @@ public class Game {
         return gameState;
     }
 
+    /**
+     * Called if the  current player wants to draw a card from the deck or from the face-up cards.
+     *
+     * @return the gameState after the player finished drawing cards.
+     */
     private static GameState drawCards(Map<PlayerId, Info> playersInfo, Map<PlayerId, Player> players, GameState gameState, Random rng){
         PlayerId currentPlayerId = gameState.currentPlayerId();
 
@@ -123,10 +136,15 @@ public class Game {
                 gameState = gameState.withDrawnFaceUpCard(slot);
             }
         }
-
         return gameState;
     }
 
+
+    /**
+     * Called if the  current player wants to claim a route.
+     *
+     * @return the gameState after the player finished tying to claim his route.
+     */
     private static GameState claimRoute(Map<PlayerId, Info> playersInfo, Map<PlayerId, Player> players, GameState gameState, Random rng){
         PlayerId currentPlayerId = gameState.currentPlayerId();
         Player currentPlayer = players.get(currentPlayerId);
@@ -155,11 +173,13 @@ public class Game {
                             .currentPlayerState()
                             .possibleAdditionalCards(nbAdditionalCards,claimCards,drawnCards);
                     if(!options.isEmpty()){
-                        SortedBag<Card> additional = currentPlayer.chooseAdditionalCards(options);
+                        SortedBag<Card> additional = currentPlayer
+                                .chooseAdditionalCards(options);
                         if(!additional.isEmpty()) {
-                            gameState = gameState.withClaimedRoute(route, claimCards.union(additional));
+                            gameState = gameState
+                                    .withClaimedRoute(route, claimCards.union(additional));
                             receiveInfo(players, playersInfo.get(currentPlayerId)
-                                    .claimedRoute(route, claimCards.union(additional)));
+                                                 .claimedRoute(route, claimCards.union(additional)));
                             //un break ici pour ps repeter 2 fois le else?
                         } else
                             receiveInfo(players, playersInfo.get(currentPlayerId).didNotClaimRoute(route));
@@ -168,18 +188,16 @@ public class Game {
                     return gameState;
                 }
             }
-            gameState = gameState.withClaimedRoute(route,claimCards);
+            gameState = gameState
+                    .withClaimedRoute(route,claimCards);
             receiveInfo(players, playersInfo.get(currentPlayerId).claimedRoute(route, claimCards));
         }
         return gameState;
     }
 
     /**
-     * 
-     * @param playerNames
-     * @param playersInfo
-     * @param players
-     * @param gameState
+     * Finishes the game, communicates the final state of the game
+     * and computes each player's points to determine and communicate the winner.
      */
     private static void finish(Map<PlayerId, String> playerNames, Map<PlayerId, Info> playersInfo, Map<PlayerId, Player> players, GameState gameState){
         updateState(players,gameState);
@@ -216,10 +234,9 @@ public class Game {
     }
 
     /**
-     *
-     * @param playersPoints
-     * @param minPoints
-     * @return
+     * Determine the winner's playerId and his corresponding maxPoints
+     * @return (Map.Entry<PlayerId, Integer>) the winner of the game and the corresponding maxPoints
+     *                                        if null, both players are ex-quo
      */
     private static Map.Entry<PlayerId, Integer> winner(Map<PlayerId,Integer> playersPoints, int minPoints){
         Map.Entry<PlayerId, Integer> winner = null;
@@ -234,11 +251,12 @@ public class Game {
     }
 
     /**
-     * @param playersTrail (Map<PlayerId,Trail>) the longest Trail of the player
-     * @return (int) 1 if P1 is the longest, 2, if P2 is the longest, 0 if both trails have the same length
+     * Determine the player
+     * @return (PlayerId) the identity of the player who has the longest Trail
+     *                    if null, both players have the longestTrail
      */
     private static PlayerId longest(Map<PlayerId,Trail> playersTrail){
-        PlayerId winner = null;
+        PlayerId bonusWinner = null;
         int length = playersTrail.values()
                 .stream()
                 .min(Comparator.comparingInt(Trail::length)).get().length();
@@ -246,14 +264,15 @@ public class Game {
         for (Map.Entry<PlayerId,Trail> entry : playersTrail.entrySet()) {
             if(entry.getValue().length() > length) {
                 length = entry.getValue().length();
-                winner = entry.getKey();
+                bonusWinner = entry.getKey();
             }
         }
-        return winner;
+        return bonusWinner;
     }
 
     /**
-     * update both players' states
+     * Updates both players' states
+     *
      * @param players (Map<PlayerId, Player>) the players of the Tchu's play
      * @param gameState (GameState) the new updated version of the current gameState
      */
@@ -262,7 +281,8 @@ public class Game {
     }
 
     /**
-     * communicates the info str to the players
+     * Communicates the info str to the players
+     *
      * @param players (Map<PlayerId, Player>) the players of the Tchu's play
      * @param info (String) the info to communicate to the players
      */
@@ -270,7 +290,12 @@ public class Game {
         players.forEach((id,player) -> player.receiveInfo(info));
     }
 
-
+    /**
+     * Private constructor of Game.
+     * Mustn't be called.
+     *
+     * @throws UnsupportedOperationException if called.
+     */
     private Game(){
         throw new UnsupportedOperationException();
     }
