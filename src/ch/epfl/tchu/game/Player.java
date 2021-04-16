@@ -6,7 +6,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Modelizes a Tchu player.
+ * The Player interface, public, represents a tCHu player.
+ * The methods of this interface are intended to be called at different times during the game,
+ * either to communicate certain information concerning its progress to the player,
+ * or to obtain certain information from the latter.
  *
  * @author Yasmin Ben Rahhal (329912)
  * @author Sara Anejjar (329905)
