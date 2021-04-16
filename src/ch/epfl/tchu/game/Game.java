@@ -9,8 +9,8 @@ import java.util.*;
 import java.util.List;
 
 /**
- * Modelizes a Tchu's play
- * Non instanciable class
+ * The Game class, public, final and non-instantiable, represents a part of tCHu.
+ * It only offers one public and static method.
  *
  * @author Yasmin Ben Rahhal (329912)
  * @author Sara Anejjar (329905)
@@ -19,6 +19,7 @@ public class Game {
 
     private static final int DRAWN_CARDS_COUNT = 2;
     private static final int NUMBER_OF_PLAYERS = 2;
+
 
     /**
      * Simulates a Tchu's play for the given players.
@@ -66,6 +67,7 @@ public class Game {
 
         finish(playerNames, playersInfo, players, gameState);
     }
+
 
     /**
      * Called to initialize the game : initializes players and lets the players choose their initial Tickets.
@@ -135,7 +137,6 @@ public class Game {
         }
         return gameState;
     }
-
 
     /**
      * Called if the  current player wants to claim a route.
@@ -228,6 +229,26 @@ public class Game {
     }
 
     /**
+     * Updates both players' states.
+     *
+     * @param players   (Map<PlayerId, Player>) the players of the Tchu's play
+     * @param gameState (GameState) the new updated version of the current gameState
+     */
+    private static void updateState(Map<PlayerId, Player> players, GameState gameState) {
+        players.forEach((id, player) -> player.updateState(gameState, gameState.playerState(id)));
+    }
+
+    /**
+     * Communicates the info str to the players.
+     *
+     * @param players (Map<PlayerId, Player>) the players of the Tchu's play.
+     * @param info    (String) the info to communicate to the players.
+     */
+    private static void receiveInfo(Map<PlayerId, Player> players, String info) {
+        players.forEach((id, player) -> player.receiveInfo(info));
+    }
+
+    /**
      * Determine the winner's playerId and his corresponding maxPoints.
      *
      * @return (Map.Entry < PlayerId, Integer >) the winner of the game and the corresponding maxPoints
@@ -264,26 +285,6 @@ public class Game {
             }
         }
         return bonusWinner;
-    }
-
-    /**
-     * Updates both players' states.
-     *
-     * @param players   (Map<PlayerId, Player>) the players of the Tchu's play
-     * @param gameState (GameState) the new updated version of the current gameState
-     */
-    private static void updateState(Map<PlayerId, Player> players, GameState gameState) {
-        players.forEach((id, player) -> player.updateState(gameState, gameState.playerState(id)));
-    }
-
-    /**
-     * Communicates the info str to the players.
-     *
-     * @param players (Map<PlayerId, Player>) the players of the Tchu's play.
-     * @param info    (String) the info to communicate to the players.
-     */
-    private static void receiveInfo(Map<PlayerId, Player> players, String info) {
-        players.forEach((id, player) -> player.receiveInfo(info));
     }
 
     /**
