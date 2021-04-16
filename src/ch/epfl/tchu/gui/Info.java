@@ -9,13 +9,13 @@ import ch.epfl.tchu.game.Trail;
 
 /**
  * Generates the texts describing the progress of the game.
- * 
+ *
  * @author Yasmin Ben Rahhal (329912)
  * @author Sara Anejjar (329905)
  */
 
 public final class Info {
-	
+
 	private final String playerName;
 
 
@@ -27,7 +27,7 @@ public final class Info {
 		this.playerName = playerName;
 	}
 
-	
+
 	/**
 	 * @param card (Card) : The given card.
 	 * @param count (int) : Value determining the plurality of the string.
@@ -54,9 +54,9 @@ public final class Info {
 				return StringsFr.YELLOW_CARD + plural;
 			default:
 				return StringsFr.LOCOMOTIVE_CARD + plural;
-		    }
+		}
 	}
-	
+
 	/**
 	 * @param playerNames (String) : The players' names.
 	 * @param points (int) : The points that each one of the players won.
@@ -64,63 +64,63 @@ public final class Info {
 	 *         and that each one of them won the given points.
 	 */
 	public static String draw(List<String> playerNames, int points) {
-		return String.format(StringsFr.DRAW, 
-				             elementStringList(playerNames),
-				             points);
+		return String.format(StringsFr.DRAW,
+				elementStringList(playerNames),
+				points);
 	}
-	
+
 	/**
 	 * @return (String) The message declaring the first player to play.
 	 */
 	public String willPlayFirst() {
 		return String.format(StringsFr.WILL_PLAY_FIRST, playerName);
 	}
-	
+
 	/**
 	 * @param count (int) : The number of cards the player kept.
 	 * @return (String) The message declaring that the player kept the number of cards given.
 	 */
 	public String keptTickets(int count) {
-		return String.format(StringsFr.KEPT_N_TICKETS, 
-				             playerName, 
-				             count,
-				             StringsFr.plural(count));
+		return String.format(StringsFr.KEPT_N_TICKETS,
+				playerName,
+				count,
+				StringsFr.plural(count));
 	}
-	
+
 	/**
 	 * @return (String) The message declaring that the player can play.
 	 */
 	public String canPlay() {
 		return String.format(StringsFr.CAN_PLAY, playerName);
 	}
-	
+
 	/**
 	 * @param count (int) : Number of tickets the player took.
 	 * @return (String) The message declaring that the player took the given number of tickets.
 	 */
 	public String drewTickets(int count) {
-		return String.format(StringsFr.DREW_TICKETS, 
-				             playerName, 
-				             count,
-				             StringsFr.plural(count));
+		return String.format(StringsFr.DREW_TICKETS,
+				playerName,
+				count,
+				StringsFr.plural(count));
 	}
-	
+
 	/**
 	 * @return (String) The message declaring the player took a card from the deck.
 	 */
 	public String drewBlindCard() {
 		return String.format(StringsFr.DREW_BLIND_CARD, playerName);
 	}
-	
+
 	/**
 	 * @return (String) the message declaring the player took the given visible card
 	 */
 	public String drewVisibleCard(Card card) {
-		return String.format(StringsFr.DREW_VISIBLE_CARD, 
-				             playerName, 
-				             cardName(card, 1));
+		return String.format(StringsFr.DREW_VISIBLE_CARD,
+				playerName,
+				cardName(card, 1));
 	}
-	
+
 	/**
 	 * @param route (Route) : The route that the player took over.
 	 * @param cards (SortedBag<Card>) : The cards the player played to take over the route.
@@ -129,11 +129,11 @@ public final class Info {
 	 */
 	public String claimedRoute(Route route, SortedBag<Card> cards) {
 		return String.format(StringsFr.CLAIMED_ROUTE,
-				             playerName, 
-				             routeName(route), 
-				             elementCardList(cards));
+				playerName,
+				routeName(route),
+				elementCardList(cards));
 	}
-	
+
 	/**
 	 * @param route (Route) : The tunnel route the player wants to take over.
 	 * @param initialCards (SortedBag<Card>) : The cards the player will play to get the tunnel route.
@@ -142,11 +142,11 @@ public final class Info {
 	 */
 	public String attemptsTunnelClaim(Route route, SortedBag<Card> initialCards) {
 		return String.format(StringsFr.ATTEMPTS_TUNNEL_CLAIM,
-				             playerName, 
-				             routeName(route), 
-				             elementCardList(initialCards));
+				playerName,
+				routeName(route),
+				elementCardList(initialCards));
 	}
-	
+
 	/**
 	 * @param drawnCards (SortedBag<Card>) : The additional cards that the player drew.
 	 * @param additionalCost (int) : The additional cost for the given cards.
@@ -160,11 +160,11 @@ public final class Info {
 			cost += StringsFr.NO_ADDITIONAL_COST;
 		} else {
 			cost += String.format(StringsFr.SOME_ADDITIONAL_COST,
-					              additionalCost,
-					              StringsFr.plural(additionalCost));
+					additionalCost,
+					StringsFr.plural(additionalCost));
 		}
-        return cost;
-     }
+		return cost;
+	}
 
 	/**
 	 * @param route (Route) : The given tunnel route.
@@ -172,11 +172,11 @@ public final class Info {
 	 *                  or didn't want to take over the given tunnel route.
 	 */
 	public String didNotClaimRoute(Route route) {
-		return String.format(StringsFr.DID_NOT_CLAIM_ROUTE, 
-				             playerName, 
-				             routeName(route));
+		return String.format(StringsFr.DID_NOT_CLAIM_ROUTE,
+				playerName,
+				routeName(route));
 	}
-	
+
 	/**
 	 * @param carCount (int) : The number of wagon cars the player has left.
 	 * @return (String) The message declaring that the player has only the given number of wagon cars
@@ -184,11 +184,11 @@ public final class Info {
 	 */
 	public String lastTurnBegins(int carCount) {
 		return String.format(StringsFr.LAST_TURN_BEGINS,
-				             playerName, 
-				             carCount, 
-				             StringsFr.plural(carCount));
+				playerName,
+				carCount,
+				StringsFr.plural(carCount));
 	}
-	
+
 	/**
 	 * @param longestTrail (Trail) : The trail that made the player earn the final game bonus.
 	 * @return (String) The message declaring that the player obtains the final game bonus
@@ -196,10 +196,10 @@ public final class Info {
 	 */
 	public String getsLongestTrailBonus(Trail longestTrail) {
 		return String.format(StringsFr.GETS_BONUS,
-				             playerName,
-				             trailName(longestTrail));
+				playerName,
+				trailName(longestTrail));
 	}
-	
+
 	/**
 	 * @param points (int) : The points earned by the player in the game.
 	 * @param loserPoints (int) : The points made by the player's opponent in the game.
@@ -208,11 +208,11 @@ public final class Info {
 	 */
 	public String won(int points, int loserPoints) {
 		return String.format(StringsFr.WINS,
-				             playerName,
-				             points,
-				             StringsFr.plural(points),
-				             loserPoints,
-				             StringsFr.plural(loserPoints));
+				playerName,
+				points,
+				StringsFr.plural(points),
+				loserPoints,
+				StringsFr.plural(loserPoints));
 	}
 
 
@@ -222,9 +222,9 @@ public final class Info {
 	 */
 	private static String routeName(Route route) {
 		return String.format("%s%s%s" ,
-				                  route.station1(),
-				                  StringsFr.EN_DASH_SEPARATOR,
-				                  route.station2());
+				route.station1(),
+				StringsFr.EN_DASH_SEPARATOR,
+				route.station2());
 	}
 
 	/**
@@ -233,11 +233,11 @@ public final class Info {
 	 */
 	private static String trailName(Trail trail){
 		return String.format("%s%s%s" ,
-				           trail.station1(),
-				           StringsFr.EN_DASH_SEPARATOR,
-				           trail.station2());
+				trail.station1(),
+				StringsFr.EN_DASH_SEPARATOR,
+				trail.station2());
 	}
-	
+
 	/**
 	 * @param cards (SortedBag<Card>) : The given list of cards.
 	 * @return (String) The message containing all the specifics of the cards
@@ -252,8 +252,8 @@ public final class Info {
 		for (Card card: cards.toSet()) {
 			int n = cards.countOf(card);
 			subElements.add(String.format("%s %s",
-					                  n,
-					                  cardName(card, n)));
+					n,
+					cardName(card, n)));
 		}
 		if(subElements.size() == 1){
 			return subElements.get(0);
@@ -274,8 +274,7 @@ public final class Info {
 	 */
 	private static String elementStringList(List<String> playerNames) {
 		return String.format("%s%s%s",
-				                     playerNames.get(0),
-				                     StringsFr.AND_SEPARATOR,
-				                     playerNames.get(1));
-	}
-}
+				playerNames.get(0),
+				StringsFr.AND_SEPARATOR,
+				playerNames.get(1));
+	}}
