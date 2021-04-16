@@ -4,8 +4,11 @@
 package ch.epfl.tchu.game;
 
 /**
- * Modelizes the connection between two stations of the player
- * 
+ * The StationConnectivity interface of the ch.epfl.tchu.game package, public,
+ * Modelizes the connection between two stations of the player,
+ * represents the connectivity of a player's network,
+ * i.e. whether two stations in the tCHu network are connected or not by the player's network in question.
+ *
  * @author Yasmin Ben Rahhal (329912)
  * @author Sara Anejjar (329905)
  *

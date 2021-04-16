@@ -3,12 +3,12 @@ package ch.epfl.tchu.game;
 import java.util.List;
 
 /**
- * Modelizes the colors used in the game for the cards and paths.
+ * The public and immutable enumerated type Color, represents the eight colors
+ * used in the game to color railcar and road maps.
  *
  * @author Yasmin Benrahhal (329912)
  * @author Sara Anejjar (329905)
  */
-
 public enum Color {
 
 	BLACK,

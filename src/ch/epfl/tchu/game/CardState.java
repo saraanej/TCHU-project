@@ -9,7 +9,10 @@ import java.util.Objects;
 import java.util.Random;
 
 /**
- * Modelizes the private state of the wagon/locomotive cards' decks
+ * The CardState class of the ch.epfl.tchu.game package, public, final and immutable.
+ * Represents the private state of the wagon/locomotive cards that are not in the hands of the players.
+ * It inherits from PublicCardState and adds to it the private elements of the state,
+ * as well as the corresponding methods.
  *
  * @author Yasmin Ben Rahhal (329912)
  * @author Sara Anejjar (329905)

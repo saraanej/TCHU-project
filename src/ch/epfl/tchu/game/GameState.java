@@ -6,8 +6,10 @@ import ch.epfl.tchu.SortedBag;
 import java.util.*;
 
 /**
+ * The GameState class, from the ch.epfl.tchu.game package, public, final, and immutable.
  * Modelizes the state of a Tchu's play
- *
+ * It inherits from PublicGameState and does not offer a public constructor,
+ * but a public and static construction method.
  *
  * @author Yasmin Ben Rahhal (329912)
  * @author Sara Anejjar (329905)

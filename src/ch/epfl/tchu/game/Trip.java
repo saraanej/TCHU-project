@@ -7,7 +7,9 @@ import java.util.Objects;
 import ch.epfl.tchu.Preconditions;
 
 /**
- * Modelizes a Trip from a Station to another 
+ * The Trip class of the ch.epfl.tchu.game package, public, final and immutable,
+ * Modelizes a Trip from a Station to another.
+ * A Trip consists of two stations to be connected and a number of points.
  * 
  * @author Yasmin Ben Rahhal (329912)
  * @author Sara Anejjar (329905)

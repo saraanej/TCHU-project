@@ -7,8 +7,8 @@ import ch.epfl.tchu.Preconditions;
 import ch.epfl.tchu.SortedBag;
 
 /**
- * Modelizes a route.
- * 
+ * The public, final and immutable Route class represents a road connecting two neighboring towns.
+ *
  * @author Yasmin Ben Rahhal (329912)
  * @author Sara Anejjar (329905)
  */

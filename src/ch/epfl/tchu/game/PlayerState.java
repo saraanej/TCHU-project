@@ -7,7 +7,11 @@ import ch.epfl.tchu.SortedBag;
 import java.util.*;
 
 /**
- * Modelizes the player's State
+ * The PlayerState class from the ch.epfl.tchu.game package, public, final, and immutable.
+ * Modelizes the player's State.
+ * Represents the complete state of a player.
+ * It inherits from PublicPlayerState.
+ * It offers a unique public constructor and a static construction method.
  *
  * @author Yasmin Ben Rahhal (329912)
  * @author Sara Anejjar (329905)

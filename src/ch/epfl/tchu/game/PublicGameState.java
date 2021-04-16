@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * Modelizes the public side of a Tchu's play state.
+ * The PublicGameState class, public and immutable, represents the public part of the state of a part of tCHu.
  *
  * @author Yasmin Ben Rahhal (329912)
  * @author Sara Anejjar (329905)

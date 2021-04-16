@@ -8,9 +8,13 @@ import ch.epfl.tchu.Preconditions;
 import ch.epfl.tchu.SortedBag;
 
 /**
- * Modelizes a bunch of cards
+ * The Deck class from the ch.epfl.tchu.game package, public, final, and immutable.
+ * Represents a bunch of cards.
+ * Note that the word "card" here refers to any type of map, not just wagon / locomotive cards.
+ * Thus, in this project, the Deck class will be used both to represent the draw pile of the wagon / locomotive cards
+ * and to represent the draw pile of tickets.
  *
- * @param C represents the type of the cards
+ * @param C represents the type of the deck's cards.
  * @author Yasmin Ben Rahhal (329912)
  * @author Sara Anejjar (329905)
  */

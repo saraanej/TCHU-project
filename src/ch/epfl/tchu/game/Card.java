@@ -3,7 +3,8 @@ package ch.epfl.tchu.game;
 import java.util.List;
 
 /**
- * Modelizes the different types of cards used in the game.
+ *The public and immutable enumerated type Card represents the different types of cards in the game,
+ * namely the eight types of wagon cards (one per suit), and the type of locomotive card.
  *
  * @author Yasmin Benrahhal (329912)
  * @author Sara Anejjar (329905)

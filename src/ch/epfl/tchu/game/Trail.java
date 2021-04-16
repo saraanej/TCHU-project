@@ -4,7 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Modelizes a trail
+ * The Trail class of the ch.epfl.tchu.game package, public, final, and immutable,
+ * Modelizes a trail, represents a path in a player's network.
+ * A Trail can pass through the same station several times,
+ * but it cannot take the same road several times.
  *
  * @author Yasmin Ben Rahhal (329912)
  * @author Sara Anejjar (329905)

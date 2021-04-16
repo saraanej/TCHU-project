@@ -10,7 +10,16 @@ import ch.epfl.tchu.Preconditions;
 
 
 /**
- * Modelizes a Ticket
+ * The Ticket class of the ch.epfl.tchu.game package, public, final and immutable,
+ * Represents a Ticket.
+ * A tCHu ticket is made up of a starting point and an ending point.
+ * A tCHu ticket is worth a certain number of points, which are those that the player
+ * who owns it will gain (resp. Lose) at the end of the game if he has succeeded (resp. Failed)
+ * in connecting the starting point to the point arrival with its own wagons cars.
+ * There are three types of tCHu tickets: city to city, city to country, country to country.
+ * The tCHu game has a total of 46 tickets:
+ * 34 city-to-city tickets, 4 city-to-country tickets,and 8 country-to-country tickets.
+ * Country-to-country Tickets are available in two copies each, while all other Tickets are unique.
  *
  * @author Yasmin Ben Rahhal (329912)
  * @author Sara Anejjar (329905)

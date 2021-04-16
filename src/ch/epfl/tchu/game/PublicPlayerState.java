@@ -6,7 +6,11 @@ import java.util.List;
 
 
 /**
+ * The PublicPlayerState class of the ch.epfl.tchu.game package, public and immutable,
  * Modelizes the public player's State.
+ * Represents the public part of a player's state, namely the number of tickets, cards and cars he owns,
+ * the routes he claimed, and the number of claim points he got as a result.
+ * It offers a unique public constructor.
  *
  * @author Yasmin Ben Rahhal (329912)
  * @author Sara Anejjar (329905)

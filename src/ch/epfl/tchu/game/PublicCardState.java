@@ -8,13 +8,12 @@ import java.util.Objects;
 import ch.epfl.tchu.Preconditions;
 
 /**
- * Modelizes the public state of the wagon/locomotive cards
- * that the player doesn't possess.
- * 
+ * The public and immutable PublicCardState class represents (a part of) the state of the wagon/locomotive cards that are not in the hands of the players.
+ * By "public part of a state" is meant the part of this state which is known to all the players.
+ *
  * @author Yasmin Ben Rahhal (329912)
  * @author Sara Anejjar (329905)
  */
-
 public class PublicCardState {
 	
 	private final List<Card> faceUpCards;

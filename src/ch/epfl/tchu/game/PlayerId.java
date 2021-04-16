@@ -3,12 +3,12 @@ package ch.epfl.tchu.game;
 import java.util.List;
 
 /**
- * Modelizes the identity of the player.
+ * The public enumerated type PlayerId, represents the identity of a player.
+ * As tCHu is played with two players, this enumerated type contains only two elements.
  *
  * @author Yasmin Ben Rahhal (329912)
  * @author Sara Anejjar (329905)
  */
-
 public enum PlayerId {
 
     PLAYER_1,

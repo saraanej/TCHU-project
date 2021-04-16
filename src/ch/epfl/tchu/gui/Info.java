@@ -8,7 +8,9 @@ import ch.epfl.tchu.game.Route;
 import ch.epfl.tchu.game.Trail;
 
 /**
- * Generates the texts describing the progress of the game.
+ * The Info class, public, final and immutable, allows you to generate the texts describing the progress of the game.
+ * Most of these messages describe the actions of a given player,
+ * whose name is passed as an argument to the constructor.
  *
  * @author Yasmin Ben Rahhal (329912)
  * @author Sara Anejjar (329905)
@@ -17,7 +19,6 @@ import ch.epfl.tchu.game.Trail;
 public final class Info {
 
 	private final String playerName;
-
 
 	/**
 	 * Default constructor of the messages linked to the player's name.
