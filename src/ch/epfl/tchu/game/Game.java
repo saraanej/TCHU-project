@@ -191,10 +191,10 @@ public class Game {
     /**
      * Finishes the game, communicates the final state of the game
      * and computes each player's points to determine and communicate the winner.
-     * <p>
-     * NOTE : This code was written generally, I presuppose that the number of players may be superior to two,
+     *
+     * NOTE : This code was written generally, presupposing that the number of players may be superior to two,
      * which explains the additional for loops and calculation of the minimal points
-     * that may seem useless if the players were only 2.
+     * that may seem useless if the number of players were only 2.
      */
     private static void finish(Map<PlayerId, String> playerNames, Map<PlayerId, Info> playersInfo, Map<PlayerId, Player> players, GameState gameState) {
         updateState(players, gameState);
@@ -217,10 +217,8 @@ public class Game {
             playersPoints.put(bonusPlayer, playersPoints.get(bonusPlayer) + Constants.LONGEST_TRAIL_BONUS_POINTS);
             receiveInfo(players, playersInfo.get(bonusPlayer).getsLongestTrailBonus(playersTrail.get(bonusPlayer)));
         }
-
         //Used this method (.min) to determine the points of the loser player since there might be more than 2 players in the future
         int minPoints = Collections.min(playersPoints.values());
-
         Map.Entry<PlayerId, Integer> winner = winner(playersPoints, minPoints);
 
         List<String> names = List.copyOf(playerNames.values());
@@ -230,14 +228,13 @@ public class Game {
     }
 
     /**
-     * Determine the winner's playerId and his corresponding maxPoints
+     * Determine the winner's playerId and his corresponding maxPoints.
      *
      * @return (Map.Entry < PlayerId, Integer >) the winner of the game and the corresponding maxPoints
-     * if null, both players are ex-quo
+     * if null, both players are ex-quo.
      */
     private static Map.Entry<PlayerId, Integer> winner(Map<PlayerId, Integer> playersPoints, int minPoints) {
         Map.Entry<PlayerId, Integer> winner = null;
-
         for (Map.Entry<PlayerId, Integer> entry : playersPoints.entrySet()) {
             if (entry.getValue() > minPoints) {
                 minPoints = entry.getValue();
@@ -248,14 +245,14 @@ public class Game {
     }
 
     /**
-     * Determine the player
+     * Determines the player.
      *
-     * @return (PlayerId) the identity of the player who has the longest Trail
-     * if null, both players have the longestTrail
+     * @return (PlayerId) the identity of the player who has the longest Trail,
+     * if null, both players have the longestTrail.
      */
     private static PlayerId longest(Map<PlayerId, Trail> playersTrail) {
         PlayerId bonusWinner = null;
-        //Used this method (.min) to determine the points of the loser player because there might be more than 2 players in the future
+        //Used this method (.min) to determine the smallest Trail's length because there might be more than 2 players in the future
         int length = playersTrail.values()
                 .stream()
                 .min(Comparator.comparingInt(Trail::length)).get().length();
@@ -270,7 +267,7 @@ public class Game {
     }
 
     /**
-     * Updates both players' states
+     * Updates both players' states.
      *
      * @param players   (Map<PlayerId, Player>) the players of the Tchu's play
      * @param gameState (GameState) the new updated version of the current gameState
@@ -280,10 +277,10 @@ public class Game {
     }
 
     /**
-     * Communicates the info str to the players
+     * Communicates the info str to the players.
      *
-     * @param players (Map<PlayerId, Player>) the players of the Tchu's play
-     * @param info    (String) the info to communicate to the players
+     * @param players (Map<PlayerId, Player>) the players of the Tchu's play.
+     * @param info    (String) the info to communicate to the players.
      */
     private static void receiveInfo(Map<PlayerId, Player> players, String info) {
         players.forEach((id, player) -> player.receiveInfo(info));
@@ -293,7 +290,7 @@ public class Game {
      * Private constructor of Game.
      * Mustn't be called.
      *
-     * @throws UnsupportedOperationException if called.
+     * @throws UnsupportedOperationException if called
      */
     private Game() {
         throw new UnsupportedOperationException();

@@ -17,7 +17,7 @@ import ch.epfl.tchu.SortedBag;
 public final class Deck<C extends Comparable<C>> {
 
     /**
-     * Creates a Deck containing a shuffled version of the cards using the rng random number generator
+     * Creates a Deck containing a shuffled version of the cards using the rng random number generator.
      *
      * @param <C>   the type of cards, must extends Comparable<C>
      * @param cards (SortedBag<C>) the sorted collection of cards C to store in the Deck
@@ -35,7 +35,7 @@ public final class Deck<C extends Comparable<C>> {
     private final List<C> cards;
 
     /**
-     * Private constructor of a deck
+     * Private constructor of a deck.
      *
      * @param cards (List<C>) the list of cards C to store in the Deck
      */
@@ -75,7 +75,7 @@ public final class Deck<C extends Comparable<C>> {
     }
 
     /**
-     * Returns a SortedBag<C> containing the count cards C at the top of the pile
+     * Returns a SortedBag<C> containing the count cards C at the top of the pile.
      *
      * @param count (int) the desired number of first cards from the deck
      * @return (SortedBag < C >) the sorted "count" first cards of the deck

@@ -15,7 +15,8 @@ public final class Trail {
     /**
      * Computes and returns the longest path in the network made up of the given routes.
      * If there are multiple paths of maximum length, the one returned is not specified.
-     * If the list of given routes is empty, returns a zero-length Trail whose stations are both equal to null (empty Trail).
+     * If the list of given routes is empty, returns a zero-length Trail whose stations
+     * are both equal to null (empty Trail).
      *
      * @param routes (List<Route>) : the routes owned by the player, used to determine the longest path.
      * @return (Trail) the longest path in the given list of routes (the empty Trail if routes is empty).
@@ -58,7 +59,7 @@ public final class Trail {
 
 
     /**
-     * private constructor for a Trail
+     * private constructor for a Trail.
      *
      * @param station1 (Station) the departure's Station of the Trail
      * @param station2 (Station) the arrival's Station of the Trail

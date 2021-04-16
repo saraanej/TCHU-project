@@ -70,7 +70,7 @@ public final class Trip {
 
 
 	/**
-	 * Getter for the departure's Station
+	 * Getter for the departure's Station.
 	 *
 	 * @return from (Station) the departure Station of the Trip
 	 */
@@ -79,7 +79,7 @@ public final class Trip {
 	}
 
 	/**
-	 * Getter for the arrival's Station
+	 * Getter for the arrival's Station.
 	 *
 	 * @return to (Station) the arrival Station of the Trip
 	 */
@@ -88,7 +88,7 @@ public final class Trip {
 	}
 
 	/**
-	 * Getter for the points assigned to the Trip
+	 * Getter for the points assigned to the Trip.
 	 *
 	 * @return points (int) the points attributed to the Trip
 	 */
@@ -97,7 +97,7 @@ public final class Trip {
 	}
 
 	/**
-	 * Getter for the number of points depending on the connectivity of the departure's and arrival's Station
+	 * Getter for the number of points depending on the connectivity of the departure's and arrival's Station.
 	 *
 	 * @param connectivity (StationConnectivity)
 	 * @return points (int) if the Stations are connected, - points if not

@@ -80,6 +80,8 @@ public final class Ticket implements Comparable<Ticket> {
 
 
     /**
+     *
+     *
      * @param connectivity (StationConnectivity)
      * @return (int) the maximal points if at least two Stations are connected,
      *                -1 * minimal points possible if none of the Stations are connected
@@ -96,6 +98,8 @@ public final class Ticket implements Comparable<Ticket> {
     }
 
     /**
+     *
+     *
      * @return (String) the textual representation of the Ticket
      */
     public String text() {
@@ -103,7 +107,7 @@ public final class Ticket implements Comparable<Ticket> {
     }
 
     /**
-     * Compares alphabetically this ticket's text with another Ticket's text
+     * Compares alphabetically this ticket's text with another Ticket's text.
      *
      * @param that (Ticket) the Ticket to compare with
      * @return (int) a strictly positive number if this is bigger than that

@@ -37,7 +37,7 @@ public final class CardState extends PublicCardState {
 	private final SortedBag<Card> discard;
 
 	/**
-	 * Default private constructor for the card's state
+	 * Default private constructor for the card's state.
 	 *
 	 * @param faceUpCards (List<Card>) the list of the visible cards
 	 * @param deck        (Deck<Card>) contains the cards of the deck

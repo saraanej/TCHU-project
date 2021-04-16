@@ -47,7 +47,7 @@ public final class PlayerState extends PublicPlayerState {
 
 
     /**
-     * Returns the tickets in the player's hand
+     * Returns the tickets in the player's hand.
      *
      * @return (SortedBag<Ticket>) The tickets owned by the player
      */
@@ -65,7 +65,7 @@ public final class PlayerState extends PublicPlayerState {
     }
 
     /**
-     * Returns the list of all sets of ordered cards the player could use to take possession of the given route
+     * Returns the list of all sets of ordered cards the player could use to take possession of the given route.
      *
      * @param route (Route) The road to claim
      * @return (List <SortedBag<Card>>) All the possible sets of cards to use to claim the road route
@@ -91,8 +91,8 @@ public final class PlayerState extends PublicPlayerState {
 
     /**
      * Returns the list of all the sets of cards that the player could use to claim a tunnel,
-     * sorted in ascending order of the number of locomotive cards,
-     * knowing that the initialCards and the 3 drawnCards from the deck force him to draw additionalCardsCount cards.
+     * sorted in ascending order of the number of locomotive cards,knowing that the initialCards
+     * and the 3 drawnCards from the deck force him to draw additionalCardsCount cards.
      *
      * @param additionalCardsCount (int) the additional Cards for the player to add
      * @param initialCards         (SortedBag<Card>) the cards used by the player to claim a route
@@ -202,7 +202,8 @@ public final class PlayerState extends PublicPlayerState {
             iDs.add(r.station1().id());
             iDs.add(r.station2().id());
         }
-        StationPartition.Builder builder = new StationPartition.Builder(iDs.isEmpty() ? 0 : Collections.max(iDs) + 1);
+        StationPartition.Builder builder =
+                new StationPartition.Builder(iDs.isEmpty() ? 0 : Collections.max(iDs) + 1);
         for (Route r : routes())
             builder.connect(r.station1(), r.station2());
 

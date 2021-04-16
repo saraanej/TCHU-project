@@ -44,7 +44,7 @@ public final class GameState extends PublicGameState{
     private final Map<PlayerId, PlayerState> playerState;
 
     /**
-     * Private constructor of a GameState
+     * Private constructor of a GameState.
      *
      * @param ticketDeck (Deck<Ticket>) : the ticket's deck
      * @param cardState (PublicCardState) : the public state of the cars and locomotives
@@ -183,8 +183,9 @@ public final class GameState extends PublicGameState{
      * has been placed in the current player's hand, and replaced by the one at the top of the card's deck.
      *
      * @param slot (int) : index of the visible card.
-     * @return (GameState) this state with the face-up card in the slot-th index added to the current player's hand.
-     *                     and replaced by the one at the top of the card's deck.
+     * @return (GameState) this state with the face-up card in the slot-th index
+     *                     added to the current player's hand and replaced
+     *                     by the one at the top of the card's deck.
      * @throws IllegalArgumentException
      *                        if it's not possible to draw a card.
      */
@@ -197,9 +198,11 @@ public final class GameState extends PublicGameState{
     }
 
     /**
-     * Returns an identical state to the receiver except that the top card of card's deck has been placed in the current player's hand.
+     * Returns an identical state to the receiver except that the top card of card's deck
+     * has been placed in the current player's hand.
      *
-     * @return (GameState) this state with the deck's top card added to the current player's hand and removed from the card's deck.
+     * @return (GameState) this state with the deck's top card added to the current player's hand
+     *                     and removed from the card's deck.
      * @throws IllegalArgumentException
      *                        if it's not possible to draw a card.
      */
@@ -212,7 +215,8 @@ public final class GameState extends PublicGameState{
     }
 
     /**
-     * Returns an identical state to the receiver but in which the current player has seized the given route using the given cards.
+     * Returns an identical state to the receiver but in which
+     * the current player has seized the given route using the given cards.
      *
      * @param route (Route) : the route the current player wants to take over.
      * @param cards (SortedBag<Card>) : the cards used by the current player to get the route.
@@ -228,11 +232,13 @@ public final class GameState extends PublicGameState{
 
     /**
      * Ends the current player's turn,
-     * ie returns an identical state to the receiver except that the next turn's current player is the one following this current player.
-     * Furthermore, if lastTurnBegins returns true, this current player becomes the last player of the next turn.
+     * ie returns an identical state to the receiver except that the next turn's current player
+     * is the one following this current player. Furthermore, if lastTurnBegins returns true,
+     * this current player becomes the last player of the next turn.
      *
      * @return (GameState) same GameState as this but with the currentPlayer changed to the next one,
-                           furthermore, if the lastTurn should begin, the lastPlayer value is set to this currentPlayer.
+                           furthermore, if the lastTurn should begin, the lastPlayer value is
+                           set to this currentPlayer.
      */
     public GameState forNextTurn(){
         return lastTurnBegins() ? new GameState(ticketDeck, cardState, currentPlayerId().next(),
@@ -242,8 +248,8 @@ public final class GameState extends PublicGameState{
     }
 
     /**
-     * Returns true iff the last turn begins,
-     * ie if the identity of the last player is currently unknown but the current player has only two cars or less left.
+     * Returns true iff the last turn begins,ie if the identity of the last player is currently
+     * unknown but the current player has only two cars or less left.
      * This method should only be called at the end of a player's turn.
      *
      * @return (boolean) true if the identity of the last player is null and the current player has two cars left or less.
