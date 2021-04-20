@@ -11,6 +11,8 @@ import java.util.regex.Pattern;
 public interface Serde<C> {
 
     static <T> Serde<T> of(Function<T, String> serialization, Function<String, T> deserialization){
+        Preconditions.checkArgument(serialization != null);
+        Preconditions.checkArgument(deserialization != null);
         return new Serde<>() {
             @Override
             public String serialize(T t){
@@ -30,6 +32,7 @@ public interface Serde<C> {
      * @return
      */
     static <T> Serde<T> oneOf(List<T> values){
+        Preconditions.checkArgument(!values.isEmpty());
         return new Serde<>() {
             @Override
             public String serialize(T t){
@@ -46,6 +49,8 @@ public interface Serde<C> {
     }
 
     static <T> Serde<List<T>> listOf(Serde<T> serde, String separator){
+        Preconditions.checkArgument(separator != null && separator != "");
+        Preconditions.checkArgument(serde != null);
         return new Serde<>() {
             @Override
             public String serialize(List<T> t){
@@ -67,6 +72,8 @@ public interface Serde<C> {
     }
 
     static <T extends  Comparable<T>> Serde<SortedBag<T>> bagOf(Serde<T> serde, String separator){
+        Preconditions.checkArgument(separator != null && separator != "");
+        Preconditions.checkArgument(serde != null);
         Serde<List<T>> serdeList = Serde.listOf(serde, separator);
         return new Serde<>() {
             @Override

@@ -50,4 +50,6 @@ public class Serdes {
     public static final Serde<SortedBag<Ticket>> SORTED_TICKET_SERDE = Serde.bagOf(TICKET_SERDE, ",");
 
     public static final Serde<List<SortedBag<Card>>> LIST_SORTED_CARD_SERDE = Serde.listOf(SORTED_CARD_SERDE, ";");
+
+    public static final Serde<PublicCardState>
 }
