@@ -62,9 +62,9 @@ public interface Serde<C> {
             }
             @Override
             public List<T> deserialize(String str){
-                String[] stringList = str.split(Pattern.quote(separator), -1);
+                String[] split = str.split(Pattern.quote(separator), -1);
                 List<T> deserialized = new ArrayList<>();
-                for (String s: stringList)
+                for (String s: split)
                     deserialized.add(serde.deserialize(s));
                 return deserialized;
             }
