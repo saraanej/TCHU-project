@@ -67,23 +67,16 @@ public interface Serde<C> {
     }
 
     static <T extends  Comparable<T>> Serde<SortedBag<T>> bagOf(Serde<T> serde, String separator){
+        Serde<List<T>> serdeList = Serde.listOf(serde, separator);
         return new Serde<>() {
             @Override
-            public String serialize(SortedBag<T>t){
-                //FAUT CONVERTIR LE SORTEDBAG EN LIST MAIS WHY
-                List<String> serialized = new ArrayList<>();
-                for (T s : t)
-                    serialized.add(serde.serialize(s));
-                return String.join(separator,
-                        serialized);
+            public String serialize(SortedBag<T> t){
+                List<T> list = t.toList();
+                return serdeList.serialize(list);
             }
             @Override
             public SortedBag<T> deserialize(String str){
-                String[] stringList = str.split(Pattern.quote(separator), -1);
-                List<T> deserialized = new ArrayList<>();
-                for (String s: stringList)
-                    deserialized.add(serde.deserialize(s));
-                return SortedBag.of(deserialized);
+                return SortedBag.of(serdeList.deserialize(str));
             }
         };
     }
