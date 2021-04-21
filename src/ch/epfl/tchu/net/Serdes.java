@@ -17,6 +17,11 @@ public class Serdes {
             i -> Integer.toString(i),
             Integer::parseInt);
 
+
+//    public static final Serde<String> STRING_SERDE = Serde.of(i ->
+//                    Base64.getEncoder().encodeToString(i.getBytes(StandardCharsets.UTF_8),
+//                            s -> new String(Base64.getDecoder().decode(s), StandardCharsets.UTF_8)));
+
     public static final Serde<String> STRING_SERDE = new Serde<String>() {
         @Override
         public String serialize(String s) {
