@@ -31,7 +31,7 @@ public final class Serdes {
     /**
      * A Serde able to (de)serialize String values.
      */
-    public static final Serde<String> STRING_SERDE = new Serde<String>() {
+    public static final Serde<String> STRING_SERDE = new Serde<>() {
         @Override
         public String serialize(String s) {
             return Base64.getEncoder().encodeToString(s.getBytes(StandardCharsets.UTF_8));
@@ -120,7 +120,7 @@ public final class Serdes {
     /**
      * A Serde able to (de)serialize PublicPlayerState's elements.
      */
-    public static final Serde<PublicPlayerState> PUBLIC_PLAYERSTATE_SERDE = new Serde<PublicPlayerState>() {
+    public static final Serde<PublicPlayerState> PUBLIC_PLAYERSTATE_SERDE = new Serde<>() {
         @Override
         public String serialize(PublicPlayerState p) {
             String[] serialized = new String[]{INTEGER_SERDE.serialize(p.ticketCount()),
@@ -130,7 +130,7 @@ public final class Serdes {
 
         @Override
         public PublicPlayerState deserialize(String str) {
-            String[] split = str.split(Pattern.quote(";"),-1);
+            String[] split = str.split(Pattern.quote(";"), -1);
             return new PublicPlayerState(INTEGER_SERDE.deserialize(split[0]), INTEGER_SERDE.deserialize(split[1]),
                     LIST_ROUTE_SERDE.deserialize(split[2]));
         }
@@ -139,7 +139,7 @@ public final class Serdes {
     /**
      * A Serde able to (de)serialize PlayerState's elements.
      */
-    public static final Serde<PlayerState> PLAYERSTATE_SERDE = new Serde<PlayerState>() {
+    public static final Serde<PlayerState> PLAYERSTATE_SERDE = new Serde<>() {
         @Override
         public String serialize(PlayerState p) {
             String[] serialized = new String[]{SORTED_TICKET_SERDE.serialize(p.tickets()),
@@ -149,8 +149,8 @@ public final class Serdes {
 
         @Override
         public PlayerState deserialize(String str) {
-            String[] split = str.split(Pattern.quote(";"),-1);
-            return new PlayerState(SORTED_TICKET_SERDE.deserialize(split[0]),SORTED_CARD_SERDE.deserialize(split[1]),
+            String[] split = str.split(Pattern.quote(";"), -1);
+            return new PlayerState(SORTED_TICKET_SERDE.deserialize(split[0]), SORTED_CARD_SERDE.deserialize(split[1]),
                     LIST_ROUTE_SERDE.deserialize(split[2]));
         }
     };
@@ -158,7 +158,7 @@ public final class Serdes {
     /**
      * A Serde able to (de)serialize PublicGameState's elements.
      */
-    public final static Serde<PublicGameState> PUBLIC_GAMESTATE_SERDE = new Serde<PublicGameState>() {
+    public final static Serde<PublicGameState> PUBLIC_GAMESTATE_SERDE = new Serde<>() {
         @Override
         public String serialize(PublicGameState p) {
             String[] serialized = new String[]{INTEGER_SERDE.serialize(p.ticketsCount()),
@@ -171,12 +171,12 @@ public final class Serdes {
 
         @Override
         public PublicGameState deserialize(String str) {
-            String[] split = str.split(Pattern.quote(";"),-1);
+            String[] split = str.split(Pattern.quote(";"), -1);
             Map<PlayerId, PublicPlayerState> playerState = new EnumMap<>(PlayerId.class);
             playerState.put(PlayerId.PLAYER_1, PLAYERSTATE_SERDE.deserialize(split[3]));
-            playerState.put(PlayerId.PLAYER_1, PLAYERSTATE_SERDE.deserialize(split[4]));
-            return new PublicGameState(INTEGER_SERDE.deserialize(split[0]),PUBLIC_CARDSTATE_SERDE.deserialize(split[1]),
-                    PLAYER_ID_SERDE.deserialize(split[2]),playerState, PLAYER_ID_SERDE.deserialize(split[5]));
+            playerState.put(PlayerId.PLAYER_2, PLAYERSTATE_SERDE.deserialize(split[4]));
+            return new PublicGameState(INTEGER_SERDE.deserialize(split[0]), PUBLIC_CARDSTATE_SERDE.deserialize(split[1]),
+                    PLAYER_ID_SERDE.deserialize(split[2]), playerState, PLAYER_ID_SERDE.deserialize(split[5]));
         }
     };
 
