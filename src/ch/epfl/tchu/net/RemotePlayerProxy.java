@@ -16,12 +16,6 @@ import java.util.Map;
  */
 public final class RemotePlayerProxy implements Player {
 
-    private final Socket socket;
-
-    public RemotePlayerProxy(Socket socket){
-        this.socket = socket;
-    }
-
     @Override
     public void initPlayers(PlayerId ownId, Map<PlayerId, String> playerNames) {
 
