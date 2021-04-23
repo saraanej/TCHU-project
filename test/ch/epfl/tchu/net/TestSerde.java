@@ -62,6 +62,11 @@ public class TestSerde {
         String ser = Base64.getEncoder().encodeToString(x.getBytes(StandardCharsets.UTF_8));
         assertEquals(ser, serde.serialize(x));
         assertEquals(x, serde.deserialize(serde.serialize(x)));
+
+        x = "";
+        ser = Base64.getEncoder().encodeToString(x.getBytes(StandardCharsets.UTF_8));
+        assertEquals(ser, serde.serialize(x));
+        assertEquals(x, serde.deserialize(serde.serialize(x)));
     }
 
     @Test
@@ -208,6 +213,13 @@ public class TestSerde {
         assertEquals("5,5,5,5,6;1,1,1,1,2,2;8,17", serde.serialize(x));
         assertEquals(x.cards(), des.cards());
         assertEquals(x.tickets(), des.tickets());
+
+        PlayerState playerStateSerde = new PlayerState(tickets, cards, null);
+        x = playerStateSerde;
+        des = serde.deserialize(serde.serialize(x));
+        assertEquals("5,5,5,5,6;1,1,1,1,2,2;", serde.serialize(x));
+        assertEquals(x.cards(), des.cards());
+        assertEquals(x.tickets(), des.tickets());
     }
 
     @Test
@@ -216,6 +228,24 @@ public class TestSerde {
         PublicGameState x = tester;
         assertEquals("3:2,1,2,6,7;3;6:0:4;6;4:5;2;2:1", serde.serialize(x));
         PublicGameState des = serde.deserialize(serde.serialize(x));
+        assertEquals(x.ticketsCount(), des.ticketsCount());
+        assertEquals(x.cardState(),des.cardState());
+        assertEquals(x.currentPlayerId(),des.currentPlayerId());
+        assertEquals(x.lastPlayer(),des.lastPlayer());
+
+        PublicGameState another = new PublicGameState(3,cardState,currentPlayerId, playerState, null);
+        x = another;
+        assertEquals("3:2,1,2,6,7;3;6:0:4;6;4:5;2;2:", serde.serialize(x));
+        des = serde.deserialize(serde.serialize(x));
+        assertEquals(x.ticketsCount(), des.ticketsCount());
+        assertEquals(x.cardState(),des.cardState());
+        assertEquals(x.currentPlayerId(),des.currentPlayerId());
+        assertEquals(x.lastPlayer(),des.lastPlayer());
+
+        PublicGameState another1 = new PublicGameState(0,cardState,currentPlayerId, playerState, lastPlayer);
+        x = another;
+        assertEquals("0:2,1,2,6,7;3;6:0:4;6;4:5;2;2:1", serde.serialize(x));
+        des = serde.deserialize(serde.serialize(x));
         assertEquals(x.ticketsCount(), des.ticketsCount());
         assertEquals(x.cardState(),des.cardState());
         assertEquals(x.currentPlayerId(),des.currentPlayerId());
