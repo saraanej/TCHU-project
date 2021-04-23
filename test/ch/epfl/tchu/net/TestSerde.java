@@ -229,7 +229,9 @@ public class TestSerde {
         assertEquals("3:2,1,2,6,7;3;6:0:4;6;4:5;2;2:1", serde.serialize(x));
         PublicGameState des = serde.deserialize(serde.serialize(x));
         assertEquals(x.ticketsCount(), des.ticketsCount());
-//        assertEquals(x.cardState(),des.cardState());
+        assertEquals(x.cardState().faceUpCards(),des.cardState().faceUpCards());
+        assertEquals(x.cardState().discardsSize(), des.cardState().discardsSize());
+        assertEquals(x.cardState().deckSize(), des.cardState().deckSize());
         assertEquals(x.currentPlayerId(),des.currentPlayerId());
         assertEquals(x.lastPlayer(),des.lastPlayer());
 
@@ -238,7 +240,9 @@ public class TestSerde {
         assertEquals("3:2,1,2,6,7;3;6:0:4;6;4:5;2;2:", serde.serialize(x));
         des = serde.deserialize(serde.serialize(x));
         assertEquals(x.ticketsCount(), des.ticketsCount());
-       // assertEquals(x.cardState(),des.cardState());
+        assertEquals(x.cardState().faceUpCards(),des.cardState().faceUpCards());
+        assertEquals(x.cardState().discardsSize(), des.cardState().discardsSize());
+        assertEquals(x.cardState().deckSize(), des.cardState().deckSize());
         assertEquals(x.currentPlayerId(),des.currentPlayerId());
         assertEquals(x.lastPlayer(),des.lastPlayer());
 
@@ -247,7 +251,9 @@ public class TestSerde {
         assertEquals("0:2,1,2,6,7;3;6:0:4;6;4:5;2;2:1", serde.serialize(x));
         des = serde.deserialize(serde.serialize(x));
         assertEquals(x.ticketsCount(), des.ticketsCount());
-      //  assertEquals(x.cardState(),des.cardState());
+        assertEquals(x.cardState().faceUpCards(),des.cardState().faceUpCards());
+        assertEquals(x.cardState().discardsSize(), des.cardState().discardsSize());
+        assertEquals(x.cardState().deckSize(), des.cardState().deckSize());
         assertEquals(x.currentPlayerId(),des.currentPlayerId());
         assertEquals(x.lastPlayer(),des.lastPlayer());
     }

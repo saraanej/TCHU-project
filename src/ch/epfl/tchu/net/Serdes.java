@@ -24,24 +24,12 @@ public final class Serdes {
             Integer::parseInt);
 
 
-//    public static final Serde<String> STRING_SERDE = Serde.of(i ->
-//                    Base64.getEncoder().encodeToString(i.getBytes(StandardCharsets.UTF_8),
-//                            s -> new String(Base64.getDecoder().decode(s), StandardCharsets.UTF_8)));
-
     /**
      * A Serde able to (de)serialize String values.
      */
-    public static final Serde<String> STRING_SERDE = new Serde<>() {
-        @Override
-        public String serialize(String s) {
-            return Base64.getEncoder().encodeToString(s.getBytes(StandardCharsets.UTF_8));
-        }
-
-        @Override
-        public String deserialize(String str) {
-            return new String(Base64.getDecoder().decode(str), StandardCharsets.UTF_8);
-        }
-    };
+   public static final Serde<String> STRING_SERDE = Serde.of(i ->
+                   Base64.getEncoder().encodeToString(i.getBytes(StandardCharsets.UTF_8)),
+                            s -> new String(Base64.getDecoder().decode(s), StandardCharsets.UTF_8));
 
     /**
      * A Serde able to (de)serialize Player_Id's elements.
