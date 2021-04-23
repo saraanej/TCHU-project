@@ -208,8 +208,8 @@ public class TestSerde {
     public void PUBLICGAMESTATE(){
         Serde<PublicGameState> serde = Serdes.PUBLIC_GAMESTATE_SERDE;
         PublicGameState x = tester;
+        assertEquals("3:2,1,2,6,7;3;6:0:4;6;4:5;2;2:1", serde.serialize(x));
         PublicGameState des = serde.deserialize(serde.serialize(x));
-        assertEquals("3:2,1,2,6,7;3;6:0:5,5,5,5,6;1,1,1,1,2,2;8,17:1", serde.serialize(x));
         assertEquals(x.ticketsCount(), des.ticketsCount());
         assertEquals(x.cardState(),des.cardState());
         assertEquals(x.currentPlayerId(),des.currentPlayerId());
