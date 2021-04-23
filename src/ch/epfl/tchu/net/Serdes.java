@@ -132,7 +132,7 @@ public final class Serdes {
         public PublicPlayerState deserialize(String str) {
             String[] split = str.split(Pattern.quote(";"), -1);
             return new PublicPlayerState(INTEGER_SERDE.deserialize(split[0]), INTEGER_SERDE.deserialize(split[1]),
-                    LIST_ROUTE_SERDE.deserialize(split[2]));
+                   LIST_ROUTE_SERDE.deserialize(split[2]));
         }
     };
 
@@ -150,7 +150,6 @@ public final class Serdes {
         @Override
         public PlayerState deserialize(String str) {
             String[] split = str.split(Pattern.quote(";"), -1);
-            System.out.println(split.length);
             return new PlayerState(SORTED_TICKET_SERDE.deserialize(split[0]), SORTED_CARD_SERDE.deserialize(split[1]),
                     LIST_ROUTE_SERDE.deserialize(split[2]));
         }
@@ -172,12 +171,13 @@ public final class Serdes {
 
         @Override
         public PublicGameState deserialize(String str) {
-            String[] split = str.split(Pattern.quote(";"), -1);
+            String[] split = str.split(Pattern.quote(":"), -1);
             Map<PlayerId, PublicPlayerState> playerState = new EnumMap<>(PlayerId.class);
             playerState.put(PlayerId.PLAYER_1, PLAYERSTATE_SERDE.deserialize(split[3]));
             playerState.put(PlayerId.PLAYER_2, PLAYERSTATE_SERDE.deserialize(split[4]));
             return new PublicGameState(INTEGER_SERDE.deserialize(split[0]), PUBLIC_CARDSTATE_SERDE.deserialize(split[1]),
-                    PLAYER_ID_SERDE.deserialize(split[2]), playerState, PLAYER_ID_SERDE.deserialize(split[5]));
+                    PLAYER_ID_SERDE.deserialize(split[2]), playerState,
+                    split[5].isEmpty() ? null : PLAYER_ID_SERDE.deserialize(split[5]));
         }
     };
 
