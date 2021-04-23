@@ -25,6 +25,8 @@ public class TestSerde {
     PublicPlayerState FirstPlayerState = new PublicPlayerState(4,6,routes1);
 
     PublicPlayerState lastPlayerState = new PublicPlayerState(5,2,routes2);
+    PublicPlayerState nullSerde = new PublicPlayerState(5,2,null);
+
 
     SortedBag<Ticket> tickets = SortedBag.of(4, ChMap.tickets().get(5), 1, ChMap.tickets().get(6));
 
@@ -192,6 +194,10 @@ public class TestSerde {
         assertEquals(x.ticketCount(),des.ticketCount());
         assertEquals(x.carCount(),des.carCount());
         assertEquals(x.claimPoints(),des.claimPoints());
+
+        PublicPlayerState nullSerde = new PublicPlayerState(5,2,null);
+        des = serde.deserialize(serde.serialize(nullSerde));
+        assertEquals("5;2;", serde.serialize(nullSerde));
     }
 
     @Test
