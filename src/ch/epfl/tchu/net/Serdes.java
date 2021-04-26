@@ -23,13 +23,12 @@ public final class Serdes {
             i -> Integer.toString(i),
             Integer::parseInt);
 
-
     /**
      * A Serde able to (de)serialize String values.
      */
-   public static final Serde<String> STRING_SERDE = Serde.of(i ->
-                   Base64.getEncoder().encodeToString(i.getBytes(StandardCharsets.UTF_8)),
-                            s -> new String(Base64.getDecoder().decode(s), StandardCharsets.UTF_8));
+   public static final Serde<String> STRING_SERDE = Serde.of(
+           i -> Base64.getEncoder().encodeToString(i.getBytes(StandardCharsets.UTF_8)),
+            s -> new String(Base64.getDecoder().decode(s), StandardCharsets.UTF_8));
 
     /**
      * A Serde able to (de)serialize Player_Id's elements.
@@ -89,7 +88,7 @@ public final class Serdes {
     /**
      * A Serde able to (de)serialize PublicCardState's elements.
      */
-    public static final Serde<PublicCardState> PUBLIC_CARDSTATE_SERDE = new Serde<PublicCardState>() {
+    public static final Serde<PublicCardState> PUBLIC_CARDSTATE_SERDE = new Serde<>() {
         @Override
         public String serialize(PublicCardState p) {
             String[] serialized = new String[]{LIST_CARD_SERDE.serialize(p.faceUpCards()),
@@ -160,11 +159,10 @@ public final class Serdes {
         @Override
         public PublicGameState deserialize(String str) {
             String[] split = str.split(Pattern.quote(":"), -1);
-            Map<PlayerId, PublicPlayerState> playerState = new EnumMap<>(PlayerId.class);
-            playerState.put(PlayerId.PLAYER_1, PLAYERSTATE_SERDE.deserialize(split[3]));
-            playerState.put(PlayerId.PLAYER_2, PLAYERSTATE_SERDE.deserialize(split[4]));
             return new PublicGameState(INTEGER_SERDE.deserialize(split[0]), PUBLIC_CARDSTATE_SERDE.deserialize(split[1]),
-                    PLAYER_ID_SERDE.deserialize(split[2]), playerState,
+                    PLAYER_ID_SERDE.deserialize(split[2]),
+                    Map.of(PlayerId.PLAYER_1, PLAYERSTATE_SERDE.deserialize(split[3]),
+                            PlayerId.PLAYER_2, PLAYERSTATE_SERDE.deserialize(split[4])),
                     split[5].isEmpty() ? null : PLAYER_ID_SERDE.deserialize(split[5]));
         }
     };
