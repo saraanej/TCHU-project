@@ -49,7 +49,7 @@ public class TestSerde {
 
     @Test
     public void INTEGER(){
-        Serde<Integer> serde = Serdes.INTEGER_SERDE;
+        Serde<Integer> serde = Serdes.INTEGER;
         int x = -12;
         assertEquals("-12", serde.serialize(-12));
         assertEquals(x, serde.deserialize(serde.serialize(x)));
@@ -57,7 +57,7 @@ public class TestSerde {
     
     @Test
     public void STRING(){
-        Serde<String> serde = Serdes.STRING_SERDE;
+        Serde<String> serde = Serdes.STRING;
         String x = "Yasmine est moche!";
         String ser = Base64.getEncoder().encodeToString(x.getBytes(StandardCharsets.UTF_8));
         assertEquals(ser, serde.serialize(x));
@@ -71,7 +71,7 @@ public class TestSerde {
 
     @Test
     public void PLAYERID(){
-        Serde<PlayerId> serde = Serdes.PLAYER_ID_SERDE;
+        Serde<PlayerId> serde = Serdes.PLAYER_ID;
         PlayerId x = PlayerId.PLAYER_1;
         assertEquals("0", serde.serialize(x));
         PlayerId y = PlayerId.PLAYER_2;
@@ -82,7 +82,7 @@ public class TestSerde {
 
     @Test
     public void TURNKIND(){
-        Serde<Player.TurnKind> serde = Serdes.TURN_KIND_SERDE;
+        Serde<Player.TurnKind> serde = Serdes.TURN_KIND;
         Player.TurnKind y = Player.TurnKind.CLAIM_ROUTE;
         assertEquals("2", serde.serialize(y));
         assertEquals(y, serde.deserialize(serde.serialize(y)));
@@ -110,7 +110,7 @@ public class TestSerde {
 
     @Test
     public void ROUTE(){
-        Serde<Route> serde = Serdes.ROUTE_SERDE;
+        Serde<Route> serde = Serdes.ROUTE;
         Route x = ChMap.routes().get(5);
         assertEquals("5", serde.serialize(x));
         assertEquals(x, serde.deserialize(serde.serialize(x)));
@@ -118,7 +118,7 @@ public class TestSerde {
 
     @Test
     public void TICKET(){
-        Serde<Ticket> serde = Serdes.TICKET_SERDE;
+        Serde<Ticket> serde = Serdes.TICKET;
          Ticket x = ChMap.tickets().get(4);
         assertEquals("4", serde.serialize(x));
         assertEquals(x, serde.deserialize(serde.serialize(x)));
@@ -126,7 +126,7 @@ public class TestSerde {
 
     @Test
     public void STRINGLIST(){
-        Serde<List<String>> serde = Serdes.LIST_STRING_SERDE;
+        Serde<List<String>> serde = Serdes.LIST_STRING;
         List<String> x = List.of("Bonsoir", "a toi", "qui lit", "cette classe", "de test.");
         List<String> aff = new ArrayList<>();
         for(String string : x){
@@ -139,7 +139,7 @@ public class TestSerde {
 
     @Test
     public void CARDLIST(){
-        Serde<List<Card>> serde = Serdes.LIST_CARD_SERDE;
+        Serde<List<Card>> serde = Serdes.LIST_CARD;
         List<Card> x = List.of(Card.BLUE,Card.BLACK,Card.GREEN,Card.BLUE);
         assertEquals("2,0,3,2", serde.serialize(x));
         assertEquals(x, serde.deserialize(serde.serialize(x)));
@@ -147,7 +147,7 @@ public class TestSerde {
 
     @Test
     public void ROUTELIST(){
-        Serde<List<Route>> serde = Serdes.LIST_ROUTE_SERDE;
+        Serde<List<Route>> serde = Serdes.LIST_ROUTE;
         List<Route> x = List.of(ChMap.routes().get(3), ChMap.routes().get(7), ChMap.routes().get(12)) ;
         assertEquals("3,7,12", serde.serialize(x));
         assertEquals(x, serde.deserialize(serde.serialize(x)));
@@ -155,7 +155,7 @@ public class TestSerde {
 
     @Test
     public void SORTEDCARD(){
-        Serde<SortedBag<Card>> serde = Serdes.SORTED_CARD_SERDE;
+        Serde<SortedBag<Card>> serde = Serdes.SORTED_CARD;
         SortedBag<Card> x = SortedBag.of(4, Card.BLUE, 2, Card.GREEN) ;
         assertEquals("2,2,2,2,3,3", serde.serialize(x));
         assertEquals(x, serde.deserialize(serde.serialize(x)));
@@ -163,7 +163,7 @@ public class TestSerde {
 
     @Test
     public void SORTEDTICKET(){
-        Serde<SortedBag<Ticket>> serde = Serdes.SORTED_TICKET_SERDE;
+        Serde<SortedBag<Ticket>> serde = Serdes.SORTED_TICKET;
         SortedBag<Ticket> x = SortedBag.of(1,ChMap.tickets().get(19), 1,ChMap.tickets().get(4));
         assertEquals("4,19", serde.serialize(x));
         assertEquals(x, serde.deserialize(serde.serialize(x)));
@@ -171,7 +171,7 @@ public class TestSerde {
 
     @Test
     public void LISTSORTEDCARD(){
-        Serde<List<SortedBag<Card>>> serde = Serdes.LIST_SORTED_CARD_SERDE;
+        Serde<List<SortedBag<Card>>> serde = Serdes.LIST_SORTED_CARD;
         List<SortedBag<Card>> x = List.of(SortedBag.of(2, Card.BLUE, 3, Card.VIOLET), SortedBag.of(4, Card.RED, 1, Card.BLUE));
         assertEquals("1,1,1,2,2;2,6,6,6,6", serde.serialize(x));
         assertEquals(x, serde.deserialize(serde.serialize(x)));
@@ -179,7 +179,7 @@ public class TestSerde {
 
     @Test
     public void PUBLICCARDSTATE(){
-        Serde<PublicCardState> serde = Serdes.PUBLIC_CARDSTATE_SERDE;
+        Serde<PublicCardState> serde = Serdes.PUBLIC_CARDSTATE;
         PublicCardState x = new PublicCardState(faceCards, 4,2);
         PublicCardState des = serde.deserialize(serde.serialize(x));
         assertEquals("2,1,2,6,7;4;2", serde.serialize(x));
@@ -190,7 +190,7 @@ public class TestSerde {
 
     @Test
     public void PUBLICPLAYERSTATE(){
-        Serde<PublicPlayerState> serde = Serdes.PUBLIC_PLAYERSTATE_SERDE;
+        Serde<PublicPlayerState> serde = Serdes.PUBLICPLAYERSTATE;
         PublicPlayerState x = FirstPlayerState;
         PublicPlayerState des = serde.deserialize(serde.serialize(x));
         assertEquals("4;6;4", serde.serialize(x));
@@ -207,7 +207,7 @@ public class TestSerde {
 
     @Test
     public void PLAYERSTATE(){
-        Serde<PlayerState> serde = Serdes.PLAYERSTATE_SERDE;
+        Serde<PlayerState> serde = Serdes.PLAYERSTATE;
         PlayerState x = playerStateSerde;
         PlayerState des = serde.deserialize(serde.serialize(x));
         assertEquals("5,5,5,5,6;1,1,1,1,2,2;8,17", serde.serialize(x));
@@ -224,7 +224,7 @@ public class TestSerde {
 
     @Test
     public void PUBLICGAMESTATE(){
-        Serde<PublicGameState> serde = Serdes.PUBLIC_GAMESTATE_SERDE;
+        Serde<PublicGameState> serde = Serdes.PUBLICGAMESTATE;
         PublicGameState x = tester;
         assertEquals("3:2,1,2,6,7;3;6:0:4;6;4:5;2;2:1", serde.serialize(x));
         PublicGameState des = serde.deserialize(serde.serialize(x));
