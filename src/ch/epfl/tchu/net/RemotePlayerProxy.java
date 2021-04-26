@@ -51,7 +51,10 @@ public final class RemotePlayerProxy implements Player {
         }
     }
 
-
+    /**
+     * @param ownId (PlayerId) : The identity of the player.
+     * @param playerNames (Map<PlayerId, String>) : The names of all the players.
+     */
     @Override
     public void initPlayers(PlayerId ownId, Map<PlayerId, String> playerNames) {
         String message = String.join(" ", Serdes.PLAYER_ID.serialize(ownId),
@@ -59,11 +62,18 @@ public final class RemotePlayerProxy implements Player {
         sendMessage(MessageId.INIT_PLAYERS,message);
     }
 
+    /**
+     * @param info (String) : The information that must be communicated to the player.
+     */
     @Override
     public void receiveInfo(String info) {
         sendMessage(MessageId.RECEIVE_INFO, Serdes.STRING.serialize(info));
     }
 
+    /**
+     * @param newState (PublicGameState) : The new state of the game.
+     * @param ownState (PlayerState) : The current state of this player.
+     */
     @Override
     public void updateState(PublicGameState newState, PlayerState ownState) {
         String message = String.join(" ",Serdes.PUBLICGAMESTATE.serialize(newState),
@@ -71,30 +81,46 @@ public final class RemotePlayerProxy implements Player {
         sendMessage(MessageId.UPDATE_STATE, message);
     }
 
+    /**
+     * @param tickets (SortedBag<Ticket>) : The five tickets being distributed to the player.
+     */
     @Override
     public void setInitialTicketChoice(SortedBag<Ticket> tickets) {
         sendMessage(MessageId.SET_INITIAL_TICKETS, Serdes.SORTED_TICKET.serialize(tickets));
     }
 
     //NOTE POUR LES TESTS, SI ERREUR POSSIBLE QUE CE SOIT A CAUSE DE message = ""
+    /**
+     * @return (int) The emplacement where the player wishes to draw his cards.
+     */
     @Override
     public int drawSlot() {
         sendMessage(MessageId.DRAW_SLOT, "");
         return Serdes.INTEGER.deserialize(receiveMessage());
     }
 
+    /**
+     * @return (TurnKind) The type of action the player wishes to do.
+     */
     @Override
     public TurnKind nextTurn() {
         sendMessage(MessageId.NEXT_TURN, "");
         return Serdes.TURN_KIND.deserialize(receiveMessage());
     }
 
+    /**
+     * @param options (SortedBag<Ticket>) : The tickets the player has to choose between.
+     * @return (SortedBag<Ticket>) The tickets the player will keep.
+     */
     @Override
     public SortedBag<Ticket> chooseTickets(SortedBag<Ticket> options) {
         sendMessage(MessageId.CHOOSE_TICKETS,Serdes.SORTED_TICKET.serialize(options));
         return Serdes.SORTED_TICKET.deserialize(receiveMessage());
     }
 
+    /**
+     * @return (SortedBag<Ticket>) The tickets the player will choose between to keep them.
+     */
     @Override
     public SortedBag<Ticket> chooseInitialTickets() {
         sendMessage(MessageId.CHOOSE_INITIAL_TICKETS, "");
@@ -110,12 +136,19 @@ public final class RemotePlayerProxy implements Player {
         return Serdes.SORTED_CARD.deserialize(receiveMessage());
     }
 
+    /**
+     * @param options (List<SortedBag<Card>>) : The necessary cards the player has to choose between to take over a tunnel route.
+     * @return (SortedBag<Card>) The cards the player chose.
+     */
     @Override
     public SortedBag<Card> chooseAdditionalCards(List<SortedBag<Card>> options) {
         sendMessage(MessageId.CHOOSE_ADDITIONAL_CARDS,Serdes.LIST_SORTED_CARD.serialize(options));
         return Serdes.SORTED_CARD.deserialize(receiveMessage());
     }
 
+    /**
+     * @return (Route) : The route the player decided or tried to take over.
+     */
     @Override
     public Route claimedRoute() {
         sendMessage(MessageId.ROUTE, "");
