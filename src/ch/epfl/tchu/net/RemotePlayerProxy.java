@@ -77,4 +77,12 @@ public final class RemotePlayerProxy implements Player {
     public Route claimedRoute() {
         return null;
     }
+
+    private void sendMessage(){
+
+    }
+
+    private String receiveMessage(){
+        return null;
+    }
 }
