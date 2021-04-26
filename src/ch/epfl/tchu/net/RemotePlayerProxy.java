@@ -54,6 +54,7 @@ public final class RemotePlayerProxy implements Player {
     /**
      * @param ownId (PlayerId) : The identity of the player.
      * @param playerNames (Map<PlayerId, String>) : The names of all the players.
+     * @throws UncheckedIOException
      */
     @Override
     public void initPlayers(PlayerId ownId, Map<PlayerId, String> playerNames) {
@@ -64,6 +65,7 @@ public final class RemotePlayerProxy implements Player {
 
     /**
      * @param info (String) : The information that must be communicated to the player.
+     * @throws UncheckedIOException
      */
     @Override
     public void receiveInfo(String info) {
@@ -73,6 +75,7 @@ public final class RemotePlayerProxy implements Player {
     /**
      * @param newState (PublicGameState) : The new state of the game.
      * @param ownState (PlayerState) : The current state of this player.
+     * @throws UncheckedIOException
      */
     @Override
     public void updateState(PublicGameState newState, PlayerState ownState) {
@@ -83,6 +86,7 @@ public final class RemotePlayerProxy implements Player {
 
     /**
      * @param tickets (SortedBag<Ticket>) : The five tickets being distributed to the player.
+     * @throws UncheckedIOException
      */
     @Override
     public void setInitialTicketChoice(SortedBag<Ticket> tickets) {
@@ -92,6 +96,7 @@ public final class RemotePlayerProxy implements Player {
     //NOTE POUR LES TESTS, SI ERREUR POSSIBLE QUE CE SOIT A CAUSE DE message = ""
     /**
      * @return (int) The emplacement where the player wishes to draw his cards.
+     * @throws UncheckedIOException
      */
     @Override
     public int drawSlot() {
@@ -101,6 +106,7 @@ public final class RemotePlayerProxy implements Player {
 
     /**
      * @return (TurnKind) The type of action the player wishes to do.
+     * @throws UncheckedIOException
      */
     @Override
     public TurnKind nextTurn() {
@@ -111,6 +117,7 @@ public final class RemotePlayerProxy implements Player {
     /**
      * @param options (SortedBag<Ticket>) : The tickets the player has to choose between.
      * @return (SortedBag<Ticket>) The tickets the player will keep.
+     * @throws UncheckedIOException
      */
     @Override
     public SortedBag<Ticket> chooseTickets(SortedBag<Ticket> options) {
@@ -120,6 +127,7 @@ public final class RemotePlayerProxy implements Player {
 
     /**
      * @return (SortedBag<Ticket>) The tickets the player will choose between to keep them.
+     * @throws UncheckedIOException
      */
     @Override
     public SortedBag<Ticket> chooseInitialTickets() {
@@ -129,6 +137,7 @@ public final class RemotePlayerProxy implements Player {
 
     /**
      * @return (SortedBag<Card>) : The cards the player wishes to play to take over a route.
+     * @throws UncheckedIOException
      */
     @Override
     public SortedBag<Card> initialClaimCards() {
@@ -139,6 +148,7 @@ public final class RemotePlayerProxy implements Player {
     /**
      * @param options (List<SortedBag<Card>>) : The necessary cards the player has to choose between to take over a tunnel route.
      * @return (SortedBag<Card>) The cards the player chose.
+     * @throws UncheckedIOException
      */
     @Override
     public SortedBag<Card> chooseAdditionalCards(List<SortedBag<Card>> options) {
@@ -148,6 +158,7 @@ public final class RemotePlayerProxy implements Player {
 
     /**
      * @return (Route) : The route the player decided or tried to take over.
+     * @throws UncheckedIOException
      */
     @Override
     public Route claimedRoute() {
