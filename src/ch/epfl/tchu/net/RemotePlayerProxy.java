@@ -3,7 +3,9 @@ package ch.epfl.tchu.net;
 import ch.epfl.tchu.SortedBag;
 import ch.epfl.tchu.game.*;
 
+import java.io.*;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 
@@ -78,11 +80,29 @@ public final class RemotePlayerProxy implements Player {
         return null;
     }
 
-    private void sendMessage(){
-
+    /**
+     *
+     * @param message (String) the serialized message to send to the client
+     */
+    private void sendMessage(MessageId Id, String message){
+        try(BufferedWriter writer =
+                    new BufferedWriter(
+                            new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.US_ASCII))){
+            String send = String.join(" ", Id.name(), message, "/n");
+            writer.write(send);
+            writer.flush();
+        } catch (IOException e){
+            throw new UncheckedIOException(e);
+        }
     }
 
     private String receiveMessage(){
-        return null;
+        try(BufferedReader reader =
+                    new BufferedReader(
+                            new InputStreamReader(socket.getInputStream(), StandardCharsets.US_ASCII))) {
+            return reader.readLine();
+        } catch (IOException e){
+            throw new UncheckedIOException(e);
+        }
     }
 }
