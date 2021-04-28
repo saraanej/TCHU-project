@@ -12,7 +12,8 @@ import static java.util.stream.Collectors.toList;
 
 /**
  * The RemotePlayerProxy instantiable class in the ch.epfl.tchu.net package
- * represents a remote player proxy. It implements the Player interface and can thus play the role of a player.
+ * represents a remote player proxy.
+ * It implements the Player interface and can thus play the role of a player.
  *
  * @author Yasmin Ben Rahhal (329912)
  * @author Sara Anejjar (329905)
