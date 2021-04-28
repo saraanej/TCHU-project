@@ -14,7 +14,7 @@ import java.util.regex.Pattern;
 import static java.nio.charset.StandardCharsets.US_ASCII;
 
 /**
- *
+ * The RemotePlayerClient instantiable class from the ch.epfl.tchu.net package represents a remote player client.
  *
  * @author Yasmin Ben Rahhal (329912)
  * @author Sara Anejjar (329905)
@@ -25,11 +25,12 @@ public class RemotePlayerClient {
     private final String name;
     private final int port;
 
+
     /**
      * Default constructor.
-     * @param player (Player) :
-     * @param name (String) :
-     * @param port (int) :
+     * @param player (Player) : The given player to which the constructor gives a distant access.
+     * @param name (String) : The name to use to connect the proxy.
+     * @param port (int) : The port to use to connect the proxy.
      */
     public RemotePlayerClient(Player player, String name, int port) {
         this.player = player;
@@ -37,15 +38,15 @@ public class RemotePlayerClient {
         this.port = port;
     }
 
+
     /**
-     *
+     * Depending on the type of message from the proxy, the method run deserializes the arguments and calls the player's corresponding method;
+     * If this method returns a result, run serializes it to return it to the proxy in response.
+     * @throws UncheckedIOException if an IOException is thrown.
      */
     public void run(){
-// on ne doit en sortir que lorsque readLine retourne null,
-// car cela signifie que la connexion a été terminée (ce qui signifie que le serveur a planté ou a quitté).
 
         try(Socket socket = new Socket(name, port);
-
             BufferedReader reader =
                     new BufferedReader(
                             new InputStreamReader(socket.getInputStream(),
@@ -99,9 +100,11 @@ public class RemotePlayerClient {
         }
     }
 
+
     /**
-     * @param message (String) The serialized message to send to the client.
-     * @throws UncheckedIOException
+     * @param socket (Socket) : the socket being used to exchange data with the entity connected at the other end.
+     * @param message (String) : The serialized message to send to the client.
+     * @throws UncheckedIOException if an IOException is thrown.
      */
     private void sendMessage(Socket socket, String message){
         try(BufferedWriter writer =
