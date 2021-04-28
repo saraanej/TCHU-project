@@ -44,13 +44,12 @@ public class RemotePlayerClient {
 // on ne doit en sortir que lorsque readLine retourne null,
 // car cela signifie que la connexion a été terminée (ce qui signifie que le serveur a planté ou a quitté).
 
-        try{
-        Socket socket = new Socket(name, port);
-        
+        try(Socket socket = new Socket(name, port);
+
             BufferedReader reader =
                     new BufferedReader(
                             new InputStreamReader(socket.getInputStream(),
-                                    US_ASCII));
+                                    US_ASCII))) {
 
             while(reader.readLine() != null){
 
@@ -95,7 +94,7 @@ public class RemotePlayerClient {
                         break;
                 }
             }
-        }catch (IOException e) {
+        } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
     }
@@ -115,9 +114,4 @@ public class RemotePlayerClient {
             throw new UncheckedIOException(e);
         }
     }
-
-
-
-
-
 }
