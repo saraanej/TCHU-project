@@ -14,7 +14,8 @@ import java.util.regex.Pattern;
 import static java.nio.charset.StandardCharsets.US_ASCII;
 
 /**
- * The RemotePlayerClient instantiable class from the ch.epfl.tchu.net package represents a remote player client.
+ * The RemotePlayerClient instantiable class from the ch.epfl.tchu.net package
+ * represents a remote player client.
  *
  * @author Yasmin Ben Rahhal (329912)
  * @author Sara Anejjar (329905)
@@ -40,7 +41,8 @@ public class RemotePlayerClient {
 
 
     /**
-     * Depending on the type of message from the proxy, the method run deserializes the arguments and calls the player's corresponding method;
+     * Depending on the type of message from the proxy, the method run deserializes the arguments
+     * and calls the player's corresponding method;
      * If this method returns a result, run serializes it to return it to the proxy in response.
      * @throws UncheckedIOException if an IOException is thrown.
      */
@@ -67,7 +69,8 @@ public class RemotePlayerClient {
                         player.receiveInfo(Serdes.STRING.deserialize(split[1]));
                         break;
                     case UPDATE_STATE:
-                        player.updateState(Serdes.PUBLICGAMESTATE.deserialize(split[1]), Serdes.PLAYERSTATE.deserialize(split[2]));
+                        player.updateState(Serdes.PUBLICGAMESTATE.deserialize(split[1]),
+                                           Serdes.PLAYERSTATE.deserialize(split[2]));
                         break;
                     case SET_INITIAL_TICKETS:
                         player.setInitialTicketChoice(Serdes.SORTED_TICKET.deserialize(split[1]));
@@ -79,16 +82,21 @@ public class RemotePlayerClient {
                         sendMessage(socket, Serdes.TURN_KIND.serialize(player.nextTurn()));
                         break;
                     case CHOOSE_TICKETS:
-                        sendMessage(socket, Serdes.SORTED_TICKET.serialize(player.chooseTickets(Serdes.SORTED_TICKET.deserialize(split[1]))));
+                        sendMessage(socket, Serdes.SORTED_TICKET.serialize(
+                                            player.chooseTickets(
+                                            Serdes.SORTED_TICKET.deserialize(split[1]))));
                         break;
                     case CHOOSE_INITIAL_TICKETS:
-                        sendMessage(socket, Serdes.SORTED_TICKET.serialize(player.chooseInitialTickets()));
+                        sendMessage(socket, Serdes.SORTED_TICKET.serialize(
+                                            player.chooseInitialTickets()));
                         break;
                     case CARDS:
                         sendMessage(socket, Serdes.SORTED_CARD.serialize(player.initialClaimCards()));
                         break;
                     case CHOOSE_ADDITIONAL_CARDS:
-                        sendMessage(socket, Serdes.SORTED_CARD.serialize(player.chooseAdditionalCards(Serdes.LIST_SORTED_CARD.deserialize(split[1]))));
+                        sendMessage(socket, Serdes.SORTED_CARD.serialize(
+                                            player.chooseAdditionalCards(
+                                            Serdes.LIST_SORTED_CARD.deserialize(split[1]))));
                         break;
                     case ROUTE:
                         sendMessage(socket, Serdes.ROUTE.serialize(player.claimedRoute()));
@@ -102,14 +110,15 @@ public class RemotePlayerClient {
 
 
     /**
-     * @param socket (Socket) : the socket being used to exchange data with the entity connected at the other end.
+     * @param socket (Socket) : the socket being used to exchange data
+     *                          with the entity connected at the other end.
      * @param message (String) : The serialized message to send to the client.
      * @throws UncheckedIOException if an IOException is thrown.
      */
     private void sendMessage(Socket socket, String message){
-        try(BufferedWriter writer =
+        try{BufferedWriter writer =
                     new BufferedWriter(
-                            new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.US_ASCII))){
+                            new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.US_ASCII));
             String send = String.join(" ", message, "\n");
             writer.write(send);
             writer.flush();

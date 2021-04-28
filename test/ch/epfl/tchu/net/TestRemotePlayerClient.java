@@ -83,5 +83,5 @@ public final class TestRemotePlayerClient {
         // … autres méthodes de Player
     }
 
-    
+
 }
