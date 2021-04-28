@@ -30,9 +30,10 @@ public final class RemotePlayerProxy implements Player {
      * @param message (String) the serialized message to send to the client
      */
     private void sendMessage(MessageId Id, String message){
-        try(BufferedWriter writer =
+        try{
+            BufferedWriter writer =
                     new BufferedWriter(
-                            new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.US_ASCII))){
+                            new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.US_ASCII));
             String send = String.join(" ", Id.name(), message, "\n");
             writer.write(send);
             writer.flush();
@@ -42,9 +43,10 @@ public final class RemotePlayerProxy implements Player {
     }
 
     private String receiveMessage(){
-        try(BufferedReader reader =
+        try {
+            BufferedReader reader =
                     new BufferedReader(
-                            new InputStreamReader(socket.getInputStream(), StandardCharsets.US_ASCII))) {
+                            new InputStreamReader(socket.getInputStream(), StandardCharsets.US_ASCII));
             return reader.readLine();
         } catch (IOException e){
             throw new UncheckedIOException(e);
