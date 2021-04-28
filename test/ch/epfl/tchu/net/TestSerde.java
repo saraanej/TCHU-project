@@ -96,7 +96,7 @@ public class TestSerde {
 
     @Test
     public void CARD(){
-        Serde<Card> serde = Serdes.CARD_SERDE;
+        Serde<Card> serde = Serdes.CARD;
         Card x = Card.BLUE;
         assertEquals("2", serde.serialize(x));
         assertEquals(x, serde.deserialize(serde.serialize(x)));
