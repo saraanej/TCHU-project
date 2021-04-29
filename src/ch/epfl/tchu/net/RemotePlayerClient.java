@@ -54,9 +54,10 @@ public class RemotePlayerClient {
                             new InputStreamReader(socket.getInputStream(),
                                     US_ASCII))) {
 
-            while(reader.readLine() != null){
+            String readLine = reader.readLine();
+            while(readLine != null){
 
-                String[] split = (reader.readLine()).split(Pattern.quote(" "),-1);
+                String[] split = readLine.split(Pattern.quote(" "),-1);
                 switch(MessageId.valueOf(split[0])){
                     case INIT_PLAYERS:
                         List<String> deserialized = Serdes.LIST_STRING.deserialize(split[2]);
@@ -101,6 +102,7 @@ public class RemotePlayerClient {
                         sendMessage(socket, Serdes.ROUTE.serialize(player.claimedRoute()));
                         break;
                 }
+                readLine= reader.readLine();
             }
         } catch (IOException e) {
             throw new UncheckedIOException(e);
