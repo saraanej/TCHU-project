@@ -75,13 +75,16 @@ public final class TestClient {
             var shuffledOptions = new ArrayList<>(options.toList());
             Collections.shuffle(shuffledOptions, random);
             var ticketsToKeep = 1 + random.nextInt(options.size());
-            return SortedBag.of(shuffledOptions.subList(0, ticketsToKeep));
+            SortedBag<Ticket> t = SortedBag.of(shuffledOptions.subList(0, ticketsToKeep));
+            System.out.println("tickets to keep"+t);
+            return t ;
         }
 
         @Override
         public SortedBag<Ticket> chooseInitialTickets() {
-            //choisit juste une carte pr linstant
-            return SortedBag.of(initTickets.get(random.nextInt(5)));
+            SortedBag<Ticket> t = SortedBag.of(1,initTickets.get(1),1,initTickets.get(2));
+            System.out.println(t);
+            return t;
         }
 
         @Override

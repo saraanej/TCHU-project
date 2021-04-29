@@ -56,7 +56,6 @@ public class RemotePlayerClient {
 
             String readLine = reader.readLine();
             while(readLine != null){
-
                 String[] split = readLine.split(Pattern.quote(" "),-1);
                 switch(MessageId.valueOf(split[0])){
                     case INIT_PLAYERS:
@@ -120,8 +119,10 @@ public class RemotePlayerClient {
         try{BufferedWriter writer =
                     new BufferedWriter(
                             new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.US_ASCII));
-            String send = String.join(" ", message, "\n");
+            String send = String.join(" ", message);
             writer.write(send);
+            //chgmnt made: separation du /n entre join et write
+            writer.write("\n");
             writer.flush();
         } catch (IOException e){
             throw new UncheckedIOException(e);
