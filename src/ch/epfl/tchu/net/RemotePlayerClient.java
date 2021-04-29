@@ -119,9 +119,7 @@ public class RemotePlayerClient {
         try{BufferedWriter writer =
                     new BufferedWriter(
                             new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.US_ASCII));
-            String send = String.join(" ", message);
-            writer.write(send);
-            //chgmnt made: separation du /n entre join et write
+            writer.write(message);
             writer.write("\n");
             writer.flush();
         } catch (IOException e){

@@ -25,8 +25,8 @@ public final class TestClient {
         private PublicGameState gameState;
 
         private List<Route> allRoutes = ChMap.routes();
-        private Route routeToClaim;
-        private SortedBag<Card> initialClaimCards;
+        private Route routeToClaim = allRoutes.get(0);
+        private SortedBag<Card> initialClaimCards = SortedBag.of(Card.BLUE);
 
         private PlayerId ownId;
         private Map<PlayerId, String> playerNames;
@@ -102,7 +102,7 @@ public final class TestClient {
 
         @Override
         public Route claimedRoute() {
-            return routeToClaim;
+            return routeToClaim == null ? ChMap.routes().get(0) : routeToClaim ;
         }
 
         private TurnKind doNextTurn() {
