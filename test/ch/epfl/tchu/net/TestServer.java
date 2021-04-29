@@ -34,6 +34,9 @@ public final class TestServer {
             SortedBag<Ticket> chosen = playerProxy.chooseInitialTickets();
             System.out.println(chosen);
             System.out.println(tickets.contains(chosen));
+
+            int slot = playerProxy.drawSlot();
+            System.out.println(slot);
         }
         System.out.println("Server done!");
     }
