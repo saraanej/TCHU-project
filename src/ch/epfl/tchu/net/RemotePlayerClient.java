@@ -119,8 +119,7 @@ public class RemotePlayerClient {
         try{BufferedWriter writer =
                     new BufferedWriter(
                             new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.US_ASCII));
-            writer.write(message);
-            writer.write("\n");
+            writer.write(String.format("%s\n",message));
             writer.flush();
         } catch (IOException e){
             throw new UncheckedIOException(e);

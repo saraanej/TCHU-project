@@ -36,8 +36,7 @@ public final class RemotePlayerProxy implements Player {
                     new BufferedWriter(
                             new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.US_ASCII));
             String send = String.join(" ", Id.name(), message);
-            writer.write(send);
-            writer.write("\n");
+            writer.write(String.format("%s\n",send));
             writer.flush();
         } catch (IOException e){
             throw new UncheckedIOException(e);
