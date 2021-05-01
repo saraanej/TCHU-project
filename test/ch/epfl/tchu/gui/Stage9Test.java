@@ -1,5 +1,6 @@
 package ch.epfl.tchu.gui;
 
+import ch.epfl.tchu.game.ChMap;
 import ch.epfl.tchu.game.PlayerId;
 import javafx.application.Application;
 import javafx.scene.Node;
@@ -8,7 +9,9 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 public final class Stage9Test extends Application {
-    public static void main(String[] args) { launch(args); }
+    public static void main(String[] args) {
+       launch(args);
+    }
 
     @Override
     public void start(Stage primaryStage) {
