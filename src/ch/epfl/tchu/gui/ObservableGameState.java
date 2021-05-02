@@ -3,8 +3,8 @@ package ch.epfl.tchu.gui;
 import ch.epfl.tchu.SortedBag;
 import ch.epfl.tchu.game.*;
 import javafx.beans.property.*;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-
 import java.util.*;
 
 public class ObservableGameState {
@@ -53,12 +53,12 @@ public class ObservableGameState {
     private final IntegerProperty leftTickets;
     private final IntegerProperty leftCards;
     private final List<ObjectProperty<Card>> faceUpCards;
-    private final Map<Route,ObjectProperty<PlayerId>> routesIdentities;
+    private final Map<Route,ObjectProperty<PlayerId>> routeOwner;
 
     //properties containing public state of the players
     private final Map<PlayerId,IntegerProperty> ticketsCount;
     private final Map<PlayerId,IntegerProperty> cardsCount;
-    private final Map<PlayerId,IntegerProperty> wagonCount;
+    private final Map<PlayerId,IntegerProperty> carCount;
     private final Map<PlayerId,IntegerProperty> claimPoints;
 
     //properties containing private state of the players
@@ -71,18 +71,51 @@ public class ObservableGameState {
         leftTickets = new SimpleIntegerProperty(0);
         leftCards = new SimpleIntegerProperty(0);
         faceUpCards = createFaceUpCards();
-        routesIdentities = createRoutesIdentities();
+        routeOwner = createRoutesIdentities();
         ticketsCount = initMapIdInteger();
         cardsCount = initMapIdInteger();
-        wagonCount = initMapIdInteger();
+        carCount = initMapIdInteger();
         claimPoints = initMapIdInteger();
         ticketList = new SimpleObjectProperty<>(null); //ask assistants of this the behavior expected at initialisation (null and not newObservableArray..)
         numberCardType = createNumberCardType();
         canClaimRoute = createCanClaimRoute();
     }
 
-    public void setState(){
+    public void setState(PublicGameState gS, PlayerState playerState){
+        gameState = gS;
+        player= playerState;
 
+        //TODO: Check si y a une methode de base pour convertir en pourcentage
+        leftTickets.set((gameState.ticketsCount()/ChMap.tickets().size())*100);
+        leftCards.set((gameState.cardState().deckSize()/Constants.TOTAL_CARDS_COUNT)*100);
+        for (int slot : Constants.FACE_UP_CARD_SLOTS) {
+            Card newCard = gameState.cardState().faceUpCard(slot);
+            faceUpCards.get(slot).set(newCard);
+        }
+        for (Route r : gameState.claimedRoutes()){
+            routeOwner.get(r).set(player.routes().contains(r) ? playerId : playerId.next());
+        }
+
+        for(PlayerId id : PlayerId.values()){
+            ticketsCount.get(id).set(gameState.playerState(id).ticketCount());
+            cardsCount.get(id).set(gameState.playerState(id).cardCount());
+            carCount.get(id).set(gameState.playerState(id).carCount());
+            claimPoints.get(id).set(gameState.playerState(id).claimPoints());
+        }
+
+        ticketList.set(FXCollections.observableArrayList(player.tickets().toList()));
+        for (Card c : Card.values()) {
+            int number = 0;
+            for (Card p : player.cards()) {
+                if (p.equals(c)) ++number;
+            }
+            numberCardType.get(c).set(number);
+        }
+        for (Route r : ChMap.routes()){
+            if (playerId.equals(gameState.currentPlayerId())
+                    && routeIsNotClaimed(r) && player.canClaimRoute(r))
+            canClaimRoute.get(r).set(true);
+        }
     }
 
     public ReadOnlyIntegerProperty getLeftTickets(){
@@ -91,35 +124,36 @@ public class ObservableGameState {
     public ReadOnlyIntegerProperty getLeftCards(){
         return leftCards;
     }
-    public ReadOnlyObjectProperty<Card> faceUpCard(int slot){
-        return faceUpCards.get(slot);
+    public ReadOnlyIntegerProperty numberCardsOfType(Card c){
+        return numberCardType.get(c);
     }
-    public ReadOnlyObjectProperty<PlayerId> routeOwner(Route route){
-        return routesIdentities.get(route);
-    }
-
     public ReadOnlyIntegerProperty playerTicketCount(PlayerId id){
         return ticketsCount.get(id);
     }
     public ReadOnlyIntegerProperty playerCardCount(PlayerId id){
         return cardsCount.get(id);
     }
-    public ReadOnlyIntegerProperty playerWagonCount(PlayerId id){
-        return wagonCount.get(id);
+    public ReadOnlyIntegerProperty playerCarCount(PlayerId id){
+        return carCount.get(id);
     }
     public ReadOnlyIntegerProperty playerClaimPoints(PlayerId id){
         return claimPoints.get(id);
     }
 
+    public ReadOnlyObjectProperty<Card> faceUpCard(int slot){
+        return faceUpCards.get(slot);
+    }
+    public ReadOnlyObjectProperty<PlayerId> routeOwner(Route route){
+        return routeOwner.get(route);
+    }
     public ReadOnlyObjectProperty<ObservableList<Ticket>> ticketList(){
         return ticketList;
     }
-    public ReadOnlyIntegerProperty numberCardsOfType(Card c){
-        return numberCardType.get(c);
-    }
+
     public ReadOnlyBooleanProperty canClaimRoute(Route route){
         return canClaimRoute.get(route);
     }
+
 
     public boolean canDrawTickets(){
         return gameState.canDrawTickets();
@@ -133,21 +167,9 @@ public class ObservableGameState {
         return player.possibleClaimCards(route);
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    private boolean routeIsNotClaimed(Route r){
+        List<List<Station>> stations = new ArrayList<>();
+        for (Route route : gameState.claimedRoutes()) stations.add(route.stations());
+        return stations.contains(r.stations());
+    }
 }
