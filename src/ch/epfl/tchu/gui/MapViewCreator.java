@@ -4,15 +4,15 @@ import ch.epfl.tchu.game.ChMap;
 import ch.epfl.tchu.game.Route;
 import javafx.scene.Group;
 import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 
-
-//non instanciable et package private
-class MapViewCreator {
+/**
+ *
+ */
+final class MapViewCreator {
 
     private MapViewCreator(){}
 
