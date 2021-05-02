@@ -76,7 +76,7 @@ public class ObservableGameState {
         cardsCount = initMapIdInteger();
         carCount = initMapIdInteger();
         claimPoints = initMapIdInteger();
-        ticketList = new SimpleObjectProperty<>(null); //ask assistants of this the behavior expected at initialisation (null and not newObservableArray..)
+        ticketList = new SimpleObjectProperty<>(null); //TODO : ask assistants of this the behavior expected at initialisation (null and not newObservableArray..)
         numberCardType = createNumberCardType();
         canClaimRoute = createCanClaimRoute();
     }
@@ -85,7 +85,6 @@ public class ObservableGameState {
         gameState = gS;
         player= playerState;
 
-        //TODO: Check si y a une methode de base pour convertir en pourcentage
         leftTickets.set((gameState.ticketsCount()/ChMap.tickets().size())*100);
         leftCards.set((gameState.cardState().deckSize()/Constants.TOTAL_CARDS_COUNT)*100);
         for (int slot : Constants.FACE_UP_CARD_SLOTS) {
