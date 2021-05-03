@@ -25,6 +25,8 @@ public interface Serde<C> {
      * @param deserialization (Function<String, T>) the deserialization function.
      * @param <T> the type of elements that the serde is able to (de) serialize.
      * @return the corresponding Serde<T>.
+     *
+     * @throws IllegalArgumentException if the serialisation and deserialization functions are null.
      */
     static <T> Serde<T> of(Function<T, String> serialization, Function<String, T> deserialization){
         Preconditions.checkArgument(serialization != null);
@@ -46,6 +48,8 @@ public interface Serde<C> {
      * @param values (List<T>) the list of all the values of the enumerated set.
      * @param <T> the type of elements that the serde is able to (de)serialize.
      * @return the corresponding Serde<T>.
+     *
+     * @throws IllegalArgumentException if list of values is empty.
      */
     static <T> Serde<T> oneOf(List<T> values){
         Preconditions.checkArgument(!values.isEmpty());
@@ -70,11 +74,18 @@ public interface Serde<C> {
      * @param separator (String) the separator to use to separate the serialized's list's elements.
      * @param <T> the type of elements that the serde is able to (de)serialize.
      * @return the corresponding Serde<List<T>>.
+     *
+     * @throws IllegalArgumentException if the separator is nul or an empty String,
+     *                                  if the serde is null.
      */
     static <T> Serde<List<T>> listOf(Serde<T> serde, String separator){
         Preconditions.checkArgument(separator != null && separator != "");
         Preconditions.checkArgument(serde != null);
         return new Serde<>() {
+
+            /**
+             * @throws IllegalArgumentException if the list to serialize is null.
+             */
             @Override
             public String serialize(List<T> t){
                 Preconditions.checkArgument(t != null);
@@ -103,6 +114,9 @@ public interface Serde<C> {
      * @param separator (String) the separator to use to separate the serialized's bag's elements.
      * @param <T> the type of elements that the serde is able to (de)serialize.
      * @return the corresponding Serde<SortedBag<T>>.
+     *
+     * @throws IllegalArgumentException if the separator is nul or an empty String,
+     *                                  if the serde is null.
      */
     static <T extends  Comparable<T>> Serde<SortedBag<T>> bagOf(Serde<T> serde, String separator){
         Preconditions.checkArgument(separator != null && separator != "");

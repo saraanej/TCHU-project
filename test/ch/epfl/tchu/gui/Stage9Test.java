@@ -15,7 +15,7 @@ public final class Stage9Test extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-//        ObservableGameState gameState = new ObservableGameState(PlayerId.PLAYER_1);
+        ObservableGameState gameState = new ObservableGameState(PlayerId.PLAYER_1);
 //
 //        ObjectProperty<ClaimRouteHandler> claimRoute =
 //                new SimpleObjectProperty<>(Stage9Test::claimRoute);
