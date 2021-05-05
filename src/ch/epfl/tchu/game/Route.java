@@ -170,7 +170,7 @@ public final class Route {
 		}
         else if(level.equals(Level.UNDERGROUND)) {
 			if(color == null) {
-				for(int i = 0; i <= this.length ; ++i) {
+				for(int i = 0; i < this.length ; ++i) {
 					for(Card c : Card.CARS)
 						possibleCards.add(SortedBag.of(length - i, c, i , Card.LOCOMOTIVE));
 				}

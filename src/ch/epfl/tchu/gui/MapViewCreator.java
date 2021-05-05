@@ -18,7 +18,8 @@ final class MapViewCreator {
     private MapViewCreator(){}
 
     public static Node createMapView(ObservableGameState observable ,
-                                     ObjectProperty<ActionHandlers.ClaimRouteHandler> routeHandler/*, CardChooser cardChooser*/){
+                                     ObjectProperty<ActionHandlers.ClaimRouteHandler> routeHandler,
+                                     ActionHandlers.ChooseCardsHandler cardChooser){
         Pane mapPane = new Pane();
         mapPane.getStylesheets().addAll("map.css","colors.css");
         mapPane.getChildren().add(new ImageView());
