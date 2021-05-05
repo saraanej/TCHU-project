@@ -2,6 +2,7 @@ package ch.epfl.tchu.gui;
 
 import ch.epfl.tchu.game.ChMap;
 import ch.epfl.tchu.game.Route;
+import javafx.beans.property.ObjectProperty;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.image.ImageView;
@@ -16,7 +17,8 @@ final class MapViewCreator {
 
     private MapViewCreator(){}
 
-    public static Node createMapView(ObservableGameState observable /*,ObjectProperty<ClaimRouteHandler> routeHandler, CardChooser cardChooser*/){
+    public static Node createMapView(ObservableGameState observable ,
+                                     ObjectProperty<ActionHandlers.ClaimRouteHandler> routeHandler/*, CardChooser cardChooser*/){
         Pane mapPane = new Pane();
         mapPane.getStylesheets().addAll("map.css","colors.css");
         mapPane.getChildren().add(new ImageView());
@@ -29,7 +31,8 @@ final class MapViewCreator {
             observable.routeOwner(r).addListener((o,oV,nV) -> {
                 if( nV != null) gR.getStyleClass().add(nV.name());
             } );
-           // gR.disableProperty().bind();
+            gR.disableProperty().bind(
+                    routeHandler.isNull().or(observable.canClaimRoute(r).not()));
             // create les cases du grp gR
             for (int i = 1; i <= r.length(); ++i) {
                 //cree le rectangle representant la voie de la case
@@ -57,8 +60,6 @@ final class MapViewCreator {
             //ajoute le groupe route a la mapPane
             mapPane.getChildren().add(gR);
         }
-
-
         return mapPane;
     }
 }
