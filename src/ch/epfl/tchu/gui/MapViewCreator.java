@@ -31,13 +31,9 @@ final class MapViewCreator {
             //cree le groupe de la route
             Group gR = new Group();
             gR.setId(r.id());
-            gR.getStyleClass().addAll("route",r.level().name(),r.color() == null ? "NEUTRAL" : r.color().name());
-            //
-            observable.routeOwner(r).addListener((o,oV,nV) -> {
-                if( nV != null) gR.getStyleClass().add(nV.name());
-            } );
-            gR.disableProperty().bind(
-                    routeHandler.isNull().or(observable.canClaimRoute(r).not()));
+            gR.getStyleClass().addAll("route",r.level().name(),
+                    r.color() == null ? "NEUTRAL" : r.color().name());
+
             // create les cases du grp gR
             for (int i = 1; i <= r.length(); ++i) {
                 //cree le rectangle representant la voie de la case
@@ -61,6 +57,20 @@ final class MapViewCreator {
 
                 gC.getChildren().addAll(voie,wagon);
                 gR.getChildren().add(gC);
+
+                observable.routeOwner(r).addListener((o,oV,nV) -> {
+                    if( nV != null) gR.getStyleClass().add(nV.name());
+                } );
+                gR.disableProperty().bind(
+                        routeHandler.isNull().or(observable.canClaimRoute(r).not()));
+
+                gR.setOnMouseClicked(e -> {
+                    List<SortedBag<Card>> possibleClaimCards = observable.possibleClaimCards(r);
+                    if(possibleClaimCards.size() == 1)
+                        routeHandler.get().onClaimRoute(r,possibleClaimCards.get(0));
+                    else cardChooser.chooseCards(possibleClaimCards,
+                            chosenCards -> routeHandler.get().onClaimRoute(r, chosenCards));
+                });
             }
             //ajoute le groupe route a la mapPane
             mapPane.getChildren().add(gR);

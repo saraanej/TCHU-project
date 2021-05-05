@@ -10,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
+import java.util.List;
 import java.util.Map;
 
 import static ch.epfl.tchu.game.PlayerId.PLAYER_1;
@@ -32,16 +33,18 @@ public final class Stage9Test extends Application {
 //                new SimpleObjectProperty<>(Stage9Test::drawCard);
 
         Node mapView = MapViewCreator
-                .createMapView(gameState, claimRoute/*, Stage9Test::chooseCards*/);
+                .createMapView(gameState, claimRoute, Stage9Test::chooseCards);
 
 
 //        Node cardsView = DecksViewCreator
 //                .createCardsView(gameState, drawTickets, drawCard);
-//        Node handView = DecksViewCreator
-//                .createHandView(gameState);
-//
+        Node handView = DecksViewCreator
+                .createHandView(gameState);
+
         BorderPane mainPane =
                 new BorderPane(mapView/*, null, cardsView, handView, null*/);
+
+
         primaryStage.setScene(new Scene(mainPane));
         primaryStage.show();
 
@@ -51,8 +54,11 @@ public final class Stage9Test extends Application {
     private void setState(ObservableGameState gameState) {
         PlayerState p1State =
                 new PlayerState(SortedBag.of(ChMap.tickets().subList(0, 3)),
-                        SortedBag.of(1, Card.WHITE, 3, Card.RED),
+                        SortedBag.of(3, Card.RED, 1, Card.WHITE),
                         ChMap.routes().subList(0, 3));
+//        System.out.println(SortedBag.of(4, Card.RED,3,Card.BLUE));
+//        System.out.println(SortedBag.of(2, Card.RED, 3, Card.RED));
+        //TODO : DEMANder aux assistants prq SortedBag.of(2, red, 2, red) != SortedBag.of(4,Red)
 
         PublicPlayerState p2State =
                 new PublicPlayerState(0, 0, ChMap.routes().subList(3, 6));
@@ -70,11 +76,11 @@ public final class Stage9Test extends Application {
         System.out.printf("Prise de possession d'une route : %s - %s %s%n",
                 route.station1(), route.station2(), cards);
     }
-//
-//    private static void chooseCards(List<SortedBag<Card>> options,
-//                                    ChooseCardsHandler chooser) {
-//        chooser.onChooseCards(options.get(0));
-//    }
+
+    private static void chooseCards(List<SortedBag<Card>> options,
+                                    ActionHandlers.ChooseCardsHandler chooser) {
+        chooser.onChooseCards(options.get(0));
+    }
 //
 //    private static void drawTickets() {
 //        System.out.println("Tirage de billets !");
