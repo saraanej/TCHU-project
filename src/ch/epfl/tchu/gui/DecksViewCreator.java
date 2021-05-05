@@ -23,16 +23,20 @@ final class DecksViewCreator {
 
     // retourne la vue de la main
     public static Node createHandView(ObservableGameState observableGameState){
-        HBox handView = new HBox(10);
-        
+        HBox handView = new HBox();
+        handView.getStylesheets().addAll("decks.css","colors.css");
+
         ListView<Ticket> listView = new ListView<Ticket>(observableGameState.ticketList().get());
-        handView.getChildren().addAll(listView);
+        listView.setId("tickets");
+        handView.getChildren().add(listView);
+
+        handView.setId("hand-pane");
 
         StackPane v = new StackPane();
         v. getChildren().addAll();
 
-        for(Card card : Card.ALL){
-            observableGameState.numberCardsOfType(card)
+        for(Card c : Card.ALL){
+
         }
 
         return handView;
