@@ -76,7 +76,7 @@ public class ObservableGameState {
         cardsCount = initMapIdInteger();
         carCount = initMapIdInteger();
         claimPoints = initMapIdInteger();
-        ticketList = new SimpleObjectProperty<>(null); //TODO : ask assistants of this the behavior expected at initialisation (null and not newObservableArray..)
+        ticketList = new SimpleObjectProperty<>(null); //TODO : ask assistants if this the behavior expected at initialisation (null and not newObservableArray..)
         numberCardType = createNumberCardType();
         canClaimRoute = createCanClaimRoute();
     }
