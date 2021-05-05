@@ -1,5 +1,7 @@
 package ch.epfl.tchu.gui;
 
+import ch.epfl.tchu.SortedBag;
+import ch.epfl.tchu.game.Card;
 import ch.epfl.tchu.game.ChMap;
 import ch.epfl.tchu.game.Route;
 import javafx.beans.property.ObjectProperty;
@@ -10,6 +12,8 @@ import javafx.scene.layout.Pane;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 
+import java.util.List;
+
 /**
  *
  */
@@ -19,7 +23,7 @@ final class MapViewCreator {
 
     public static Node createMapView(ObservableGameState observable ,
                                      ObjectProperty<ActionHandlers.ClaimRouteHandler> routeHandler,
-                                     ActionHandlers.ChooseCardsHandler cardChooser){
+                                     CardChooser cardChooser){
         Pane mapPane = new Pane();
         mapPane.getStylesheets().addAll("map.css","colors.css");
         mapPane.getChildren().add(new ImageView());
@@ -62,5 +66,11 @@ final class MapViewCreator {
             mapPane.getChildren().add(gR);
         }
         return mapPane;
+    }
+
+    @FunctionalInterface
+    interface CardChooser {
+        void chooseCards(List<SortedBag<Card>> options,
+                         ActionHandlers.ChooseCardsHandler handler);
     }
 }

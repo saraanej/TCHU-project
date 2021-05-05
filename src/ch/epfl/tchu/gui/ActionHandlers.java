@@ -8,11 +8,13 @@ import ch.epfl.tchu.game.Route;
 //TODO est ce que elle extends eVENT HANDLER?
 public interface ActionHandlers {
 
+    @FunctionalInterface
     interface ClaimRouteHandler {
-        void onClaimRoute (Route route, SortedBag<Card> initialCards);
+        void onClaimRoute(Route route, SortedBag<Card> initialCards);
     }
 
+    @FunctionalInterface
     interface ChooseCardsHandler {
-        void onChooseCards (SortedBag<Card> options);
+        void onChooseCards(SortedBag<Card> options);
     }
 }
