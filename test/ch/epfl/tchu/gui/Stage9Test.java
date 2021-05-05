@@ -24,25 +24,25 @@ public final class Stage9Test extends Application {
     @Override
     public void start(Stage primaryStage) {
         ObservableGameState gameState = new ObservableGameState(PLAYER_1);
-//
+
         ObjectProperty<ActionHandlers.ClaimRouteHandler> claimRoute =
                 new SimpleObjectProperty<>(Stage9Test::claimRoute);
-//        ObjectProperty<DrawTicketsHandler> drawTickets =
-//                new SimpleObjectProperty<>(Stage9Test::drawTickets);
-//        ObjectProperty<DrawCardHandler> drawCard =
-//                new SimpleObjectProperty<>(Stage9Test::drawCard);
+        ObjectProperty<ActionHandlers.DrawTicketsHandler> drawTickets =
+                new SimpleObjectProperty<>(Stage9Test::drawTickets);
+        ObjectProperty<ActionHandlers.DrawCardHandler> drawCard =
+                new SimpleObjectProperty<>(Stage9Test::drawCard);
 
         Node mapView = MapViewCreator
                 .createMapView(gameState, claimRoute, Stage9Test::chooseCards);
 
 
-//        Node cardsView = DecksViewCreator
-//                .createCardsView(gameState, drawTickets, drawCard);
+        Node cardsView = DecksViewCreator
+                .createCardsView(gameState, drawTickets, drawCard);
         Node handView = DecksViewCreator
                 .createHandView(gameState);
 
         BorderPane mainPane =
-                new BorderPane(mapView/*, null, cardsView, handView, null*/);
+                new BorderPane(mapView, null, cardsView, handView, null);
 
 
         primaryStage.setScene(new Scene(mainPane));
@@ -81,12 +81,12 @@ public final class Stage9Test extends Application {
                                     ActionHandlers.ChooseCardsHandler chooser) {
         chooser.onChooseCards(options.get(0));
     }
-//
-//    private static void drawTickets() {
-//        System.out.println("Tirage de billets !");
-//    }
-//
-//    private static void drawCard(int slot) {
-//        System.out.printf("Tirage de cartes (emplacement %s)!\n", slot);
-//    }
+
+    private static void drawTickets() {
+        System.out.println("Tirage de billets !");
+    }
+
+    private static void drawCard(int slot) {
+        System.out.printf("Tirage de cartes (emplacement %s)!\n", slot);
+    }
 }
