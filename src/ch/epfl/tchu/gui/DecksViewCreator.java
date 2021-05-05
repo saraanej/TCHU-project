@@ -60,7 +60,9 @@ final class DecksViewCreator {
     }
 
     // gestionnaires d'action : un gère
-    public Node createCardsView(ObservableGameState observableGameState){
+    public static Node createCardsView(ObservableGameState observableGameState,
+                                       ObjectProperty<ActionHandlers.DrawTicketsHandler> ticketsHandler,
+                                       ObjectProperty<ActionHandlers.DrawCardHandler> cardsHandler){
         VBox deckView = new VBox();
         deckView.getStylesheets().addAll("decks.css","colors.css");
         deckView.getStyleClass().add("card-pane");
@@ -99,7 +101,7 @@ final class DecksViewCreator {
         return deckView;
     }
 
-    private void buttonGauge(Button button){
+    private static void buttonGauge(Button button){
         Group group = new Group();
 
         Rectangle background = new Rectangle(50,5);
