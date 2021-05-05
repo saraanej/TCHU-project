@@ -46,21 +46,13 @@ final class DecksViewCreator {
             StackPane stackPane = new StackPane();
             stackPane.getStyleClass().addAll(card == Card.LOCOMOTIVE ? "NEUTRAL" : card.name(), "card");
 
-            //carte couleur
-            Rectangle outside = new Rectangle(60,90);
-            outside.getStyleClass().add("Outside");
-
-            Rectangle filledInside = new Rectangle(40,70);
-            filledInside.getStyleClass().addAll("filled", "inside");
-
-            Rectangle trainImage = new Rectangle(40,70);
-            trainImage.getStyleClass().add("train-image");
-
             //compteur couleur
             Text cardCounter = new Text(observableGameState.numberCardsOfType(card).toString());
             cardCounter.getStyleClass().add("count");
 
-            stackPane.getChildren().addAll(cardCounter, outside, filledInside,trainImage);
+            createRectangles(stackPane);
+
+            stackPane.getChildren().add(cardCounter);
 
             handPane.getChildren().add(stackPane);
         }
@@ -68,7 +60,7 @@ final class DecksViewCreator {
     }
 
     // gestionnaires d'action : un gère
-    public void createCardsView(ObservableGameState observableGameState){
+    public Node createCardsView(ObservableGameState observableGameState){
         VBox deckView = new VBox();
         deckView.getStylesheets().addAll("decks.css","colors.css");
         deckView.getStyleClass().add("card-pane");
@@ -104,8 +96,7 @@ final class DecksViewCreator {
             stackPane.getChildren().addAll(outside, filledInside,trainImage);
         }
 
-
-
+        return deckView;
     }
 
     private void buttonGauge(Button button){
@@ -120,7 +111,7 @@ final class DecksViewCreator {
         button.setGraphic(group);
     }
 
-    private void rectangles(StackPane stackPane){
+    private static void createRectangles(StackPane stackPane){
         Rectangle outside = new Rectangle(60,90);
         outside.getStyleClass().add("Outside");
 
