@@ -76,7 +76,7 @@ public class ObservableGameState {
         cardsCount = initMapIdInteger();
         carCount = initMapIdInteger();
         claimPoints = initMapIdInteger();
-        ticketList = new SimpleObjectProperty<>(null); //TODO : ask assistants of this the behavior expected at initialisation (null and not newObservableArray..)
+        ticketList = new SimpleObjectProperty<>(null); //TODO : ask assistants if this the behavior expected at initialisation (null and not newObservableArray..)
         numberCardType = createNumberCardType();
         canClaimRoute = createCanClaimRoute();
     }
@@ -169,6 +169,6 @@ public class ObservableGameState {
     private boolean routeIsNotClaimed(Route r){
         List<List<Station>> stations = new ArrayList<>();
         for (Route route : gameState.claimedRoutes()) stations.add(route.stations());
-        return stations.contains(r.stations());
+        return !stations.contains(r.stations());
     }
 }
