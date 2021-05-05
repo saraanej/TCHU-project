@@ -163,21 +163,21 @@ public final class Route {
 
 		if(level.equals(Level.OVERGROUND)) {
 			if(color == null) {
-				for(Card c : Card.CARS) {
-					possibleCards.add(SortedBag.of(length, c));}
-			} else {
-				possibleCards.add(SortedBag.of(length, Card.of(color)));}
+				for(Card c : Card.CARS)
+					possibleCards.add(SortedBag.of(length, c));
+			} else
+				possibleCards.add(SortedBag.of(length, Card.of(color)));
 		}
         else if(level.equals(Level.UNDERGROUND)) {
 			if(color == null) {
-				for(int i = 0; i < this.length ; ++i) {
-					for(Card c : Card.CARS) {
-						possibleCards.add(SortedBag.of(length - i, c, i , Card.LOCOMOTIVE));}
+				for(int i = 0; i <= this.length ; ++i) {
+					for(Card c : Card.CARS)
+						possibleCards.add(SortedBag.of(length - i, c, i , Card.LOCOMOTIVE));
 				}
 				possibleCards.add(SortedBag.of(length, Card.LOCOMOTIVE));
 		    } else {
-		    	for(int i = 0; i <= this.length ; ++i) {
-		    		possibleCards.add(SortedBag.of(i, Card.LOCOMOTIVE, length-i, Card.of(color))); }
+		    	for(int i = 0; i <= this.length ; ++i)
+		    		possibleCards.add(SortedBag.of(length - i, Card.of(color), i, Card.LOCOMOTIVE));
 		    }
         }
 		return possibleCards;
