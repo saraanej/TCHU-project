@@ -36,7 +36,7 @@ final class DecksViewCreator {
         HBox handPane = new HBox();
         handPane.setId("hand-pane");
 
-        handView.getChildren().addAll(listView, handPane);
+
 
         //carte + compteur noir
         //la classe NEUTRAL est attachée au dernier fils
@@ -47,7 +47,7 @@ final class DecksViewCreator {
             stackPane.getStyleClass().addAll(card == Card.LOCOMOTIVE ? "NEUTRAL" : card.name(), "card");
 
             //compteur couleur
-            Text cardCounter = new Text(observableGameState.numberCardsOfType(card).toString());
+            Text cardCounter = new Text();
             cardCounter.getStyleClass().add("count");
 
             createRectangles(stackPane);
@@ -56,6 +56,7 @@ final class DecksViewCreator {
 
             handPane.getChildren().add(stackPane);
         }
+        handView.getChildren().addAll(listView, handPane);
         return handView;
     }
 

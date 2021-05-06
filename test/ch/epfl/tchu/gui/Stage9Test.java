@@ -42,8 +42,7 @@ public final class Stage9Test extends Application {
                 .createHandView(gameState);
 
         BorderPane mainPane =
-                new BorderPane(mapView, null, cardsView, handView, null);
-
+                new BorderPane(mapView, null, null, handView, null);
 
         primaryStage.setScene(new Scene(mainPane));
         primaryStage.show();
@@ -58,7 +57,7 @@ public final class Stage9Test extends Application {
                         ChMap.routes().subList(0, 3));
 //        System.out.println(SortedBag.of(4, Card.RED,3,Card.BLUE));
 //        System.out.println(SortedBag.of(2, Card.RED, 3, Card.RED));
-        //TODO : DEMANder aux assistants prq SortedBag.of(2, red, 2, red) != SortedBag.of(4,Red)
+        //TODO : Demander aux assistants prq SortedBag.of(2, red, 2, red) != SortedBag.of(4,Red)
 
         PublicPlayerState p2State =
                 new PublicPlayerState(0, 0, ChMap.routes().subList(3, 6));
