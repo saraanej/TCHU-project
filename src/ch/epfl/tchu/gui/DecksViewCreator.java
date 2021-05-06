@@ -92,19 +92,17 @@ final class DecksViewCreator {
         cardsDeck.setOnMouseClicked(e -> cardsHandler.get().onDrawCard(-1));
 
         deckView.getChildren().add(ticketsDeck);
-
+        
         for(Integer i : Constants.FACE_UP_CARD_SLOTS){
             StackPane stackPane = new StackPane();
             observableGameState.faceUpCard(i).addListener((o,oV, nV) -> {
-                if(nV != null) stackPane.getStyleClass().addAll(nV.name(),"card");
-            });
+                if(nV != null) stackPane.getStyleClass().addAll(nV.name(),"card");});
             createRectangles(stackPane);
             stackPane.setOnMouseClicked(e -> cardsHandler.get().onDrawCard(i));
             deckView.getChildren().add(stackPane);
         }
 
         deckView.getChildren().add(cardsDeck);
-
         return deckView;
     }
 
