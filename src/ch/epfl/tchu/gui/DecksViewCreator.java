@@ -1,15 +1,11 @@
 package ch.epfl.tchu.gui;
 
 import ch.epfl.tchu.game.Card;
-import ch.epfl.tchu.game.ChMap;
 import ch.epfl.tchu.game.Constants;
 import ch.epfl.tchu.game.Ticket;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ReadOnlyIntegerProperty;
-import javafx.beans.property.ReadOnlyObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.collections.ObservableList;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -21,12 +17,20 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 
 /**
- * Non instanciable and priavte
+ * The DecksViewCreator is a private and non-instantiable class.
+ * It contains two public methods that construct a scene graph representing maps.
+ *
+ * @author Yasmin Ben Rahhal (329912)
+ * @author Sara Anejjar (329905)
  */
 
 final class DecksViewCreator {
 
-    // retourne la vue de la main
+    /**
+     * Method creates the view of the player's hand by graphically creating all its components.
+     * @param observableGameState (ObservableGameState) : The observable state of the game.
+     * @return (Node) The elements that compose the hand's view.
+     */
     public static Node createHandView(ObservableGameState observableGameState){
         HBox handView = new HBox();
         handView.getStylesheets().addAll("decks.css","colors.css");
@@ -61,6 +65,13 @@ final class DecksViewCreator {
     }
 
 
+    /**
+     * Method creates graphically the view of the decks in the game.
+     * @param observableGameState (ObservableGameState) :  The observable state of the game.
+     * @param ticketsHandler (ObjectProperty<ActionHandlers.DrawTicketsHandler>) : Action handler managing the ticket draw.
+     * @param cardsHandler (ObjectProperty<ActionHandlers.DrawCardHandler>) : Action handler managing the card draw.
+     * @return (Node) The view of the decks.
+     */
     public static Node createCardsView(ObservableGameState observableGameState,
                                        ObjectProperty<ActionHandlers.DrawTicketsHandler> ticketsHandler,
                                        ObjectProperty<ActionHandlers.DrawCardHandler> cardsHandler){
@@ -72,19 +83,13 @@ final class DecksViewCreator {
         ticketsDeck.disableProperty().bind(ticketsHandler.isNull());
         ticketsDeck.getStyleClass().add("gauged");
         buttonGauge(ticketsDeck, observableGameState.getLeftTickets());
-
-        ticketsDeck.setOnMouseClicked(e -> {
-            ticketsHandler.get().onDrawTickets();
-        });
+        ticketsDeck.setOnMouseClicked(e -> ticketsHandler.get().onDrawTickets());
 
         Button cardsDeck = new Button();
         cardsDeck.disableProperty().bind(cardsHandler.isNull());
         cardsDeck.getStyleClass().add("gauged");
         buttonGauge(cardsDeck, observableGameState.getLeftCards());
-
-        cardsDeck.setOnMouseClicked(e -> {
-            cardsHandler.get().onDrawCard(-1);
-        });
+        cardsDeck.setOnMouseClicked(e -> cardsHandler.get().onDrawCard(-1));
 
         for(int i = 0; i < Constants.FACE_UP_CARDS_COUNT; ++i){
             StackPane stackPane = new StackPane();
@@ -93,9 +98,7 @@ final class DecksViewCreator {
                 if(nV != null) stackPane.getStyleClass().addAll(nV.name(),"card");
             });
             createRectangles(stackPane);
-            stackPane.setOnMouseClicked(e -> {
-                cardsHandler.get().onDrawCard(index);
-            });
+            stackPane.setOnMouseClicked(e -> cardsHandler.get().onDrawCard(index));
             deckView.getChildren().add(stackPane);
         }
 
@@ -104,6 +107,12 @@ final class DecksViewCreator {
         return deckView;
     }
 
+
+    /**
+     * Method creates the graphical representation of the gauge buttons.
+     * @param button (Button) : The given button.
+     * @param percentage (ReadOnlyInteger) : Percentage of elements in the deck.
+     */
     private static void buttonGauge(Button button, ReadOnlyIntegerProperty percentage){
         Group group = new Group();
 
@@ -117,6 +126,10 @@ final class DecksViewCreator {
         button.setGraphic(group);
     }
 
+    /**
+     * Method creates the graphical representation of cards.
+     * @param stackPane (StackPane) : The given pane.
+     */
     private static void createRectangles(StackPane stackPane){
         Rectangle outside = new Rectangle(60,90);
         outside.getStyleClass().add("Outside");
@@ -129,5 +142,5 @@ final class DecksViewCreator {
 
         stackPane.getChildren().addAll(outside, filledInside,trainImage);
     }
-    
+
 }
