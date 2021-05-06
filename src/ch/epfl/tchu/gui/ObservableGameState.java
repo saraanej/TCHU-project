@@ -85,8 +85,8 @@ public class ObservableGameState {
         gameState = gS;
         player= playerState;
 
-        leftTickets.set((gameState.ticketsCount()/ChMap.tickets().size())*100);
-        leftCards.set((gameState.cardState().deckSize()/Constants.TOTAL_CARDS_COUNT)*100);
+        leftTickets.set((gameState.ticketsCount()*100/ChMap.tickets().size()));
+        leftCards.set((gameState.cardState().deckSize()*100/Constants.TOTAL_CARDS_COUNT));
         for (int slot : Constants.FACE_UP_CARD_SLOTS) {
             Card newCard = gameState.cardState().faceUpCard(slot);
             faceUpCards.get(slot).set(newCard);
