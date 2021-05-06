@@ -92,7 +92,7 @@ final class DecksViewCreator {
         cardsDeck.setOnMouseClicked(e -> cardsHandler.get().onDrawCard(-1));
 
         deckView.getChildren().add(ticketsDeck);
-        
+
         for(Integer i : Constants.FACE_UP_CARD_SLOTS){
             StackPane stackPane = new StackPane();
             observableGameState.faceUpCard(i).addListener((o,oV, nV) -> {
