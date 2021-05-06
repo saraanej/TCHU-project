@@ -95,7 +95,7 @@ final class DecksViewCreator {
 
         for(int i = 0; i < Constants.FACE_UP_CARDS_COUNT; ++i){
             StackPane stackPane = new StackPane();
-            final int index = i; //TODO voir s'il y a une meilleure solution
+            int index = i;
             observableGameState.faceUpCard(i).addListener((o,oV, nV) -> {
                 if(nV != null) stackPane.getStyleClass().addAll(nV.name(),"card");
             });
