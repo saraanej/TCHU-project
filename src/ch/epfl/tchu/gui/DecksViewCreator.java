@@ -4,7 +4,9 @@ import ch.epfl.tchu.game.Card;
 import ch.epfl.tchu.game.ChMap;
 import ch.epfl.tchu.game.Constants;
 import ch.epfl.tchu.game.Ticket;
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.ReadOnlyIntegerProperty;
 import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.ObservableList;
@@ -29,85 +31,86 @@ final class DecksViewCreator {
         HBox handView = new HBox();
         handView.getStylesheets().addAll("decks.css","colors.css");
 
-        //billets
-        ListView<Ticket> listView = new ListView<Ticket>(observableGameState.ticketList().get());
+        ListView<Ticket> listView = new ListView<>(observableGameState.ticketList().get());
         listView.setId("tickets");
 
         HBox handPane = new HBox();
         handPane.setId("hand-pane");
 
-
-
-        //carte + compteur noir
-        //la classe NEUTRAL est attachée au dernier fils
-        //Les fils suivants sont chacun une instance de StackPane montrant
-        //les cartes d'une couleur donnée que le joueur a en main
         for(Card card : Card.ALL){
             StackPane stackPane = new StackPane();
+
+            ReadOnlyIntegerProperty count = observableGameState.numberCardsOfType(card);
+
+            stackPane.visibleProperty().bind(Bindings.greaterThan(count,0));
             stackPane.getStyleClass().addAll(card == Card.LOCOMOTIVE ? "NEUTRAL" : card.name(), "card");
 
-            //compteur couleur
             Text cardCounter = new Text();
+            cardCounter.visibleProperty().bind(Bindings.greaterThan(count,1));
+            cardCounter.textProperty().bind(Bindings.convert(count));
             cardCounter.getStyleClass().add("count");
 
             createRectangles(stackPane);
-
             stackPane.getChildren().add(cardCounter);
-
             handPane.getChildren().add(stackPane);
         }
+
         handView.getChildren().addAll(listView, handPane);
+
         return handView;
     }
 
-    // gestionnaires d'action : un gère
+
     public static Node createCardsView(ObservableGameState observableGameState,
                                        ObjectProperty<ActionHandlers.DrawTicketsHandler> ticketsHandler,
                                        ObjectProperty<ActionHandlers.DrawCardHandler> cardsHandler){
         VBox deckView = new VBox();
         deckView.getStylesheets().addAll("decks.css","colors.css");
-        deckView.getStyleClass().add("card-pane");
+        deckView.setId("card-pane");
 
         Button ticketsDeck = new Button();
+        ticketsDeck.disableProperty().bind(ticketsHandler.isNull());
         ticketsDeck.getStyleClass().add("gauged");
-        buttonGauge(ticketsDeck);
+        buttonGauge(ticketsDeck, observableGameState.getLeftTickets());
+
+        ticketsDeck.setOnMouseClicked(e -> {
+            ticketsHandler.get().onDrawTickets();
+        });
 
         Button cardsDeck = new Button();
+        cardsDeck.disableProperty().bind(cardsHandler.isNull());
         cardsDeck.getStyleClass().add("gauged");
-        buttonGauge(cardsDeck);
+        buttonGauge(cardsDeck, observableGameState.getLeftCards());
 
-        /*Donc pour les cartes dont la face est visible,
-        vous devez créer le graphe de scène mais sans essayer de savoir quelle est la couleur de la carte se trouvant à chaque emplacement.
-        Pour cela, il vous suffit de ne pas ajouter
-        la classe représentant la couleur de la carte aux classes de style de l’instance de StackPane.
-        Cette classe de style ne doit être ajoutée que par l’auditeur décrit à la §3.5.2.*/
+        cardsDeck.setOnMouseClicked(e -> {
+            cardsHandler.get().onDrawCard(-1);
+        });
 
         for(int i = 0; i < Constants.FACE_UP_CARDS_COUNT; ++i){
-            //ReadOnlyObjectProperty<Card> card = observableGameState.faceUpCard(i);
             StackPane stackPane = new StackPane();
-            stackPane.getStyleClass().add("card"); //TODO : 3.5.2 ajouter la couleur
-
-            Rectangle outside = new Rectangle(60,90);
-            outside.getStyleClass().add("Outside");
-
-            Rectangle filledInside = new Rectangle(40,70);
-            filledInside.getStyleClass().addAll("filled", "inside");
-
-            Rectangle trainImage = new Rectangle(40,70);
-            trainImage.getStyleClass().add("train-image");
-
-            stackPane.getChildren().addAll(outside, filledInside,trainImage);
+            final int index = i; //TODO voir s'il y a une meilleure solution
+            observableGameState.faceUpCard(i).addListener((o,oV, nV) -> {
+                if(nV != null) stackPane.getStyleClass().addAll(nV.name(),"card");
+            });
+            createRectangles(stackPane);
+            stackPane.setOnMouseClicked(e -> {
+                cardsHandler.get().onDrawCard(index);
+            });
+            deckView.getChildren().add(stackPane);
         }
+
+        deckView.getChildren().addAll(ticketsDeck,cardsDeck);
 
         return deckView;
     }
 
-    private static void buttonGauge(Button button){
+    private static void buttonGauge(Button button, ReadOnlyIntegerProperty percentage){
         Group group = new Group();
 
         Rectangle background = new Rectangle(50,5);
         background.getStyleClass().add("background");
         Rectangle foreground = new Rectangle(50,5);
+        foreground.widthProperty().bind(percentage.multiply(50).divide(100));
         foreground.getStyleClass().add("foreground");
 
         group.getChildren().addAll(background,foreground);
@@ -126,7 +129,5 @@ final class DecksViewCreator {
 
         stackPane.getChildren().addAll(outside, filledInside,trainImage);
     }
-
-
-
+    
 }
