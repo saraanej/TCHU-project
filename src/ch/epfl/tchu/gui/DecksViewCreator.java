@@ -91,6 +91,8 @@ final class DecksViewCreator {
         buttonGauge(cardsDeck, observableGameState.getLeftCards());
         cardsDeck.setOnMouseClicked(e -> cardsHandler.get().onDrawCard(-1));
 
+        deckView.getChildren().add(ticketsDeck);
+
         for(int i = 0; i < Constants.FACE_UP_CARDS_COUNT; ++i){
             StackPane stackPane = new StackPane();
             final int index = i; //TODO voir s'il y a une meilleure solution
@@ -102,7 +104,7 @@ final class DecksViewCreator {
             deckView.getChildren().add(stackPane);
         }
 
-        deckView.getChildren().addAll(ticketsDeck,cardsDeck);
+        deckView.getChildren().add(cardsDeck);
 
         return deckView;
     }
@@ -132,15 +134,15 @@ final class DecksViewCreator {
      */
     private static void createRectangles(StackPane stackPane){
         Rectangle outside = new Rectangle(60,90);
-        outside.getStyleClass().add("Outside");
+        outside.getStyleClass().add("outside");
 
         Rectangle filledInside = new Rectangle(40,70);
-        filledInside.getStyleClass().addAll("filled", "inside");
+        filledInside.getStyleClass().addAll("inside", "filled");
 
         Rectangle trainImage = new Rectangle(40,70);
         trainImage.getStyleClass().add("train-image");
 
-        stackPane.getChildren().addAll(outside, filledInside,trainImage);
+        stackPane.getChildren().addAll(outside,filledInside,trainImage);
     }
 
 }
