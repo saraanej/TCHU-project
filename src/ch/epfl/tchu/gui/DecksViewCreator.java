@@ -26,6 +26,16 @@ import javafx.scene.text.Text;
 
 final class DecksViewCreator {
 
+    static final int MIN_FOR_CARD_VISIBILITY = 0;
+    static final int MIN_FOR_TEXT_VISIBILITY = 1;
+    static final int WIDTH_OUTSIDE_CARD = 60;
+    static final int HEIGHT_OUTSIDE_CARD = 90;
+    static final int WIDTH_BUTTON = 50;
+    static final int HEIGHT_BUTTON = 5;
+    static final int WIDTH_CARD = 40;
+    static final int HEIGHT_CARD = 70;
+
+
     /**
      * Method creates the view of the player's hand by graphically creating all its components.
      * @param observableGameState (ObservableGameState) : The observable state of the game.
@@ -46,11 +56,11 @@ final class DecksViewCreator {
 
             ReadOnlyIntegerProperty count = observableGameState.numberCardsOfType(card);
 
-            stackPane.visibleProperty().bind(Bindings.greaterThan(count,0));
+            stackPane.visibleProperty().bind(Bindings.greaterThan(count,MIN_FOR_CARD_VISIBILITY));
             stackPane.getStyleClass().addAll(card == Card.LOCOMOTIVE ? "NEUTRAL" : card.name(), "card");
 
             Text cardCounter = new Text();
-            cardCounter.visibleProperty().bind(Bindings.greaterThan(count,1));
+            cardCounter.visibleProperty().bind(Bindings.greaterThan(count,MIN_FOR_TEXT_VISIBILITY));
             cardCounter.textProperty().bind(Bindings.convert(count));
             cardCounter.getStyleClass().add("count");
 
@@ -59,7 +69,7 @@ final class DecksViewCreator {
             handPane.getChildren().add(stackPane);
         }
 
-        handView.getChildren().addAll(listView, handPane);
+        handView.getChildren().addAll(handPane, listView);
 
         return handView;
     }
@@ -115,10 +125,10 @@ final class DecksViewCreator {
     private static void buttonGauge(Button button, ReadOnlyIntegerProperty percentage){
         Group group = new Group();
 
-        Rectangle background = new Rectangle(50,5);
+        Rectangle background = new Rectangle(WIDTH_BUTTON,HEIGHT_BUTTON);
         background.getStyleClass().add("background");
-        Rectangle foreground = new Rectangle(50,5);
-        foreground.widthProperty().bind(percentage.multiply(50).divide(100));
+        Rectangle foreground = new Rectangle(WIDTH_BUTTON,HEIGHT_BUTTON);
+        foreground.widthProperty().bind(percentage.multiply(WIDTH_BUTTON).divide(100));
         foreground.getStyleClass().add("foreground");
 
         group.getChildren().addAll(background,foreground);
@@ -130,13 +140,13 @@ final class DecksViewCreator {
      * @param stackPane (StackPane) : The given pane.
      */
     private static void createRectangles(StackPane stackPane){
-        Rectangle outside = new Rectangle(60,90);
+        Rectangle outside = new Rectangle(WIDTH_OUTSIDE_CARD,HEIGHT_OUTSIDE_CARD);
         outside.getStyleClass().add("outside");
 
-        Rectangle filledInside = new Rectangle(40,70);
+        Rectangle filledInside = new Rectangle(WIDTH_CARD,HEIGHT_CARD);
         filledInside.getStyleClass().addAll("inside", "filled");
 
-        Rectangle trainImage = new Rectangle(40,70);
+        Rectangle trainImage = new Rectangle(WIDTH_CARD,HEIGHT_CARD);
         trainImage.getStyleClass().add("train-image");
 
         stackPane.getChildren().addAll(outside,filledInside,trainImage);
