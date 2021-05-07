@@ -19,6 +19,8 @@ import java.util.List;
  */
 final class MapViewCreator {
 
+    //TODO : creer les constantes static des nbres utilises
+
     private MapViewCreator(){}
 
     public static Node createMapView(ObservableGameState observable ,

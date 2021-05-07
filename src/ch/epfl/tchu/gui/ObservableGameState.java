@@ -76,7 +76,7 @@ public class ObservableGameState {
         cardsCount = initMapIdInteger();
         carCount = initMapIdInteger();
         claimPoints = initMapIdInteger();
-        ticketList = FXCollections.observableArrayList(); //TODO : ask assistants if this the behavior expected at initialisation (null and not newObservableArray..)
+        ticketList = FXCollections.observableArrayList();
         numberCardType = createNumberCardType();
         canClaimRoute = createCanClaimRoute();
     }
@@ -142,9 +142,6 @@ public class ObservableGameState {
     public ReadOnlyObjectProperty<PlayerId> routeOwner(Route route){
         return routeOwner.get(route);
     }
-    public ObservableList<Ticket> ticketList(){
-        return FXCollections.unmodifiableObservableList(ticketList);
-    }
 
     public ReadOnlyBooleanProperty canClaimRoute(Route route){
         return canClaimRoute.get(route);
@@ -161,6 +158,10 @@ public class ObservableGameState {
     public List<SortedBag<Card>> possibleClaimCards(Route route){
         return player.possibleClaimCards(route);
     }
+    public ObservableList<Ticket> ticketList(){
+        return FXCollections.unmodifiableObservableList(ticketList);
+    }
+
 
     private boolean routeIsNotClaimed(Route r){
         List<List<Station>> stations = new ArrayList<>();
