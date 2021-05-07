@@ -62,7 +62,7 @@ public class ObservableGameState {
     private final Map<PlayerId,IntegerProperty> claimPoints;
 
     //properties containing private state of the players
-    private final ObjectProperty<ObservableList<Ticket>> ticketList;
+    private final ObservableList<Ticket> ticketList;
     private final Map<Card,IntegerProperty> numberCardType;
     private final Map<Route,BooleanProperty> canClaimRoute;
 
@@ -76,7 +76,7 @@ public class ObservableGameState {
         cardsCount = initMapIdInteger();
         carCount = initMapIdInteger();
         claimPoints = initMapIdInteger();
-        ticketList = new SimpleObjectProperty<>(null); //TODO : ask assistants if this the behavior expected at initialisation (null and not newObservableArray..)
+        ticketList = FXCollections.observableArrayList(); //TODO : ask assistants if this the behavior expected at initialisation (null and not newObservableArray..)
         numberCardType = createNumberCardType();
         canClaimRoute = createCanClaimRoute();
     }
@@ -102,7 +102,7 @@ public class ObservableGameState {
             claimPoints.get(id).set(gameState.playerState(id).claimPoints());
         }
 
-        ticketList.set(FXCollections.observableArrayList(player.tickets().toList()));
+        ticketList.setAll(player.tickets().toList());
 
         for (Card c : Card.values()) {
             numberCardType.get(c).set(Collections.frequency(player.cards().toList(),c));
@@ -142,8 +142,8 @@ public class ObservableGameState {
     public ReadOnlyObjectProperty<PlayerId> routeOwner(Route route){
         return routeOwner.get(route);
     }
-    public ReadOnlyObjectProperty<ObservableList<Ticket>> ticketList(){
-        return ticketList;
+    public ObservableList<Ticket> ticketList(){
+        return FXCollections.unmodifiableObservableList(ticketList);
     }
 
     public ReadOnlyBooleanProperty canClaimRoute(Route route){

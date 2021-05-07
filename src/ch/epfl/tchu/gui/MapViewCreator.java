@@ -60,7 +60,7 @@ final class MapViewCreator {
 
                 observable.routeOwner(r).addListener((o,oV,nV) -> {
                     if( nV != null) gR.getStyleClass().add(nV.name());
-                } );
+                });
                 gR.disableProperty().bind(
                         routeHandler.isNull().or(observable.canClaimRoute(r).not()));
 
