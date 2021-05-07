@@ -103,12 +103,9 @@ public class ObservableGameState {
         }
 
         ticketList.set(FXCollections.observableArrayList(player.tickets().toList()));
+
         for (Card c : Card.values()) {
-            int number = 0;
-            for (Card p : player.cards()) {
-                if (p.equals(c)) ++number;
-            }
-            numberCardType.get(c).set(number);
+            numberCardType.get(c).set(Collections.frequency(player.cards().toList(),c));
         }
         for (Route r : ChMap.routes()){
             if (playerId.equals(gameState.currentPlayerId())
@@ -157,7 +154,6 @@ public class ObservableGameState {
     public boolean canDrawTickets(){
         return gameState.canDrawTickets();
     }
-
     public boolean canDrawCards(){
         return gameState.canDrawCards();
     }
