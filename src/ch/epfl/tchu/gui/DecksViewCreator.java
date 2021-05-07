@@ -69,7 +69,7 @@ final class DecksViewCreator {
             handPane.getChildren().add(stackPane);
         }
 
-        handView.getChildren().addAll(handPane, listView);
+        handView.getChildren().addAll(listView, handPane);
 
         return handView;
     }
