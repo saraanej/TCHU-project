@@ -31,42 +31,42 @@ final class MapViewCreator {
         mapPane.getChildren().add(new ImageView());
         for (Route r : ChMap.routes()) {
             //cree le groupe de la route
-            Group gR = new Group();
-            gR.setId(r.id());
-            gR.getStyleClass().addAll("route",r.level().name(),
+            Group groupRoute = new Group();
+            groupRoute.setId(r.id());
+            groupRoute.getStyleClass().addAll("route",r.level().name(),
                     r.color() == null ? "NEUTRAL" : r.color().name());
 
-            // create les cases du grp gR
+            // create les cases du grp groupRoute
             for (int i = 1; i <= r.length(); ++i) {
-                //cree le rectangle representant la voie de la case
-                Rectangle voie = new Rectangle(36,12);
-                voie.getStyleClass().addAll("track","filled");
+                //cree le rectangle representant la voieCase de la case
+                Rectangle voieCase = new Rectangle(36,12);
+                voieCase.getStyleClass().addAll("track","filled");
 
                 // cree le retangle et les cercles composants le wagon
-                Rectangle voieW = new Rectangle(36,12);
-                voieW.getStyleClass().add("filled");
-                Circle c1 = new Circle(12,6,3);
-                Circle c2 = new Circle(24,6,3);
+                Rectangle voieWagon = new Rectangle(36,12);
+                voieWagon.getStyleClass().add("filled");
+                Circle circle1 = new Circle(12,6,3);
+                Circle circle2 = new Circle(24,6,3);
 
                 // cree un groupe representant le wagon
                 Group wagon = new Group();
                 wagon.getStyleClass().add("car");
-                wagon.getChildren().addAll(voieW, c1, c2);
+                wagon.getChildren().addAll(voieWagon, circle1, circle2);
 
                 // cree groupe case
-                Group gC = new Group();
-                gC.setId(String.format("%s_%s", r.id(),i));
+                Group groupCase = new Group();
+                groupCase.setId(String.format("%s_%s", r.id(),i));
 
-                gC.getChildren().addAll(voie,wagon);
-                gR.getChildren().add(gC);
+                groupCase.getChildren().addAll(voieCase,wagon);
+                groupRoute.getChildren().add(groupCase);
 
                 observable.routeOwner(r).addListener((o,oV,nV) -> {
-                    if( nV != null) gR.getStyleClass().add(nV.name());
+                    if( nV != null) groupRoute.getStyleClass().add(nV.name());
                 });
-                gR.disableProperty().bind(
+                groupRoute.disableProperty().bind(
                         routeHandler.isNull().or(observable.canClaimRoute(r).not()));
 
-                gR.setOnMouseClicked(e -> {
+                groupRoute.setOnMouseClicked(e -> {
                     List<SortedBag<Card>> possibleClaimCards = observable.possibleClaimCards(r);
                     if(possibleClaimCards.size() == 1)
                         routeHandler.get().onClaimRoute(r,possibleClaimCards.get(0));
@@ -75,7 +75,7 @@ final class MapViewCreator {
                 });
             }
             //ajoute le groupe route a la mapPane
-            mapPane.getChildren().add(gR);
+            mapPane.getChildren().add(groupRoute);
         }
         return mapPane;
     }

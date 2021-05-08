@@ -28,7 +28,7 @@ public final class PlayerState extends PublicPlayerState {
      * @throws IllegalArgumentException if the number of initial cards is not equal to 4
      */
     public static PlayerState initial(SortedBag<Card> initialCards) {
-        Preconditions.checkArgument(initialCards.size() == 4);
+        Preconditions.checkArgument(initialCards.size() == Constants.INITIAL_CARDS_COUNT);
         return new PlayerState(SortedBag.of(), initialCards, List.of());
     }
 
@@ -108,11 +108,11 @@ public final class PlayerState extends PublicPlayerState {
      *                                  if drawnCards doesn't contain exactly 3 cards
      */
     public List<SortedBag<Card>> possibleAdditionalCards(int additionalCardsCount, SortedBag<Card> initialCards, SortedBag<Card> drawnCards) {
-        Preconditions.checkArgument(additionalCardsCount >= 1 && additionalCardsCount <= 3);
+        Preconditions.checkArgument(additionalCardsCount >= 1 && additionalCardsCount <= Constants.ADDITIONAL_TUNNEL_CARDS);
         Preconditions.checkArgument(!initialCards.isEmpty());
         Set<Card> initial = initialCards.toSet();
         Preconditions.checkArgument(initial.size() <= 2);
-        Preconditions.checkArgument(drawnCards.size() == 3);
+        Preconditions.checkArgument(drawnCards.size() == Constants.ADDITIONAL_TUNNEL_CARDS);
 
         SortedBag<Card> cardsWithoutInitials = cards.difference(initialCards);
         SortedBag.Builder<Card> canUse = new SortedBag.Builder<>();
@@ -149,10 +149,7 @@ public final class PlayerState extends PublicPlayerState {
      * @return (PlayerState) Same as this PlayerState with a card added to its list of cards
      */
     public PlayerState withAddedCard(Card card) {
-        SortedBag.Builder<Card> newCards = new SortedBag.Builder<>();
-        newCards.add(cards);
-        newCards.add(card);
-        return new PlayerState(tickets, newCards.build(), routes());
+        return this.withAddedCards(SortedBag.of(card));
     }
 
     /**

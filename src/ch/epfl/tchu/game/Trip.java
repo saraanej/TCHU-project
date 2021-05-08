@@ -32,8 +32,8 @@ public final class Trip {
 	 *                                  if the departure's station is the same as the arrival's station
 	 */
 	public static List<Trip> all(List<Station> from, List<Station> to, int points) {
-		Preconditions.checkArgument(from != null);
-		Preconditions.checkArgument(to != null);
+		Preconditions.checkArgument(from != null && !from.isEmpty());
+		Preconditions.checkArgument(to != null && !to.isEmpty());
 		Preconditions.checkArgument(points > 0);
 		Preconditions.checkArgument(from != to);
 		List<Trip> all = new ArrayList<>();

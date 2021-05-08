@@ -4,9 +4,9 @@ import ch.epfl.tchu.Preconditions;
 import ch.epfl.tchu.SortedBag;
 import ch.epfl.tchu.gui.Info;
 
-import java.awt.*;
 import java.util.*;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * The Game class, public, final and non-instantiable, represents a part of tCHu.
@@ -34,13 +34,13 @@ public class Game {
         Preconditions.checkArgument(players.size() == NUMBER_OF_PLAYERS);
         Preconditions.checkArgument(playerNames.size() == NUMBER_OF_PLAYERS);
 
-        Map<PlayerId, Info> playersInfo = new HashMap<>();
+        Map<PlayerId, Info> playersInfo = new EnumMap<>(PlayerId.class);
         for (PlayerId playerId : PlayerId.values()) {
             playersInfo.put(playerId, new Info(playerNames.get(playerId)));
         }
 
         GameState gameState = GameState.initial(tickets, rng);
-        gameState = Begin(playerNames, playersInfo, players, gameState);
+        gameState = begin(playerNames, playersInfo, players, gameState);
 
         boolean lastTurnPlayed = false;
         while (!lastTurnPlayed) {
@@ -74,7 +74,7 @@ public class Game {
      *
      * @return the gameState after initializing the game.
      */
-    private static GameState Begin(Map<PlayerId, String> playerNames, Map<PlayerId, Info> playersInfo, Map<PlayerId, Player> players, GameState gameState) {
+    private static GameState begin(Map<PlayerId, String> playerNames, Map<PlayerId, Info> playersInfo, Map<PlayerId, Player> players, GameState gameState) {
         players.forEach((id, player) -> player.initPlayers(id, playerNames));
         receiveInfo(players, playersInfo.get(gameState.currentPlayerId()).willPlayFirst());
 
@@ -148,7 +148,6 @@ public class Game {
         Player currentPlayer = players.get(currentPlayerId);
 
         Route route = currentPlayer.claimedRoute();
-        if (gameState.currentPlayerState().canClaimRoute(route)) {
             SortedBag<Card> claimCards = currentPlayer.initialClaimCards();
 
             if (route.level().equals(Route.Level.UNDERGROUND)) {
@@ -185,7 +184,6 @@ public class Game {
             }
             gameState = gameState.withClaimedRoute(route, claimCards);
             receiveInfo(players, playersInfo.get(currentPlayerId).claimedRoute(route, claimCards));
-        }
         return gameState;
     }
 
@@ -222,7 +220,7 @@ public class Game {
         int minPoints = Collections.min(playersPoints.values());
         Map.Entry<PlayerId, Integer> winner = winner(playersPoints, minPoints);
 
-        List<String> names = List.copyOf(playerNames.values());
+        List<String> names = playerNames.values().stream().collect(Collectors.toList());
         if (winner.getKey() == null) receiveInfo(players, Info.draw(names, minPoints));
         else receiveInfo(players, playersInfo.get(winner.getKey())
                 .won(winner.getValue(), minPoints));

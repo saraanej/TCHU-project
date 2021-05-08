@@ -58,7 +58,7 @@ public class PublicGameState {
      */
     public boolean canDrawCards(){
         int totalCards = cardState.deckSize() + cardState.discardsSize();
-        return totalCards >= 5;
+        return totalCards >= Constants.FACE_UP_CARDS_COUNT;
     }
 
     /**

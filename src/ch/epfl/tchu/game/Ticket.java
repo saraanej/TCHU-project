@@ -26,37 +26,13 @@ import ch.epfl.tchu.Preconditions;
  */
 public final class Ticket implements Comparable<Ticket> {
 
-    /**
-     * Private static method to compute the textual representation of a Ticket made up of the list of trips given.
-     *
-     * @param trips (List<Trip>) all the Trips that the Ticket covers
-     * @return (String) the textual representation of the Ticket
-     */
-    private static String computeText(List<Trip> trips) {
-        String text;
-        if (trips.size() == 1)
-            text = String.format("%s - %s (%s)",
-                    trips.get(0).from().name(),
-                    trips.get(0).to().name(),
-                    trips.get(0).points());
-        else {
-            TreeSet<String> countries = new TreeSet<>();
-            for (Trip t : trips) {
-                countries.add(String.format("%s (%s)",
-                        t.to().name(),
-                        t.points()));
-            }
-            String arrivals = String.join(", ", countries);
-            text = String.format("%s - {%s}",
-                    trips.get(0).from().name(),
-                    arrivals);
-        }
-        return text;
-    }
+
 
 
     private final List<Trip> trips;
     private final String text;
+
+
 
     /**
      * Public constructor of a Ticket made up of the list of trips given.
@@ -72,7 +48,7 @@ public final class Ticket implements Comparable<Ticket> {
         for (Trip t : trips) {
             Preconditions.checkArgument(t.from().name().equals(from.name()));
         }
-        this.trips = trips;
+        this.trips = List.copyOf(trips);
         this.text = computeText(this.trips);
     }
 
@@ -87,7 +63,6 @@ public final class Ticket implements Comparable<Ticket> {
         this(List.of(new Trip(from, to, points)));
     }
 
-
     /**
      *
      *
@@ -97,12 +72,12 @@ public final class Ticket implements Comparable<Ticket> {
      */
     public int points(StationConnectivity connectivity) {
         int maxPoints;
-        List<Integer> Points = new ArrayList<>();
+        List<Integer> points = new ArrayList<>();
         for (Trip t : trips) {
             int pts = t.points(connectivity);
-            Points.add(pts);
+            points.add(pts);
         }
-        maxPoints = Collections.max(Points);
+        maxPoints = Collections.max(points);
         return maxPoints;
     }
 
@@ -142,4 +117,32 @@ public final class Ticket implements Comparable<Ticket> {
         return text;
     }
 
+
+    /**
+     * Private static method to compute the textual representation of a Ticket made up of the list of trips given.
+     *
+     * @param trips (List<Trip>) all the Trips that the Ticket covers
+     * @return (String) the textual representation of the Ticket
+     */
+    private static String computeText(List<Trip> trips) {
+        String text;
+        if (trips.size() == 1)
+            text = String.format("%s - %s (%s)",
+                    trips.get(0).from().name(),
+                    trips.get(0).to().name(),
+                    trips.get(0).points());
+        else {
+            TreeSet<String> countries = new TreeSet<>();
+            for (Trip t : trips) {
+                countries.add(String.format("%s (%s)",
+                        t.to().name(),
+                        t.points()));
+            }
+            String arrivals = String.join(", ", countries);
+            text = String.format("%s - {%s}",
+                    trips.get(0).from().name(),
+                    arrivals);
+        }
+        return text;
+    }
 }

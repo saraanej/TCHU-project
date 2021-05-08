@@ -36,6 +36,8 @@ final class DecksViewCreator {
     static final int HEIGHT_CARD = 70;
 
 
+    private DecksViewCreator(){}
+
     /**
      * Method creates the view of the player's hand by graphically creating all its components.
      * @param observableGameState (ObservableGameState) : The observable state of the game.

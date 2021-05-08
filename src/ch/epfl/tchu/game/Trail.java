@@ -15,6 +15,13 @@ import java.util.List;
 
 public final class Trail {
 
+    private static Trail longestTrail = new Trail(null, null, List.of());
+
+    private final int length;
+    private final Station station1;
+    private final Station station2;
+    private final List<Route> routes;
+
     /**
      * Computes and returns the longest path in the network made up of the given routes.
      * If there are multiple paths of maximum length, the one returned is not specified.
@@ -25,23 +32,27 @@ public final class Trail {
      * @return (Trail) the longest path in the given list of routes (the empty Trail if routes is empty).
      */
     public static Trail longest(List<Route> routes) {
-        Trail longestTrail = new Trail(null, null, List.of());
         if (routes == (null) || routes.isEmpty())
             return longestTrail;
+
         List<Trail> trails = new ArrayList<>();
         for (Route r : routes) {
             trails.add(new Trail(r.station1(), r.station2(), List.of(r)));
             trails.add(new Trail(r.station2(), r.station1(), List.of(r)));
         }
+
         while (!trails.isEmpty()) {
+
             List<Trail> cs = new ArrayList<>();
             for (Trail t : trails) {
                 List<Route> road = new ArrayList<>(routes);
                 road.removeAll(t.routes);
+
                 for (Route r : road) {
                     if ((r.station1().equals(t.station2)) || (r.station2().equals(t.station2))) {
                         List<Route> newRoad = new ArrayList<>(t.routes);
                         newRoad.add(r);
+
                         Trail newTrail = new Trail(t.station1, r.stationOpposite(t.station2), newRoad);
                         cs.add(newTrail);
                     }
@@ -53,12 +64,6 @@ public final class Trail {
         }
         return longestTrail;
     }
-
-
-    private final int length;
-    private final Station station1;
-    private final Station station2;
-    private final List<Route> routes;
 
 
     /**

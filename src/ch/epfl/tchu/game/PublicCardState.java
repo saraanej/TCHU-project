@@ -44,7 +44,7 @@ public class PublicCardState {
 	 * @return (boolean) true if the deck is empty. false if not.
 	 */
 	public boolean isDeckEmpty() {
-		return deckSize == 0 ? true : false;
+		return deckSize == 0;
 	}
 
 	/**
@@ -82,6 +82,6 @@ public class PublicCardState {
 	             if slot is less than 0 or bigger or equal than 5.
 	 */
 	public Card faceUpCard(int slot) {
-		return faceUpCards().get(Objects.checkIndex(slot,5));
+		return faceUpCards().get(Objects.checkIndex(slot,Constants.FACE_UP_CARDS_COUNT));
 	}
 }

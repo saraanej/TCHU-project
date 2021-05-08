@@ -37,8 +37,7 @@ public class PublicPlayerState {
     public PublicPlayerState(int ticketCount, int cardCount, List<Route> routes) {
         Preconditions.checkArgument(ticketCount >= 0);
         Preconditions.checkArgument(cardCount >= 0);
-        if(routes == null) this.routes = null;
-           else this.routes = List.copyOf(routes);
+        this.routes = List.copyOf(routes);
         this.ticketCount = ticketCount;
         this.cardCount = cardCount;
         this.carCount = computeCarCount();

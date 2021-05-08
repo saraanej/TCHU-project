@@ -118,6 +118,7 @@ public final class CardState extends PublicCardState {
 		SortedBag.Builder<Card> newDiscard = new SortedBag.Builder<>();
 		newDiscard.add(discard);
 		newDiscard.add(additionalDiscards);
+
 		return new CardState(this.faceUpCards(), this.deck, newDiscard.build());
 	}
 
