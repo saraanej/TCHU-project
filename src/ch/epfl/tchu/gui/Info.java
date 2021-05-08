@@ -132,7 +132,7 @@ public final class Info {
 		return String.format(StringsFr.CLAIMED_ROUTE,
 				playerName,
 				routeName(route),
-				elementCardList(cards));
+				textCardList(cards));
 	}
 
 	/**
@@ -145,7 +145,7 @@ public final class Info {
 		return String.format(StringsFr.ATTEMPTS_TUNNEL_CLAIM,
 				playerName,
 				routeName(route),
-				elementCardList(initialCards));
+				textCardList(initialCards));
 	}
 
 	/**
@@ -155,7 +155,7 @@ public final class Info {
 	 *                  and that they involve an additional cost of the given number of cards.
 	 */
 	public String drewAdditionalCards(SortedBag<Card> drawnCards, int additionalCost) {
-		String cost = String.format(StringsFr.ADDITIONAL_CARDS_ARE, elementCardList(drawnCards));
+		String cost = String.format(StringsFr.ADDITIONAL_CARDS_ARE, textCardList(drawnCards));
 
 		if(additionalCost == 0) {
 			cost += StringsFr.NO_ADDITIONAL_COST;
@@ -244,7 +244,7 @@ public final class Info {
 	 * @return (String) The message containing all the specifics of the cards
 	 *                  contained in the given list.
 	 */
-	private static String elementCardList(SortedBag<Card> cards) {
+	public static String textCardList(SortedBag<Card> cards) {
 		List<String> elements = new ArrayList<>();
 		List<String> subElements = new ArrayList<>();
 		String joinedElements;
@@ -253,8 +253,7 @@ public final class Info {
 		for (Card card: cards.toSet()) {
 			int n = cards.countOf(card);
 			subElements.add(String.format("%s %s",
-					n,
-					cardName(card, n)));
+					n, cardName(card, n)));
 		}
 		if(subElements.size() == 1){
 			return subElements.get(0);

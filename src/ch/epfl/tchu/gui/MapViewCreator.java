@@ -63,17 +63,18 @@ final class MapViewCreator {
                 observable.routeOwner(r).addListener((o,oV,nV) -> {
                     if( nV != null) groupRoute.getStyleClass().add(nV.name());
                 });
-                groupRoute.disableProperty().bind(
-                        routeHandler.isNull().or(observable.canClaimRoute(r).not()));
-
-                groupRoute.setOnMouseClicked(e -> {
-                    List<SortedBag<Card>> possibleClaimCards = observable.possibleClaimCards(r);
-                    if(possibleClaimCards.size() == 1)
-                        routeHandler.get().onClaimRoute(r,possibleClaimCards.get(0));
-                    else cardChooser.chooseCards(possibleClaimCards,
-                            chosenCards -> routeHandler.get().onClaimRoute(r, chosenCards));
-                });
             }
+
+            groupRoute.disableProperty().bind(
+                    routeHandler.isNull().or(observable.canClaimRoute(r).not()));
+
+            groupRoute.setOnMouseClicked(e -> {
+                List<SortedBag<Card>> possibleClaimCards = observable.possibleClaimCards(r);
+                if(possibleClaimCards.size() == 1)
+                    routeHandler.get().onClaimRoute(r,possibleClaimCards.get(0));
+                else cardChooser.chooseCards(possibleClaimCards,
+                        chosenCards -> routeHandler.get().onClaimRoute(r, chosenCards));
+            });
             //ajoute le groupe route a la mapPane
             mapPane.getChildren().add(groupRoute);
         }

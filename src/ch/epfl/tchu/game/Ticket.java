@@ -71,13 +71,11 @@ public final class Ticket implements Comparable<Ticket> {
      *                -1 * minimal points possible if none of the Stations are connected
      */
     public int points(StationConnectivity connectivity) {
-        int maxPoints;
-        List<Integer> points = new ArrayList<>();
+        int maxPoints = trips.get(0).points(connectivity);
         for (Trip t : trips) {
-            int pts = t.points(connectivity);
-            points.add(pts);
+            int tempPoints = t.points(connectivity) ;
+            if (tempPoints > maxPoints) maxPoints = tempPoints;
         }
-        maxPoints = Collections.max(points);
         return maxPoints;
     }
 

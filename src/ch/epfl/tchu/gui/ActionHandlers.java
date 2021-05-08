@@ -5,6 +5,9 @@ import ch.epfl.tchu.game.Card;
 import ch.epfl.tchu.game.Route;
 import ch.epfl.tchu.game.Ticket;
 
+import java.awt.event.ActionEvent;
+import java.beans.EventHandler;
+
 
 //TODO est ce que elle extends eVENT HANDLER?
 public interface ActionHandlers {
