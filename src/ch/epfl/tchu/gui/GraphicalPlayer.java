@@ -190,6 +190,7 @@ public class GraphicalPlayer {
         dialogStage.show();
     }
 
+    //todo ask if leave this as it is or create in respective methods
     private <E> ListView<E> createList (Collection<E> options){
         ListView<E> list = new ListView<E>(FXCollections.observableArrayList(options));
         return list;

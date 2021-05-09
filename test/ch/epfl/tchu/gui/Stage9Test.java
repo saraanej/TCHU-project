@@ -65,7 +65,7 @@ public final class Stage9Test extends Application {
         Map<PlayerId, PublicPlayerState> pubPlayerStates =
                 Map.of(PLAYER_1, p1State, PLAYER_2, p2State);
         PublicCardState cardState =
-                new PublicCardState(Card.ALL.subList(0, 5), 110 - 2 * 4 - 5, 0);
+                new PublicCardState(SortedBag.of(Card.ALL.subList(0, 4)).union(SortedBag.of(Card.LOCOMOTIVE)).toList(), 110 - 2 * 4 - 5, 0);
         PublicGameState publicGameState =
                 new PublicGameState(36, cardState, PLAYER_1, pubPlayerStates, null);
         gameState.setState(publicGameState, p1State);

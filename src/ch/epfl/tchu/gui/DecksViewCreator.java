@@ -93,7 +93,7 @@ final class DecksViewCreator {
 
         Button ticketsDeck = new Button("Billets");
         ticketsDeck.disableProperty().bind(ticketsHandler.isNull());
-        ticketsDeck.getStyleClass().addAll("gauged");
+        ticketsDeck.getStyleClass().add("gauged");
         buttonGauge(ticketsDeck, observableGameState.getLeftTickets());
         ticketsDeck.setOnMouseClicked(e -> ticketsHandler.get().onDrawTickets());
 
@@ -101,14 +101,17 @@ final class DecksViewCreator {
         cardsDeck.disableProperty().bind(cardsHandler.isNull());
         cardsDeck.getStyleClass().add("gauged");
         buttonGauge(cardsDeck, observableGameState.getLeftCards());
-        cardsDeck.setOnMouseClicked(e -> cardsHandler.get().onDrawCard(-1));
+        cardsDeck.setOnMouseClicked(e -> cardsHandler.get().onDrawCard(Constants.DECK_SLOT));
 
         deckView.getChildren().add(ticketsDeck);
 
         for(Integer i : Constants.FACE_UP_CARD_SLOTS){
             StackPane stackPane = new StackPane();
-            observableGameState.faceUpCard(i).addListener((o,oV, nV) -> {
-                if(nV != null) stackPane.getStyleClass().addAll(nV.name(),"card");});
+            observableGameState.faceUpCard(i).addListener((o,oV,nV) -> {
+                if(nV != null) //todo utiliser .set ou .add
+                    stackPane.getStyleClass()
+                            .addAll(nV == Card.LOCOMOTIVE ? "NEUTRAL" : nV.name(),"card");
+            });
             createRectangles(stackPane);
             stackPane.setOnMouseClicked(e -> cardsHandler.get().onDrawCard(i));
             deckView.getChildren().add(stackPane);
@@ -130,7 +133,7 @@ final class DecksViewCreator {
         Rectangle background = new Rectangle(WIDTH_BUTTON,HEIGHT_BUTTON);
         background.getStyleClass().add("background");
         Rectangle foreground = new Rectangle(WIDTH_BUTTON,HEIGHT_BUTTON);
-        foreground.widthProperty().bind(percentage.multiply(WIDTH_BUTTON).divide(100));
+        foreground.widthProperty().bind(percentage.multiply(WIDTH_BUTTON).divide(100)); //TODO : 100 IN CONSTANT
         foreground.getStyleClass().add("foreground");
 
         group.getChildren().addAll(background,foreground);
