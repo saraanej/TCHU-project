@@ -177,7 +177,7 @@ public class GraphicalPlayer {
         //TODO: WHY DOESNT IT WORK! THE BINDING
         Button chooseButton = new Button(StringsFr.CHOOSE);
         IntegerBinding selected = Bindings.size(listView.getSelectionModel().getSelectedItems());
-        chooseButton.disableProperty().bind(Bindings.lessThan(minItems,selected));
+        chooseButton.disableProperty().bind(Bindings.lessThan(minItems,Bindings.size(listView.getSelectionModel().getSelectedItems())));
              //   (Bindings.size(listView.getSelectionModel().getSelectedItems()).get() < minItems));
         chooseButton.setOnAction(handler);
 
