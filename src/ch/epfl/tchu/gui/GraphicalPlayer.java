@@ -3,8 +3,7 @@ package ch.epfl.tchu.gui;
 import ch.epfl.tchu.SortedBag;
 import ch.epfl.tchu.game.*;
 import javafx.beans.binding.IntegerBinding;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -84,7 +83,7 @@ public class GraphicalPlayer {
         gameState.setState(gS,pS);
     }
 
-    public void receiveInfo(String message){//todo really don t see how for now check after
+    public void receiveInfo(String message){//todo really don t see how for now check after/ how keep only 5 msgs
         assert isFxApplicationThread();
         infosList.add(new Text(message));
     }
@@ -97,12 +96,14 @@ public class GraphicalPlayer {
             routeHandler.onClaimRoute(r,c);
             drawCard.set(null);
             drawTickets.set(null);
+            claimRoute.set(null); //maybe to change
         });
         if (gameState.canDrawTickets()) {
             drawTickets.set(() -> {
                 ticketHandler.onDrawTickets();
                 drawCard.set(null);
                 claimRoute.set(null);
+                drawTickets.set(null);
             });
         }
         if (gameState.canDrawCards()) {
@@ -110,6 +111,7 @@ public class GraphicalPlayer {
                 cardHandler.onDrawCard(i);
                 drawTickets.set(null);
                 claimRoute.set(null);
+                drawCard.set(null);
             });
         }
     }
@@ -121,6 +123,7 @@ public class GraphicalPlayer {
             cardHandler.onDrawCard(i);
             drawTickets.set(null);
             claimRoute.set(null);
+            drawCard.set(null);
         });
     }
 
@@ -133,9 +136,9 @@ public class GraphicalPlayer {
         final int MIN_TICKET_CHOICE = listView.getItems().size() - 2;
 
         createDialogStage(MIN_TICKET_CHOICE,StringsFr.TICKETS_CHOICE,
-                String.format(StringsFr.CHOOSE_TICKETS, MIN_TICKET_CHOICE, options.size()), listView, e -> {
-            dialogStage.hide();
-            chooseTickets.onChooseTickets(SortedBag.of(listView.getSelectionModel().getSelectedItems()));
+                String.format(StringsFr.CHOOSE_TICKETS, MIN_TICKET_CHOICE, StringsFr.plural(options.size())),
+                listView, e -> { dialogStage.hide();
+                chooseTickets.onChooseTickets(SortedBag.of(listView.getSelectionModel().getSelectedItems()));
         });
     }
 
@@ -171,9 +174,11 @@ public class GraphicalPlayer {
         Text textIntro = new Text(intro);
         TextFlow textFlow = new TextFlow(textIntro);
 
+        //TODO: WHY DOESNT IT WORK! THE BINDING
         Button chooseButton = new Button(StringsFr.CHOOSE);
         IntegerBinding selected = Bindings.size(listView.getSelectionModel().getSelectedItems());
-        chooseButton.disableProperty().bind(new SimpleObjectProperty<>(selected.get() < minItems));
+        chooseButton.disableProperty().bind(Bindings.lessThan(minItems,selected));
+             //   (Bindings.size(listView.getSelectionModel().getSelectedItems()).get() < minItems));
         chooseButton.setOnAction(handler);
 
         VBox vBox = new VBox(textFlow, listView, chooseButton);
@@ -185,7 +190,11 @@ public class GraphicalPlayer {
         dialogStage.initOwner(primaryStage);
         dialogStage.initModality(Modality.WINDOW_MODAL);
         dialogStage.setTitle(title);
-        dialogStage.setOnCloseRequest(e -> e.consume());
+        dialogStage.setOnCloseRequest(e ->{
+            e.consume();
+            System.out.println(Bindings.lessThan(minItems,selected)); //TODO DELETE THOSe
+            System.out.println(chooseButton.disableProperty());
+        });
         dialogStage.setScene(scene);
         dialogStage.show();
     }

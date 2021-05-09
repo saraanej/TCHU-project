@@ -10,20 +10,53 @@ import java.util.Map;
 import static ch.epfl.tchu.game.PlayerId.PLAYER_1;
 import static ch.epfl.tchu.game.PlayerId.PLAYER_2;
 
+
+import ch.epfl.tchu.SortedBag;
+import ch.epfl.tchu.game.Card;
+import ch.epfl.tchu.game.ChMap;
+import ch.epfl.tchu.game.PlayerId;
+import ch.epfl.tchu.game.PlayerState;
+import ch.epfl.tchu.game.PublicCardState;
+import ch.epfl.tchu.game.PublicGameState;
+import ch.epfl.tchu.game.PublicPlayerState;
+import ch.epfl.tchu.game.Ticket;
+import ch.epfl.tchu.gui.ActionHandlers.ChooseTicketsHandler;
+import ch.epfl.tchu.gui.ActionHandlers.ClaimRouteHandler;
+import ch.epfl.tchu.gui.ActionHandlers.DrawCardHandler;
+import ch.epfl.tchu.gui.ActionHandlers.DrawTicketsHandler;
+import javafx.application.Application;
+import javafx.stage.Stage;
+import ch.epfl.tchu.SortedBag;
+import ch.epfl.tchu.game.Card;
+import ch.epfl.tchu.game.ChMap;
+import ch.epfl.tchu.game.PlayerId;
+import ch.epfl.tchu.game.PlayerState;
+import ch.epfl.tchu.game.PublicCardState;
+import ch.epfl.tchu.game.PublicGameState;
+import ch.epfl.tchu.game.PublicPlayerState;
+import ch.epfl.tchu.game.Ticket;
+import ch.epfl.tchu.gui.ActionHandlers.ChooseTicketsHandler;
+import ch.epfl.tchu.gui.ActionHandlers.ClaimRouteHandler;
+import ch.epfl.tchu.gui.ActionHandlers.DrawCardHandler;
+import ch.epfl.tchu.gui.ActionHandlers.DrawTicketsHandler;
+import javafx.application.Application;
+import javafx.stage.Stage;
+
 public class Stage10Test extends Application {
+
+    private PlayerState p1State;
 
     public static void main(String[] args) {
         launch(args);
     }
 
     private void setState(GraphicalPlayer player) {
-        PlayerState p1State =
-                new PlayerState(SortedBag.of(ChMap.tickets().subList(0, 7)),
-                        SortedBag.of(3, Card.RED, 1, Card.WHITE),
+        // … construit exactement les mêmes états que la méthode setState
+        // du test de l'étape 9
+        p1State =
+                new PlayerState(SortedBag.of(ChMap.tickets().subList(0, 3)),
+                        SortedBag.of(3, Card.WHITE, 3, Card.RED),
                         ChMap.routes().subList(0, 3));
-//        System.out.println(SortedBag.of(4, Card.RED,3,Card.BLUE));
-//        System.out.println(SortedBag.of(2, Card.RED, 3, Card.RED));
-        //TODO : Demander aux assistants prq SortedBag.of(2, red, 2, red) != SortedBag.of(4,Red)
 
         PublicPlayerState p2State =
                 new PublicPlayerState(0, 0, ChMap.routes().subList(3, 6));
@@ -31,7 +64,7 @@ public class Stage10Test extends Application {
         Map<PlayerId, PublicPlayerState> pubPlayerStates =
                 Map.of(PLAYER_1, p1State, PLAYER_2, p2State);
         PublicCardState cardState =
-                new PublicCardState(SortedBag.of(Card.ALL.subList(0, 4)).union(SortedBag.of(Card.LOCOMOTIVE)).toList(), 110 - 2 * 4 - 5, 0);
+                new PublicCardState(Card.ALL.subList(0, 5), 110 - 2 * 4 - 5, 0);
         PublicGameState publicGameState =
                 new PublicGameState(36, cardState, PLAYER_1, pubPlayerStates, null);
         player.setState(publicGameState, p1State);
@@ -43,20 +76,36 @@ public class Stage10Test extends Application {
                 Map.of(PLAYER_1, "Ada", PLAYER_2, "Charles");
         GraphicalPlayer p = new GraphicalPlayer(PLAYER_1, playerNames);
         setState(p);
+        SortedBag.Builder<Ticket> builder = new SortedBag.Builder<>();
+        builder.add(ChMap.tickets().get(0)).add(ChMap.tickets().get(1)).add(ChMap.tickets().get(2)).add(ChMap.tickets().get(3)).add(ChMap.tickets().get(4));
 
-        ActionHandlers.DrawTicketsHandler drawTicketsH =
-                () -> p.receiveInfo("Je tire des billets !");
-        ActionHandlers.DrawCardHandler drawCardH =
+//        SortedBag.Builder<Card> claimCards =  new SortedBag.Builder<>();
+//        claimCards.add(new )
+
+        ChooseTicketsHandler chooseTicketsH = (e) -> {
+            System.out.println("J'ai pris des billets");
+        };
+
+        ActionHandlers.ChooseCardsHandler chooseCardsH = o -> {
+            System.out.println("J'ai choisi des cartes");
+        };
+
+        DrawTicketsHandler drawTicketsH =
+                () -> {
+                    p.receiveInfo("Je tire des billets !");
+                    p.chooseTickets(builder.build(), chooseTicketsH);
+                };
+        DrawCardHandler drawCardH =
                 s -> p.receiveInfo(String.format("Je tire une carte de %s !", s));
-        ActionHandlers.ClaimRouteHandler claimRouteH =
+        ClaimRouteHandler claimRouteH =
                 (r, cs) -> {
                     String rn = r.station1() + " - " + r.station2();
                     p.receiveInfo(String.format("Je m'empare de %s avec %s", rn, cs));
+                    p.chooseClaimCards(p1State.possibleClaimCards(r),chooseCardsH);
                 };
 
         p.startTurn(drawTicketsH, drawCardH, claimRouteH);
     }
-
 
 }
 
