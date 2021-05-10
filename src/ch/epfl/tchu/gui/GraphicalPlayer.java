@@ -12,6 +12,7 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
+import javafx.scene.control.MultipleSelectionModel;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.cell.TextFieldListCell;
 import javafx.scene.layout.BorderPane;
@@ -83,8 +84,9 @@ public class GraphicalPlayer {
         gameState.setState(gS,pS);
     }
 
-    public void receiveInfo(String message){//todo really don t see how for now check after/ how keep only 5 msgs
+    public void receiveInfo(String message){
         assert isFxApplicationThread();
+        if (infosList.size() == 5) infosList.remove(0);
         infosList.add(new Text(message));
     }
 
@@ -129,7 +131,7 @@ public class GraphicalPlayer {
 
     public void chooseTickets(SortedBag<Ticket> options, ActionHandlers.ChooseTicketsHandler chooseTickets){
         assert isFxApplicationThread();
-        ListView<Ticket> listView = createList(options.toList());
+        ListView<Ticket> listView = new ListView<>(FXCollections.observableArrayList(options.toList()));
         listView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
         //todo : okay to name this constant here?
@@ -142,10 +144,10 @@ public class GraphicalPlayer {
         });
     }
 
-    public void chooseClaimCards(List<SortedBag<Card>> possibleClaimCard,
+    public void chooseClaimCards(List<SortedBag<Card>> possibleClaimCards,
                                  ActionHandlers.ChooseCardsHandler cardsHandler){
         assert isFxApplicationThread();
-        ListView<SortedBag<Card>> listView = createList(possibleClaimCard);
+        ListView<SortedBag<Card>> listView = new ListView<>(FXCollections.observableArrayList(possibleClaimCards));;
         listView.setCellFactory(v ->
                 new TextFieldListCell<>(new CardBagStringConverter()));
 
@@ -158,7 +160,7 @@ public class GraphicalPlayer {
     public void chooseAdditionalCards(List<SortedBag<Card>> possibleAdditional,
                                       ActionHandlers.ChooseCardsHandler cardsHandler){
         assert isFxApplicationThread();
-        ListView<SortedBag<Card>> listView = createList(possibleAdditional);
+        ListView<SortedBag<Card>> listView = new ListView<>(FXCollections.observableArrayList(possibleAdditional));;
         listView.setCellFactory(v ->
                 new TextFieldListCell<>(new CardBagStringConverter()));
 
@@ -174,12 +176,16 @@ public class GraphicalPlayer {
         Text textIntro = new Text(intro);
         TextFlow textFlow = new TextFlow(textIntro);
 
-        //TODO: WHY DOESNT IT WORK! THE BINDING
+        //TODO: THE BINDING is INVALID
         Button chooseButton = new Button(StringsFr.CHOOSE);
-        IntegerBinding selected = Bindings.size(listView.getSelectionModel().getSelectedItems());
-        chooseButton.disableProperty().bind(Bindings.lessThan(minItems,Bindings.size(listView.getSelectionModel().getSelectedItems())));
+
+        var selection = listView.getSelectionModel();
+        IntegerBinding selected = Bindings.size(selection.getSelectedItems());
+
+        chooseButton.disableProperty().bind(Bindings.lessThan(minItems,Bindings.size(selection.getSelectedItems())));
              //   (Bindings.size(listView.getSelectionModel().getSelectedItems()).get() < minItems));
         chooseButton.setOnAction(handler);
+
 
         VBox vBox = new VBox(textFlow, listView, chooseButton);
 
@@ -199,15 +205,7 @@ public class GraphicalPlayer {
         dialogStage.show();
     }
 
-    //todo ask if leave this as it is or create in respective methods
-    private <E> ListView<E> createList (Collection<E> options){
-        ListView<E> list = new ListView<E>(FXCollections.observableArrayList(options));
-        return list;
-    }
-
-
     public static class CardBagStringConverter extends StringConverter<SortedBag<Card>> {
-        //TODO Ask if it better to use this method or make the one in Info public (complicated and general)
         @Override
         public String toString(SortedBag<Card> object) {
             return Info.textCardList(object);

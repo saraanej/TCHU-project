@@ -68,15 +68,7 @@ public final class Route {
 	 * @return (int) The points of construction earned by the player when he/she gets the route.
 	 */
 	public int claimPoints() {
-		switch(length) {
-			case(1): return Constants.ROUTE_CLAIM_POINTS.get(1);
-			case(2): return Constants.ROUTE_CLAIM_POINTS.get(2);
-			case(3): return Constants.ROUTE_CLAIM_POINTS.get(3);
-			case(4): return Constants.ROUTE_CLAIM_POINTS.get(4);
-			case(5): return Constants.ROUTE_CLAIM_POINTS.get(5);
-			case(6): return Constants.ROUTE_CLAIM_POINTS.get(6);
-			default: return Constants.ROUTE_CLAIM_POINTS.get(0);
-		}
+		return Constants.ROUTE_CLAIM_POINTS.get(length);
 	}
 
 	/**
