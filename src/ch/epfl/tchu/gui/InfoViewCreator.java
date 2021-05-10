@@ -25,7 +25,7 @@ final class InfoViewCreator {
     public static Node createInfoView(PlayerId id, Map<PlayerId,String> playerNames, ObservableGameState gameState,
                                       ObservableList<Text> infos){
 
-       List<PlayerId> players = List.of(id, PlayerId.ALL.remove(id.ordinal()));
+       List<PlayerId> players = List.of(id, id.next());
        int lastSep = id.ordinal() == PlayerId.COUNT - 1 ? 2 : 1;
 
        VBox infoView = new VBox();

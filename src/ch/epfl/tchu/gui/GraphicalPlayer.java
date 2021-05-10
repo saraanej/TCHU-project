@@ -182,7 +182,7 @@ public class GraphicalPlayer {
         var selection = listView.getSelectionModel();
         IntegerBinding selected = Bindings.size(selection.getSelectedItems());
 
-        chooseButton.disableProperty().bind(Bindings.lessThan(minItems,Bindings.size(selection.getSelectedItems())));
+        chooseButton.disableProperty().bind(Bindings.lessThan(Bindings.size(selection.getSelectedItems()),minItems));
              //   (Bindings.size(listView.getSelectionModel().getSelectedItems()).get() < minItems));
         chooseButton.setOnAction(handler);
 
