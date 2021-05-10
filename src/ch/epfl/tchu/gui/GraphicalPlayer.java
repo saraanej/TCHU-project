@@ -12,7 +12,6 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
-import javafx.scene.control.MultipleSelectionModel;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.cell.TextFieldListCell;
 import javafx.scene.layout.BorderPane;
@@ -26,7 +25,6 @@ import javafx.util.StringConverter;
 
 import javafx.beans.binding.Bindings;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -45,7 +43,7 @@ public class GraphicalPlayer {
     private final PlayerId id;
     private final Map<PlayerId,String> playerNames;
     private final ObservableGameState gameState;
-    private final ObservableList<Text> infosList;
+    private final ObservableList<Text> infoList;
 
     private final ObjectProperty <ActionHandlers.DrawTicketsHandler> drawTickets;
     private final ObjectProperty<ActionHandlers.DrawCardHandler> drawCard;
@@ -57,7 +55,7 @@ public class GraphicalPlayer {
         drawTickets = new SimpleObjectProperty<>(null);
         drawCard = new SimpleObjectProperty<>(null);
         claimRoute = new SimpleObjectProperty<>(null);
-        infosList = FXCollections.observableArrayList();
+        infoList = FXCollections.observableArrayList();
         this.id = id;
         this.playerNames = Map.copyOf(playerNames);
 
@@ -68,7 +66,7 @@ public class GraphicalPlayer {
         Node handView = DecksViewCreator
                 .createHandView(gameState);
         Node infoView = InfoViewCreator
-                .createInfoView(id,playerNames,gameState,infosList);
+                .createInfoView(id,playerNames,gameState, infoList);
 
         BorderPane mainPane =
                 new BorderPane(mapView, null, cardsView, handView, infoView);
@@ -86,11 +84,10 @@ public class GraphicalPlayer {
 
     public void receiveInfo(String message){
         assert isFxApplicationThread();
-        if (infosList.size() == 5) infosList.remove(0);
-        infosList.add(new Text(message));
+        if (infoList.size() == 5) infoList.remove(0);
+        infoList.add(new Text(message));
     }
 
-    //permet au joueur d'effectuer une des 3 actions
     public void startTurn(ActionHandlers.DrawTicketsHandler ticketHandler, ActionHandlers.DrawCardHandler cardHandler,
                           ActionHandlers.ClaimRouteHandler routeHandler) {
         assert isFxApplicationThread();
@@ -118,7 +115,6 @@ public class GraphicalPlayer {
         }
     }
 
-    // methode a appeler apres le premier tirage de carte
     public void drawCard(ActionHandlers.DrawCardHandler cardHandler){
         assert isFxApplicationThread();
         drawCard.set(i -> {
@@ -134,11 +130,10 @@ public class GraphicalPlayer {
         ListView<Ticket> listView = new ListView<>(FXCollections.observableArrayList(options.toList()));
         listView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
-        //todo : okay to name this constant here?
-        final int MIN_TICKET_CHOICE = listView.getItems().size() - 2;
+        final int MIN_TICKET_CHOICE = options.size() - 2;
 
         createDialogStage(MIN_TICKET_CHOICE,StringsFr.TICKETS_CHOICE,
-                String.format(StringsFr.CHOOSE_TICKETS, MIN_TICKET_CHOICE, StringsFr.plural(options.size())),
+                String.format(StringsFr.CHOOSE_TICKETS, MIN_TICKET_CHOICE, StringsFr.plural(MIN_TICKET_CHOICE)),
                 listView, e -> { dialogStage.hide();
                 chooseTickets.onChooseTickets(SortedBag.of(listView.getSelectionModel().getSelectedItems()));
         });
@@ -171,24 +166,17 @@ public class GraphicalPlayer {
     }
 
 
-    //todo ask if better to create button locally in methods or leave evrything like this
     private <E> void  createDialogStage(int minItems, String title, String intro, ListView<E> listView, EventHandler<ActionEvent> handler){
         Text textIntro = new Text(intro);
         TextFlow textFlow = new TextFlow(textIntro);
 
-        //TODO: THE BINDING is INVALID
         Button chooseButton = new Button(StringsFr.CHOOSE);
 
-        var selection = listView.getSelectionModel();
-        IntegerBinding selected = Bindings.size(selection.getSelectedItems());
-
-        chooseButton.disableProperty().bind(Bindings.lessThan(Bindings.size(selection.getSelectedItems()),minItems));
-             //   (Bindings.size(listView.getSelectionModel().getSelectedItems()).get() < minItems));
+        IntegerBinding selected = Bindings.size(listView.getSelectionModel().getSelectedItems());
+        chooseButton.disableProperty().bind(Bindings.lessThan(selected,minItems));
         chooseButton.setOnAction(handler);
 
-
         VBox vBox = new VBox(textFlow, listView, chooseButton);
-
         Scene scene = new Scene(vBox);
         scene.getStylesheets().add("chooser.css");
 
@@ -196,11 +184,7 @@ public class GraphicalPlayer {
         dialogStage.initOwner(primaryStage);
         dialogStage.initModality(Modality.WINDOW_MODAL);
         dialogStage.setTitle(title);
-        dialogStage.setOnCloseRequest(e ->{
-            e.consume();
-            System.out.println(Bindings.lessThan(minItems,selected)); //TODO DELETE THOSe
-            System.out.println(chooseButton.disableProperty());
-        });
+        dialogStage.setOnCloseRequest(e -> e.consume());
         dialogStage.setScene(scene);
         dialogStage.show();
     }
