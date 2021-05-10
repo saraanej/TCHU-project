@@ -27,25 +27,19 @@ public final class StationPartition implements StationConnectivity {
     }
 
 
-    /**
-     * Verifies if the two given stations are connected.
-     *
-     * @param s1 (Station) : The first given station.
-     * @param s2 (Station) : The second given station.
-     * @return true if the two stations are connected. false if not.
-     */
     @Override
     public boolean connected(Station s1, Station s2) {
-        if (s1.id() >= links.length || s2.id() >= links.length) {
-            return s1.id() == s2.id(); // compare iDs
-        } else return links[s1.id()] == links[s2.id()]; // compare representatives
+        if (s1.id() >= links.length || s2.id() >= links.length)
+             return s1.id() == s2.id();
+        else
+             return links[s1.id()] == links[s2.id()];
     }
 
 
     /**
      * The station partition builder.
      */
-    public final static class Builder {
+    public static final class Builder {
 
         private int[] stations;
 

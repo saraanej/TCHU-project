@@ -69,13 +69,13 @@ public final class Route {
 	 */
 	public int claimPoints() {
 		switch(length) {
-			case(1): return 1;
-			case(2): return 2;
-			case(3): return 4;
-			case(4): return 7;
-			case(5): return 10;
-			case(6): return 15;
-			default: return 0;}
+			case(1): return 1 ; //Constants.ROUTE_CLAIM_POINTS.get(1);
+			case(2): return 2; //Constants.ROUTE_CLAIM_POINTS.get(2);
+			case(3): return 4; //Constants.ROUTE_CLAIM_POINTS.get(3);
+			case(4): return 7; //Constants.ROUTE_CLAIM_POINTS.get(4);
+			case(5): return 10; //Constants.ROUTE_CLAIM_POINTS.get(5);
+			case(6): return 15; //Constants.ROUTE_CLAIM_POINTS.get(6);
+			default: return 0;} //Constants.ROUTE_CLAIM_POINTS.get(0);
 	}
 
 	/**
@@ -87,7 +87,7 @@ public final class Route {
 	 */
 	public int additionalClaimCardsCount(SortedBag<Card> claimCards, SortedBag<Card> drawnCards) {
 		Preconditions.checkArgument(level.equals(Level.UNDERGROUND));
-		Preconditions.checkArgument(drawnCards.size() == 3);
+		Preconditions.checkArgument(drawnCards.size() == Constants.ADDITIONAL_TUNNEL_CARDS);
 
 		AtomicInteger additionalCards = new AtomicInteger(0);
 		drawnCards.forEach(drawnCard -> { if(claimCards.contains(drawnCard) || drawnCard == Card.LOCOMOTIVE) {
@@ -150,8 +150,7 @@ public final class Route {
 	 * @return (List<Station>) The list of the two stations of the route, in the same order as in the route's constructor.
 	 */
 	public List<Station> stations(){
-		List<Station> stations = List.of(station1, station2);
-		return stations;
+		return List.of(station1, station2);
 	}
 	
 	/**
@@ -160,26 +159,17 @@ public final class Route {
 	 */
 	public List<SortedBag<Card>> possibleClaimCards(){
 		List<SortedBag<Card>> possibleCards = new ArrayList<>();
-
-		if(level.equals(Level.OVERGROUND)) {
-			if(color == null) {
+		var maxLoco = level == Level.OVERGROUND ? 0 : length;
+		if(color == null) {
+			for(int i = 0; maxLoco == length ? i < maxLoco : i <= maxLoco ; ++i) {
 				for(Card c : Card.CARS)
-					possibleCards.add(SortedBag.of(length, c));
-			} else
-				possibleCards.add(SortedBag.of(length, Card.of(color)));
+					possibleCards.add(SortedBag.of(length - i, c, i , Card.LOCOMOTIVE));
+			}
+			if (maxLoco == length) possibleCards.add(SortedBag.of(length, Card.LOCOMOTIVE));
+		} else {
+			for(int i = 0; i <= maxLoco ; ++i)
+				possibleCards.add(SortedBag.of(length - i, Card.of(color), i, Card.LOCOMOTIVE));
 		}
-        else if(level.equals(Level.UNDERGROUND)) {
-			if(color == null) {
-				for(int i = 0; i < this.length ; ++i) {
-					for(Card c : Card.CARS)
-						possibleCards.add(SortedBag.of(length - i, c, i , Card.LOCOMOTIVE));
-				}
-				possibleCards.add(SortedBag.of(length, Card.LOCOMOTIVE));
-		    } else {
-		    	for(int i = 0; i <= this.length ; ++i)
-		    		possibleCards.add(SortedBag.of(length - i, Card.of(color), i, Card.LOCOMOTIVE));
-		    }
-        }
 		return possibleCards;
 	}
 }

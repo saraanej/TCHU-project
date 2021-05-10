@@ -91,13 +91,13 @@ final class DecksViewCreator {
         deckView.getStylesheets().addAll("decks.css","colors.css");
         deckView.setId("card-pane");
 
-        Button ticketsDeck = new Button("Billets");
+        Button ticketsDeck = new Button(StringsFr.TICKETS);
         ticketsDeck.disableProperty().bind(ticketsHandler.isNull());
         ticketsDeck.getStyleClass().add("gauged");
         buttonGauge(ticketsDeck, observableGameState.getLeftTickets());
         ticketsDeck.setOnMouseClicked(e -> ticketsHandler.get().onDrawTickets());
 
-        Button cardsDeck = new Button("Cartes");
+        Button cardsDeck = new Button(StringsFr.CARDS);
         cardsDeck.disableProperty().bind(cardsHandler.isNull());
         cardsDeck.getStyleClass().add("gauged");
         buttonGauge(cardsDeck, observableGameState.getLeftCards());

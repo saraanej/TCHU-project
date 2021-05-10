@@ -29,6 +29,7 @@ public enum PlayerId {
      * this method is applied.
      */
     public PlayerId next() {
-        return this.equals(PLAYER_1) ? PLAYER_2 : PLAYER_1;
+        int index = this.ordinal();
+        return index == COUNT - 1 ? ALL.get(0) : ALL.get(index + 1);
     }
 }

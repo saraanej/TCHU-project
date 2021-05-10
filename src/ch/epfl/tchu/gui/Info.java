@@ -53,8 +53,10 @@ public final class Info {
 				return StringsFr.WHITE_CARD + plural;
 			case YELLOW:
 				return StringsFr.YELLOW_CARD + plural;
-			default:
+			case LOCOMOTIVE:
 				return StringsFr.LOCOMOTIVE_CARD + plural;
+			default:
+				throw new Error();
 		}
 	}
 
@@ -66,7 +68,8 @@ public final class Info {
 	 */
 	public static String draw(List<String> playerNames, int points) {
 		return String.format(StringsFr.DRAW,
-				elementStringList(playerNames),
+				String.join("", playerNames.get(0),
+						StringsFr.AND_SEPARATOR, playerNames.get(1)),
 				points);
 	}
 
@@ -198,7 +201,10 @@ public final class Info {
 	public String getsLongestTrailBonus(Trail longestTrail) {
 		return String.format(StringsFr.GETS_BONUS,
 				playerName,
-				trailName(longestTrail));
+				String.join("" ,
+						longestTrail.station1().name(),
+						StringsFr.EN_DASH_SEPARATOR,
+						longestTrail.station2().name()));
 	}
 
 	/**
@@ -222,21 +228,10 @@ public final class Info {
 	 * @return (String) The message declaring the details of the route.
 	 */
 	private static String routeName(Route route) {
-		return String.format("%s%s%s" ,
-				route.station1(),
+		return String.join("" ,
+				route.station1().name(),
 				StringsFr.EN_DASH_SEPARATOR,
-				route.station2());
-	}
-
-	/**
-	 * @param trail (Trail) : The given trail.
-	 * @return (String) The message declaring the details of the trail.
-	 */
-	private static String trailName(Trail trail){
-		return String.format("%s%s%s" ,
-				trail.station1(),
-				StringsFr.EN_DASH_SEPARATOR,
-				trail.station2());
+				route.station2().name());
 	}
 
 	/**
@@ -262,19 +257,8 @@ public final class Info {
 				elements.add(subElements.get(j));
 			}
 			joinedElements = String.join(", ", elements);
-			elementCardList = String.format("%s%s%s", joinedElements, StringsFr.AND_SEPARATOR, subElements.get(subElements.size() - 1));
+			elementCardList = String.join("", joinedElements, StringsFr.AND_SEPARATOR, subElements.get(subElements.size() - 1));
 			return elementCardList;
 		}
 	}
-
-	/**
-	 * @param playerNames (List<String>) : The given list of the players' names.
-	 * @return (String) The message containing all the players' names
-	 *                  contained in the given list.
-	 */
-	private static String elementStringList(List<String> playerNames) {
-		return String.format("%s%s%s",
-				playerNames.get(0),
-				StringsFr.AND_SEPARATOR,
-				playerNames.get(1));
-	}}
+}
