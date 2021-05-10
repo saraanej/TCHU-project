@@ -69,13 +69,14 @@ public final class Route {
 	 */
 	public int claimPoints() {
 		switch(length) {
-			case(1): return 1 ; //Constants.ROUTE_CLAIM_POINTS.get(1);
-			case(2): return 2; //Constants.ROUTE_CLAIM_POINTS.get(2);
-			case(3): return 4; //Constants.ROUTE_CLAIM_POINTS.get(3);
-			case(4): return 7; //Constants.ROUTE_CLAIM_POINTS.get(4);
-			case(5): return 10; //Constants.ROUTE_CLAIM_POINTS.get(5);
-			case(6): return 15; //Constants.ROUTE_CLAIM_POINTS.get(6);
-			default: return 0;} //Constants.ROUTE_CLAIM_POINTS.get(0);
+			case(1): return Constants.ROUTE_CLAIM_POINTS.get(1);
+			case(2): return Constants.ROUTE_CLAIM_POINTS.get(2);
+			case(3): return Constants.ROUTE_CLAIM_POINTS.get(3);
+			case(4): return Constants.ROUTE_CLAIM_POINTS.get(4);
+			case(5): return Constants.ROUTE_CLAIM_POINTS.get(5);
+			case(6): return Constants.ROUTE_CLAIM_POINTS.get(6);
+			default: return Constants.ROUTE_CLAIM_POINTS.get(0);
+		}
 	}
 
 	/**
