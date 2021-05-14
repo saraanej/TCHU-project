@@ -7,6 +7,7 @@ import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -33,9 +34,7 @@ import static javafx.application.Platform.isFxApplicationThread;
 public class GraphicalPlayer {
 
     private static final int MIN_CARDS_CHOICE = 1;
-
-
-
+    private static final int INFO_MESSAGE_COUNT = 5;
 
     private final Stage primaryStage;
     private Stage dialogStage;
@@ -60,7 +59,7 @@ public class GraphicalPlayer {
         this.playerNames = Map.copyOf(playerNames);
 
         Node mapView = MapViewCreator
-                .createMapView(gameState, claimRoute, (cards,handler) -> chooseClaimCards(cards,handler));
+                .createMapView(gameState, claimRoute, this::chooseClaimCards);
         Node cardsView = DecksViewCreator
                 .createCardsView(gameState, drawTickets, drawCard);
         Node handView = DecksViewCreator
@@ -84,7 +83,7 @@ public class GraphicalPlayer {
 
     public void receiveInfo(String message){
         assert isFxApplicationThread();
-        if (infoList.size() == 5) infoList.remove(0);
+        if (infoList.size() == INFO_MESSAGE_COUNT) infoList.remove(0);
         infoList.add(new Text(message));
     }
 
@@ -97,22 +96,22 @@ public class GraphicalPlayer {
             drawTickets.set(null);
             claimRoute.set(null); //maybe to change
         });
-        if (gameState.canDrawTickets()) {
+
+        if (gameState.canDrawTickets())
             drawTickets.set(() -> {
                 ticketHandler.onDrawTickets();
                 drawCard.set(null);
                 claimRoute.set(null);
                 drawTickets.set(null);
             });
-        }
-        if (gameState.canDrawCards()) {
+
+        if (gameState.canDrawCards())
             drawCard.set(i -> {
                 cardHandler.onDrawCard(i);
                 drawTickets.set(null);
                 claimRoute.set(null);
                 drawCard.set(null);
             });
-        }
     }
 
     public void drawCard(ActionHandlers.DrawCardHandler cardHandler){
@@ -184,11 +183,12 @@ public class GraphicalPlayer {
         dialogStage.initOwner(primaryStage);
         dialogStage.initModality(Modality.WINDOW_MODAL);
         dialogStage.setTitle(title);
-        dialogStage.setOnCloseRequest(e -> e.consume());
+        dialogStage.setOnCloseRequest(Event::consume);
         dialogStage.setScene(scene);
         dialogStage.show();
     }
 
+    //textcardlist made public
     public static class CardBagStringConverter extends StringConverter<SortedBag<Card>> {
         @Override
         public String toString(SortedBag<Card> object) {
