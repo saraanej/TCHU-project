@@ -23,6 +23,7 @@ final class InfoViewCreator {
     public static Node createInfoView(PlayerId id, Map<PlayerId,String> playerNames, ObservableGameState gameState,
                                       ObservableList<Text> infos){
 
+       //Flexible for more than two players.
        List<PlayerId> players = new ArrayList<>();
        players.add(id);
        for(PlayerId player : PlayerId.ALL){
