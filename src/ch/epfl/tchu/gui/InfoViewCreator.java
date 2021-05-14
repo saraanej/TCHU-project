@@ -1,11 +1,8 @@
 package ch.epfl.tchu.gui;
 
-import ch.epfl.tchu.game.Player;
 import ch.epfl.tchu.game.PlayerId;
 import javafx.beans.binding.Bindings;
-import javafx.beans.binding.StringExpression;
 import javafx.collections.ObservableList;
-import javafx.geometry.Orientation;
 import javafx.scene.Node;
 import javafx.scene.control.Separator;
 import javafx.scene.layout.VBox;
@@ -13,6 +10,7 @@ import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -25,7 +23,11 @@ final class InfoViewCreator {
     public static Node createInfoView(PlayerId id, Map<PlayerId,String> playerNames, ObservableGameState gameState,
                                       ObservableList<Text> infos){
 
-       List<PlayerId> players = List.of(id, id.next());
+       List<PlayerId> players = new ArrayList<>();
+       players.add(id);
+       for(PlayerId player : PlayerId.ALL){
+           if(player != id) players.add(player);
+       }
        int lastSep = id.ordinal() == PlayerId.COUNT - 1 ? 2 : 1;
 
        VBox infoView = new VBox();
