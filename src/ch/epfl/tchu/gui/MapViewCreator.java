@@ -33,7 +33,7 @@ final class MapViewCreator {
             //cree le groupe de la route
             Group groupRoute = new Group();
             groupRoute.setId(r.id());
-            groupRoute.getStyleClass().addAll("route",r.level().name(),
+            groupRoute.getStyleClass().addAll("","route",r.level().name(),
                     r.color() == null ? "NEUTRAL" : r.color().name());
 
             // create les cases du grp groupRoute
@@ -61,7 +61,7 @@ final class MapViewCreator {
                 groupRoute.getChildren().add(groupCase);
 
                 observable.routeOwner(r).addListener((o,oV,nV) -> {
-                    if( nV != null) groupRoute.getStyleClass().add(nV.name());
+                    if( nV != null) groupRoute.getStyleClass().set(0,nV.name());
                 });
             }
 

@@ -33,7 +33,8 @@ import static javafx.application.Platform.isFxApplicationThread;
 
 public class GraphicalPlayer {
 
-    private static final int MIN_CARDS_CHOICE = 1;
+    private static final int MIN_CLAIM_CARDS_CHOICE = 1;
+    private static final int MIN_CARDS_CHOICE_ADDITIONAL = 0;
     private static final int INFO_MESSAGE_COUNT = 5;
 
     private final Stage primaryStage;
@@ -145,7 +146,7 @@ public class GraphicalPlayer {
         listView.setCellFactory(v ->
                 new TextFieldListCell<>(new CardBagStringConverter()));
 
-        createDialogStage(MIN_CARDS_CHOICE,StringsFr.CARDS_CHOICE,StringsFr.CHOOSE_CARDS,listView, e -> {
+        createDialogStage(MIN_CLAIM_CARDS_CHOICE,StringsFr.CARDS_CHOICE,StringsFr.CHOOSE_CARDS,listView, e -> {
             dialogStage.hide();
             cardsHandler.onChooseCards(listView.getSelectionModel().getSelectedItems().get(0));
         });
@@ -158,7 +159,7 @@ public class GraphicalPlayer {
         listView.setCellFactory(v ->
                 new TextFieldListCell<>(new CardBagStringConverter()));
 
-        createDialogStage(MIN_CARDS_CHOICE,StringsFr.CARDS_CHOICE,StringsFr.CHOOSE_ADDITIONAL_CARDS, listView, e -> {
+        createDialogStage(MIN_CARDS_CHOICE_ADDITIONAL,StringsFr.CARDS_CHOICE,StringsFr.CHOOSE_ADDITIONAL_CARDS, listView, e -> {
             dialogStage.hide();
             cardsHandler.onChooseCards(listView.getSelectionModel().getSelectedItems().get(0));
         });

@@ -105,6 +105,10 @@ public class Stage10Test extends Application {
                 };
 
         p.startTurn(drawTicketsH, drawCardH, claimRouteH);
+
+        for (int i = 0; i <= 5 ; i++) {
+            p.receiveInfo(i + "\n");
+        }
     }
 
 }

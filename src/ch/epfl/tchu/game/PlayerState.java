@@ -100,19 +100,17 @@ public final class PlayerState extends PublicPlayerState {
      *
      * @param additionalCardsCount (int) the additional Cards for the player to add
      * @param initialCards         (SortedBag<Card>) the cards used by the player to claim a route
-     * @param drawnCards           (SortedBag<Card>) the cards drawn by the player after claiming a route
      * @return (List <SortedBag<Card>>) The list of Sorted additional cards the player can use to claim the route
      * @throws IllegalArgumentException if additionalCardsCount is not between 1 and 3 (included)
      *                                  if initialCards is empty
      *                                  if initialCards contains more than two different cards
      *                                  if drawnCards doesn't contain exactly 3 cards
      */
-    public List<SortedBag<Card>> possibleAdditionalCards(int additionalCardsCount, SortedBag<Card> initialCards, SortedBag<Card> drawnCards) {
+    public List<SortedBag<Card>> possibleAdditionalCards(int additionalCardsCount, SortedBag<Card> initialCards) {
         Preconditions.checkArgument(additionalCardsCount >= 1 && additionalCardsCount <= Constants.ADDITIONAL_TUNNEL_CARDS);
         Preconditions.checkArgument(!initialCards.isEmpty());
         Set<Card> initial = initialCards.toSet();
         Preconditions.checkArgument(initial.size() <= 2);
-        Preconditions.checkArgument(drawnCards.size() == Constants.ADDITIONAL_TUNNEL_CARDS);
 
         SortedBag<Card> cardsWithoutInitials = cards.difference(initialCards);
         SortedBag.Builder<Card> canUse = new SortedBag.Builder<>();
@@ -149,22 +147,9 @@ public final class PlayerState extends PublicPlayerState {
      * @return (PlayerState) Same as this PlayerState with a card added to its list of cards
      */
     public PlayerState withAddedCard(Card card) {
-        return this.withAddedCards(SortedBag.of(card));
+        return new PlayerState(tickets, cards.union(SortedBag.of(card)), routes());
     }
 
-    /**
-     * Returns an identical state to this, except that the player also has the given cards added to his hand.
-     *
-     * @param additionalCards (SortedBag<Card>) the additional cards to add
-     *                        to the list of cards owned by the player
-     * @return (PlayerState) Same as this PlayerState with the additional cards added to its list of cards
-     */
-    public PlayerState withAddedCards(SortedBag<Card> additionalCards) {
-        SortedBag.Builder<Card> newCards = new SortedBag.Builder<>();
-        newCards.add(cards);
-        newCards.add(additionalCards);
-        return new PlayerState(tickets, newCards.build(), routes());
-    }
 
     /**
      * Returns an identical state to the receiver,

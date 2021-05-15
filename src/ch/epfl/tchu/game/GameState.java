@@ -194,7 +194,6 @@ public final class GameState extends PublicGameState{
      *                        if it's not possible to draw a card.
      */
     public GameState withDrawnFaceUpCard(int slot){
-        Preconditions.checkArgument(canDrawCards());
         Map<PlayerId, PlayerState> newPlayerState = new EnumMap<>(playerState);
         newPlayerState.put(currentPlayerId(), currentPlayerState().withAddedCard(cardState.faceUpCard(slot)));
         return new GameState(ticketDeck, cardState.withDrawnFaceUpCard(slot),
@@ -211,7 +210,6 @@ public final class GameState extends PublicGameState{
      *                        if it's not possible to draw a card.
      */
     public GameState withBlindlyDrawnCard(){
-        Preconditions.checkArgument(canDrawCards());
         Map<PlayerId, PlayerState> newPlayerState = new EnumMap<>(playerState);
         newPlayerState.put(currentPlayerId(), currentPlayerState().withAddedCard(cardState.topDeckCard()));
         return new GameState(ticketDeck, cardState.withoutTopDeckCard(),

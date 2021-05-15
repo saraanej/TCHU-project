@@ -107,10 +107,11 @@ final class DecksViewCreator {
 
         for(Integer i : Constants.FACE_UP_CARD_SLOTS){
             StackPane stackPane = new StackPane();
+            stackPane.getStyleClass().addAll("card","");
             observableGameState.faceUpCard(i).addListener((o,oV,nV) -> {
                 if(nV != null) //todo utiliser .set ou .add
                     stackPane.getStyleClass()
-                            .addAll(nV == Card.LOCOMOTIVE ? "NEUTRAL" : nV.name(),"card");
+                            .set(1,nV == Card.LOCOMOTIVE ? "NEUTRAL" : nV.name());
             });
             createRectangles(stackPane);
             stackPane.setOnMouseClicked(e -> cardsHandler.get().onDrawCard(i));

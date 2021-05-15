@@ -62,13 +62,6 @@ public class PublicCardState {
 	}
 
 	/**
-	 * @return (int) The number of cards that the players don't possess.
-	 */
-	public int totalSize() {
-		return deckSize + discardsSize + Constants.FACE_UP_CARDS_COUNT;
-	}
-
-	/**
 	 * @return (List<Card>) The five visible cards in a list containing five elements.
 	 */
 	public List<Card> faceUpCards(){

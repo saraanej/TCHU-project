@@ -24,6 +24,11 @@ public interface ActionHandlers {
 
     @FunctionalInterface
     interface ChooseTicketsHandler {
+
+        /**
+         *
+         * @param tickets the chosen tickets
+         */
         void onChooseTickets(SortedBag<Ticket> tickets);
     }
 
