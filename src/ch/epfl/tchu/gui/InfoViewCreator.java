@@ -16,19 +16,23 @@ import java.util.Map;
 
 final class InfoViewCreator {
 
+    private static final int LAST_SEPARATOR_WHEN_ID_IS_LAST = 2;
+    private static final int LAST_SEPARATOR = 1;
     private static final int CIRCLE_RADIUS = 5;
 
     private InfoViewCreator(){}
 
-    public static Node createInfoView(PlayerId id, Map<PlayerId,String> playerNames, ObservableGameState gameState,
+    public static Node createInfoView(PlayerId id, Map<PlayerId,String> playerNames,
+                                      ObservableGameState gameState,
                                       ObservableList<Text> infos){
 
+       //Flexible for more than two players.
        List<PlayerId> players = new ArrayList<>();
        players.add(id);
        for(PlayerId player : PlayerId.ALL){
            if(player != id) players.add(player);
        }
-       int lastSep = id.ordinal() == PlayerId.COUNT - 1 ? 2 : 1;
+       int lastSep = id.ordinal() == PlayerId.COUNT - 1 ? LAST_SEPARATOR_WHEN_ID_IS_LAST : LAST_SEPARATOR;
 
        VBox infoView = new VBox();
        infoView.getStylesheets().addAll("info.css","colors.css");
@@ -57,7 +61,8 @@ final class InfoViewCreator {
            nPlayer.getChildren().addAll(circle,text);
            playerStats.getChildren().add(nPlayer);
 
-           if(lastSep == 2 && player == id) nPlayer.getChildren().add(separator);
+           if(lastSep == LAST_SEPARATOR_WHEN_ID_IS_LAST && player == id)
+               nPlayer.getChildren().add(separator);
            if(player.ordinal() < PlayerId.COUNT - lastSep) nPlayer.getChildren().add(separator);
 
        }
