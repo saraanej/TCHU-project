@@ -32,7 +32,8 @@ final class InfoViewCreator {
        for(PlayerId player : PlayerId.ALL){
            if(player != id) players.add(player);
        }
-       int lastSep = id.ordinal() == PlayerId.COUNT - 1 ? LAST_SEPARATOR_WHEN_ID_IS_LAST : LAST_SEPARATOR;
+       int lastIndex = PlayerId.COUNT - 1;
+       int lastSep = id.ordinal() == lastIndex ? LAST_SEPARATOR_WHEN_ID_IS_LAST : LAST_SEPARATOR;
 
        VBox infoView = new VBox();
        infoView.getStylesheets().addAll("info.css","colors.css");
