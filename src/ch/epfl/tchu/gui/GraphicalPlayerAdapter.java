@@ -33,7 +33,14 @@ public class GraphicalPlayerAdapter implements Player {
 
     @Override
     public void initPlayers(PlayerId ownId, Map<PlayerId, String> playerNames) {
-       runLater(() -> player = new GraphicalPlayer(ownId, playerNames));
+        BlockingQueue<GraphicalPlayer> queuePlayer = new ArrayBlockingQueue<>(1);
+        runLater(() ->  queuePlayer.add(new GraphicalPlayer(ownId, playerNames)));
+
+        try {
+           player = queuePlayer.take();
+        } catch (InterruptedException e) {
+            throw new Error(e);
+        }
     }
 
     @Override
