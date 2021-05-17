@@ -37,9 +37,7 @@ public class ServerMain extends Application {
                     Map.of(PlayerId.PLAYER_1, player1, PlayerId.PLAYER_2, player2);
             Map<PlayerId, Player> players =
                     Map.of(PlayerId.PLAYER_1, new GraphicalPlayerAdapter(),
-                            PlayerId.PLAYER_2, new );
-
-
+                           PlayerId.PLAYER_2, new GraphicalPlayerAdapter());
             new Thread(() -> Game.play(players, names, tickets, rng)).start();
         } catch (IOException e){
             throw new UncheckedIOException(e);
