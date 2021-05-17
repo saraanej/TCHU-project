@@ -111,6 +111,7 @@ public class ObservableGameState {
             if (playerId.equals(gameState.currentPlayerId())
                     && routeIsNotClaimed(r) && player.canClaimRoute(r))
             canClaimRoute.get(r).set(true);
+            else  canClaimRoute.get(r).set(false);
         }
     }
 
