@@ -24,13 +24,13 @@ public class ServerMain extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        String player1, player2;
-        player1 = (getParameters().getRaw().size() >= 1) ? getParameters().getRaw().get(0) : PLAYER_1_DEFAULT;
-        player2 = (getParameters().getRaw().size() >= 2) ? getParameters().getRaw().get(1) : PLAYER_2_DEFAULT;
-
         try {
             ServerSocket socket = new ServerSocket(SOCKET_PORT);
             socket.accept();
+
+            String player1, player2;
+            player1 = (getParameters().getRaw().size() >= 1) ? getParameters().getRaw().get(0) : PLAYER_1_DEFAULT;
+            player2 = (getParameters().getRaw().size() >= 2) ? getParameters().getRaw().get(1) : PLAYER_2_DEFAULT;
 
             Random rng = new Random();
             SortedBag<Ticket> tickets = SortedBag.of(ChMap.tickets());
@@ -39,7 +39,9 @@ public class ServerMain extends Application {
             Map<PlayerId, Player> players =
                     Map.of(PlayerId.PLAYER_1, new GraphicalPlayerAdapter(),
                            PlayerId.PLAYER_2, new RemotePlayerProxy(socket.accept()));
+
             new Thread(() -> Game.play(players, names, tickets, rng)).start();
+            
         } catch (IOException e){
             throw new UncheckedIOException(e);
         }
