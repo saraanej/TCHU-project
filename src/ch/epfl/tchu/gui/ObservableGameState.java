@@ -166,7 +166,6 @@ public class ObservableGameState {
     private boolean routeIsNotClaimed(Route r){
         List<List<Station>> stations = new ArrayList<>();
         for (Route route : gameState.claimedRoutes()) stations.add(route.stations());
-        System.out.println(!stations.contains(r.stations()));
         return !stations.contains(r.stations());
     }
 }

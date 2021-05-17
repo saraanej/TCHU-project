@@ -55,7 +55,8 @@ public class Stage10Test extends Application {
         // du test de l'étape 9
         p1State =
                 new PlayerState(SortedBag.of(ChMap.tickets().subList(0, 3)),
-                        SortedBag.of(3, Card.WHITE, 3, Card.RED),
+                      //  SortedBag.of(3, Card.WHITE, 3, Card.RED),
+                        SortedBag.of(Card.ALL),
                         ChMap.routes().subList(0, 3));
 
         PublicPlayerState p2State =

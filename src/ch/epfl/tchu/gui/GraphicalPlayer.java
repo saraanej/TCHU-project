@@ -38,10 +38,7 @@ public class GraphicalPlayer {
     private static final int INFO_MESSAGE_COUNT = 5;
 
     private final Stage primaryStage;
-    private Stage dialogStage;
 
-    private final PlayerId id;
-    private final Map<PlayerId,String> playerNames;
     private final ObservableGameState gameState;
     private final ObservableList<Text> infoList;
 
@@ -56,8 +53,6 @@ public class GraphicalPlayer {
         drawCard = new SimpleObjectProperty<>(null);
         claimRoute = new SimpleObjectProperty<>(null);
         infoList = FXCollections.observableArrayList();
-        this.id = id;
-        this.playerNames = Map.copyOf(playerNames);
 
         Node mapView = MapViewCreator
                 .createMapView(gameState, claimRoute, this::chooseClaimCards);
@@ -92,25 +87,25 @@ public class GraphicalPlayer {
                           ActionHandlers.ClaimRouteHandler routeHandler) {
         assert isFxApplicationThread();
         claimRoute.set((r,c) -> {
-            routeHandler.onClaimRoute(r,c);
             drawCard.set(null);
             drawTickets.set(null);
+            routeHandler.onClaimRoute(r,c);
             claimRoute.set(null); //maybe to change
         });
 
         if (gameState.canDrawTickets())
             drawTickets.set(() -> {
-                ticketHandler.onDrawTickets();
                 drawCard.set(null);
                 claimRoute.set(null);
+                ticketHandler.onDrawTickets();
                 drawTickets.set(null);
             });
 
         if (gameState.canDrawCards())
             drawCard.set(i -> {
-                cardHandler.onDrawCard(i);
                 drawTickets.set(null);
                 claimRoute.set(null);
+                cardHandler.onDrawCard(i);
                 drawCard.set(null);
             });
     }
@@ -118,9 +113,9 @@ public class GraphicalPlayer {
     public void drawCard(ActionHandlers.DrawCardHandler cardHandler){
         assert isFxApplicationThread();
         drawCard.set(i -> {
-            cardHandler.onDrawCard(i);
             drawTickets.set(null);
             claimRoute.set(null);
+            cardHandler.onDrawCard(i);
             drawCard.set(null);
         });
     }
@@ -134,39 +129,37 @@ public class GraphicalPlayer {
 
         createDialogStage(MIN_TICKET_CHOICE,StringsFr.TICKETS_CHOICE,
                 String.format(StringsFr.CHOOSE_TICKETS, MIN_TICKET_CHOICE, StringsFr.plural(MIN_TICKET_CHOICE)),
-                listView, e -> { dialogStage.hide();
-                chooseTickets.onChooseTickets(SortedBag.of(listView.getSelectionModel().getSelectedItems()));
-        });
+                listView,
+                e -> chooseTickets.onChooseTickets(SortedBag.of(listView.getSelectionModel().getSelectedItems())));
     }
 
     public void chooseClaimCards(List<SortedBag<Card>> possibleClaimCards,
                                  ActionHandlers.ChooseCardsHandler cardsHandler){
         assert isFxApplicationThread();
-        ListView<SortedBag<Card>> listView = new ListView<>(FXCollections.observableArrayList(possibleClaimCards));;
+        ListView<SortedBag<Card>> listView = new ListView<>(FXCollections.observableArrayList(possibleClaimCards));
         listView.setCellFactory(v ->
                 new TextFieldListCell<>(new CardBagStringConverter()));
 
-        createDialogStage(MIN_CLAIM_CARDS_CHOICE,StringsFr.CARDS_CHOICE,StringsFr.CHOOSE_CARDS,listView, e -> {
-            dialogStage.hide();
-            cardsHandler.onChooseCards(listView.getSelectionModel().getSelectedItems().get(0));
-        });
+        createDialogStage(MIN_CLAIM_CARDS_CHOICE,StringsFr.CARDS_CHOICE,StringsFr.CHOOSE_CARDS,listView,
+                e -> cardsHandler.onChooseCards(listView.getSelectionModel().getSelectedItem())
+        );
     }
 
     public void chooseAdditionalCards(List<SortedBag<Card>> possibleAdditional,
                                       ActionHandlers.ChooseCardsHandler cardsHandler){
         assert isFxApplicationThread();
-        ListView<SortedBag<Card>> listView = new ListView<>(FXCollections.observableArrayList(possibleAdditional));;
+        ListView<SortedBag<Card>> listView = new ListView<>(FXCollections.observableArrayList(possibleAdditional));
         listView.setCellFactory(v ->
                 new TextFieldListCell<>(new CardBagStringConverter()));
 
-        createDialogStage(MIN_CARDS_CHOICE_ADDITIONAL,StringsFr.CARDS_CHOICE,StringsFr.CHOOSE_ADDITIONAL_CARDS, listView, e -> {
-            dialogStage.hide();
-            cardsHandler.onChooseCards(listView.getSelectionModel().getSelectedItems().get(0));
-        });
+        createDialogStage(MIN_CARDS_CHOICE_ADDITIONAL,StringsFr.CARDS_CHOICE,StringsFr.CHOOSE_ADDITIONAL_CARDS, listView,
+                e -> cardsHandler.onChooseCards(listView.getSelectionModel().getSelectedItem()));
     }
 
 
     private <E> void  createDialogStage(int minItems, String title, String intro, ListView<E> listView, EventHandler<ActionEvent> handler){
+        Stage dialogStage = new Stage(StageStyle.UTILITY);
+
         Text textIntro = new Text(intro);
         TextFlow textFlow = new TextFlow(textIntro);
 
@@ -174,13 +167,16 @@ public class GraphicalPlayer {
 
         IntegerBinding selected = Bindings.size(listView.getSelectionModel().getSelectedItems());
         chooseButton.disableProperty().bind(Bindings.lessThan(selected,minItems));
-        chooseButton.setOnAction(handler);
+        chooseButton.setOnAction(e -> {
+            dialogStage.hide();
+            handler.handle(e);
+        });
 
         VBox vBox = new VBox(textFlow, listView, chooseButton);
         Scene scene = new Scene(vBox);
         scene.getStylesheets().add("chooser.css");
 
-        dialogStage = new Stage(StageStyle.UTILITY);
+
         dialogStage.initOwner(primaryStage);
         dialogStage.initModality(Modality.WINDOW_MODAL);
         dialogStage.setTitle(title);
