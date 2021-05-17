@@ -41,11 +41,9 @@ public class ServerMain extends Application {
                            PlayerId.PLAYER_2, new RemotePlayerProxy(socket.accept()));
 
             new Thread(() -> Game.play(players, names, tickets, rng)).start();
-            
+
         } catch (IOException e){
             throw new UncheckedIOException(e);
         }
-
-
     }
 }
