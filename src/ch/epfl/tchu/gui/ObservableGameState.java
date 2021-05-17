@@ -104,15 +104,12 @@ public class ObservableGameState {
 
         ticketList.setAll(player.tickets().toList());
 
-        for (Card c : Card.values()) {
+        for (Card c : Card.values())
             numberCardType.get(c).set(Collections.frequency(player.cards().toList(),c));
-        }
-        for (Route r : ChMap.routes()){
-            if (playerId.equals(gameState.currentPlayerId())
-                    && routeIsNotClaimed(r) && player.canClaimRoute(r))
-            canClaimRoute.get(r).set(true);
-            else  canClaimRoute.get(r).set(false);
-        }
+
+        for (Route r : ChMap.routes())
+            canClaimRoute.get(r).set(playerId.equals(gameState.currentPlayerId())
+                    && routeIsNotClaimed(r) && player.canClaimRoute(r));
     }
 
     public ReadOnlyIntegerProperty getLeftTickets(){
