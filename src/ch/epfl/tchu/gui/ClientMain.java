@@ -22,9 +22,7 @@ public class ClientMain extends Application {
                                                         getParameters().getRaw().get(1)) : PORT_DEFAULT;
         RemotePlayerClient distantPlayer =
                 new RemotePlayerClient(
-                        new GraphicalPlayerAdapter(),
-                        name,
-                        port);
+                        new GraphicalPlayerAdapter(),name,port);
         new Thread(() -> distantPlayer.run()).start();
     }
 }

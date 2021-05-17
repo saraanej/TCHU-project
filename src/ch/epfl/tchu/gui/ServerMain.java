@@ -15,6 +15,7 @@ public class ServerMain extends Application {
 
     private static final String PLAYER_1_DEFAULT = "Ada";
     private static final String PLAYER_2_DEFAULT = "Charles";
+    private static final int SOCKET_PORT = 5108;
 
     public static void main(String[] args) {
         launch(args);
@@ -27,23 +28,22 @@ public class ServerMain extends Application {
         player2 = (getParameters().getRaw().size() >= 2) ? getParameters().getRaw().get(1) : PLAYER_2_DEFAULT;
 
         try {
-            ServerSocket socket = new ServerSocket(5108);
+            ServerSocket socket = new ServerSocket(SOCKET_PORT);
             socket.accept();
+
+            Random rng = new Random();
+            SortedBag<Ticket> tickets = SortedBag.of(ChMap.tickets());
+            Map<PlayerId, String> names =
+                    Map.of(PlayerId.PLAYER_1, player1, PlayerId.PLAYER_2, player2);
+            Map<PlayerId, Player> players =
+                    Map.of(PlayerId.PLAYER_1, new GraphicalPlayerAdapter(),
+                            PlayerId.PLAYER_2, new );
+
+
+            new Thread(() -> Game.play(players, names, tickets, rng)).start();
         } catch (IOException e){
             throw new UncheckedIOException(e);
         }
-
-        Random rng = new Random();
-        SortedBag<Ticket> tickets = SortedBag.of(ChMap.tickets());
-        Map<PlayerId, String> names =
-                Map.of(PlayerId.PLAYER_1, player1, PlayerId.PLAYER_2, player2);
-        Map<PlayerId, Player> players =
-                Map.of(PlayerId.PLAYER_1, new GraphicalPlayerAdapter(),
-                       PlayerId.PLAYER_2, new );
-
-
-        new Thread(() -> Game.play(players, names, tickets, rng))
-                .start();
 
 
     }
