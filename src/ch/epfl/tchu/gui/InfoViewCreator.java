@@ -29,9 +29,9 @@ final class InfoViewCreator {
        //Flexible for more than two players.
        List<PlayerId> players = new ArrayList<>();
        players.add(id);
-       for(PlayerId player : PlayerId.ALL){
+       for(PlayerId player : PlayerId.ALL)
            if(player != id) players.add(player);
-       }
+       
        int lastIndex = PlayerId.COUNT - 1;
        int lastSep = id.ordinal() == lastIndex ? LAST_SEPARATOR_WHEN_ID_IS_LAST : LAST_SEPARATOR;
 
