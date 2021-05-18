@@ -3,18 +3,16 @@ package ch.epfl.tchu.gui;
 import ch.epfl.tchu.SortedBag;
 import ch.epfl.tchu.game.*;
 
-import java.util.ArrayDeque;
 import java.util.List;
 import java.util.Map;
-import java.util.Queue;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
 import static javafx.application.Platform.runLater;
 
-public class GraphicalPlayerAdapter implements Player {
+public final class GraphicalPlayerAdapter implements Player {
 
-    private GraphicalPlayer player; //final ou pas?
+    private GraphicalPlayer player;
     private final BlockingQueue<SortedBag<Ticket>> queueTickets;
     private final BlockingQueue<SortedBag<Card>> queueCards;
     private final BlockingQueue<TurnKind> queueTurn;
@@ -34,7 +32,7 @@ public class GraphicalPlayerAdapter implements Player {
     @Override
     public void initPlayers(PlayerId ownId, Map<PlayerId, String> playerNames) {
         BlockingQueue<GraphicalPlayer> queuePlayer = new ArrayBlockingQueue<>(1);
-        runLater(() ->  queuePlayer.add(new GraphicalPlayer(ownId, playerNames)));
+        runLater(() -> queuePlayer.add(new GraphicalPlayer(ownId, playerNames)));
 
         try {
            player = queuePlayer.take();
@@ -60,10 +58,9 @@ public class GraphicalPlayerAdapter implements Player {
 
     @Override
     public int drawSlot() {
-        if(!queueSlots.isEmpty()) return queueSlots.remove(); //TODO: USE .TAKE(): je dois bloquer ici?
+        if(!queueSlots.isEmpty()) return queueSlots.remove();
         else {
             player.drawCard( i -> queueSlots.add(i));
-
             try {
                 return queueSlots.take();
             } catch (InterruptedException e) {
@@ -74,7 +71,7 @@ public class GraphicalPlayerAdapter implements Player {
 
     @Override
     public TurnKind nextTurn() {
-        runLater(() ->{ player.startTurn(() -> queueTurn.add(TurnKind.DRAW_TICKETS),
+        runLater(() -> {player.startTurn(() -> queueTurn.add(TurnKind.DRAW_TICKETS),
 
                 i -> { queueTurn.add(TurnKind.DRAW_CARDS);
                 queueSlots.add(i); },
@@ -101,6 +98,7 @@ public class GraphicalPlayerAdapter implements Player {
         }
     }
 
+    //todo mettre try catch en methode private
     @Override
     public SortedBag<Ticket> chooseInitialTickets() {
         try {
@@ -110,7 +108,6 @@ public class GraphicalPlayerAdapter implements Player {
         }
     }
 
-    //todo: lappel de retour doit bloquer ici ou pas?
     @Override
     public SortedBag<Card> initialClaimCards() {
         try {
@@ -130,7 +127,6 @@ public class GraphicalPlayerAdapter implements Player {
         }
     }
 
-    //todo: lappel de retour doit bloquer ici ou pas?
     @Override
     public Route claimedRoute() {
         try {

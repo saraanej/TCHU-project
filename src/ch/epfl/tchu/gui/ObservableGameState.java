@@ -7,7 +7,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import java.util.*;
 
-public class ObservableGameState {
+public final class ObservableGameState {
 
     private static List<ObjectProperty<Card>> createFaceUpCards(){
         List<ObjectProperty<Card>> faceUp = new ArrayList<>();

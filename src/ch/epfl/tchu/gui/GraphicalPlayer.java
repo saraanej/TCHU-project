@@ -31,7 +31,7 @@ import java.util.Map;
 
 import static javafx.application.Platform.isFxApplicationThread;
 
-public class GraphicalPlayer {
+public final class GraphicalPlayer {
 
     private static final int MIN_CLAIM_CARDS_CHOICE = 1;
     private static final int MIN_CARDS_CHOICE_ADDITIONAL = 0;
@@ -42,7 +42,7 @@ public class GraphicalPlayer {
     private final ObservableGameState gameState;
     private final ObservableList<Text> infoList;
 
-    private final ObjectProperty <ActionHandlers.DrawTicketsHandler> drawTickets;
+    private final ObjectProperty<ActionHandlers.DrawTicketsHandler> drawTickets;
     private final ObjectProperty<ActionHandlers.DrawCardHandler> drawCard;
     private final ObjectProperty<ActionHandlers.ClaimRouteHandler> claimRoute;
 

@@ -89,8 +89,9 @@ public class Game {
         for (PlayerId playerId : PlayerId.values()) {
             chosenTickets = players.get(playerId).chooseInitialTickets();
             gameState = gameState.withInitiallyChosenTickets(playerId, chosenTickets);
-            receiveInfo(players, playersInfo.get(playerId).keptTickets(chosenTickets.size()));
+            receiveInfo(players, playersInfo.get(playerId).keptTickets(chosenTickets.size())); //todo a mettre en boucle apres ligne 93
         }
+
         return gameState;
     }
 
