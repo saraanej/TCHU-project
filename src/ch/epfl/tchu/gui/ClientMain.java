@@ -18,7 +18,7 @@ public class ClientMain extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) {
         String name;
         int port;
         List<String> parameters = getParameters().getRaw();
