@@ -26,14 +26,30 @@ import javafx.scene.text.Text;
 
 final class DecksViewCreator {
 
-    static final int MIN_FOR_CARD_VISIBILITY = 0;
-    static final int MIN_FOR_TEXT_VISIBILITY = 1;
-    static final int WIDTH_OUTSIDE_CARD = 60;
-    static final int HEIGHT_OUTSIDE_CARD = 90;
-    static final int WIDTH_BUTTON = 50;
-    static final int HEIGHT_BUTTON = 5;
+    static final int MIN_VISIBLE_CARD = 0;
+    static final int MIN_VISIBLE_TEXT = 1;
+    static final int WIDTH_OUTSIDE_RECTANGLE = 60;
+    static final int HEIGHT_OUTSIDE_RECTANGLE = 90;
+    static final int WIDTH_GAUGE_RECTANGLE = 50;
+    static final int HEIGHT_GAUGE_RECTANGLE = 5;
     static final int WIDTH_CARD = 40;
     static final int HEIGHT_CARD = 70;
+    static final int PERCENTAGE = 100;
+    static final String DECKS = "decks.css";
+    static final String COLORS = "colors.css";
+    static final String TICKETS = "tickets";
+    static final String HAND_PANE= "hand-pane";
+    static final String NEUTRAL = "NEUTRAL";
+    static final String CARD = "card";
+    static final String CARD_PANE = "card-pane";
+    static final String GAUGED_BUTTON = "gauged";
+    static final String EMPTY = "";
+    static final String BACKGROUND = "background";
+    static final String FOREGROUND = "foreground";
+    static final String OUTSIDE = "outside";
+    static final String INSIDE = "inside";
+    static final String FILLED = "filled";
+    static final String TRAIN_IMAGE = "train-image";
 
 
     private DecksViewCreator(){}
@@ -58,11 +74,11 @@ final class DecksViewCreator {
 
             ReadOnlyIntegerProperty count = observableGameState.numberCardsOfType(card);
 
-            stackPane.visibleProperty().bind(Bindings.greaterThan(count,MIN_FOR_CARD_VISIBILITY));
+            stackPane.visibleProperty().bind(Bindings.greaterThan(count,MIN_VISIBLE_CARD));
             stackPane.getStyleClass().addAll(card == Card.LOCOMOTIVE ? "NEUTRAL" : card.name(), "card");
 
             Text cardCounter = new Text();
-            cardCounter.visibleProperty().bind(Bindings.greaterThan(count,MIN_FOR_TEXT_VISIBILITY));
+            cardCounter.visibleProperty().bind(Bindings.greaterThan(count,MIN_VISIBLE_TEXT));
             cardCounter.textProperty().bind(Bindings.convert(count));
             cardCounter.getStyleClass().add("count");
 
@@ -131,10 +147,10 @@ final class DecksViewCreator {
     private static void buttonGauge(Button button, ReadOnlyIntegerProperty percentage){
         Group group = new Group();
 
-        Rectangle background = new Rectangle(WIDTH_BUTTON,HEIGHT_BUTTON);
+        Rectangle background = new Rectangle(WIDTH_GAUGE_RECTANGLE, HEIGHT_GAUGE_RECTANGLE);
         background.getStyleClass().add("background");
-        Rectangle foreground = new Rectangle(WIDTH_BUTTON,HEIGHT_BUTTON);
-        foreground.widthProperty().bind(percentage.multiply(WIDTH_BUTTON).divide(100)); //TODO : 100 IN CONSTANT
+        Rectangle foreground = new Rectangle(WIDTH_GAUGE_RECTANGLE, HEIGHT_GAUGE_RECTANGLE);
+        foreground.widthProperty().bind(percentage.multiply(WIDTH_GAUGE_RECTANGLE).divide(PERCENTAGE));
         foreground.getStyleClass().add("foreground");
 
         group.getChildren().addAll(background,foreground);
@@ -146,7 +162,7 @@ final class DecksViewCreator {
      * @param stackPane (StackPane) : The given pane.
      */
     private static void createRectangles(StackPane stackPane){
-        Rectangle outside = new Rectangle(WIDTH_OUTSIDE_CARD,HEIGHT_OUTSIDE_CARD);
+        Rectangle outside = new Rectangle(WIDTH_OUTSIDE_RECTANGLE, HEIGHT_OUTSIDE_RECTANGLE);
         outside.getStyleClass().add("outside");
 
         Rectangle filledInside = new Rectangle(WIDTH_CARD,HEIGHT_CARD);

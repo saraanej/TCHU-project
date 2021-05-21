@@ -4,10 +4,14 @@ import ch.epfl.tchu.net.RemotePlayerClient;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
+import java.util.List;
+
 public class ClientMain extends Application {
 
-    private final static String NAME_DEFAULT = "localhost";
+    private final static int FIRST_ARG_INDEX = 0;
+    private final static int SECOND_ARG_INDEX = 1;
     private final static int PORT_DEFAULT = 5108;
+    private final static String NAME_DEFAULT = "localhost";
 
     public static void main(String[] args) {
         launch(args);
@@ -17,12 +21,13 @@ public class ClientMain extends Application {
     public void start(Stage primaryStage) throws Exception {
         String name;
         int port;
-        name = (getParameters().getRaw().size() >= 1) ? getParameters().getRaw().get(0) : NAME_DEFAULT;
-        port = (getParameters().getRaw().size() >= 2) ? Integer.getInteger(
-                                                        getParameters().getRaw().get(1)) : PORT_DEFAULT;
-        RemotePlayerClient distantPlayer =
-                new RemotePlayerClient(
-                        new GraphicalPlayerAdapter(),name,port);
+        List<String> parameters = getParameters().getRaw();
+
+        name = (parameters.size() > FIRST_ARG_INDEX) ? parameters.get(FIRST_ARG_INDEX) : NAME_DEFAULT;
+        port = (parameters.size() > SECOND_ARG_INDEX) ? Integer.getInteger(
+                                                            parameters.get(SECOND_ARG_INDEX)) : PORT_DEFAULT;
+        RemotePlayerClient distantPlayer = new RemotePlayerClient(
+                                                  new GraphicalPlayerAdapter(),name,port);
         new Thread(() -> distantPlayer.run()).start();
     }
 }

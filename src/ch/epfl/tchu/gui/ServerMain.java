@@ -9,14 +9,18 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.ServerSocket;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
 public class ServerMain extends Application {
 
+    private final static int FIRST_ARG_INDEX = 0;
+    private final static int SECOND_ARG_INDEX = 1;
+    private static final int SOCKET_PORT = 5108;
     private static final String PLAYER_1_DEFAULT = "Ada";
     private static final String PLAYER_2_DEFAULT = "Charles";
-    private static final int SOCKET_PORT = 5108;
+
 
     public static void main(String[] args) {
         launch(args);
@@ -26,12 +30,12 @@ public class ServerMain extends Application {
     public void start(Stage primaryStage) throws Exception {
         try {
             ServerSocket socket = new ServerSocket(SOCKET_PORT);
-            socket.accept();
-
+            List<String> parameters = getParameters().getRaw();
             String player1, player2;
-            player1 = (getParameters().getRaw().size() >= 1) ? getParameters().getRaw().get(0) : PLAYER_1_DEFAULT;
-            player2 = (getParameters().getRaw().size() >= 2) ? getParameters().getRaw().get(1) : PLAYER_2_DEFAULT;
 
+            socket.accept();
+            player1 = (parameters.size() > FIRST_ARG_INDEX) ? parameters.get(FIRST_ARG_INDEX) : PLAYER_1_DEFAULT;
+            player2 = (parameters.size() > SECOND_ARG_INDEX) ? parameters.get(SECOND_ARG_INDEX) : PLAYER_2_DEFAULT;
             Random rng = new Random();
             SortedBag<Ticket> tickets = SortedBag.of(ChMap.tickets());
             Map<PlayerId, String> names =
@@ -41,7 +45,6 @@ public class ServerMain extends Application {
                            PlayerId.PLAYER_2, new RemotePlayerProxy(socket.accept()));
 
             new Thread(() -> Game.play(players, names, tickets, rng)).start();
-
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }

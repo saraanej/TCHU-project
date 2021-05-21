@@ -19,6 +19,11 @@ final class InfoViewCreator {
     private static final int LAST_SEPARATOR_WHEN_ID_IS_LAST = 2;
     private static final int LAST_SEPARATOR = 1;
     private static final int CIRCLE_RADIUS = 5;
+    private static final String INFO = "info.css";
+    private static final String COLORS = "colors.css";
+    private static final String PLAYER_STATS = "player-stats";
+    private static final String FILLED = "filled";
+    private static final String GAME_INFO = "game-info";
 
     private InfoViewCreator(){}
 
@@ -36,10 +41,10 @@ final class InfoViewCreator {
        int lastSep = id.ordinal() == lastIndex ? LAST_SEPARATOR_WHEN_ID_IS_LAST : LAST_SEPARATOR;
 
        VBox infoView = new VBox();
-       infoView.getStylesheets().addAll("info.css","colors.css");
+       infoView.getStylesheets().addAll(INFO,COLORS);
 
        VBox playerStats = new VBox();
-       playerStats.setId("player-stats");
+       playerStats.setId(PLAYER_STATS);
 
        Separator separator = new Separator();
 
@@ -49,7 +54,7 @@ final class InfoViewCreator {
            nPlayer.getStyleClass().add(player.name());
 
            Circle circle = new Circle(CIRCLE_RADIUS);
-           circle.getStyleClass().add("filled");
+           circle.getStyleClass().add(FILLED);
 
            Text text = new Text();
            text.textProperty().bind(Bindings.format(StringsFr.PLAYER_STATS,
@@ -69,7 +74,7 @@ final class InfoViewCreator {
        }
 
        TextFlow gameInfo = new TextFlow();
-       gameInfo.setId("game-info");
+       gameInfo.setId(GAME_INFO);
 
        for(Text info : infos){
            gameInfo.getChildren().add(info);
