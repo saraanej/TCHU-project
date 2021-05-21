@@ -20,11 +20,134 @@ import static java.util.stream.Collectors.toList;
  */
 public final class RemotePlayerProxy implements Player {
 
+    private static String SPACE = " ";
+    private static String EMPTY_STRING = "";
+
     private final Socket socket;
 
+    /**
+     * Public default constructor of a RemotePlayerProxy
+     * @param socket
+     */
     public RemotePlayerProxy(Socket socket) {
         this.socket = socket;
     }
+
+    /**
+     * @param ownId (PlayerId) : The identity of the player.
+     * @param playerNames (Map<PlayerId, String>) : The names of all the players.
+     * @throws UncheckedIOException if an error occurs when sending a message.
+     */
+    @Override
+    public void initPlayers(PlayerId ownId, Map<PlayerId, String> playerNames) {
+        String message = String.join(SPACE, Serdes.PLAYER_ID.serialize(ownId),
+                Serdes.LIST_STRING.serialize(playerNames.values().stream().collect(toList())));
+        sendMessage(MessageId.INIT_PLAYERS,message);
+    }
+
+    /**
+     * @param info (String) : The information that must be communicated to the player.
+     * @throws UncheckedIOException if an error occurs when sending a message.
+     */
+    @Override
+    public void receiveInfo(String info) {
+        sendMessage(MessageId.RECEIVE_INFO, Serdes.STRING.serialize(info));
+    }
+
+    /**
+     * @param newState (PublicGameState) : The new state of the game.
+     * @param ownState (PlayerState) : The current state of this player.
+     * @throws UncheckedIOException if an error occurs when sending a message.
+     */
+    @Override
+    public void updateState(PublicGameState newState, PlayerState ownState) {
+        String message = String.join(SPACE,Serdes.PUBLIC_GAMESTATE.serialize(newState),
+                Serdes.PLAYERSTATE.serialize(ownState));
+        sendMessage(MessageId.UPDATE_STATE, message);
+    }
+
+    /**
+     * @param tickets (SortedBag<Ticket>) : The five tickets being distributed to the player.
+     * @throws UncheckedIOException if an error occurs when sending a message.
+     */
+    @Override
+    public void setInitialTicketChoice(SortedBag<Ticket> tickets) {
+        sendMessage(MessageId.SET_INITIAL_TICKETS, Serdes.SORTED_TICKET.serialize(tickets));
+    }
+
+    //NOTE POUR LES TESTS, SI ERREUR POSSIBLE QUE CE SOIT A CAUSE DE message = ""
+    /**
+     * @return (int) The emplacement where the player wishes to draw his cards.
+     * @throws UncheckedIOException if an error occurs when reading the received message or sending a message.
+     */
+    @Override
+    public int drawSlot() {
+        sendMessage(MessageId.DRAW_SLOT, EMPTY_STRING);
+        return Serdes.INTEGER.deserialize(receiveMessage());
+    }
+
+    /**
+     * @return (TurnKind) The type of action the player wishes to do.
+     * @throws UncheckedIOException if an error occurs when reading the received message or sending a message.
+     */
+    @Override
+    public TurnKind nextTurn() {
+        sendMessage(MessageId.NEXT_TURN, EMPTY_STRING);
+        return Serdes.TURN_KIND.deserialize(receiveMessage());
+    }
+
+    /**
+     * @param options (SortedBag<Ticket>) : The tickets the player has to choose between.
+     * @return (SortedBag<Ticket>) The tickets the player will keep.
+     * @throws UncheckedIOException if an error occurs when reading the received message or sending a message.
+     */
+    @Override
+    public SortedBag<Ticket> chooseTickets(SortedBag<Ticket> options) {
+        sendMessage(MessageId.CHOOSE_TICKETS,Serdes.SORTED_TICKET.serialize(options));
+        return Serdes.SORTED_TICKET.deserialize(receiveMessage());
+    }
+
+    /**
+     * @return (SortedBag<Ticket>) The tickets the player will choose between to keep them.
+     * @throws UncheckedIOException if an error occurs when reading the received message or sending a message.
+     */
+    @Override
+    public SortedBag<Ticket> chooseInitialTickets() {
+        sendMessage(MessageId.CHOOSE_INITIAL_TICKETS, EMPTY_STRING);
+        return Serdes.SORTED_TICKET.deserialize(receiveMessage());
+    }
+
+    /**
+     * @return (SortedBag<Card>) : The cards the player wishes to play to take over a route.
+     * @throws UncheckedIOException if an error occurs when reading the received message or sending a message.
+     */
+    @Override
+    public SortedBag<Card> initialClaimCards() {
+        sendMessage(MessageId.CARDS,EMPTY_STRING);
+        return Serdes.SORTED_CARD.deserialize(receiveMessage());
+    }
+
+    /**
+     * @param options (List<SortedBag<Card>>) : The necessary cards the player has to choose between to take over a tunnel route.
+     * @return (SortedBag<Card>) The cards the player chose.
+     * @throws UncheckedIOException if an error occurs when reading the received message or sending a message.
+     */
+    @Override
+    public SortedBag<Card> chooseAdditionalCards(List<SortedBag<Card>> options) {
+        sendMessage(MessageId.CHOOSE_ADDITIONAL_CARDS,Serdes.LIST_SORTED_CARD.serialize(options));
+        return Serdes.SORTED_CARD.deserialize(receiveMessage());
+    }
+
+    /**
+     * @return (Route) : The route the player decided or tried to take over.
+     * @throws UncheckedIOException if an error occurs when reading the received message or sending a message.
+     */
+    @Override
+    public Route claimedRoute() {
+        sendMessage(MessageId.ROUTE, EMPTY_STRING);
+        return Serdes.ROUTE.deserialize(receiveMessage());
+    }
+
 
     /**
      *
@@ -35,7 +158,7 @@ public final class RemotePlayerProxy implements Player {
             BufferedWriter writer =
                     new BufferedWriter(
                             new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.US_ASCII));
-            String send = String.join(" ", Id.name(), message);
+            String send = String.join(SPACE, Id.name(), message);
             writer.write(String.format("%s\n",send));
             writer.flush();
         } catch (IOException e){
@@ -52,120 +175,5 @@ public final class RemotePlayerProxy implements Player {
         } catch (IOException e){
             throw new UncheckedIOException(e);
         }
-    }
-
-    /**
-     * @param ownId (PlayerId) : The identity of the player.
-     * @param playerNames (Map<PlayerId, String>) : The names of all the players.
-     * @throws UncheckedIOException
-     */
-    @Override
-    public void initPlayers(PlayerId ownId, Map<PlayerId, String> playerNames) {
-        String message = String.join(" ", Serdes.PLAYER_ID.serialize(ownId),
-                Serdes.LIST_STRING.serialize(playerNames.values().stream().collect(toList())));
-        sendMessage(MessageId.INIT_PLAYERS,message);
-    }
-
-    /**
-     * @param info (String) : The information that must be communicated to the player.
-     * @throws UncheckedIOException
-     */
-    @Override
-    public void receiveInfo(String info) {
-        sendMessage(MessageId.RECEIVE_INFO, Serdes.STRING.serialize(info));
-    }
-
-    /**
-     * @param newState (PublicGameState) : The new state of the game.
-     * @param ownState (PlayerState) : The current state of this player.
-     * @throws UncheckedIOException
-     */
-    @Override
-    public void updateState(PublicGameState newState, PlayerState ownState) {
-        String message = String.join(" ",Serdes.PUBLICGAMESTATE.serialize(newState),
-                Serdes.PLAYERSTATE.serialize(ownState));
-        sendMessage(MessageId.UPDATE_STATE, message);
-    }
-
-    /**
-     * @param tickets (SortedBag<Ticket>) : The five tickets being distributed to the player.
-     * @throws UncheckedIOException
-     */
-    @Override
-    public void setInitialTicketChoice(SortedBag<Ticket> tickets) {
-        sendMessage(MessageId.SET_INITIAL_TICKETS, Serdes.SORTED_TICKET.serialize(tickets));
-    }
-
-    //NOTE POUR LES TESTS, SI ERREUR POSSIBLE QUE CE SOIT A CAUSE DE message = ""
-    /**
-     * @return (int) The emplacement where the player wishes to draw his cards.
-     * @throws UncheckedIOException
-     */
-    @Override
-    public int drawSlot() {
-        sendMessage(MessageId.DRAW_SLOT, "");
-        return Serdes.INTEGER.deserialize(receiveMessage());
-    }
-
-    /**
-     * @return (TurnKind) The type of action the player wishes to do.
-     * @throws UncheckedIOException
-     */
-    @Override
-    public TurnKind nextTurn() {
-        sendMessage(MessageId.NEXT_TURN, "");
-        return Serdes.TURN_KIND.deserialize(receiveMessage());
-    }
-
-    /**
-     * @param options (SortedBag<Ticket>) : The tickets the player has to choose between.
-     * @return (SortedBag<Ticket>) The tickets the player will keep.
-     * @throws UncheckedIOException
-     */
-    @Override
-    public SortedBag<Ticket> chooseTickets(SortedBag<Ticket> options) {
-        sendMessage(MessageId.CHOOSE_TICKETS,Serdes.SORTED_TICKET.serialize(options));
-        return Serdes.SORTED_TICKET.deserialize(receiveMessage());
-    }
-
-    /**
-     * @return (SortedBag<Ticket>) The tickets the player will choose between to keep them.
-     * @throws UncheckedIOException
-     */
-    @Override
-    public SortedBag<Ticket> chooseInitialTickets() {
-        sendMessage(MessageId.CHOOSE_INITIAL_TICKETS, "");
-        return Serdes.SORTED_TICKET.deserialize(receiveMessage());
-    }
-
-    /**
-     * @return (SortedBag<Card>) : The cards the player wishes to play to take over a route.
-     * @throws UncheckedIOException
-     */
-    @Override
-    public SortedBag<Card> initialClaimCards() {
-        sendMessage(MessageId.CARDS,"");
-        return Serdes.SORTED_CARD.deserialize(receiveMessage());
-    }
-
-    /**
-     * @param options (List<SortedBag<Card>>) : The necessary cards the player has to choose between to take over a tunnel route.
-     * @return (SortedBag<Card>) The cards the player chose.
-     * @throws UncheckedIOException
-     */
-    @Override
-    public SortedBag<Card> chooseAdditionalCards(List<SortedBag<Card>> options) {
-        sendMessage(MessageId.CHOOSE_ADDITIONAL_CARDS,Serdes.LIST_SORTED_CARD.serialize(options));
-        return Serdes.SORTED_CARD.deserialize(receiveMessage());
-    }
-
-    /**
-     * @return (Route) : The route the player decided or tried to take over.
-     * @throws UncheckedIOException
-     */
-    @Override
-    public Route claimedRoute() {
-        sendMessage(MessageId.ROUTE, "");
-        return Serdes.ROUTE.deserialize(receiveMessage());
     }
 }

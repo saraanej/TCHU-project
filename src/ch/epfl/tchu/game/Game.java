@@ -130,7 +130,7 @@ public class Game {
             if (slot == Constants.DECK_SLOT) {
                 gameState = gameState.withBlindlyDrawnCard();
                 receiveInfo(players, playersInfo.get(currentPlayerId).drewBlindCard());
-            } else if (slot < Constants.FACE_UP_CARDS_COUNT && slot > Constants.DECK_SLOT) {
+            } else if (slot < Constants.FACE_UP_CARDS_COUNT) {
                 receiveInfo(players, playersInfo.get(currentPlayerId)
                         .drewVisibleCard(gameState.cardState().faceUpCard(slot)));
                 gameState = gameState.withDrawnFaceUpCard(slot);

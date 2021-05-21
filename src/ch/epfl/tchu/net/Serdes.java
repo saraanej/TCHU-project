@@ -107,7 +107,7 @@ public final class Serdes {
     /**
      * A Serde able to (de)serialize PublicPlayerState's elements.
      */
-    public static final Serde<PublicPlayerState> PUBLICPLAYERSTATE = new Serde<>() {
+    public static final Serde<PublicPlayerState> PUBLIC_PLAYERSTATE = new Serde<>() {
         @Override
         public String serialize(PublicPlayerState p) {
             String[] serialized = new String[]{INTEGER.serialize(p.ticketCount()),
@@ -145,13 +145,13 @@ public final class Serdes {
     /**
      * A Serde able to (de)serialize PublicGameState's elements.
      */
-    public final static Serde<PublicGameState> PUBLICGAMESTATE = new Serde<>() {
+    public final static Serde<PublicGameState> PUBLIC_GAMESTATE = new Serde<>() {
         @Override
         public String serialize(PublicGameState p) {
             String[] serialized = new String[]{INTEGER.serialize(p.ticketsCount()),
                     PUBLIC_CARDSTATE.serialize(p.cardState()), PLAYER_ID.serialize(p.currentPlayerId()),
-                    PUBLICPLAYERSTATE.serialize(p.playerState(PlayerId.PLAYER_1)),
-                    PUBLICPLAYERSTATE.serialize(p.playerState(PlayerId.PLAYER_2)),
+                    PUBLIC_PLAYERSTATE.serialize(p.playerState(PlayerId.PLAYER_1)),
+                    PUBLIC_PLAYERSTATE.serialize(p.playerState(PlayerId.PLAYER_2)),
                     p.lastPlayer() == null ? "" : PLAYER_ID.serialize(p.lastPlayer())};
             return String.join(":", serialized);
         }

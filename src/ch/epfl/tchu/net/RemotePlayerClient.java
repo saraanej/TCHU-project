@@ -6,7 +6,6 @@ import ch.epfl.tchu.game.PlayerId;
 import java.io.*;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -68,7 +67,7 @@ public class RemotePlayerClient {
                         player.receiveInfo(Serdes.STRING.deserialize(split[1]));
                         break;
                     case UPDATE_STATE:
-                        player.updateState(Serdes.PUBLICGAMESTATE.deserialize(split[1]),
+                        player.updateState(Serdes.PUBLIC_GAMESTATE.deserialize(split[1]),
                                            Serdes.PLAYERSTATE.deserialize(split[2]));
                         break;
                     case SET_INITIAL_TICKETS:

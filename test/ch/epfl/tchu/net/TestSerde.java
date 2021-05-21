@@ -190,7 +190,7 @@ public class TestSerde {
 
     @Test
     public void PUBLICPLAYERSTATE(){
-        Serde<PublicPlayerState> serde = Serdes.PUBLICPLAYERSTATE;
+        Serde<PublicPlayerState> serde = Serdes.PUBLIC_PLAYERSTATE;
         PublicPlayerState x = FirstPlayerState;
         PublicPlayerState des = serde.deserialize(serde.serialize(x));
         assertEquals("4;6;4", serde.serialize(x));
@@ -224,7 +224,7 @@ public class TestSerde {
 
     @Test
     public void PUBLICGAMESTATE(){
-        Serde<PublicGameState> serde = Serdes.PUBLICGAMESTATE;
+        Serde<PublicGameState> serde = Serdes.PUBLIC_GAMESTATE;
         PublicGameState x = tester;
         assertEquals("3:2,1,2,6,7;3;6:0:4;6;4:5;2;2:1", serde.serialize(x));
         PublicGameState des = serde.deserialize(serde.serialize(x));

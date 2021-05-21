@@ -33,12 +33,7 @@ public final class GraphicalPlayerAdapter implements Player {
     public void initPlayers(PlayerId ownId, Map<PlayerId, String> playerNames) {
         BlockingQueue<GraphicalPlayer> queuePlayer = new ArrayBlockingQueue<>(1);
         runLater(() -> queuePlayer.add(new GraphicalPlayer(ownId, playerNames)));
-
-        try {
-           player = queuePlayer.take();
-        } catch (InterruptedException e) {
-            throw new Error(e);
-        }
+        player = take(queuePlayer);
     }
 
     @Override
@@ -60,18 +55,14 @@ public final class GraphicalPlayerAdapter implements Player {
     public int drawSlot() {
         if(!queueSlots.isEmpty()) return queueSlots.remove();
         else {
-            player.drawCard( i -> queueSlots.add(i));
-            try {
-                return queueSlots.take();
-            } catch (InterruptedException e) {
-                throw new Error(e);
-            }
+            player.drawCard(i -> queueSlots.add(i));
+            return take(queueSlots);
         }
     }
 
     @Override
     public TurnKind nextTurn() {
-        runLater(() -> {player.startTurn(() -> queueTurn.add(TurnKind.DRAW_TICKETS),
+        runLater(() -> { player.startTurn(() -> queueTurn.add(TurnKind.DRAW_TICKETS),
 
                 i -> { queueTurn.add(TurnKind.DRAW_CARDS);
                 queueSlots.add(i); },
@@ -81,57 +72,43 @@ public final class GraphicalPlayerAdapter implements Player {
                 queueRoute.add(r);
                 });
         });
-        try {
-            return queueTurn.take();
-        } catch (InterruptedException e) {
-            throw new Error(e);
-        }
+        return take(queueTurn);
     }
 
     @Override
     public SortedBag<Ticket> chooseTickets(SortedBag<Ticket> options) {
         runLater(() -> player.chooseTickets(options,t -> queueTickets.add(t)));
-        try {
-            return queueTickets.take();
-        } catch (InterruptedException e) {
-            throw new Error(e);
-        }
+        return take(queueTickets);
     }
 
     //todo mettre try catch en methode private
     @Override
     public SortedBag<Ticket> chooseInitialTickets() {
-        try {
-            return queueTickets.take();
-        } catch (InterruptedException e) {
-            throw new Error(e);
-        }
+        return take(queueTickets);
     }
 
     @Override
     public SortedBag<Card> initialClaimCards() {
-        try {
-            return queueCards.take();
-        } catch (InterruptedException e) {
-            throw new Error(e);
-        }
+        return take(queueCards);
     }
 
     @Override
     public SortedBag<Card> chooseAdditionalCards(List<SortedBag<Card>> options) {
         runLater(() -> player.chooseAdditionalCards(options,s -> queueCards.add(s)));
-        try {
-            return queueCards.take();
-        } catch (InterruptedException e) {
-            throw new Error(e);
-        }
+        return take(queueCards);
     }
 
     @Override
     public Route claimedRoute() {
+        return take(queueRoute);
+    }
+
+
+    private <E> E take(BlockingQueue<E> queue){
         try {
-            return queueRoute.take();
+            return queue.take();
         } catch (InterruptedException e) {
+            e.printStackTrace();
             throw new Error(e);
         }
     }

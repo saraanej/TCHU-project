@@ -42,7 +42,7 @@ public class ServerMain extends Application {
 
             new Thread(() -> Game.play(players, names, tickets, rng)).start();
 
-        } catch (IOException e){
+        } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
     }
