@@ -9,6 +9,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -33,7 +34,7 @@ public class ServerMain extends Application {
             List<String> parameters = getParameters().getRaw();
             String player1, player2;
 
-            socket.accept();
+           //  socket.accept();
             player1 = (parameters.size() > FIRST_ARG_INDEX) ? parameters.get(FIRST_ARG_INDEX) : PLAYER_1_DEFAULT;
             player2 = (parameters.size() > SECOND_ARG_INDEX) ? parameters.get(SECOND_ARG_INDEX) : PLAYER_2_DEFAULT;
             Random rng = new Random();
