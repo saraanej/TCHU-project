@@ -21,8 +21,8 @@ public interface Serde<C> {
 
     /**
      * Generic method that constructs a Serde taking as arguments a serialization function and a deserialization function.
-     * @param serialization (Function<T, String>) the serialization function.
-     * @param deserialization (Function<String, T>) the deserialization function.
+     * @param serialization the serialization function.
+     * @param deserialization the deserialization function.
      * @param <T> the type of elements that the serde is able to (de) serialize.
      * @return the corresponding Serde<T>.
      *
@@ -45,7 +45,7 @@ public interface Serde<C> {
 
     /**
      * Generic method that constructs a Serde out of the list of all the values of an enumerated set.
-     * @param values (List<T>) the list of all the values of the enumerated set.
+     * @param values the list of all the values of the enumerated set.
      * @param <T> the type of elements that the serde is able to (de)serialize.
      * @return the corresponding Serde<T>.
      *
@@ -70,8 +70,8 @@ public interface Serde<C> {
 
     /**
      * Generic method that constructs a Serde able to (de)serialize lists of values (de)serialized by a given serde.
-     * @param serde (Serde<T>) the serde to use to (de)serialize the elements of the list.
-     * @param separator (String) the separator to use to separate the serialized's list's elements.
+     * @param serde the serde to use to (de)serialize the elements of the list.
+     * @param separator the separator to use to separate the serialized's list's elements.
      * @param <T> the type of elements that the serde is able to (de)serialize.
      * @return the corresponding Serde<List<T>>.
      *
@@ -110,8 +110,8 @@ public interface Serde<C> {
 
     /**
      * Generic method that constructs a Serde able to (de)serialize SortedBags of values (de)serialized by a given serde.
-     * @param serde (Serde<T>) the serde to use to (de)serialize the elements of the bag.
-     * @param separator (String) the separator to use to separate the serialized's bag's elements.
+     * @param serde the serde to use to (de)serialize the elements of the bag.
+     * @param separator the separator to use to separate the serialized's bag's elements.
      * @param <T> the type of elements that the serde is able to (de)serialize.
      * @return the corresponding Serde<SortedBag<T>>.
      *
@@ -137,14 +137,14 @@ public interface Serde<C> {
 
     /**
      * Abstract serialization method.
-     * @param c (C) the object to serialize.
+     * @param c the object to serialize.
      * @return the matching string serialization.
      */
     String serialize(C c);
 
     /**
      * Abstract deserialization method.
-     * @param str (String) the string to deserialize.
+     * @param str the string to deserialize.
      * @return the corresponding deserialized object.
      */
     C deserialize(String str);

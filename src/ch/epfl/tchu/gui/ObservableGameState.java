@@ -7,8 +7,19 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import java.util.*;
 
+/**
+ * The instantiable ObservableGameState class of the ch.epfl.tchu.gui package
+ * represents the observable state of a tCHu's play.
+ * It combines the public part of the state of the game, i.e. the information contained
+ * in an instance of PublicGameState, and the entire state of a given player, that is,
+ * the information contained in an instance of PlayerState.
+ *
+ * @author Yasmin Ben Rahhal (329912)
+ * @author Sara Anejjar (329905)
+ */
 public final class ObservableGameState {
 
+    //private static methods used to initialize the properties to its default values (null, 0 and false)
     private static List<ObjectProperty<Card>> createFaceUpCards(){
         List<ObjectProperty<Card>> faceUp = new ArrayList<>();
         for (int slot : Constants.FACE_UP_CARD_SLOTS) {
@@ -66,6 +77,10 @@ public final class ObservableGameState {
     private final Map<Card,IntegerProperty> numberCardType;
     private final Map<Route,BooleanProperty> canClaimRoute;
 
+    /**
+     * Public default constructor
+     * @param playerId the id of the player's linked to this observableGameState
+     */
     public ObservableGameState(PlayerId playerId){
         this.playerId = playerId;
         leftTickets = new SimpleIntegerProperty(0);
@@ -81,6 +96,11 @@ public final class ObservableGameState {
         canClaimRoute = createCanClaimRoute();
     }
 
+    /**
+     * Updates the gameState by modifying its proprieties's values according to the given PlayerState ad PublicGameState
+     * @param gS the updated PublicGameState
+     * @param playerState the updated complete PlayerState of this observableGameState's player
+     */
     public void setState(PublicGameState gS, PlayerState playerState){
         gameState = gS;
         player= playerState;
@@ -112,12 +132,27 @@ public final class ObservableGameState {
                     && routeIsNotClaimed(r) && player.canClaimRoute(r));
     }
 
+    /**
+     *
+     * @return the property containing the percentage of left Tickets in the deck
+     */
     public ReadOnlyIntegerProperty getLeftTickets(){
         return leftTickets;
     }
+
+    /**
+     *
+     * @return the property containing the percentage of left Cards in the deck
+     */
     public ReadOnlyIntegerProperty getLeftCards(){
         return leftCards;
     }
+
+    /**
+     *
+     * @param c the type of the card
+     * @return the number of cards of type c that the player has in hand
+     */
     public ReadOnlyIntegerProperty numberCardsOfType(Card c){
         return numberCardType.get(c);
     }

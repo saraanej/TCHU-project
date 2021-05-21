@@ -28,6 +28,6 @@ public class ClientMain extends Application {
                                                             parameters.get(SECOND_ARG_INDEX)) : PORT_DEFAULT;
         RemotePlayerClient distantPlayer = new RemotePlayerClient(
                                                   new GraphicalPlayerAdapter(),name,port);
-        new Thread(() -> distantPlayer.run()).start();
+        new Thread(distantPlayer::run).start();
     }
 }

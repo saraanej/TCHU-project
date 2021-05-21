@@ -34,8 +34,7 @@ public final class RemotePlayerProxy implements Player {
     }
 
     /**
-     * @param ownId (PlayerId) : The identity of the player.
-     * @param playerNames (Map<PlayerId, String>) : The names of all the players.
+     * @see Player#initPlayers(PlayerId, Map) 
      * @throws UncheckedIOException if an error occurs when sending a message.
      */
     @Override
@@ -46,7 +45,7 @@ public final class RemotePlayerProxy implements Player {
     }
 
     /**
-     * @param info (String) : The information that must be communicated to the player.
+     * @see Player#receiveInfo(String) 
      * @throws UncheckedIOException if an error occurs when sending a message.
      */
     @Override
@@ -55,8 +54,7 @@ public final class RemotePlayerProxy implements Player {
     }
 
     /**
-     * @param newState (PublicGameState) : The new state of the game.
-     * @param ownState (PlayerState) : The current state of this player.
+     * @see Player#updateState(PublicGameState, PlayerState) 
      * @throws UncheckedIOException if an error occurs when sending a message.
      */
     @Override
@@ -67,7 +65,7 @@ public final class RemotePlayerProxy implements Player {
     }
 
     /**
-     * @param tickets (SortedBag<Ticket>) : The five tickets being distributed to the player.
+     * @see Player#setInitialTicketChoice(SortedBag<Ticket>) 
      * @throws UncheckedIOException if an error occurs when sending a message.
      */
     @Override
@@ -75,9 +73,8 @@ public final class RemotePlayerProxy implements Player {
         sendMessage(MessageId.SET_INITIAL_TICKETS, Serdes.SORTED_TICKET.serialize(tickets));
     }
 
-    //NOTE POUR LES TESTS, SI ERREUR POSSIBLE QUE CE SOIT A CAUSE DE message = ""
     /**
-     * @return (int) The emplacement where the player wishes to draw his cards.
+     * @see Player#drawSlot()
      * @throws UncheckedIOException if an error occurs when reading the received message or sending a message.
      */
     @Override
@@ -87,7 +84,7 @@ public final class RemotePlayerProxy implements Player {
     }
 
     /**
-     * @return (TurnKind) The type of action the player wishes to do.
+     * @see Player#nextTurn()
      * @throws UncheckedIOException if an error occurs when reading the received message or sending a message.
      */
     @Override
@@ -97,8 +94,7 @@ public final class RemotePlayerProxy implements Player {
     }
 
     /**
-     * @param options (SortedBag<Ticket>) : The tickets the player has to choose between.
-     * @return (SortedBag<Ticket>) The tickets the player will keep.
+     * @see Player#chooseTickets(SortedBag<Ticket>)
      * @throws UncheckedIOException if an error occurs when reading the received message or sending a message.
      */
     @Override
@@ -108,7 +104,7 @@ public final class RemotePlayerProxy implements Player {
     }
 
     /**
-     * @return (SortedBag<Ticket>) The tickets the player will choose between to keep them.
+     * @see Player#chooseInitialTickets()
      * @throws UncheckedIOException if an error occurs when reading the received message or sending a message.
      */
     @Override
@@ -118,7 +114,7 @@ public final class RemotePlayerProxy implements Player {
     }
 
     /**
-     * @return (SortedBag<Card>) : The cards the player wishes to play to take over a route.
+     * @see Player#initialClaimCards()
      * @throws UncheckedIOException if an error occurs when reading the received message or sending a message.
      */
     @Override
@@ -128,8 +124,7 @@ public final class RemotePlayerProxy implements Player {
     }
 
     /**
-     * @param options (List<SortedBag<Card>>) : The necessary cards the player has to choose between to take over a tunnel route.
-     * @return (SortedBag<Card>) The cards the player chose.
+     * @see Player#chooseAdditionalCards(List<SortedBag<Card>>)
      * @throws UncheckedIOException if an error occurs when reading the received message or sending a message.
      */
     @Override
@@ -139,7 +134,8 @@ public final class RemotePlayerProxy implements Player {
     }
 
     /**
-     * @return (Route) : The route the player decided or tried to take over.
+     * @see Player#claimedRoute()
+     *
      * @throws UncheckedIOException if an error occurs when reading the received message or sending a message.
      */
     @Override
@@ -150,8 +146,9 @@ public final class RemotePlayerProxy implements Player {
 
 
     /**
-     *
-     * @param message (String) the serialized message to send to the client
+     * Writes the message in the outputStream of the socket
+     * @param Id the type of the message to send
+     * @param message the serialized message to send to the client
      */
     private void sendMessage(MessageId Id, String message){
         try{
@@ -166,6 +163,10 @@ public final class RemotePlayerProxy implements Player {
         }
     }
 
+    /**
+     *
+     * @return the last message received from the inputStream of the socket
+     */
     private String receiveMessage(){
         try {
             BufferedReader reader =
