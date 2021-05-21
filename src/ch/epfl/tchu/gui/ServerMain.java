@@ -27,7 +27,7 @@ public class ServerMain extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) {
         try {
             ServerSocket socket = new ServerSocket(SOCKET_PORT);
             List<String> parameters = getParameters().getRaw();
