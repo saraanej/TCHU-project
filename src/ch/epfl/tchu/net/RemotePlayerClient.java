@@ -19,6 +19,8 @@ import static java.nio.charset.StandardCharsets.US_ASCII;
  */
 public class RemotePlayerClient {
 
+    private final static String SPACE = " ";
+
     private final int port;
     private final Player player;
     private final String name;
@@ -52,7 +54,7 @@ public class RemotePlayerClient {
 
             String readLine = reader.readLine();
             while(readLine != null){
-                String[] split = readLine.split(Pattern.quote(" "),-1);
+                String[] split = readLine.split(Pattern.quote(SPACE),-1);
                 switch (MessageId.valueOf(split[0])) {
                     case INIT_PLAYERS:
                         List<String> deserialized = Serdes.LIST_STRING.deserialize(split[2]);
