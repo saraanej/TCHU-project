@@ -9,24 +9,35 @@ import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import static ch.epfl.tchu.gui.GuiConstants.*;
 
+/**
+ * InfoViewCreator is a private and non-instantiable class.
+ * It contains a single public method used to create the information view.
+ *
+ * @author Yasmin Ben Rahhal (329912)
+ * @author Sara Anejjar (329905)
+ */
 final class InfoViewCreator {
 
     private static final int LAST_SEPARATOR_WHEN_ID_IS_LAST = 2;
     private static final int LAST_SEPARATOR = 1;
-    private static final int CIRCLE_RADIUS = 5;
-    private static final String INFO = "info.css";
-    private static final String COLORS = "colors.css";
-    private static final String PLAYER_STATS = "player-stats";
-    private static final String FILLED = "filled";
-    private static final String GAME_INFO = "game-info";
+
 
     private InfoViewCreator(){}
 
+
+    /**
+     *
+     * @param id
+     * @param playerNames
+     * @param gameState
+     * @param infos
+     * @return
+     */
     public static Node createInfoView(PlayerId id, Map<PlayerId,String> playerNames,
                                       ObservableGameState gameState,
                                       ObservableList<Text> infos){
@@ -41,20 +52,19 @@ final class InfoViewCreator {
        int lastSep = id.ordinal() == lastIndex ? LAST_SEPARATOR_WHEN_ID_IS_LAST : LAST_SEPARATOR;
 
        VBox infoView = new VBox();
-       infoView.getStylesheets().addAll(INFO,COLORS);
+       infoView.getStylesheets().addAll(INFO_SS,COLORS_SS);
 
        VBox playerStats = new VBox();
-       playerStats.setId(PLAYER_STATS);
+       playerStats.setId(PLAYER_STATS_ID);
 
        Separator separator = new Separator();
 
        for(PlayerId player : players){
-
            TextFlow nPlayer = new TextFlow();
            nPlayer.getStyleClass().add(player.name());
 
-           Circle circle = new Circle(CIRCLE_RADIUS);
-           circle.getStyleClass().add(FILLED);
+           Circle circle = new Circle(CIRCLE_RADIUS_INFO);
+           circle.getStyleClass().add(FILLED_SC);
 
            Text text = new Text();
            text.textProperty().bind(Bindings.format(StringsFr.PLAYER_STATS,
@@ -63,25 +73,20 @@ final class InfoViewCreator {
                    gameState.playerCardCount(player),
                    gameState.playerCarCount(player),
                    gameState.playerClaimPoints(player)));
-
            nPlayer.getChildren().addAll(circle,text);
            playerStats.getChildren().add(nPlayer);
 
            if(lastSep == LAST_SEPARATOR_WHEN_ID_IS_LAST && player == id)
                nPlayer.getChildren().add(separator);
            if(player.ordinal() < PlayerId.COUNT - lastSep) nPlayer.getChildren().add(separator);
-
        }
 
        TextFlow gameInfo = new TextFlow();
-       gameInfo.setId(GAME_INFO);
-
-       for(Text info : infos){
-           gameInfo.getChildren().add(info);
-       }
+       gameInfo.setId(GAME_INFO_ID);
+       for(Text info : infos) gameInfo.getChildren().add(info);
        Bindings.bindContent(gameInfo.getChildren(), infos);
-
        infoView.getChildren().addAll(playerStats, separator, gameInfo);
+
     return infoView;
     }
 }
