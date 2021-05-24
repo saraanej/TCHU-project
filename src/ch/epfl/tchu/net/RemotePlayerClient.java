@@ -55,7 +55,6 @@ public class RemotePlayerClient {
             String readLine = reader.readLine();
             while(readLine != null){
                 String[] split = readLine.split(Pattern.quote(SPACE),-1);
-                System.out.println(MessageId.valueOf(split[0]));
                 switch (MessageId.valueOf(split[0])) {
                     case INIT_PLAYERS:
                         List<String> deserialized = Serdes.LIST_STRING.deserialize(split[2]);
@@ -67,7 +66,6 @@ public class RemotePlayerClient {
                         player.receiveInfo(Serdes.STRING.deserialize(split[1]));
                         break;
                     case UPDATE_STATE:
-                        System.out.println("rpc ligne 69 :" + split[1] + "--" + split[2]);
                         player.updateState(Serdes.PUBLIC_GAMESTATE.deserialize(split[1]),
                                            Serdes.PLAYERSTATE.deserialize(split[2]));
                         break;

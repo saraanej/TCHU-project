@@ -137,7 +137,6 @@ public final class Serdes {
         @Override
         public PlayerState deserialize(String str) {
             String[] split = str.split(Pattern.quote(";"), -1);
-            for (String s : split) System.out.println(" "+ s);
             return new PlayerState(SORTED_TICKET.deserialize(split[0]),
                     SORTED_CARD.deserialize(split[1]),
                     LIST_ROUTE.deserialize(split[2]));
