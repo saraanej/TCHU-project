@@ -29,6 +29,7 @@ import javafx.beans.binding.Bindings;
 import java.util.List;
 import java.util.Map;
 
+import static ch.epfl.tchu.game.Constants.DISCARDABLE_TICKETS_COUNT;
 import static javafx.application.Platform.isFxApplicationThread;
 
 public final class GraphicalPlayer {
@@ -125,7 +126,7 @@ public final class GraphicalPlayer {
         ListView<Ticket> listView = new ListView<>(FXCollections.observableArrayList(options.toList()));
         listView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
-        final int MIN_TICKET_CHOICE = options.size() - 2;
+        final int MIN_TICKET_CHOICE = options.size() - DISCARDABLE_TICKETS_COUNT;
 
         createDialogStage(MIN_TICKET_CHOICE,StringsFr.TICKETS_CHOICE,
                 String.format(StringsFr.CHOOSE_TICKETS, MIN_TICKET_CHOICE, StringsFr.plural(MIN_TICKET_CHOICE)),

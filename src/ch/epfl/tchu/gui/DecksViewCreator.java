@@ -105,6 +105,7 @@ final class DecksViewCreator {
                             .set(1,nV == Card.LOCOMOTIVE ? NEUTRAL_SC : nV.name());
             });
             createRectangles(stackPane);
+            stackPane.disableProperty().bind(cardsHandler.isNull());
             stackPane.setOnMouseClicked(e -> cardsHandler.get().onDrawCard(i));
             deckView.getChildren().add(stackPane);
         }
