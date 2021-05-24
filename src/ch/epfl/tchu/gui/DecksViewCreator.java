@@ -36,7 +36,7 @@ final class DecksViewCreator {
     /**
      * Method creates the view of the player's hand by graphically creating all its components.
      * @param observableGameState The observable state of the game.
-     * @return (Node) The elements that compose the hand's view.
+     * @return The elements that compose the hand's view.
      */
     public static Node createHandView(ObservableGameState observableGameState){
         HBox handView = new HBox();
@@ -74,7 +74,7 @@ final class DecksViewCreator {
      * @param observableGameState The observable state of the game.
      * @param ticketsHandler Action handler managing the ticket draw.
      * @param cardsHandler Action handler managing the card draw.
-     * @return (Node) The view of the decks.
+     * @return The view of the decks.
      */
     public static Node createCardsView(ObservableGameState observableGameState,
                                        ObjectProperty<ActionHandlers.DrawTicketsHandler> ticketsHandler,

@@ -35,7 +35,7 @@ final class InfoViewCreator {
      * @param playerNames The associative table of the players' names.
      * @param gameState The observable game state.
      * @param infos A list containing information on the progress of the game.
-     * @return (Node) The informations' view.
+     * @return The informations' view.
      */
     public static Node createInfoView(PlayerId id, Map<PlayerId,String> playerNames,
                                       ObservableGameState gameState,
