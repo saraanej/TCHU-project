@@ -98,8 +98,8 @@ public final class GraphicalPlayer {
     }
 
     /**
-     *
-     * @param message
+     * Adds the message to the bottom of the game's progress' information. The section can only contain 5 messages at once.
+     * @param message the message to add to the view.
      */
     public void receiveInfo(String message){
         assert isFxApplicationThread();
@@ -108,10 +108,10 @@ public final class GraphicalPlayer {
     }
 
     /**
-     *
-     * @param ticketHandler
-     * @param cardHandler
-     * @param routeHandler
+     * Allows the player to do one of his three actions by abling and disabling its handlers.
+     * @param ticketHandler the handler for the action : draw Tickets.
+     * @param cardHandler the handler for the action : draw Cards.
+     * @param routeHandler the handler for the action : claim Route.
      */
     public void startTurn(ActionHandlers.DrawTicketsHandler ticketHandler, ActionHandlers.DrawCardHandler cardHandler,
                           ActionHandlers.ClaimRouteHandler routeHandler) {
@@ -141,8 +141,9 @@ public final class GraphicalPlayer {
     }
 
     /**
-     *
-     * @param cardHandler
+     * Allows the player to choose a card by calling the DrawCardHandler once his choice is made.
+     * This method is intended to be called when the player has already drawn a first card and must now draw the second.
+     * @param cardHandler the drw Card's handler to call with the choice of the player.
      */
     public void drawCard(ActionHandlers.DrawCardHandler cardHandler){
         assert isFxApplicationThread();
@@ -155,9 +156,10 @@ public final class GraphicalPlayer {
     }
 
     /**
-     *
-     * @param options
-     * @param chooseTickets
+     * Opens a window allowing the player to make his choice;
+     * Once it is confirmed, the choice handler is called with this choice in argument.
+     * @param options the Tickets the player has to choose from.
+     * @param chooseTickets the choose Tickets' handler to call with the player's choice.
      */
     public void chooseTickets(SortedBag<Ticket> options, ActionHandlers.ChooseTicketsHandler chooseTickets){
         assert isFxApplicationThread();
@@ -173,9 +175,11 @@ public final class GraphicalPlayer {
     }
 
     /**
-     *
-     * @param possibleClaimCards
-     * @param cardsHandler
+     * Opens a window allowing the player to make his choice;
+     * Once this has been done and confirmed, the choice handler is called with the player's choice as an argument;
+     * This method is only intended to be passed as an argument to createMapView as a value of type CardChooser.
+     * @param possibleClaimCards all the possible cards the player can use to claim the desired route.
+     * @param cardsHandler the choose cards' handler to call with the choice of the player.
      */
     public void chooseClaimCards(List<SortedBag<Card>> possibleClaimCards,
                                  ActionHandlers.ChooseCardsHandler cardsHandler){
@@ -190,9 +194,10 @@ public final class GraphicalPlayer {
     }
 
     /**
-     *
-     * @param possibleAdditional
-     * @param cardsHandler
+     * Opens a window allowing the player to make his choice;
+     * Once this has been done and confirmed, the choice handler is called with the player's choice as an argument.
+     * @param possibleAdditional the additional cards that can be used to seize a tunnel.
+     * @param cardsHandler the choose cards' handler to call with the choice of the player.
      */
     public void chooseAdditionalCards(List<SortedBag<Card>> possibleAdditional,
                                       ActionHandlers.ChooseCardsHandler cardsHandler){
@@ -206,13 +211,13 @@ public final class GraphicalPlayer {
     }
 
     /**
-     *
-     * @param minItems
-     * @param title
-     * @param intro
-     * @param listView
-     * @param handler
-     * @param <E>
+     * Creates the dialog window to choose the cards or the tickets.
+     * @param minItems the minimum choice allowed.
+     * @param title the title of the window.
+     * @param intro the introduction text of the window.
+     * @param listView the list of choices.
+     * @param handler the handler for the action after pressing the choice button.
+     * @param <E> the type of the elements to choose from.
      */
     private <E> void  createDialogStage(int minItems, String title, String intro, ListView<E> listView, EventHandler<ActionEvent> handler){
         Stage dialogStage = new Stage(StageStyle.UTILITY);
@@ -244,14 +249,21 @@ public final class GraphicalPlayer {
 
 
     /**
-     *
+     * @see StringConverter
      */
     public static class CardBagStringConverter extends StringConverter<SortedBag<Card>> {
+
+        /**
+         * @see StringConverter#toString(Object)
+         */
         @Override
         public String toString(SortedBag<Card> object) {
             return Info.textCardList(object); 
         }
 
+        /**
+         * This method should never be called.
+         */
         @Override
         public SortedBag<Card> fromString(String string) {
             throw new UnsupportedOperationException();
