@@ -150,52 +150,114 @@ public final class ObservableGameState {
 
     /**
      *
-     * @param c the type of the card
-     * @return the number of cards of type c that the player has in hand
+     * @param c the type of the card.
+     * @return the number of cards of type c that the player has in hand.
      */
     public ReadOnlyIntegerProperty numberCardsOfType(Card c){
         return numberCardType.get(c);
     }
+
+    /**
+     *
+     * @param id the id of the player of interest.
+     * @return the number of tickets owned by the player id.
+     */
     public ReadOnlyIntegerProperty playerTicketCount(PlayerId id){
         return ticketsCount.get(id);
     }
+
+    /**
+     *
+     * @param id the id of the player of interest.
+     * @return the number of cards owned by the player id.
+     */
     public ReadOnlyIntegerProperty playerCardCount(PlayerId id){
         return cardsCount.get(id);
     }
+
+    /**
+     *
+     * @param id the id of the player of interest.
+     * @return the number of wagon cars owned by the player id.
+     */
     public ReadOnlyIntegerProperty playerCarCount(PlayerId id){
         return carCount.get(id);
     }
+
+    /**
+     *
+     * @param id the id of the player of interest.
+     * @return the claim points owned by the player id.
+     */
     public ReadOnlyIntegerProperty playerClaimPoints(PlayerId id){
         return claimPoints.get(id);
     }
 
+    /**
+     *
+     * @param slot the slot of the faceUpCard to get (from 0 to 4).
+     * @return the face up card at the given slot.
+     */
     public ReadOnlyObjectProperty<Card> faceUpCard(int slot){
         return faceUpCards.get(slot);
     }
+
+    /**
+     *
+     * @param route the Route of interest.
+     * @return the id of owner of the given route, null if it belongs to no player.
+     */
     public ReadOnlyObjectProperty<PlayerId> routeOwner(Route route){
         return routeOwner.get(route);
     }
 
+    /**
+     *
+     * @param route the Route of interest.
+     * @return if the player linked to this state can claim the given route.
+     */
     public ReadOnlyBooleanProperty canClaimRoute(Route route){
         return canClaimRoute.get(route);
     }
 
-
+    /**
+     *
+     * @return if the player linked to this state can draw tickets from the ticket's deck.
+     */
     public boolean canDrawTickets(){
         return gameState.canDrawTickets();
     }
+
+    /**
+     *
+     * @return if the player linked to this state can draw cards from the card's deck.
+     */
     public boolean canDrawCards(){
         return gameState.canDrawCards();
     }
 
+    /**
+     *
+     * @param route the Route of interest.
+     * @return the possible cards this' player can use to claim the given route.
+     */
     public List<SortedBag<Card>> possibleClaimCards(Route route){
         return player.possibleClaimCards(route);
     }
+
+    /**
+     *
+     * @return the list of tickets owned by this' player.
+     */
     public ObservableList<Ticket> ticketList(){
         return FXCollections.unmodifiableObservableList(ticketList);
     }
 
-
+    /**
+     *
+     * @param r the Route of interest.
+     * @return if the given route is already claimed or not.
+     */
     private boolean routeIsNotClaimed(Route r){
         List<List<Station>> stations = new ArrayList<>();
         for (Route route : gameState.claimedRoutes()) stations.add(route.stations());
