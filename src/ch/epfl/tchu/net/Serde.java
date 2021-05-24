@@ -61,6 +61,7 @@ public interface Serde<C> {
             }
             @Override
             public T deserialize(String str){
+                System.out.println("serde oneof lg 64:-"+str+"-end");
                 T value = values.get(Integer.parseInt(str));
                 Preconditions.checkArgument(values.contains(value));
                 return value;
@@ -98,13 +99,14 @@ public interface Serde<C> {
             }
             @Override
             public List<T> deserialize(String str){
+                System.out.println("listof str lg 102:"+str+"end");
+                System.out.println(str.isEmpty());
                 if(str.isEmpty()) return List.of();
                 String[] split = str.split(Pattern.quote(separator), -1);
                 List<T> deserialized = new ArrayList<>();
                 for (String s: split)
                     deserialized.add(serde.deserialize(s));
-                return deserialized;
-            }
+                return deserialized;}
         };
     }
 

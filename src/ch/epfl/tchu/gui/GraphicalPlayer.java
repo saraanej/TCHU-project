@@ -143,7 +143,7 @@ public final class GraphicalPlayer {
     /**
      * Allows the player to choose a card by calling the DrawCardHandler once his choice is made.
      * This method is intended to be called when the player has already drawn a first card and must now draw the second.
-     * @param cardHandler the drw Card's handler to call with the choice of the player.
+     * @param cardHandler the draw Card's handler to call with the choice of the player.
      */
     public void drawCard(ActionHandlers.DrawCardHandler cardHandler){
         assert isFxApplicationThread();

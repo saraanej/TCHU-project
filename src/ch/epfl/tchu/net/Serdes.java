@@ -137,7 +137,9 @@ public final class Serdes {
         @Override
         public PlayerState deserialize(String str) {
             String[] split = str.split(Pattern.quote(";"), -1);
-            return new PlayerState(SORTED_TICKET.deserialize(split[0]), SORTED_CARD.deserialize(split[1]),
+            for (String s : split) System.out.println(" "+ s);
+            return new PlayerState(SORTED_TICKET.deserialize(split[0]),
+                    SORTED_CARD.deserialize(split[1]),
                     LIST_ROUTE.deserialize(split[2]));
         }
     };
@@ -156,13 +158,14 @@ public final class Serdes {
             return String.join(":", serialized);
         }
 
+        //todo constantes separator
         @Override
         public PublicGameState deserialize(String str) {
             String[] split = str.split(Pattern.quote(":"), -1);
             return new PublicGameState(INTEGER.deserialize(split[0]), PUBLIC_CARDSTATE.deserialize(split[1]),
                     PLAYER_ID.deserialize(split[2]),
-                    Map.of(PlayerId.PLAYER_1, PLAYERSTATE.deserialize(split[3]),
-                            PlayerId.PLAYER_2, PLAYERSTATE.deserialize(split[4])),
+                    Map.of(PlayerId.PLAYER_1, PUBLIC_PLAYERSTATE.deserialize(split[3]),
+                            PlayerId.PLAYER_2, PUBLIC_PLAYERSTATE.deserialize(split[4])),
                     split[5].isEmpty() ? null : PLAYER_ID.deserialize(split[5]));
         }
     };
