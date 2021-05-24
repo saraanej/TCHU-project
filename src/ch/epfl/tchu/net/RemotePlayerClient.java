@@ -21,16 +21,16 @@ public class RemotePlayerClient {
 
     private final static String SPACE = " ";
 
+    private final String name;
     private final int port;
     private final Player player;
-    private final String name;
 
 
     /**
      * Default constructor.
-     * @param player (Player) : The given player to which the constructor gives a distant access.
-     * @param name (String) : The name to use to connect the proxy.
-     * @param port (int) : The port to use to connect the proxy.
+     * @param player The given player to which the constructor gives a distant access.
+     * @param name The name to use to connect the proxy.
+     * @param port The port to use to connect the proxy.
      */
     public RemotePlayerClient(Player player, String name, int port) {
         this.player = player;
@@ -108,9 +108,9 @@ public class RemotePlayerClient {
 
 
     /**
-     * @param socket (Socket) : the socket being used to exchange data
+     * @param socket the socket being used to exchange data
      *                          with the entity connected at the other end.
-     * @param message (String) : The serialized message to send to the client.
+     * @param message The serialized message to send to the client.
      * @throws UncheckedIOException if an IOException is thrown.
      */
     private void sendMessage(Socket socket, String message){

@@ -4,6 +4,7 @@ import ch.epfl.tchu.game.Card;
 import ch.epfl.tchu.game.Constants;
 import ch.epfl.tchu.game.Ticket;
 import javafx.beans.binding.Bindings;
+import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ReadOnlyIntegerProperty;
 import javafx.scene.Group;
@@ -27,12 +28,14 @@ import static ch.epfl.tchu.gui.GuiConstants.*;
  */
 final class DecksViewCreator {
 
+    private final static int MAXIMAL_GAUGE_WIDTH = 50;
+
     private DecksViewCreator(){}
 
 
     /**
      * Method creates the view of the player's hand by graphically creating all its components.
-     * @param observableGameState (ObservableGameState) : The observable state of the game.
+     * @param observableGameState The observable state of the game.
      * @return (Node) The elements that compose the hand's view.
      */
     public static Node createHandView(ObservableGameState observableGameState){
@@ -68,11 +71,9 @@ final class DecksViewCreator {
 
     /**
      * Method creates graphically the view of the decks in the game.
-     * @param observableGameState (ObservableGameState) :  The observable state of the game.
-     * @param ticketsHandler (ObjectProperty<ActionHandlers.DrawTicketsHandler>) :
-     *                                              Action handler managing the ticket draw.
-     * @param cardsHandler (ObjectProperty<ActionHandlers.DrawCardHandler>) :
-     *                                              Action handler managing the card draw.
+     * @param observableGameState The observable state of the game.
+     * @param ticketsHandler Action handler managing the ticket draw.
+     * @param cardsHandler Action handler managing the card draw.
      * @return (Node) The view of the decks.
      */
     public static Node createCardsView(ObservableGameState observableGameState,
@@ -82,17 +83,8 @@ final class DecksViewCreator {
         deckView.getStylesheets().addAll(DECK_SS,COLORS_SS);
         deckView.setId(CARD_PANE_ID);
 
-        Button ticketsDeck = new Button(StringsFr.TICKETS);
-        ticketsDeck.disableProperty().bind(ticketsHandler.isNull());
-        ticketsDeck.getStyleClass().add(GAUGED_SC);
-        buttonGauge(ticketsDeck, observableGameState.getLeftTickets());
-        ticketsDeck.setOnMouseClicked(e -> ticketsHandler.get().onDrawTickets());
-
-        Button cardsDeck = new Button(StringsFr.CARDS);
-        cardsDeck.disableProperty().bind(cardsHandler.isNull());
-        cardsDeck.getStyleClass().add(GAUGED_SC);
-        buttonGauge(cardsDeck, observableGameState.getLeftCards());
-        cardsDeck.setOnMouseClicked(e -> cardsHandler.get().onDrawCard(Constants.DECK_SLOT));
+        Button ticketsDeck = buttonGauge(true,observableGameState,ticketsHandler,cardsHandler);
+        Button cardsDeck = buttonGauge(false,observableGameState,ticketsHandler,cardsHandler);
 
         deckView.getChildren().add(ticketsDeck);
 
@@ -117,25 +109,34 @@ final class DecksViewCreator {
 
     /**
      * Method creates the graphical representation of the gauge buttons.
-     * @param button (Button) : The given button.
-     * @param percentage (ReadOnlyInteger) : Percentage of elements in the deck.
      */
-    private static void buttonGauge(Button button, ReadOnlyIntegerProperty percentage){
-        Group group = new Group();
+    private static Button buttonGauge(boolean isTicketsDeck, ObservableGameState observableGameState,
+                                    ObjectProperty<ActionHandlers.DrawTicketsHandler> ticketsHandler,
+                                    ObjectProperty<ActionHandlers.DrawCardHandler> cardsHandler){
 
+        Button deck = new Button(isTicketsDeck ? StringsFr.TICKETS : StringsFr.CARDS);
+        BooleanBinding handlerIsNull = isTicketsDeck ? ticketsHandler.isNull() : cardsHandler.isNull();
+        deck.disableProperty().bind(handlerIsNull);
+        deck.getStyleClass().add(GAUGED_SC);
+
+        Group group = new Group();
+        ReadOnlyIntegerProperty percentage = isTicketsDeck ? observableGameState.getLeftTickets() :
+                                                             observableGameState.getLeftCards();
         Rectangle background = new Rectangle(GAUGE_RECTANGLE_WIDTH, GAUGE_RECTANGLE_HEIGHT);
         background.getStyleClass().add(BACKGROUND_SC);
         Rectangle foreground = new Rectangle(GAUGE_RECTANGLE_WIDTH, GAUGE_RECTANGLE_HEIGHT);
-        foreground.widthProperty().bind(percentage.multiply(GAUGE_RECTANGLE_WIDTH).divide(100));
+        foreground.widthProperty().bind(percentage.multiply(MAXIMAL_GAUGE_WIDTH).divide(100));
         foreground.getStyleClass().add(FOREGROUND_SC);
-
         group.getChildren().addAll(background,foreground);
-        button.setGraphic(group);
+        deck.setGraphic(group);
+
+        deck.setOnMouseClicked(isTicketsDeck ? (e -> ticketsHandler.get().onDrawTickets()) :
+                                 (e -> cardsHandler.get().onDrawCard(Constants.DECK_SLOT)));
+        return deck;
     }
 
     /**
      * Method creates the graphical representation of cards.
-     * @param stackPane (StackPane) : The given pane.
      */
     private static void createRectangles(StackPane stackPane){
         Rectangle outside = new Rectangle(OUTSIDE_RECTANGLE_WIDTH, OUTSIDE_RECTANGLE_HEIGHT);
