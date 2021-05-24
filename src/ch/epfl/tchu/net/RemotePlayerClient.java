@@ -2,18 +2,16 @@ package ch.epfl.tchu.net;
 
 import ch.epfl.tchu.game.Player;
 import ch.epfl.tchu.game.PlayerId;
-
 import java.io.*;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
-
 import static java.nio.charset.StandardCharsets.US_ASCII;
 
 /**
- * The RemotePlayerClient instantiable class from the ch.epfl.tchu.net package
+ * The RemotePlayerClient instantiable class
  * represents a remote player client.
  *
  * @author Yasmin Ben Rahhal (329912)
@@ -21,10 +19,9 @@ import static java.nio.charset.StandardCharsets.US_ASCII;
  */
 public class RemotePlayerClient {
 
-    private static final String SPACE = " ";
+    private final int port;
     private final Player player;
     private final String name;
-    private final int port;
 
 
     /**
@@ -39,15 +36,14 @@ public class RemotePlayerClient {
         this.port = port;
     }
 
-
     /**
      * Depending on the type of message from the proxy, the method run deserializes the arguments
      * and calls the player's corresponding method;
-     * If this method returns a result, run serializes it to return it to the proxy in response.
+     * If this method returns a result, the method run serializes it
+     * to return it to the proxy in response.
      * @throws UncheckedIOException if an IOException is thrown.
      */
     public void run(){
-
         try(Socket socket = new Socket(name, port);
             BufferedReader reader =
                     new BufferedReader(
@@ -56,7 +52,7 @@ public class RemotePlayerClient {
 
             String readLine = reader.readLine();
             while(readLine != null){
-                String[] split = readLine.split(Pattern.quote(SPACE),-1);
+                String[] split = readLine.split(Pattern.quote(" "),-1);
                 switch (MessageId.valueOf(split[0])) {
                     case INIT_PLAYERS:
                         List<String> deserialized = Serdes.LIST_STRING.deserialize(split[2]);

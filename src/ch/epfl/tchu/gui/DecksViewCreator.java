@@ -15,44 +15,20 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
+import static ch.epfl.tchu.gui.GuiConstants.*;
 
 /**
  * The DecksViewCreator is a private and non-instantiable class.
- * It contains two public methods that construct a scene graph representing maps.
+ * It contains two public methods that construct a scene graph
+ * representing the player's hand and the decks.
  *
  * @author Yasmin Ben Rahhal (329912)
  * @author Sara Anejjar (329905)
  */
-
 final class DecksViewCreator {
 
-    static final int MIN_VISIBLE_CARD = 0;
-    static final int MIN_VISIBLE_TEXT = 1;
-    static final int WIDTH_OUTSIDE_RECTANGLE = 60;
-    static final int HEIGHT_OUTSIDE_RECTANGLE = 90;
-    static final int WIDTH_GAUGE_RECTANGLE = 50;
-    static final int HEIGHT_GAUGE_RECTANGLE = 5;
-    static final int WIDTH_CARD = 40;
-    static final int HEIGHT_CARD = 70;
-    static final int PERCENTAGE = 100;
-    static final String DECKS = "decks.css";
-    static final String COLORS = "colors.css";
-    static final String TICKETS = "tickets";
-    static final String HAND_PANE= "hand-pane";
-    static final String NEUTRAL = "NEUTRAL";
-    static final String CARD = "card";
-    static final String CARD_PANE = "card-pane";
-    static final String GAUGED_BUTTON = "gauged";
-    static final String EMPTY = "";
-    static final String BACKGROUND = "background";
-    static final String FOREGROUND = "foreground";
-    static final String OUTSIDE = "outside";
-    static final String INSIDE = "inside";
-    static final String FILLED = "filled";
-    static final String TRAIN_IMAGE = "train-image";
-
-
     private DecksViewCreator(){}
+
 
     /**
      * Method creates the view of the player's hand by graphically creating all its components.
@@ -61,26 +37,25 @@ final class DecksViewCreator {
      */
     public static Node createHandView(ObservableGameState observableGameState){
         HBox handView = new HBox();
-        handView.getStylesheets().addAll("decks.css","colors.css");
+        handView.getStylesheets().addAll(DECK_SS,COLORS_SS);
 
         ListView<Ticket> listView = new ListView<>(observableGameState.ticketList());
-        listView.setId("tickets");
+        listView.setId(TICKETS_ID);
 
         HBox handPane = new HBox();
-        handPane.setId("hand-pane");
+        handPane.setId(HAND_PANE_ID);
 
         for(Card card : Card.ALL){
             StackPane stackPane = new StackPane();
-
             ReadOnlyIntegerProperty count = observableGameState.numberCardsOfType(card);
 
-            stackPane.visibleProperty().bind(Bindings.greaterThan(count,MIN_VISIBLE_CARD));
-            stackPane.getStyleClass().addAll(card == Card.LOCOMOTIVE ? "NEUTRAL" : card.name(), "card");
+            stackPane.visibleProperty().bind(Bindings.greaterThan(count,MINIMUM_VISIBLE_CARD));
+            stackPane.getStyleClass().addAll(card == Card.LOCOMOTIVE ? NEUTRAL_SC : card.name(), CARD_SC);
 
             Text cardCounter = new Text();
-            cardCounter.visibleProperty().bind(Bindings.greaterThan(count,MIN_VISIBLE_TEXT));
+            cardCounter.visibleProperty().bind(Bindings.greaterThan(count,MINIMUM_VISIBLE_TEXT));
             cardCounter.textProperty().bind(Bindings.convert(count));
-            cardCounter.getStyleClass().add("count");
+            cardCounter.getStyleClass().add(COUNT_SC);
 
             createRectangles(stackPane);
             stackPane.getChildren().add(cardCounter);
@@ -88,34 +63,34 @@ final class DecksViewCreator {
         }
 
         handView.getChildren().addAll(listView, handPane);
-
         return handView;
     }
-
 
     /**
      * Method creates graphically the view of the decks in the game.
      * @param observableGameState (ObservableGameState) :  The observable state of the game.
-     * @param ticketsHandler (ObjectProperty<ActionHandlers.DrawTicketsHandler>) : Action handler managing the ticket draw.
-     * @param cardsHandler (ObjectProperty<ActionHandlers.DrawCardHandler>) : Action handler managing the card draw.
+     * @param ticketsHandler (ObjectProperty<ActionHandlers.DrawTicketsHandler>) :
+     *                                              Action handler managing the ticket draw.
+     * @param cardsHandler (ObjectProperty<ActionHandlers.DrawCardHandler>) :
+     *                                              Action handler managing the card draw.
      * @return (Node) The view of the decks.
      */
     public static Node createCardsView(ObservableGameState observableGameState,
                                        ObjectProperty<ActionHandlers.DrawTicketsHandler> ticketsHandler,
                                        ObjectProperty<ActionHandlers.DrawCardHandler> cardsHandler){
         VBox deckView = new VBox();
-        deckView.getStylesheets().addAll("decks.css","colors.css");
-        deckView.setId("card-pane");
+        deckView.getStylesheets().addAll(DECK_SS,COLORS_SS);
+        deckView.setId(CARD_PANE_ID);
 
         Button ticketsDeck = new Button(StringsFr.TICKETS);
         ticketsDeck.disableProperty().bind(ticketsHandler.isNull());
-        ticketsDeck.getStyleClass().add("gauged");
+        ticketsDeck.getStyleClass().add(GAUGED_SC);
         buttonGauge(ticketsDeck, observableGameState.getLeftTickets());
         ticketsDeck.setOnMouseClicked(e -> ticketsHandler.get().onDrawTickets());
 
         Button cardsDeck = new Button(StringsFr.CARDS);
         cardsDeck.disableProperty().bind(cardsHandler.isNull());
-        cardsDeck.getStyleClass().add("gauged");
+        cardsDeck.getStyleClass().add(GAUGED_SC);
         buttonGauge(cardsDeck, observableGameState.getLeftCards());
         cardsDeck.setOnMouseClicked(e -> cardsHandler.get().onDrawCard(Constants.DECK_SLOT));
 
@@ -123,11 +98,11 @@ final class DecksViewCreator {
 
         for(Integer i : Constants.FACE_UP_CARD_SLOTS){
             StackPane stackPane = new StackPane();
-            stackPane.getStyleClass().addAll("card","");
+            stackPane.getStyleClass().addAll(CARD_SC,"");
             observableGameState.faceUpCard(i).addListener((o,oV,nV) -> {
-                if(nV != null) //todo utiliser .set ou .add
+                if(nV != null)
                     stackPane.getStyleClass()
-                            .set(1,nV == Card.LOCOMOTIVE ? "NEUTRAL" : nV.name());
+                            .set(1,nV == Card.LOCOMOTIVE ? NEUTRAL_SC : nV.name());
             });
             createRectangles(stackPane);
             stackPane.setOnMouseClicked(e -> cardsHandler.get().onDrawCard(i));
@@ -147,11 +122,11 @@ final class DecksViewCreator {
     private static void buttonGauge(Button button, ReadOnlyIntegerProperty percentage){
         Group group = new Group();
 
-        Rectangle background = new Rectangle(WIDTH_GAUGE_RECTANGLE, HEIGHT_GAUGE_RECTANGLE);
-        background.getStyleClass().add("background");
-        Rectangle foreground = new Rectangle(WIDTH_GAUGE_RECTANGLE, HEIGHT_GAUGE_RECTANGLE);
-        foreground.widthProperty().bind(percentage.multiply(WIDTH_GAUGE_RECTANGLE).divide(PERCENTAGE));
-        foreground.getStyleClass().add("foreground");
+        Rectangle background = new Rectangle(GAUGE_RECTANGLE_WIDTH, GAUGE_RECTANGLE_HEIGHT);
+        background.getStyleClass().add(BACKGROUND_SC);
+        Rectangle foreground = new Rectangle(GAUGE_RECTANGLE_WIDTH, GAUGE_RECTANGLE_HEIGHT);
+        foreground.widthProperty().bind(percentage.multiply(GAUGE_RECTANGLE_WIDTH).divide(100));
+        foreground.getStyleClass().add(FOREGROUND_SC);
 
         group.getChildren().addAll(background,foreground);
         button.setGraphic(group);
@@ -162,16 +137,15 @@ final class DecksViewCreator {
      * @param stackPane (StackPane) : The given pane.
      */
     private static void createRectangles(StackPane stackPane){
-        Rectangle outside = new Rectangle(WIDTH_OUTSIDE_RECTANGLE, HEIGHT_OUTSIDE_RECTANGLE);
-        outside.getStyleClass().add("outside");
+        Rectangle outside = new Rectangle(OUTSIDE_RECTANGLE_WIDTH, OUTSIDE_RECTANGLE_HEIGHT);
+        outside.getStyleClass().add(OUTSIDE_SC);
 
-        Rectangle filledInside = new Rectangle(WIDTH_CARD,HEIGHT_CARD);
-        filledInside.getStyleClass().addAll("inside", "filled");
+        Rectangle filledInside = new Rectangle(INSIDE_RECTANGLE_WIDTH, INSIDE_RECTANGLE_HEIGHT);
+        filledInside.getStyleClass().addAll(INSIDE_SC, FILLED_SC);
 
-        Rectangle trainImage = new Rectangle(WIDTH_CARD,HEIGHT_CARD);
-        trainImage.getStyleClass().add("train-image");
+        Rectangle trainImage = new Rectangle(INSIDE_RECTANGLE_WIDTH, INSIDE_RECTANGLE_HEIGHT);
+        trainImage.getStyleClass().add(TRAIN_IMAGE_SC);
 
         stackPane.getChildren().addAll(outside,filledInside,trainImage);
     }
-
 }

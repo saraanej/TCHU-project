@@ -14,19 +14,32 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+/**
+ * The public ServerMain class contains
+ * the main program for the tCHu server.
+ *
+ * @author Yasmin Ben Rahhal (329912)
+ * @author Sara Anejjar (329905)
+ */
 public class ServerMain extends Application {
 
-    private final static int FIRST_ARG_INDEX = 0;
-    private final static int SECOND_ARG_INDEX = 1;
     private static final int SOCKET_PORT = 5108;
     private static final String PLAYER_1_DEFAULT = "Ada";
     private static final String PLAYER_2_DEFAULT = "Charles";
 
 
+    /**
+     * @see ServerMain#start(Stage);
+     */
     public static void main(String[] args) {
         launch(args);
     }
 
+
+    /**
+     * @see Application#start(Stage);
+     * @throws UncheckedIOException if an IOException is thrown.
+     */
     @Override
     public void start(Stage primaryStage) {
         try {
@@ -34,9 +47,8 @@ public class ServerMain extends Application {
             List<String> parameters = getParameters().getRaw();
             String player1, player2;
 
-           //  socket.accept();
-            player1 = (parameters.size() > FIRST_ARG_INDEX) ? parameters.get(FIRST_ARG_INDEX) : PLAYER_1_DEFAULT;
-            player2 = (parameters.size() > SECOND_ARG_INDEX) ? parameters.get(SECOND_ARG_INDEX) : PLAYER_2_DEFAULT;
+            player1 = (parameters.size() > 0) ? parameters.get(0) : PLAYER_1_DEFAULT;
+            player2 = (parameters.size() > 1) ? parameters.get(1) : PLAYER_2_DEFAULT;
             Random rng = new Random();
             SortedBag<Ticket> tickets = SortedBag.of(ChMap.tickets());
             Map<PlayerId, String> names =
