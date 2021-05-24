@@ -97,9 +97,9 @@ public final class ObservableGameState {
     }
 
     /**
-     * Updates the gameState by modifying its proprieties's values according to the given PlayerState ad PublicGameState
-     * @param gS the updated PublicGameState
-     * @param playerState the updated complete PlayerState of this observableGameState's player
+     * Updates the gameState by modifying its proprieties's values according to the given PlayerState ad PublicGameState.
+     * @param gS the updated PublicGameState.
+     * @param playerState the updated complete PlayerState of this observableGameState's player.
      */
     public void setState(PublicGameState gS, PlayerState playerState){
         gameState = gS;
