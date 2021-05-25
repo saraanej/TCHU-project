@@ -77,12 +77,13 @@ public final class Ticket implements Comparable<Ticket> {
 
 
     /**
+     * @see Integer#compareTo(Integer)
+     *
      * Compares alphabetically this ticket's text with another Ticket's text.
      * @param that the Ticket to compare with
      * @return  a strictly positive number if this is bigger than that
 	 *          a strictly negative number if this is smaller than that
                 0 if they are equal
-     * @see Integer#compareTo(Integer)
      */
     @Override
     public int compareTo(Ticket that) {
@@ -90,13 +91,13 @@ public final class Ticket implements Comparable<Ticket> {
     }
 
     /**
+     * @see String#toString()
+     *
      * Returns a string representation of this Ticket.
      * The string representation is of form :
      * if it's a city to city Ticket : "departure city - arrival city (points of the Ticket)".
      * if it's a city to country Ticket: "departure city - {list of arrival countries with its respective points}".
      * if it's a country to country Ticket: "departure country - {list of arrival countries with its respective points}".
-     *
-     * @see String#toString()
      */
     @Override
     public String toString() {

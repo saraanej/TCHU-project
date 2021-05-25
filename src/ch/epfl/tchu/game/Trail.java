@@ -66,11 +66,11 @@ public final class Trail {
 
 
     /**
-     * private constructor for a Trail.
+     * Private constructor for a Trail.
      *
-     * @param station1 the departure's Station of the Trail
-     * @param station2  the arrival's Station of the Trail
-     * @param routes all the roads taken by the Trail
+     * @param station1 the departure's Station of the Trail.
+     * @param station2  the arrival's Station of the Trail.
+     * @param routes all the roads taken by the Trail.
      */
     private Trail(Station station1, Station station2, List<Route> routes) {
         this.station1 = station1;
@@ -81,30 +81,30 @@ public final class Trail {
 
 
     /**
-     * @return the first station of the trail. null if the trail's length is zero
+     * @return the first station of the trail. null if the trail's length is zero.
      */
     public Station station1() {
         return this.station1;
     }
 
     /**
-     * @return the last station of the trail. null if the trail's length is zero
+     * @return the last station of the trail. null if the trail's length is zero.
      */
     public Station station2() {
         return this.station2;
     }
 
     /**
-     * @return the trail's length
+     * @return the trail's length.
      */
     public int length() {
         return this.length;
     }
 
     /**
-     * Computes the length of the Trail using the length of its routes
+     * Computes the length of the Trail using the length of its routes.
      *
-     * @return the length of this Trail
+     * @return the length of this Trail.
      */
     private int computeLength() {
         if (routes == null || routes.isEmpty())
@@ -117,11 +117,12 @@ public final class Trail {
 
 
     /**
+     * @see String#toString()
      * Returns a string representation of this Trail.
      * The string representation is of form : "departure station - arrival station (length of the Trail)".
      * If the trail's length is equal to 0, the string representation is the empty string.
      *
-     * @return the textual representation of the Trail
+     * @return the textual representation of the Trail.
      */
     @Override
     public String toString() {
