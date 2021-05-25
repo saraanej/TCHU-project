@@ -16,6 +16,11 @@ import java.util.regex.Pattern;
  */
 public final class Serdes {
 
+    private static final String COMMA_SEPARATOR = ",";
+    private static final String COMPOSITE_SEPARATOR = ";";
+    private static final String PUBLIC_GAMESTATE_SEPARATOR = ":";
+    private static final String EMPTY_STRING = "";
+
     /**
      * A Serde able to (de)serialize Integer values.
      */
@@ -58,32 +63,32 @@ public final class Serdes {
     /**
      * A Serde able to (de)serialize a list of String's elements.
      */
-    public static final Serde<List<String>> LIST_STRING = Serde.listOf(STRING, ",");
+    public static final Serde<List<String>> LIST_STRING = Serde.listOf(STRING, COMMA_SEPARATOR);
 
     /**
      * A Serde able to (de)serialize a list of Card's elements.
      */
-    public static final Serde<List<Card>> LIST_CARD = Serde.listOf(CARD, ",");
+    public static final Serde<List<Card>> LIST_CARD = Serde.listOf(CARD, COMMA_SEPARATOR);
 
     /**
      * A Serde able to (de)serialize a list of Route's elements.
      */
-    public static final Serde<List<Route>> LIST_ROUTE = Serde.listOf(ROUTE, ",");
+    public static final Serde<List<Route>> LIST_ROUTE = Serde.listOf(ROUTE, COMMA_SEPARATOR);
 
     /**
      * A Serde able to (de)serialize a SortedBag of Card's elements.
      */
-    public static final Serde<SortedBag<Card>> SORTED_CARD = Serde.bagOf(CARD, ",");
+    public static final Serde<SortedBag<Card>> SORTED_CARD = Serde.bagOf(CARD, COMMA_SEPARATOR);
 
     /**
      *  Serde able to (de)serialize a SortedBag of Ticket's elements.
      */
-    public static final Serde<SortedBag<Ticket>> SORTED_TICKET = Serde.bagOf(TICKET, ",");
+    public static final Serde<SortedBag<Ticket>> SORTED_TICKET = Serde.bagOf(TICKET, COMMA_SEPARATOR);
 
     /**
      * A Serde able to (de)serialize a list of SortedBags of Card's elements.
      */
-    public static final Serde<List<SortedBag<Card>>> LIST_SORTED_CARD = Serde.listOf(SORTED_CARD, ";");
+    public static final Serde<List<SortedBag<Card>>> LIST_SORTED_CARD = Serde.listOf(SORTED_CARD, COMPOSITE_SEPARATOR);
 
     /**
      * A Serde able to (de)serialize PublicCardState's elements.
@@ -93,12 +98,12 @@ public final class Serdes {
         public String serialize(PublicCardState p) {
             String[] serialized = new String[]{LIST_CARD.serialize(p.faceUpCards()),
                     INTEGER.serialize(p.deckSize()), INTEGER.serialize(p.discardsSize())};
-            return String.join(";", serialized);
+            return String.join(COMPOSITE_SEPARATOR, serialized);
         }
 
         @Override
         public PublicCardState deserialize(String str) {
-            String[] split = str.split(Pattern.quote(";"),-1);
+            String[] split = str.split(Pattern.quote(COMPOSITE_SEPARATOR),-1);
             return new PublicCardState(LIST_CARD.deserialize(split[0]),
                     INTEGER.deserialize(split[1]), INTEGER.deserialize(split[2]));
         }
@@ -112,12 +117,12 @@ public final class Serdes {
         public String serialize(PublicPlayerState p) {
             String[] serialized = new String[]{INTEGER.serialize(p.ticketCount()),
                     INTEGER.serialize(p.cardCount()), LIST_ROUTE.serialize(p.routes())};
-            return String.join(";", serialized);
+            return String.join(COMPOSITE_SEPARATOR, serialized);
         }
 
         @Override
         public PublicPlayerState deserialize(String str) {
-            String[] split = str.split(Pattern.quote(";"), -1);
+            String[] split = str.split(Pattern.quote(COMPOSITE_SEPARATOR), -1);
             return new PublicPlayerState(INTEGER.deserialize(split[0]), INTEGER.deserialize(split[1]),
                    LIST_ROUTE.deserialize(split[2]));
         }
@@ -131,12 +136,12 @@ public final class Serdes {
         public String serialize(PlayerState p) {
             String[] serialized = new String[]{SORTED_TICKET.serialize(p.tickets()),
                     SORTED_CARD.serialize(p.cards()), LIST_ROUTE.serialize(p.routes())};
-            return String.join(";", serialized);
+            return String.join(COMPOSITE_SEPARATOR, serialized);
         }
 
         @Override
         public PlayerState deserialize(String str) {
-            String[] split = str.split(Pattern.quote(";"), -1);
+            String[] split = str.split(Pattern.quote(COMPOSITE_SEPARATOR), -1);
             return new PlayerState(SORTED_TICKET.deserialize(split[0]),
                     SORTED_CARD.deserialize(split[1]),
                     LIST_ROUTE.deserialize(split[2]));
@@ -153,14 +158,13 @@ public final class Serdes {
                     PUBLIC_CARDSTATE.serialize(p.cardState()), PLAYER_ID.serialize(p.currentPlayerId()),
                     PUBLIC_PLAYERSTATE.serialize(p.playerState(PlayerId.PLAYER_1)),
                     PUBLIC_PLAYERSTATE.serialize(p.playerState(PlayerId.PLAYER_2)),
-                    p.lastPlayer() == null ? "" : PLAYER_ID.serialize(p.lastPlayer())};
-            return String.join(":", serialized);
+                    p.lastPlayer() == null ? EMPTY_STRING : PLAYER_ID.serialize(p.lastPlayer())};
+            return String.join(PUBLIC_GAMESTATE_SEPARATOR, serialized);
         }
 
-        //todo constantes separator
         @Override
         public PublicGameState deserialize(String str) {
-            String[] split = str.split(Pattern.quote(":"), -1);
+            String[] split = str.split(Pattern.quote(PUBLIC_GAMESTATE_SEPARATOR), -1);
             return new PublicGameState(INTEGER.deserialize(split[0]), PUBLIC_CARDSTATE.deserialize(split[1]),
                     PLAYER_ID.deserialize(split[2]),
                     Map.of(PlayerId.PLAYER_1, PUBLIC_PLAYERSTATE.deserialize(split[3]),

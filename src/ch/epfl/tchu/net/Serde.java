@@ -18,7 +18,7 @@ import java.util.regex.Pattern;
  * @author Sara Anejjar (329905)
  */
 public interface Serde<C> {
-
+    
     /**
      * Generic method that constructs a Serde taking as arguments a serialization function and a deserialization function.
      * @param serialization the serialization function.

@@ -120,7 +120,7 @@ public final class GraphicalPlayer {
             drawCard.set(null);
             drawTickets.set(null);
             routeHandler.onClaimRoute(r,c);
-            claimRoute.set(null); //maybe to change
+            claimRoute.set(null);
         });
 
         if (gameState.canDrawTickets())
