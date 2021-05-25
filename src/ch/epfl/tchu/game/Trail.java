@@ -101,6 +101,7 @@ public final class Trail {
         return this.length;
     }
 
+
     /**
      * Computes the length of the Trail using the length of its routes.
      *
@@ -118,10 +119,10 @@ public final class Trail {
 
     /**
      * @see String#toString()
+     *
      * Returns a string representation of this Trail.
      * The string representation is of form : "departure station - arrival station (length of the Trail)".
      * If the trail's length is equal to 0, the string representation is the empty string.
-     *
      * @return the textual representation of the Trail.
      */
     @Override
