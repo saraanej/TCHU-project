@@ -15,8 +15,6 @@ import java.util.List;
 
 public final class Trail {
 
-    private static Trail longestTrail = new Trail(null, null, List.of());
-
     private final int length;
     private final Station station1;
     private final Station station2;
@@ -32,6 +30,7 @@ public final class Trail {
      * @return (Trail) the longest path in the given list of routes (the empty Trail if routes is empty).
      */
     public static Trail longest(List<Route> routes) {
+        Trail longestTrail = new Trail(null, null, List.of());
         if (routes == (null) || routes.isEmpty())
             return longestTrail;
 

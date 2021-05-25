@@ -24,8 +24,8 @@ import java.util.Random;
 public class ServerMain extends Application {
 
     private static final int SOCKET_PORT = 5108;
-    private static final String PLAYER_1_DEFAULT = "Ada";
-    private static final String PLAYER_2_DEFAULT = "Charles";
+    private static final String PLAYER_1_DEFAULT = "Yas";
+    private static final String PLAYER_2_DEFAULT = "Ali";
 
 
     /**

@@ -3,6 +3,7 @@ package ch.epfl.tchu.game;
 import ch.epfl.tchu.Preconditions;
 import ch.epfl.tchu.SortedBag;
 import ch.epfl.tchu.gui.Info;
+import com.sun.source.tree.Tree;
 
 import java.util.*;
 import java.util.List;
@@ -92,13 +93,13 @@ public class Game {
             players.get(playerId).setInitialTicketChoice(initialTickets);
         }
         updateState(players, gameState);
-        SortedBag<Ticket> chosenTickets;
-        for (PlayerId playerId : PlayerId.values()) {
-            chosenTickets = players.get(playerId).chooseInitialTickets();
-            gameState = gameState.withInitiallyChosenTickets(playerId, chosenTickets);
-            receiveInfo(players, playersInfo.get(playerId).keptTickets(chosenTickets.size())); //todo a mettre en boucle apres ligne 93
+        Map<PlayerId,SortedBag<Ticket>> pTickets = new EnumMap<>(PlayerId.class);
+        for (PlayerId id : PlayerId.values()) {
+            pTickets.put(id, players.get(id).chooseInitialTickets());
+            gameState = gameState.withInitiallyChosenTickets(id, pTickets.get(id));
         }
-
+        pTickets.forEach((i,t) ->
+                receiveInfo(players, playersInfo.get(i).keptTickets(t.size())));
         return gameState;
     }
 
@@ -228,8 +229,7 @@ public class Game {
         int minPoints = Collections.min(playersPoints.values());
         Map.Entry<PlayerId, Integer> winner = winner(playersPoints, minPoints);
 
-        List<String> names = playerNames.values().stream().collect(Collectors.toList());
-        if (winner.getKey() == null) receiveInfo(players, Info.draw(names, minPoints));
+        if (winner.getKey() == null) receiveInfo(players, Info.draw(new ArrayList<>(playerNames.values()), minPoints));
         else receiveInfo(players, playersInfo.get(winner.getKey())
                 .won(winner.getValue(), minPoints));
     }
@@ -261,14 +261,11 @@ public class Game {
      * if null, both players are ex-quo.
      */
     private static Map.Entry<PlayerId, Integer> winner(Map<PlayerId, Integer> playersPoints, int minPoints) {
-        Map.Entry<PlayerId, Integer> winner = null;
-        for (Map.Entry<PlayerId, Integer> entry : playersPoints.entrySet()) {
-            if (entry.getValue() > minPoints) {
-                minPoints = entry.getValue();
-                winner = entry;
-            }
-        }
-        return winner;
+
+        Map.Entry<PlayerId, Integer> winner = playersPoints.entrySet().stream()
+                .max(Comparator.comparingInt(e -> e.getValue())).get();;
+
+        return winner.getValue() == minPoints ? null : winner;
     }
 
     /**
@@ -278,19 +275,15 @@ public class Game {
      * if null, both players have the longestTrail.
      */
     private static PlayerId longest(Map<PlayerId, Trail> playersTrail) {
-        PlayerId bonusWinner = null;
-        //Used this method (.min) to determine the smallest Trail's length because there might be more than 2 players in the future
-        int length = playersTrail.values()
-                .stream()
-                .min(Comparator.comparingInt(Trail::length)).get().length();
 
-        for (Map.Entry<PlayerId, Trail> entry : playersTrail.entrySet()) {
-            if (entry.getValue().length() > length) {
-                length = entry.getValue().length();
-                bonusWinner = entry.getKey();
-            }
-        }
-        return bonusWinner;
+        //Used this method (.min) to determine the smallest Trail's length because there might be more than 2 players in the future
+        Map.Entry<PlayerId, Trail> min = playersTrail.entrySet().stream()
+                .min(Comparator.comparingInt(e -> e.getValue().length())).get();
+
+        PlayerId bonusWinner = playersTrail.entrySet().stream()
+                .max(Comparator.comparingInt(e -> e.getValue().length())).get().getKey();
+
+        return bonusWinner == min.getKey() ? null : bonusWinner;
     }
 
     /**
