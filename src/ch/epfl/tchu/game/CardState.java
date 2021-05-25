@@ -24,8 +24,8 @@ public final class CardState extends PublicCardState {
 	 * Constructs a private state in which the Face Up Cards are the first 5 cards of the given deck,
 	 * the cardState's deck consists of the remaining cards of the given deck, and the discard is empty.
 	 *
-	 * @param deck (Deck<Card>) the deck of cards of the game
-	 * @return (CardState) the cardState corresponding to the deck
+	 * @param deck the deck of cards of the game
+	 * @return the cardState corresponding to the deck
 	 * @throws IllegalArgumentException if the deck's size is strictly smaller than 5
 	 */
 	public static CardState of(Deck<Card> deck) {
@@ -42,9 +42,9 @@ public final class CardState extends PublicCardState {
 	/**
 	 * Default private constructor for the card's state.
 	 *
-	 * @param faceUpCards (List<Card>) the list of the visible cards
-	 * @param deck        (Deck<Card>) contains the cards of the deck
-	 * @param discard     (SortedBag<Card>) contains the discarded cards of the game
+	 * @param faceUpCards the list of the visible cards
+	 * @param deck contains the cards of the deck
+	 * @param discard contains the discarded cards of the game
 	 */
 	private CardState(List<Card> faceUpCards, Deck<Card> deck, SortedBag<Card> discard) {
 		super(faceUpCards, deck.size(), discard.size());
@@ -56,7 +56,7 @@ public final class CardState extends PublicCardState {
 	/**
 	 * Returns the card at the top of this cardState's deck.
 	 *
-	 * @return (Card) the top card of this CardState's deck
+	 * @return the top card of this CardState's deck
 	 * @throws IllegalArgumentException if the deck is empty
 	 */
 	public Card topDeckCard() {
@@ -69,8 +69,8 @@ public final class CardState extends PublicCardState {
 	 * except that the slot-th face-up card has been replaced by the one at the top of the deck,
 	 * which is removed at the same time.
 	 *
-	 * @param slot (int) index of the visible card
-	 * @return (CardState) same as this CardState with the slot-th face up card
+	 * @param slot index of the visible card
+	 * @return same as this CardState with the slot-th face up card
 	 * replaced with the top card of the deck
 	 * and its deck without the top card used
 	 * @throws IndexOutOfBoundsException if slot is less than 0 or bigger or equal than 5
@@ -86,7 +86,7 @@ public final class CardState extends PublicCardState {
 	/**
 	 * Returns a cardState identical to the receiver (this), but without the card at the top of its deck.
 	 *
-	 * @return (CardState) same as this CardState without the top card of its deck
+	 * @return same as this CardState without the top card of its deck
 	 * @throws IllegalArgumentException if the deck is empty
 	 */
 	public CardState withoutTopDeckCard() {
@@ -99,8 +99,8 @@ public final class CardState extends PublicCardState {
 	 * except that the cards from the discard pile have been shuffled
 	 * using the given random generator to form the new cardState's deck.
 	 *
-	 * @param rng (Random) random number generator to shuffle the discard's cards
-	 * @return (CardState) same as this CardState with the deck composed of the shuffled discard's Cards
+	 * @param rng random number generator to shuffle the discard's cards
+	 * @return same as this CardState with the deck composed of the shuffled discard's Cards
 	 * @throws IllegalArgumentException if the deck is not empty
 	 */
 	public CardState withDeckRecreatedFromDiscards(Random rng) {
@@ -111,8 +111,8 @@ public final class CardState extends PublicCardState {
 	/**
 	 * Returns a cardState identical to the receiver (this), but with the given cards added to the discard.
 	 *
-	 * @param additionalDiscards (SortedBag<Card>) the Cards to add to the discard
-	 * @return (CardState) same as this CardState with the additionalDiscards added to its discard
+	 * @param additionalDiscards the Cards to add to the discard
+	 * @return same as this CardState with the additionalDiscards added to its discard
 	 */
 	public CardState withMoreDiscardedCards(SortedBag<Card> additionalDiscards) {
 		SortedBag.Builder<Card> newDiscard = new SortedBag.Builder<>();

@@ -68,7 +68,6 @@ public enum Card {
 
 	/**
 	 * Constructor initializing the color of the wagon cards.
-	 *
 	 * @param color The color of the wagon's card.
 	 */
 	Card(Color color) {
