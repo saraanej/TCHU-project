@@ -78,8 +78,8 @@ public final class ObservableGameState {
     private final Map<Route,BooleanProperty> canClaimRoute;
 
     /**
-     * Public default constructor
-     * @param playerId the id of the player's linked to this observableGameState
+     * Public default constructor.
+     * @param playerId the id of the player's linked to this observableGameState.
      */
     public ObservableGameState(PlayerId playerId){
         this.playerId = playerId;
@@ -133,7 +133,6 @@ public final class ObservableGameState {
     }
 
     /**
-     *
      * @return the property containing the percentage of left Tickets in the deck
      */
     public ReadOnlyIntegerProperty getLeftTickets(){
@@ -141,7 +140,6 @@ public final class ObservableGameState {
     }
 
     /**
-     *
      * @return the property containing the percentage of left Cards in the deck
      */
     public ReadOnlyIntegerProperty getLeftCards(){
@@ -149,7 +147,6 @@ public final class ObservableGameState {
     }
 
     /**
-     *
      * @param c the type of the card.
      * @return the number of cards of type c that the player has in hand.
      */
@@ -158,7 +155,6 @@ public final class ObservableGameState {
     }
 
     /**
-     *
      * @param id the id of the player of interest.
      * @return the number of tickets owned by the player id.
      */
@@ -167,7 +163,6 @@ public final class ObservableGameState {
     }
 
     /**
-     *
      * @param id the id of the player of interest.
      * @return the number of cards owned by the player id.
      */
@@ -176,7 +171,6 @@ public final class ObservableGameState {
     }
 
     /**
-     *
      * @param id the id of the player of interest.
      * @return the number of wagon cars owned by the player id.
      */
@@ -185,7 +179,6 @@ public final class ObservableGameState {
     }
 
     /**
-     *
      * @param id the id of the player of interest.
      * @return the claim points owned by the player id.
      */
@@ -194,7 +187,6 @@ public final class ObservableGameState {
     }
 
     /**
-     *
      * @param slot the slot of the faceUpCard to get (from 0 to 4).
      * @return the face up card at the given slot.
      */
@@ -203,7 +195,6 @@ public final class ObservableGameState {
     }
 
     /**
-     *
      * @param route the Route of interest.
      * @return the id of owner of the given route, null if it belongs to no player.
      */
@@ -212,7 +203,6 @@ public final class ObservableGameState {
     }
 
     /**
-     *
      * @param route the Route of interest.
      * @return if the player linked to this state can claim the given route.
      */
@@ -221,7 +211,6 @@ public final class ObservableGameState {
     }
 
     /**
-     *
      * @return if the player linked to this state can draw tickets from the ticket's deck.
      */
     public boolean canDrawTickets(){
@@ -229,7 +218,6 @@ public final class ObservableGameState {
     }
 
     /**
-     *
      * @return if the player linked to this state can draw cards from the card's deck.
      */
     public boolean canDrawCards(){
@@ -237,7 +225,6 @@ public final class ObservableGameState {
     }
 
     /**
-     *
      * @param route the Route of interest.
      * @return the possible cards this' player can use to claim the given route.
      */
@@ -246,15 +233,14 @@ public final class ObservableGameState {
     }
 
     /**
-     *
      * @return the list of tickets owned by this' player.
      */
     public ObservableList<Ticket> ticketList(){
         return FXCollections.unmodifiableObservableList(ticketList);
     }
 
+
     /**
-     *
      * @param r the Route of interest.
      * @return if the given route is already claimed or not.
      */

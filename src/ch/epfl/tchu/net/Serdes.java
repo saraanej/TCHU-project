@@ -8,7 +8,7 @@ import java.util.*;
 import java.util.regex.Pattern;
 
 /**
- * The Serdes class of the ch.epfl.tchu.net package, final and not instantiable, contains all the serdes useful for the project.
+ * The Serdes class, final and not instantiable, contains all the serdes useful for the project.
  * Each one of them is defined as a public, static, and final attribute of the class.
  *
  * @author Yasmin Ben Rahhal (329912)
@@ -172,6 +172,7 @@ public final class Serdes {
                     split[5].isEmpty() ? null : PLAYER_ID.deserialize(split[5]));
         }
     };
+
 
     /**
      * Private default constructor, should not be used.

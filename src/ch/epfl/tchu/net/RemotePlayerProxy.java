@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * The RemotePlayerProxy instantiable class in the ch.epfl.tchu.net package
+ * The RemotePlayerProxy instantiable class
  * represents a remote player proxy.
  * It implements the Player interface and can thus play the role of a player.
  *
@@ -36,7 +36,6 @@ public final class RemotePlayerProxy implements Player {
     /**
      * Sends a message through the network to call the same method on the actual player hosted in another program.
      * @see Player#initPlayers(PlayerId, Map) 
-     * @throws UncheckedIOException if an error occurs when sending a message.
      */
     @Override
     public void initPlayers(PlayerId ownId, Map<PlayerId, String> playerNames) {
@@ -50,7 +49,6 @@ public final class RemotePlayerProxy implements Player {
     /**
      * Sends a message through the network to call the same method on the actual player hosted in another program
      * @see Player#receiveInfo(String) 
-     * @throws UncheckedIOException if an error occurs when sending a message.
      */
     @Override
     public void receiveInfo(String info) {
@@ -60,7 +58,6 @@ public final class RemotePlayerProxy implements Player {
     /**
      * Sends a message through the network to call the same method on the actual player hosted in another program
      * @see Player#updateState(PublicGameState, PlayerState) 
-     * @throws UncheckedIOException if an error occurs when sending a message.
      */
     @Override
     public void updateState(PublicGameState newState, PlayerState ownState) {
@@ -72,7 +69,6 @@ public final class RemotePlayerProxy implements Player {
     /**
      * Sends a message through the network to call the same method on the actual player hosted in another program
      * @see Player#setInitialTicketChoice(SortedBag<Ticket>)
-     * @throws UncheckedIOException if an error occurs when sending a message.
      */
     @Override
     public void setInitialTicketChoice(SortedBag<Ticket> tickets) {
@@ -82,7 +78,6 @@ public final class RemotePlayerProxy implements Player {
     /**
      * Sends a message through the network to call the same method on the actual player hosted in another program
      * @see Player#drawSlot()
-     * @throws UncheckedIOException if an error occurs when reading the received message or sending a message.
      */
     @Override
     public int drawSlot() {
@@ -93,7 +88,6 @@ public final class RemotePlayerProxy implements Player {
     /**
      * Sends a message through the network to call the same method on the actual player hosted in another program
      * @see Player#nextTurn()
-     * @throws UncheckedIOException if an error occurs when reading the received message or sending a message.
      */
     @Override
     public TurnKind nextTurn() {
@@ -104,7 +98,6 @@ public final class RemotePlayerProxy implements Player {
     /**
      * Sends a message through the network to call the same method on the actual player hosted in another program
      * @see Player#chooseTickets(SortedBag<Ticket>)
-     * @throws UncheckedIOException if an error occurs when reading the received message or sending a message.
      */
     @Override
     public SortedBag<Ticket> chooseTickets(SortedBag<Ticket> options) {
@@ -115,7 +108,6 @@ public final class RemotePlayerProxy implements Player {
     /**
      * Sends a message through the network to call the same method on the actual player hosted in another program
      * @see Player#chooseInitialTickets()
-     * @throws UncheckedIOException if an error occurs when reading the received message or sending a message.
      */
     @Override
     public SortedBag<Ticket> chooseInitialTickets() {
@@ -126,7 +118,6 @@ public final class RemotePlayerProxy implements Player {
     /**
      * Sends a message through the network to call the same method on the actual player hosted in another program
      * @see Player#initialClaimCards()
-     * @throws UncheckedIOException if an error occurs when reading the received message or sending a message.
      */
     @Override
     public SortedBag<Card> initialClaimCards() {
@@ -137,7 +128,6 @@ public final class RemotePlayerProxy implements Player {
     /**
      * Sends a message through the network to call the same method on the actual player hosted in another program
      * @see Player#chooseAdditionalCards(List<SortedBag<Card>>)
-     * @throws UncheckedIOException if an error occurs when reading the received message or sending a message.
      */
     @Override
     public SortedBag<Card> chooseAdditionalCards(List<SortedBag<Card>> options) {
@@ -148,7 +138,6 @@ public final class RemotePlayerProxy implements Player {
     /**
      * Sends a message through the network to call the same method on the actual player hosted in another program
      * @see Player#claimedRoute()
-     * @throws UncheckedIOException if an error occurs when reading the received message or sending a message.
      */
     @Override
     public Route claimedRoute() {
@@ -176,7 +165,6 @@ public final class RemotePlayerProxy implements Player {
     }
 
     /**
-     *
      * @return the last message received from the inputStream of the socket
      */
     private String receiveMessage(){

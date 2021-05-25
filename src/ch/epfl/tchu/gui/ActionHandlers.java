@@ -84,6 +84,4 @@ public interface ActionHandlers {
          */
         void onChooseCards(SortedBag<Card> options);
     }
-
-
 }
