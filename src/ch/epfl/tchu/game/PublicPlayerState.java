@@ -27,9 +27,9 @@ public class PublicPlayerState {
 
     /**
      * Default public constructor of the PublicPlayerState.
-     * @param ticketCount (int): The number of tickets the player owns.
-     * @param cardCount (int): The number of cards the player owns.
-     * @param routes (List<Routes>): The roads the player owns.
+     * @param ticketCount The number of tickets the player owns.
+     * @param cardCount The number of cards the player owns.
+     * @param routes The roads the player owns.
      * @throws IllegalArgumentException
                  if the ticketCount is strictly negative,
                  if the cardCount is strictly negative.
@@ -46,35 +46,35 @@ public class PublicPlayerState {
 
 
     /**
-     * @return (int) The number of tickets the player owns.
+     * @return The number of tickets the player owns.
      */
     public int ticketCount() {
         return ticketCount;
     }
 
     /**
-     * @return (int) The number of cards the player owns.
+     * @return The number of cards the player owns.
      */
     public int cardCount() {
         return cardCount;
     }
 
     /**
-     * @return (int) The number of wagons the player owns.
+     * @return The number of wagons the player owns.
      */
     public int carCount() {
         return carCount;
     }
 
     /**
-     * @return (int) The number of construction's points earned by the player.
+     * @return The number of construction's points earned by the player.
      */
     public int claimPoints() {
         return claimPoints;
     }
 
     /**
-     * @return (List<Routes>) All the roads the player owns.
+     * @return All the roads the player owns.
      */
     public List<Route> routes(){
         return routes;
@@ -82,7 +82,7 @@ public class PublicPlayerState {
 
 
     /**
-     * @return (int) The number of construction's points earned by the player.
+     * @return The number of construction's points earned by the player.
      */
     private int computeClaimPoints() {
         int points = 0;
@@ -93,7 +93,7 @@ public class PublicPlayerState {
     }
 
     /**
-     * @return (int) The number of wagons the player owns.
+     * @return The number of wagons the player owns.
      */
     private int computeCarCount() {
         int length = 0;

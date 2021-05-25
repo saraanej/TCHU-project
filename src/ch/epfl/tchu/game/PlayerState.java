@@ -23,7 +23,7 @@ public final class PlayerState extends PublicPlayerState {
      * Constructs the initial state of a player to whom the given initial cards were dealt,
      * the player does not yet have any tickets, and has not taken any route.
      *
-     * @param initialCards (SortedBag<Card>) the initial distributed cards
+     * @param initialCards the initial distributed cards
      * @return the initial Player's state
      * @throws IllegalArgumentException if the number of initial cards is not equal to 4
      */
@@ -39,9 +39,9 @@ public final class PlayerState extends PublicPlayerState {
     /**
      * Public Constructor of the state of a player owning the given tickets, cards and routes.
      *
-     * @param tickets (SortedBag<Ticket>) the tickets owned by the player
-     * @param cards   (SortedBag<Card>) the cards owned by the player
-     * @param routes  (List<Route>) the roads owned by the player
+     * @param tickets the tickets owned by the player
+     * @param cards   the cards owned by the player
+     * @param routes  the roads owned by the player
      */
     public PlayerState(SortedBag<Ticket> tickets, SortedBag<Card> cards, List<Route> routes) {
         super(tickets.size(), cards.size(), routes);
@@ -53,7 +53,7 @@ public final class PlayerState extends PublicPlayerState {
     /**
      * Returns the tickets in the player's hand.
      *
-     * @return (SortedBag<Ticket>) The tickets owned by the player
+     * @return The tickets owned by the player
      */
     public SortedBag<Ticket> tickets() {
         return tickets;
@@ -62,7 +62,7 @@ public final class PlayerState extends PublicPlayerState {
     /**
      * Returns the cards in the player's hand
      *
-     * @return (SortedBag<Card>) The cards owned by the player
+     * @return The cards owned by the player
      */
     public SortedBag<Card> cards() {
         return cards;
@@ -71,8 +71,8 @@ public final class PlayerState extends PublicPlayerState {
     /**
      * Returns the list of all sets of ordered cards the player could use to take possession of the given route.
      *
-     * @param route (Route) The road to claim
-     * @return (List <SortedBag<Card>>) All the possible sets of cards to use to claim the road route
+     * @param route The road to claim
+     * @return All the possible sets of cards to use to claim the road route
      * @throws IllegalArgumentException If the player doesn't have enough wagons to claim the road route
      */
     public List<SortedBag<Card>> possibleClaimCards(Route route) {
@@ -98,9 +98,9 @@ public final class PlayerState extends PublicPlayerState {
      * sorted in ascending order of the number of locomotive cards,knowing that the initialCards
      * and the 3 drawnCards from the deck force him to draw additionalCardsCount cards.
      *
-     * @param additionalCardsCount (int) the additional Cards for the player to add
-     * @param initialCards         (SortedBag<Card>) the cards used by the player to claim a route
-     * @return (List <SortedBag<Card>>) The list of Sorted additional cards the player can use to claim the route
+     * @param additionalCardsCount the additional Cards for the player to add
+     * @param initialCards         the cards used by the player to claim a route
+     * @return The list of Sorted additional cards the player can use to claim the route
      * @throws IllegalArgumentException if additionalCardsCount is not between 1 and 3 (included)
      *                                  if initialCards is empty
      *                                  if initialCards contains more than two different cards
@@ -130,8 +130,8 @@ public final class PlayerState extends PublicPlayerState {
     /**
      * Returns an identical state to this, except that the player also has the given tickets added to his hand
      *
-     * @param newTickets (SortedBag<Ticket) The tickets to add to this player
-     * @return (PlayerState) Same as this PlayerState with the newTickets added to it
+     * @param newTickets The tickets to add to this player
+     * @return Same as this PlayerState with the newTickets added to it
      */
     public PlayerState withAddedTickets(SortedBag<Ticket> newTickets) {
         SortedBag.Builder<Ticket> addedTickets = new SortedBag.Builder<>();
@@ -143,8 +143,8 @@ public final class PlayerState extends PublicPlayerState {
     /**
      * Returns an identical state to this, except that the player also has the given card added to his hand.
      *
-     * @param card (Card) the card to add to the list of cards owned by the player
-     * @return (PlayerState) Same as this PlayerState with a card added to its list of cards
+     * @param card the card to add to the list of cards owned by the player
+     * @return Same as this PlayerState with a card added to its list of cards
      */
     public PlayerState withAddedCard(Card card) {
         return new PlayerState(tickets, cards.union(SortedBag.of(card)), routes());
@@ -155,9 +155,9 @@ public final class PlayerState extends PublicPlayerState {
      * Returns an identical state to the receiver,
      * except that the player has claimed the given route using the given cards claimCards
      *
-     * @param route      (Route) the road to add to this PlayerState's roads
-     * @param claimCards (The cards used by this player to claim the road)
-     * @return (PlayerState) Same as this PlayerState with the additional route added to its routes
+     * @param route      the road to add to this PlayerState's roads
+     * @param claimCards The cards used by this player to claim the road
+     * @return Same as this PlayerState with the additional route added to its routes
      * and with the claimCards removed from its list of cards
      */
     public PlayerState withClaimedRoute(Route route, SortedBag<Card> claimCards) {
@@ -170,7 +170,7 @@ public final class PlayerState extends PublicPlayerState {
      * Returns true iff the player can claim the given route,
      * i.e. if he has enough cars left and if he has the necessary claimCards in hand.
      *
-     * @param route (Route) The road to check if it can be claimed or not
+     * @param route The road to check if it can be claimed or not
      * @return true if route can be claimed
      */
     public boolean canClaimRoute(Route route) {
@@ -180,7 +180,7 @@ public final class PlayerState extends PublicPlayerState {
     /**
      * Returns the number of points — possibly negative — obtained by the player thanks to his tickets.
      *
-     * @return (int) The points earned by the player with its tickets
+     * @return The points earned by the player with its tickets
      */
     public int ticketPoints() {
         List<Integer> iDs = new ArrayList<>();
@@ -206,7 +206,7 @@ public final class PlayerState extends PublicPlayerState {
      * Returns all of the points obtained by the player at the end of the game,
      * namely the sum of the points earned with the claimPoints and ticketPoints.
      *
-     * @return (int) All the points earned by the player at the end of the game
+     * @return All the points earned by the player at the end of the game
      */
     public int finalPoints() {
         return ticketPoints() + claimPoints();

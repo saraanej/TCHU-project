@@ -166,10 +166,10 @@ public final class GraphicalPlayer {
         ListView<Ticket> listView = new ListView<>(FXCollections.observableArrayList(options.toList()));
         listView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
-        final int MIN_TICKET_CHOICE = options.size() - DISCARDABLE_TICKETS_COUNT;
+        int minTicketsChoice = options.size() - DISCARDABLE_TICKETS_COUNT;
 
-        createDialogStage(MIN_TICKET_CHOICE,StringsFr.TICKETS_CHOICE,
-                String.format(StringsFr.CHOOSE_TICKETS, MIN_TICKET_CHOICE, StringsFr.plural(MIN_TICKET_CHOICE)),
+        createDialogStage(minTicketsChoice,StringsFr.TICKETS_CHOICE,
+                String.format(StringsFr.CHOOSE_TICKETS, minTicketsChoice, StringsFr.plural(minTicketsChoice)),
                 listView,
                 e -> chooseTickets.onChooseTickets(SortedBag.of(listView.getSelectionModel().getSelectedItems())));
     }

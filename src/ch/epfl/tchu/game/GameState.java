@@ -27,9 +27,9 @@ public final class GameState extends PublicGameState{
      * the cardState contains the cards of Constants.ALL_CARDS, without the ones above distributed to the players,
      * the decks are shuffled using the given random generator, also used to randomly choose the identity of the first player.
      *
-     * @param tickets (SortedBag<Ticket>) : the tickets' deck contains these given tickets
-     * @param rng (Random) : the given random generator
-     * @return (GameState) the initial state of a Tchu's play
+     * @param tickets the tickets' deck contains these given tickets
+     * @param rng the given random generator
+     * @return the initial state of a Tchu's play
      */
     public static GameState initial(SortedBag<Ticket> tickets, Random rng) {
         Preconditions.checkArgument(tickets != null && !tickets.isEmpty());
@@ -49,11 +49,11 @@ public final class GameState extends PublicGameState{
     /**
      * Private constructor of a GameState.
      *
-     * @param ticketDeck (Deck<Ticket>) : the ticket's deck
-     * @param cardState (PublicCardState) : the public state of the cars and locomotives
-     * @param currentPlayerId (PlayerId) : the current player's identity
-     * @param playerState (Map<PlayerId, PlayerState>) : the public state of the players
-     * @param lastPlayer (PlayerId) : the last player's identity. can be null
+     * @param ticketDeck the ticket's deck
+     * @param cardState the public state of the cars and locomotives
+     * @param currentPlayerId the current player's identity
+     * @param playerState the public state of the players
+     * @param lastPlayer the last player's identity. can be null
      *
      */
     private GameState(Deck<Ticket> ticketDeck, CardState cardState, PlayerId currentPlayerId, Map<PlayerId, PlayerState> playerState, PlayerId lastPlayer){
@@ -68,7 +68,7 @@ public final class GameState extends PublicGameState{
     /**
      * Returns the top deck card of this gameState's cardState.
      *
-     * @return (Card) the drawn card on the top of the deck
+     * @return the drawn card on the top of the deck
      * @throws IllegalArgumentException
      *                       if the card's deck is empty
      */
@@ -80,8 +80,8 @@ public final class GameState extends PublicGameState{
     /**
      * Returns the count top Tickets from the top of the ticket's deck.
      *
-     * @param count (int) : the number of tickets to draw from this ticket's deck.
-     * @return SortedBag<Ticket> the count tickets in the top of the deck
+     * @param count the number of tickets to draw from this ticket's deck.
+     * @return the count tickets in the top of the deck
      * @throws IllegalArgumentException
      *                        if the number of tickets is negative or bigger than the deck's size
      */
@@ -94,8 +94,8 @@ public final class GameState extends PublicGameState{
     /**
      * Returns an identical state to the receiver (this), but without the count top Tickets of the ticket's deck.
      *
-     * @param count (int) : the number of drawn tickets to remove from this ticket's deck
-     * @return (GameState) this state without count tickets in the top of the deck
+     * @param count the number of drawn tickets to remove from this ticket's deck
+     * @return this state without count tickets in the top of the deck
      * @throws IllegalArgumentException
      *                        if the number of tickets is negative or bigger than the deck's size
      */
@@ -109,7 +109,7 @@ public final class GameState extends PublicGameState{
     /**
      * Returns an identical state to the receiver (this), but without the top deck card of the this gameState's cardState.
      *
-     * @return (GameState) : this state without the top deck card 
+     * @return this state without the top deck card
      * @throws IllegalArgumentException
      *                            if the card's deck is empty
      */
@@ -122,8 +122,8 @@ public final class GameState extends PublicGameState{
     /**
      * Returns an identical state to the receiver (this) but with the given cards added to the discard pile.
      *
-     * @param discardedCards (SortedBag<Card>) : the cards that will be added to the discard pile.
-     * @return (GameState) this state with the discardedCards added to the discard pile.
+     * @param discardedCards the cards that will be added to the discard pile.
+     * @return this state with the discardedCards added to the discard pile.
      */
     public GameState withMoreDiscardedCards(SortedBag<Card> discardedCards){
         return new GameState(ticketDeck, cardState.withMoreDiscardedCards(discardedCards),
@@ -134,10 +134,10 @@ public final class GameState extends PublicGameState{
      * Returns an identical state to the receiver unless the deck of cards is empty,
      * in which case it is recreated from the discard pile, shuffled using the given random generator.
      *
-     * @param rng (Random) : a random generator used to shuffle the new deck.
-     * @return (GameState) this state unless the cards' deck is empty,
-     *                     in which case it will return the play's state with the cards' deck
-     *                     composed of the shuffled discard pile.
+     * @param rng a random generator used to shuffle the new deck.
+     * @return this state unless the cards' deck is empty,
+     *         in which case it will return the play's state with the cards' deck
+     *         composed of the shuffled discard pile.
      */
     public GameState withCardsDeckRecreatedIfNeeded(Random rng){
         return cardState.isDeckEmpty() ?
@@ -149,9 +149,9 @@ public final class GameState extends PublicGameState{
      * Returns a state identical to the receiver but in which the given tickets have been added to the given player's hand.
      * The ticket's deck is not modified with this method.
      *
-     * @param playerId (PlayerId) : the given player who chose the given tickets.
-     * @param chosenTickets (SortedBag<Ticket>) : the tickets chosen by the player to add to his hand.
-     * @return (GameState) this state with the chosenTickets added to the given player's hand
+     * @param playerId the given player who chose the given tickets.
+     * @param chosenTickets the tickets chosen by the player to add to his hand.
+     * @return this state with the chosenTickets added to the given player's hand
      * @throws IllegalArgumentException
      *                        if the given player has at least one ticket
      */
@@ -167,9 +167,9 @@ public final class GameState extends PublicGameState{
      * Returns an identical state to the receiver, but in which the current player has drawn the drawnTickets from the ticket's deck,
      * and chosen to keep those contained in chosenTicket.
      *
-     * @param drawnTickets (SortedBag<Ticket>) : the drawn tickets to remove from this ticket's deck.
-     * @param chosenTickets (SortedBag<Ticket>) : the tickets chosen by the player.
-     * @return (GameState) this state with the chosenTickets added to the current player's hand
+     * @param drawnTickets the drawn tickets to remove from this ticket's deck.
+     * @param chosenTickets the tickets chosen by the player.
+     * @return this state with the chosenTickets added to the current player's hand
                            and the drawnTickets removed from the Ticket's deck.
      * @throws IllegalArgumentException
      *                        if the drawnTickets don't contain the chosenTickets.
@@ -186,10 +186,10 @@ public final class GameState extends PublicGameState{
      * Returns an identical state to the receiver except that the face-up card at the slot-th location
      * has been placed in the current player's hand, and replaced by the one at the top of the card's deck.
      *
-     * @param slot (int) : index of the visible card.
-     * @return (GameState) this state with the face-up card in the slot-th index
-     *                     added to the current player's hand and replaced
-     *                     by the one at the top of the card's deck.
+     * @param slot index of the visible card.
+     * @return this state with the face-up card in the slot-th index
+     *         added to the current player's hand and replaced
+     *         by the one at the top of the card's deck.
      * @throws IllegalArgumentException
      *                        if it's not possible to draw a card.
      */
@@ -204,8 +204,8 @@ public final class GameState extends PublicGameState{
      * Returns an identical state to the receiver except that the top card of card's deck
      * has been placed in the current player's hand.
      *
-     * @return (GameState) this state with the deck's top card added to the current player's hand
-     *                     and removed from the card's deck.
+     * @return this state with the deck's top card added to the current player's hand
+     *         and removed from the card's deck.
      * @throws IllegalArgumentException
      *                        if it's not possible to draw a card.
      */
@@ -220,10 +220,10 @@ public final class GameState extends PublicGameState{
      * Returns an identical state to the receiver but in which
      * the current player has seized the given route using the given cards.
      *
-     * @param route (Route) : the route the current player wants to take over.
-     * @param cards (SortedBag<Card>) : the cards used by the current player to get the route.
-     * @return (GameState) this state with the given route added to the current player's list of taken routes.
-                           and the cards used by the player added to the cardState's discard.
+     * @param route the route the current player wants to take over.
+     * @param cards the cards used by the current player to get the route.
+     * @return this state with the given route added to the current player's list of taken routes.
+     *         and the cards used by the player added to the cardState's discard.
      */
     public GameState withClaimedRoute(Route route, SortedBag<Card> cards){
         Map<PlayerId, PlayerState> newPlayerState = new EnumMap<>(playerState);
@@ -238,9 +238,9 @@ public final class GameState extends PublicGameState{
      * is the one following this current player. Furthermore, if lastTurnBegins returns true,
      * this current player becomes the last player of the next turn.
      *
-     * @return (GameState) same GameState as this but with the currentPlayer changed to the next one,
-                           furthermore, if the lastTurn should begin, the lastPlayer value is
-                           set to this currentPlayer.
+     * @return same GameState as this but with the currentPlayer changed to the next one,
+     *         furthermore, if the lastTurn should begin, the lastPlayer value is
+     *         set to this currentPlayer.
      */
     public GameState forNextTurn(){
         return lastTurnBegins() ? new GameState(ticketDeck, cardState, currentPlayerId().next(),
@@ -254,8 +254,8 @@ public final class GameState extends PublicGameState{
      * unknown but the current player has only two cars or less left.
      * This method should only be called at the end of a player's turn.
      *
-     * @return (boolean) true if the identity of the last player is null and the current player has two cars left or less.
-     *                   false if not.
+     * @return true if the identity of the last player is null and the current player has two cars left or less.
+     *         false if not.
      */
     public boolean lastTurnBegins(){
         return lastPlayer() == null && currentPlayerState().carCount() <= CAR_COUNT_FOR_LAST_TURN;
@@ -264,8 +264,8 @@ public final class GameState extends PublicGameState{
     /**
      * Returns the given player's complete state and not just its public part.
      *
-     * @param playerId (PlayerId) : a game player's identity.
-     * @return (PlayerState) the complete state of the given player.
+     * @param playerId a game player's identity.
+     * @return the complete state of the given player.
      */
     @Override
     public PlayerState playerState(PlayerId playerId){
@@ -275,7 +275,7 @@ public final class GameState extends PublicGameState{
     /**
      * Returns the current player's complete state and not just its public part.
      *
-     * @return (PlayerState) the complete state of the current player.
+     * @return the complete state of the current player.
      */
     @Override
     public PlayerState currentPlayerState(){

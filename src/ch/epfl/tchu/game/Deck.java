@@ -24,8 +24,8 @@ public final class Deck<C extends Comparable<C>> {
      * Creates a Deck containing a shuffled version of the cards using the rng random number generator.
      *
      * @param <C>   the type of cards, must extends Comparable<C>
-     * @param cards (SortedBag<C>) the sorted collection of cards C to store in the Deck
-     * @param rng   (Random) random number generator to shuffle the C-cards
+     * @param cards the sorted collection of cards C to store in the Deck
+     * @param rng   random number generator to shuffle the C-cards
      * @return a deck composed of the shuffled version of cards
      */
     public static <C extends Comparable<C>> Deck<C> of(SortedBag<C> cards, Random rng) {
@@ -41,7 +41,7 @@ public final class Deck<C extends Comparable<C>> {
     /**
      * Private constructor of a deck.
      *
-     * @param cards (List<C>) the list of cards C to store in the Deck
+     * @param cards the list of cards C to store in the Deck
      */
     private Deck(List<C> cards) {
         this.cards = List.copyOf(cards);
@@ -52,7 +52,7 @@ public final class Deck<C extends Comparable<C>> {
     /**
      * Returns wether or not the deck is empty.
      *
-     * @return (Deck) true iff the deck is empty
+     * @return true iff the deck is empty
      */
     public boolean isEmpty() {
         return size == 0;
@@ -61,7 +61,7 @@ public final class Deck<C extends Comparable<C>> {
     /**
      * Returns the size of the pile, i.e. the number of cards it contains.
      *
-     * @return (int) the size of the Deck
+     * @return the size of the Deck
      */
     public int size() {
         return size;
@@ -70,7 +70,7 @@ public final class Deck<C extends Comparable<C>> {
     /**
      * Returns the card C at the top of this deck.
      *
-     * @return (C) the first card of this Deck
+     * @return the first card of this Deck
      * @throws IllegalArgumentException if this deck is empty
      */
     public C topCard() {
@@ -81,8 +81,8 @@ public final class Deck<C extends Comparable<C>> {
     /**
      * Returns a SortedBag<C> containing the count cards C at the top of the pile.
      *
-     * @param count (int) the desired number of first cards from the deck
-     * @return (SortedBag < C >) the sorted "count" first cards of the deck
+     * @param count the desired number of first cards from the deck
+     * @return the sorted "count" first cards of the deck
      * @throws IllegalArgumentException if the count is not between 0 and the size of the deck (included)
      */
     public SortedBag<C> topCards(int count) {
@@ -94,7 +94,7 @@ public final class Deck<C extends Comparable<C>> {
     /**
      * Returns a deck identical to the receiver (this) but without the top card.
      *
-     * @return (Deck) a new deck (same as this) without the first card
+     * @return a new deck (same as this) without the first card
      * @throws IllegalArgumentException if this deck is empty
      */
     public Deck<C> withoutTopCard() {
@@ -105,8 +105,8 @@ public final class Deck<C extends Comparable<C>> {
     /**
      * Returns a deck identical to the receiver (this) but without the count top cards.
      *
-     * @param count (int) the desired number of first cards from the deck to remove
-     * @return (Deck) a new deck (same as this) without the "count" first card
+     * @param count the desired number of first cards from the deck to remove
+     * @return a new deck (same as this) without the "count" first card
      * @throws IllegalArgumentException if the count is not between 0 and the size of the deck (included)
      */
     public Deck<C> withoutTopCards(int count) {
