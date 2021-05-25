@@ -37,7 +37,7 @@ public final class Ticket implements Comparable<Ticket> {
     /**
      * Public constructor of a Ticket made up of the list of trips given.
      *
-     * @param trips (List<Trip>) all the Trips that the Ticket covers
+     * @param trips all the Trips that the Ticket covers
      * @throws IllegalArgumentException if List<Trips> is empty
      *                                  if all the departure's stations don't have the same name
      */
@@ -55,9 +55,9 @@ public final class Ticket implements Comparable<Ticket> {
     /**
      * Public constructor of a Ticket consisting of a single Trip, whose attributes are from, to and points.
      *
-     * @param from   (Station) the departure Station of the Ticket's Trip
-     * @param to     (Station) the arrival Station of the Ticket's Trip
-     * @param points (int) the number of points associated to the Ticket's Trip
+     * @param from   the departure Station of the Ticket's Trip
+     * @param to     the arrival Station of the Ticket's Trip
+     * @param points the number of points associated to the Ticket's Trip
      */
     public Ticket(Station from, Station to, int points) {
         this(List.of(new Trip(from, to, points)));
@@ -66,8 +66,8 @@ public final class Ticket implements Comparable<Ticket> {
     /**
      *
      *
-     * @param connectivity (StationConnectivity)
-     * @return (int) the maximal points if at least two Stations are connected,
+     * @param connectivity
+     * @return the maximal points if at least two Stations are connected,
      *                -1 * minimal points possible if none of the Stations are connected
      */
     public int points(StationConnectivity connectivity) {
@@ -82,7 +82,7 @@ public final class Ticket implements Comparable<Ticket> {
     /**
      *
      *
-     * @return (String) the textual representation of the Ticket
+     * @return the textual representation of the Ticket
      */
     public String text() {
         return text;
@@ -91,10 +91,10 @@ public final class Ticket implements Comparable<Ticket> {
     /**
      * Compares alphabetically this ticket's text with another Ticket's text.
      *
-     * @param that (Ticket) the Ticket to compare with
-     * @return (int) a strictly positive number if this is bigger than that
-	 *               a strictly negative number if this is smaller than that
-     *               0 if they are equal
+     * @param that  the Ticket to compare with
+     * @return  a strictly positive number if this is bigger than that
+	 *          a strictly negative number if this is smaller than that
+                0 if they are equal
      */
     @Override
     public int compareTo(Ticket that) {
@@ -108,7 +108,7 @@ public final class Ticket implements Comparable<Ticket> {
      * if it's a city to country Ticket: "departure city - {list of arrival countries with its respective points}".
      * if it's a country to country Ticket: "departure country - {list of arrival countries with its respective points}".
      *
-     * @return (String) the textual representation of the Ticket
+     * @return the textual representation of the Ticket
      */
     @Override
     public String toString() {
@@ -119,8 +119,8 @@ public final class Ticket implements Comparable<Ticket> {
     /**
      * Private static method to compute the textual representation of a Ticket made up of the list of trips given.
      *
-     * @param trips (List<Trip>) all the Trips that the Ticket covers
-     * @return (String) the textual representation of the Ticket
+     * @param trips all the Trips that the Ticket covers
+     * @return the textual representation of the Ticket
      */
     private static String computeText(List<Trip> trips) {
         String text;
