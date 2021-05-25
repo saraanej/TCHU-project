@@ -222,18 +222,6 @@ public final class Info {
 				StringsFr.plural(loserPoints));
 	}
 
-
-	/**
-	 * @param route (Route) : The given route.
-	 * @return (String) The message declaring the details of the route.
-	 */
-	private static String routeName(Route route) {
-		return String.join("" ,
-				route.station1().name(),
-				StringsFr.EN_DASH_SEPARATOR,
-				route.station2().name());
-	}
-
 	/**
 	 * @param cards (SortedBag<Card>) : The given list of cards.
 	 * @return (String) The message containing all the specifics of the cards
@@ -261,4 +249,16 @@ public final class Info {
 			return elementCardList;
 		}
 	}
+
+	/**
+	 * @param route (Route) : The given route.
+	 * @return (String) The message declaring the details of the route.
+	 */
+	private static String routeName(Route route) {
+		return String.join("" ,
+				route.station1().name(),
+				StringsFr.EN_DASH_SEPARATOR,
+				route.station2().name());
+	}
+
 }

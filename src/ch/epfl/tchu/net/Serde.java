@@ -18,7 +18,7 @@ import java.util.regex.Pattern;
  * @author Sara Anejjar (329905)
  */
 public interface Serde<C> {
-    
+
     /**
      * Generic method that constructs a Serde taking as arguments a serialization function and a deserialization function.
      * @param serialization the serialization function.
@@ -61,7 +61,6 @@ public interface Serde<C> {
             }
             @Override
             public T deserialize(String str){
-                System.out.println("serde oneof lg 64:-"+str+"-end");
                 T value = values.get(Integer.parseInt(str));
                 Preconditions.checkArgument(values.contains(value));
                 return value;

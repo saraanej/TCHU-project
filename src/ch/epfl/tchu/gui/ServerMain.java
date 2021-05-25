@@ -38,7 +38,6 @@ public class ServerMain extends Application {
 
     /**
      * @see Application#start(Stage);
-     * @throws UncheckedIOException if an IOException is thrown.
      */
     @Override
     public void start(Stage primaryStage) {

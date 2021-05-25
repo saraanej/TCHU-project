@@ -17,8 +17,8 @@ import java.util.regex.Pattern;
 public final class Serdes {
 
     private static final String COMMA_SEPARATOR = ",";
-    private static final String COMPOSITE_SEPARATOR = ";";
-    private static final String PUBLIC_GAMESTATE_SEPARATOR = ":";
+    private static final String SEMICOLON_SEPARATOR = ";";
+    private static final String COLON_SEPARATOR = ":";
     private static final String EMPTY_STRING = "";
 
     /**
@@ -88,7 +88,7 @@ public final class Serdes {
     /**
      * A Serde able to (de)serialize a list of SortedBags of Card's elements.
      */
-    public static final Serde<List<SortedBag<Card>>> LIST_SORTED_CARD = Serde.listOf(SORTED_CARD, COMPOSITE_SEPARATOR);
+    public static final Serde<List<SortedBag<Card>>> LIST_SORTED_CARD = Serde.listOf(SORTED_CARD, SEMICOLON_SEPARATOR);
 
     /**
      * A Serde able to (de)serialize PublicCardState's elements.
@@ -98,12 +98,12 @@ public final class Serdes {
         public String serialize(PublicCardState p) {
             String[] serialized = new String[]{LIST_CARD.serialize(p.faceUpCards()),
                     INTEGER.serialize(p.deckSize()), INTEGER.serialize(p.discardsSize())};
-            return String.join(COMPOSITE_SEPARATOR, serialized);
+            return String.join(SEMICOLON_SEPARATOR, serialized);
         }
 
         @Override
         public PublicCardState deserialize(String str) {
-            String[] split = str.split(Pattern.quote(COMPOSITE_SEPARATOR),-1);
+            String[] split = str.split(Pattern.quote(SEMICOLON_SEPARATOR),-1);
             return new PublicCardState(LIST_CARD.deserialize(split[0]),
                     INTEGER.deserialize(split[1]), INTEGER.deserialize(split[2]));
         }
@@ -117,12 +117,12 @@ public final class Serdes {
         public String serialize(PublicPlayerState p) {
             String[] serialized = new String[]{INTEGER.serialize(p.ticketCount()),
                     INTEGER.serialize(p.cardCount()), LIST_ROUTE.serialize(p.routes())};
-            return String.join(COMPOSITE_SEPARATOR, serialized);
+            return String.join(SEMICOLON_SEPARATOR, serialized);
         }
 
         @Override
         public PublicPlayerState deserialize(String str) {
-            String[] split = str.split(Pattern.quote(COMPOSITE_SEPARATOR), -1);
+            String[] split = str.split(Pattern.quote(SEMICOLON_SEPARATOR), -1);
             return new PublicPlayerState(INTEGER.deserialize(split[0]), INTEGER.deserialize(split[1]),
                    LIST_ROUTE.deserialize(split[2]));
         }
@@ -136,12 +136,12 @@ public final class Serdes {
         public String serialize(PlayerState p) {
             String[] serialized = new String[]{SORTED_TICKET.serialize(p.tickets()),
                     SORTED_CARD.serialize(p.cards()), LIST_ROUTE.serialize(p.routes())};
-            return String.join(COMPOSITE_SEPARATOR, serialized);
+            return String.join(SEMICOLON_SEPARATOR, serialized);
         }
 
         @Override
         public PlayerState deserialize(String str) {
-            String[] split = str.split(Pattern.quote(COMPOSITE_SEPARATOR), -1);
+            String[] split = str.split(Pattern.quote(SEMICOLON_SEPARATOR), -1);
             return new PlayerState(SORTED_TICKET.deserialize(split[0]),
                     SORTED_CARD.deserialize(split[1]),
                     LIST_ROUTE.deserialize(split[2]));
@@ -159,12 +159,12 @@ public final class Serdes {
                     PUBLIC_PLAYERSTATE.serialize(p.playerState(PlayerId.PLAYER_1)),
                     PUBLIC_PLAYERSTATE.serialize(p.playerState(PlayerId.PLAYER_2)),
                     p.lastPlayer() == null ? EMPTY_STRING : PLAYER_ID.serialize(p.lastPlayer())};
-            return String.join(PUBLIC_GAMESTATE_SEPARATOR, serialized);
+            return String.join(COLON_SEPARATOR, serialized);
         }
 
         @Override
         public PublicGameState deserialize(String str) {
-            String[] split = str.split(Pattern.quote(PUBLIC_GAMESTATE_SEPARATOR), -1);
+            String[] split = str.split(Pattern.quote(COLON_SEPARATOR), -1);
             return new PublicGameState(INTEGER.deserialize(split[0]), PUBLIC_CARDSTATE.deserialize(split[1]),
                     PLAYER_ID.deserialize(split[2]),
                     Map.of(PlayerId.PLAYER_1, PUBLIC_PLAYERSTATE.deserialize(split[3]),

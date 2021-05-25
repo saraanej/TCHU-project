@@ -16,10 +16,6 @@ public enum MessageId {
     DRAW_SLOT,
     ROUTE,
     CARDS,
-    CHOOSE_ADDITIONAL_CARDS;
-
-
-    //NOT SPECIFIED IN THE SUBJET
-    public final static List<MessageId> ALL = List.of(MessageId.values());
+    CHOOSE_ADDITIONAL_CARDS
 
 }
