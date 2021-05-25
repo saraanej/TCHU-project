@@ -24,11 +24,11 @@ public class PublicGameState {
     /**
      * Default constructor.
      *
-     * @param ticketsCount (int) : The size of the tickets' deck.
-     * @param cardState (PublicCardState) : The public state of the cars and locomotives.
-     * @param currentPlayerId (PlayerId) : The current player's identity.
-     * @param playerState (Map<PlayerId, PublicPlayerState>) : The public state of the players.
-     * @param lastPlayer (PlayerId) : The last player's identity. Can be null.
+     * @param ticketsCount The size of the tickets' deck.
+     * @param cardState The public state of the cars and locomotives.
+     * @param currentPlayerId The current player's identity.
+     * @param playerState The public state of the players.
+     * @param lastPlayer The last player's identity. Can be null.
      * @throws IllegalArgumentException
      *                           if the size of the tickets' deck is negative,
      *                           if playerState doesn't contain exactly two pairs.
@@ -47,14 +47,14 @@ public class PublicGameState {
 
 
     /**
-     * @return (boolean) true if the tickets' deck is not empty. false if not.
+     * @return true if the tickets' deck is not empty. false if not.
      */
     public boolean canDrawTickets(){
         return ticketsCount != 0;
     }
 
     /**
-     * @return (boolean) true if there are at least 5 cards in the cards' deck and the discard pile. false if not.
+     * @return true if there are at least 5 cards in the cards' deck and the discard pile. false if not.
      */
     public boolean canDrawCards(){
         int totalCards = cardState.deckSize() + cardState.discardsSize();
@@ -62,50 +62,50 @@ public class PublicGameState {
     }
 
     /**
-     * @return (int) The size of the tickets' deck.
+     * @return The size of the tickets' deck.
      */
     public int ticketsCount(){
         return ticketsCount;
     }
 
     /**
-     * @return (PlayerId) The identity of the current player.
+     * @return The identity of the current player.
      */
     public PlayerId currentPlayerId(){
         return currentPlayerId;
     }
 
     /**
-     * @return (PlayerId) The last player's identity if known, null if not.
+     * @return The last player's identity if known, null if not.
      */
     public PlayerId lastPlayer(){
         return lastPlayer;
     }
 
     /**
-     * @return (PublicCardState) The public state of the cars and locomotives.
+     * @return The public state of the cars and locomotives.
      */
     public PublicCardState cardState(){
         return cardState;
     }
 
     /**
-     * @param playerId (PlayerId) : A game player's identity.
-     * @return (PublicPlayerState) The public part of the given player's state.
+     * @param playerId A game player's identity.
+     * @return The public part of the given player's state.
      */
     public PublicPlayerState playerState(PlayerId playerId){
         return playerState.get(playerId);
     }
 
     /**
-     * @return (PublicPlayerState) The public part of the current player's state.
+     * @return The public part of the current player's state.
      */
     public PublicPlayerState currentPlayerState(){
         return playerState.get(currentPlayerId);
     }
 
     /**
-     * @return (List<Routes>) All the routes that the players took over.
+     * @return All the routes that the players took over.
      */
     public List<Route> claimedRoutes(){
         List<Route> routes = new ArrayList<>();

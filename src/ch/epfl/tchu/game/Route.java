@@ -31,12 +31,12 @@ public final class Route {
 	
 	/**
 	 * Public default constructor of a route.
-	 * @param id (String) : The route's identity.
-	 * @param station1 (Station) : The first station of the route.
-	 * @param station2 (Station) : The second station of the route.
-	 * @param length (int) : The route's length.
-	 * @param level (Level) : The level to which the route belongs.
-	 * @param color (Color) : The route's color, null when it's a neutral route.
+	 * @param id The route's identity.
+	 * @param station1 The first station of the route.
+	 * @param station2 The second station of the route.
+	 * @param length The route's length.
+	 * @param level The level to which the route belongs.
+	 * @param color The route's color, null when it's a neutral route.
 	 * @throws IllegalArgumentException 
 	             if the first station is the same as the second one or when the length of the route exceed the length it's supposed to have in the game.
 	 * @throws NullPointerException 
@@ -58,25 +58,25 @@ public final class Route {
 
 	/**
 	 * Public getter for the route's length.
-	 * @return (int) The route's length.
+	 * @return The route's length.
 	 */
 	public int length() {
 		return this.length;
 	}
 
 	/**
-	 * @return (int) The points of construction earned by the player when he/she gets the route.
+	 * @return The points of construction earned by the player when he/she gets the route.
 	 */
 	public int claimPoints() {
 		return Constants.ROUTE_CLAIM_POINTS.get(length);
 	}
 
 	/**
-	 * @param claimCards (SortedBag<Card>): The cards that the player already used.
-	 * @param drawnCards (SortedBag<Card>): The three cards drawn from the top of the deck.
-	 * @return (int) The number of additional cards to play to get the route in the tunnel.
+	 * @param claimCards The cards that the player already used.
+	 * @param drawnCards The three cards drawn from the top of the deck.
+	 * @return The number of additional cards to play to get the route in the tunnel.
 	 * @throws IllegalArgumentException
-	if the route is not a tunnel or if drawnCards doesn't contain exactly three cards.
+	   if the route is not a tunnel or if drawnCards doesn't contain exactly three cards.
 	 */
 	public int additionalClaimCardsCount(SortedBag<Card> claimCards, SortedBag<Card> drawnCards) {
 		Preconditions.checkArgument(level.equals(Level.UNDERGROUND));
@@ -92,13 +92,13 @@ public final class Route {
 	
 	/**
 	 * Public getter for the route's identity.
-	 * @return (String) The route's identity.
+	 * @return The route's identity.
 	 */
 	public String id() { return this.id; }
 
 	/**
 	 * Public getter for the level to which the route belongs.
-	 * @return (Level) The level to which the route belongs.
+	 * @return The level to which the route belongs.
 	 */
 	public Level level() {
 		return this.level;
@@ -106,7 +106,7 @@ public final class Route {
 
 	/**
 	 * Public getter for the route's color.
-	 * @return (Color) The route's color, null if it's a neutral route.
+	 * @return The route's color, null if it's a neutral route.
 	 */
 	public Color color() {
 		return this.color;
@@ -114,7 +114,7 @@ public final class Route {
 	
 	/**
 	 * Public getter for the first station of the route.
-	 * @return (Station) The first station of the route.
+	 * @return The first station of the route.
 	 */
 	public Station station1() {
 		return this.station1;
@@ -122,15 +122,15 @@ public final class Route {
 	
 	/**
 	 * Public getter for the second station of the route.
-	 * @return (Station) The second station of the route.
+	 * @return The second station of the route.
 	 */
 	public Station station2() {
 		return this.station2;
 	}
 
 	/**
-	 * @param station (Station) The station to which we want its opposite one.
-	 * @return (Station) The opposite station to the one given in the parameters.
+	 * @param station The station to which we want its opposite one.
+	 * @return The opposite station to the one given in the parameters.
 	 * @throws IllegalArgumentException
 	                 if the station given in parameters doesn't correspond to any of the stations of the actual route.
 	 */
@@ -140,15 +140,15 @@ public final class Route {
 	}
 
 	/**
-	 * @return (List<Station>) The list of the two stations of the route, in the same order as in the route's constructor.
+	 * @return The list of the two stations of the route, in the same order as in the route's constructor.
 	 */
 	public List<Station> stations(){
 		return List.of(station1, station2);
 	}
 	
 	/**
-	 * @return (List<SortedBag<Card>>) The list of all the cards that could be used to get the route,
-	                                   sorted in increasing order of the number of locomotive cards and then by color.
+	 * @return The list of all the cards that could be used to get the route,
+	           sorted in increasing order of the number of locomotive cards and then by color.
 	 */
 	public List<SortedBag<Card>> possibleClaimCards(){
 		List<SortedBag<Card>> possibleCards = new ArrayList<>();

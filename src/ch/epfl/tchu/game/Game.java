@@ -25,10 +25,10 @@ public class Game {
     /**
      * Simulates a Tchu's play for the given players.
      *
-     * @param players     (Map<PlayerId, Player>) : the players of the Tchu's play
-     * @param playerNames (Map<PlayerId, String>) : the player's names of the Tchu's play
-     * @param tickets     (SortedBag<Ticket>) : the available tickets for the game
-     * @param rng         (Random) : a random generator used to shuffle the decks
+     * @param players the players of the Tchu's play
+     * @param playerNames the player's names of the Tchu's play
+     * @param tickets the available tickets for the game
+     * @param rng a random generator used to shuffle the decks
      * @throws IllegalArgumentException if one of the maps' size is not equal to 2
      */
     public static void play(Map<PlayerId, Player> players, Map<PlayerId, String> playerNames, SortedBag<Ticket> tickets, Random rng) {
@@ -237,8 +237,8 @@ public class Game {
     /**
      * Updates both players' states.
      *
-     * @param players   (Map<PlayerId, Player>) the players of the Tchu's play
-     * @param gameState (GameState) the new updated version of the current gameState
+     * @param players the players of the Tchu's play
+     * @param gameState the new updated version of the current gameState
      */
     private static void updateState(Map<PlayerId, Player> players, GameState gameState) {
         players.forEach((id, player) -> player.updateState(gameState, gameState.playerState(id)));
@@ -247,8 +247,8 @@ public class Game {
     /**
      * Communicates the info str to the players.
      *
-     * @param players (Map<PlayerId, Player>) the players of the Tchu's play.
-     * @param info    (String) the info to communicate to the players.
+     * @param players the players of the Tchu's play.
+     * @param info the info to communicate to the players.
      */
     private static void receiveInfo(Map<PlayerId, Player> players, String info) {
         players.forEach((id, player) -> player.receiveInfo(info));
@@ -257,7 +257,7 @@ public class Game {
     /**
      * Determine the winner's playerId and his corresponding maxPoints.
      *
-     * @return (Map.Entry < PlayerId, Integer >) the winner of the game and the corresponding maxPoints
+     * @return the winner of the game and the corresponding maxPoints
      * if null, both players are ex-quo.
      */
     private static Map.Entry<PlayerId, Integer> winner(Map<PlayerId, Integer> playersPoints, int minPoints) {
@@ -271,7 +271,7 @@ public class Game {
     /**
      * Determines the player.
      *
-     * @return (PlayerId) the identity of the player who has the longest Trail,
+     * @return the identity of the player who has the longest Trail,
      * if null, both players have the longestTrail.
      */
     private static PlayerId longest(Map<PlayerId, Trail> playersTrail) {

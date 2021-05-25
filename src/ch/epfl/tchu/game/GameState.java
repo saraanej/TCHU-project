@@ -22,6 +22,7 @@ public final class GameState extends PublicGameState{
     private final CardState cardState;
     private final Map<PlayerId, PlayerState> playerState;
 
+
     /**
      * Static constructor of the initial state of a game of tCHu in which the ticket's deck contains the tickets given,
      * the cardState contains the cards of Constants.ALL_CARDS, without the ones above distributed to the players,
@@ -46,6 +47,7 @@ public final class GameState extends PublicGameState{
                 PlayerId.ALL.get(rng.nextInt(PlayerId.COUNT)), playerState, null);
     }
 
+
     /**
      * Private constructor of a GameState.
      *
@@ -54,7 +56,6 @@ public final class GameState extends PublicGameState{
      * @param currentPlayerId the current player's identity
      * @param playerState the public state of the players
      * @param lastPlayer the last player's identity. can be null
-     *
      */
     private GameState(Deck<Ticket> ticketDeck, CardState cardState, PlayerId currentPlayerId, Map<PlayerId, PlayerState> playerState, PlayerId lastPlayer){
         super(ticketDeck.size(), cardState, currentPlayerId, Map.copyOf(playerState), lastPlayer);
@@ -261,11 +262,9 @@ public final class GameState extends PublicGameState{
         return lastPlayer() == null && currentPlayerState().carCount() <= CAR_COUNT_FOR_LAST_TURN;
     }
 
+
     /**
-     * Returns the given player's complete state and not just its public part.
-     *
-     * @param playerId a game player's identity.
-     * @return the complete state of the given player.
+     * @see PublicGameState#playerState(PlayerId)
      */
     @Override
     public PlayerState playerState(PlayerId playerId){
@@ -273,9 +272,7 @@ public final class GameState extends PublicGameState{
     }
 
     /**
-     * Returns the current player's complete state and not just its public part.
-     *
-     * @return the complete state of the current player.
+     * @see PublicGameState#currentPlayerState()
      */
     @Override
     public PlayerState currentPlayerState(){

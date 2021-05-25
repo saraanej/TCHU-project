@@ -1,7 +1,6 @@
 package ch.epfl.tchu.game;
 
 import ch.epfl.tchu.Preconditions;
-
 import java.util.List;
 
 /**
@@ -20,13 +19,16 @@ public final class StationPartition implements StationConnectivity {
     /**
      * Private constructor.
      *
-     * @param links (int[]) : List containing the links linking each element to the representative of their subset.
+     * @param links List containing the links linking each element to the representative of their subset.
      */
     private StationPartition(int[] links) {
         this.links = links.clone();
     }
 
 
+    /**
+     * @see StationConnectivity#connected(Station, Station)
+     */
     @Override
     public boolean connected(Station s1, Station s2) {
         if (s1.id() >= links.length || s2.id() >= links.length)
@@ -47,7 +49,7 @@ public final class StationPartition implements StationConnectivity {
         /**
          * Default constructor.
          *
-         * @param stationCount (int) : The identity of the station partition.
+         * @param stationCount The identity of the station partition.
          * @throws IllegalArgumentException if the stationCount is a negative number.
          */
         public Builder(int stationCount) {
@@ -63,9 +65,9 @@ public final class StationPartition implements StationConnectivity {
          * Joins the subsets containing the two stations by electing one of the two representatives
          * as representative of the joined subset.
          *
-         * @param s1 (Station) : The first given station.
-         * @param s2 (Station) : The second given station.
-         * @return (Builder) The builder this.
+         * @param s1 The first given station.
+         * @param s2 The second given station.
+         * @return The builder this.
          */
         public Builder connect(Station s1, Station s2) {
             int repS1 = representative(s1.id());
@@ -75,10 +77,10 @@ public final class StationPartition implements StationConnectivity {
         }
 
         /**
-         * @return (StationPartition) The station partition corresponding to the profound partition that is being created.
+         * @return The station partition corresponding to the profound partition that is being created.
          */
         public StationPartition build() {
-            for (int i = 0; i < stations.length; i++) {
+            for (int i = 0; i < stations.length; ++i) {
                 stations[i] = representative(i);
             }
             return new StationPartition(stations);
@@ -86,7 +88,7 @@ public final class StationPartition implements StationConnectivity {
 
 
         /**
-         * @param stationId (int) : A station identification number.
+         * @param stationId A station identification number.
          * @return The identification number of the representative of the subset containing the station.
          */
         private int representative(int stationId) {

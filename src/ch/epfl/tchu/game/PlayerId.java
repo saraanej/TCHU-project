@@ -25,8 +25,9 @@ public enum PlayerId {
 
 
     /**
-     * @return (PlayerId) The identity of the player following the one to whom
-     *                    this method is applied.
+     * @return The identity of the player following the one to whom
+     * this method is applied.
+     * Flexible for more than two players.
      */
     public PlayerId next() {
         int index = this.ordinal();

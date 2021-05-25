@@ -1,17 +1,12 @@
 package ch.epfl.tchu.game;
 
-import java.util.ArrayList;
-
-import java.util.Collections;
 import java.util.List;
 import java.util.TreeSet;
-
 import ch.epfl.tchu.Preconditions;
 
-
 /**
- * The Ticket class of the ch.epfl.tchu.game package, public, final and immutable,
- * Represents a Ticket.
+ * The Ticket class public, final and immutable,
+ * represents a Ticket.
  * A tCHu ticket is made up of a starting point and an ending point.
  * A tCHu ticket is worth a certain number of points, which are those that the player
  * who owns it will gain (resp. Lose) at the end of the game if he has succeeded (resp. Failed)
@@ -26,12 +21,8 @@ import ch.epfl.tchu.Preconditions;
  */
 public final class Ticket implements Comparable<Ticket> {
 
-
-
-
     private final List<Trip> trips;
     private final String text;
-
 
 
     /**
@@ -64,8 +55,6 @@ public final class Ticket implements Comparable<Ticket> {
     }
 
     /**
-     *
-     *
      * @param connectivity
      * @return the maximal points if at least two Stations are connected,
      *                -1 * minimal points possible if none of the Stations are connected
@@ -80,21 +69,20 @@ public final class Ticket implements Comparable<Ticket> {
     }
 
     /**
-     *
-     *
      * @return the textual representation of the Ticket
      */
     public String text() {
         return text;
     }
 
+
     /**
      * Compares alphabetically this ticket's text with another Ticket's text.
-     *
-     * @param that  the Ticket to compare with
+     * @param that the Ticket to compare with
      * @return  a strictly positive number if this is bigger than that
 	 *          a strictly negative number if this is smaller than that
                 0 if they are equal
+     * @see Integer#compareTo(Integer)
      */
     @Override
     public int compareTo(Ticket that) {
@@ -108,7 +96,7 @@ public final class Ticket implements Comparable<Ticket> {
      * if it's a city to country Ticket: "departure city - {list of arrival countries with its respective points}".
      * if it's a country to country Ticket: "departure country - {list of arrival countries with its respective points}".
      *
-     * @return the textual representation of the Ticket
+     * @see String#toString()
      */
     @Override
     public String toString() {
