@@ -36,7 +36,7 @@ public class ClientMain extends Application {
         List<String> parameters = getParameters().getRaw();
 
         name = (parameters.size() > 0) ? parameters.get(0) : NAME_DEFAULT;
-        port = (parameters.size() > 1) ? Integer.getInteger(parameters.get(1)) : PORT_DEFAULT;
+        port = (parameters.size() > 1) ? Integer.parseInt(parameters.get(1)) : PORT_DEFAULT;
         RemotePlayerClient distantPlayer = new RemotePlayerClient(
                                                   new GraphicalPlayerAdapter(),name,port);
         new Thread(distantPlayer::run).start();

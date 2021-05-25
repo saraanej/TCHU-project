@@ -11,8 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * The RemotePlayerProxy instantiable class
- * represents a remote player proxy.
+ * The RemotePlayerProxy instantiable class represents a remote player proxy.
  * It implements the Player interface and can thus play the role of a player.
  *
  * @author Yasmin Ben Rahhal (329912)

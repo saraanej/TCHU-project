@@ -24,7 +24,6 @@ import java.util.List;
  */
 final class MapViewCreator {
 
-    //TODO : creer les constantes static des nbres utilises
     private final static String EMPTY_STRING = "";
 
     private MapViewCreator(){}
@@ -50,24 +49,24 @@ final class MapViewCreator {
             groupRoute.getStyleClass().addAll(EMPTY_STRING,ROUTE_SC,r.level().name(),
                     r.color() == null ? NEUTRAL_SC : r.color().name());
 
-            // creates the boxes of the group groupRoute
+            //creates the boxes of the group groupRoute
             for (int i = 1; i <= r.length(); ++i) {
                 //creates the rectangle representing the track of the box
                 Rectangle trackBox = new Rectangle(TRACK_WIDTH,TRACK_HEIGHT);
                 trackBox.getStyleClass().addAll(TRACK_SC,FILLED_SC);
 
-                // creates the rectangle and the circles of the wagon car
+                //creates the rectangle and the circles of the wagon car
                 Rectangle trackWagon = new Rectangle(TRACK_WIDTH,TRACK_HEIGHT);
                 trackWagon.getStyleClass().add(FILLED_SC);
                 Circle circle1 = new Circle(CAR_CIRCLE1_CENTRE_X, CAR_CIRCLES_CENTRE_Y, CAR_CIRCLES_RADIUS);
                 Circle circle2 = new Circle(CAR_CIRCLE2_CENTRE_X, CAR_CIRCLES_CENTRE_Y, CAR_CIRCLES_RADIUS);
 
-                // creates a group representing the wagon car
+                //creates a group representing the wagon car
                 Group wagon = new Group();
                 wagon.getStyleClass().add(CAR_SC);
                 wagon.getChildren().addAll(trackWagon, circle1, circle2);
 
-                // creates the group of the box
+                //creates the group of the box
                 Group groupBox = new Group();
                 groupBox.setId(String.format("%s_%s", r.id(),i));
 
@@ -75,7 +74,7 @@ final class MapViewCreator {
                 groupRoute.getChildren().add(groupBox);
 
                 observable.routeOwner(r).addListener((o,oV,nV) -> {
-                    if( nV != null) groupRoute.getStyleClass().set(0,nV.name());
+                    if(nV != null) groupRoute.getStyleClass().set(0,nV.name());
                 });
             }
 
