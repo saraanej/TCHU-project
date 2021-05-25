@@ -59,8 +59,8 @@ final class MapViewCreator {
                 // creates the rectangle and the circles of the wagon car
                 Rectangle trackWagon = new Rectangle(TRACK_WIDTH,TRACK_HEIGHT);
                 trackWagon.getStyleClass().add(FILLED_SC);
-                Circle circle1 = new Circle(CAR_CIRCLE1_CENTRE_X,CAR_CIRCLE_CENTRE_Y,CAR_CIRCLE_RADIUS);
-                Circle circle2 = new Circle(CAR_CIRCLE2_CENTRE_X,CAR_CIRCLE_CENTRE_Y,CAR_CIRCLE_RADIUS);
+                Circle circle1 = new Circle(CAR_CIRCLE1_CENTRE_X, CAR_CIRCLES_CENTRE_Y, CAR_CIRCLES_RADIUS);
+                Circle circle2 = new Circle(CAR_CIRCLE2_CENTRE_X, CAR_CIRCLES_CENTRE_Y, CAR_CIRCLES_RADIUS);
 
                 // creates a group representing the wagon car
                 Group wagon = new Group();

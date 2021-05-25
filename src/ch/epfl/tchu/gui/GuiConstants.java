@@ -18,8 +18,8 @@ final class GuiConstants {
     // The map view components' dimensions
     static final int TRACK_WIDTH = 36;
     static final int TRACK_HEIGHT = 12;
-    static final int CAR_CIRCLE_RADIUS = 3;
-    static final int CAR_CIRCLE_CENTRE_Y = 6;
+    static final int CAR_CIRCLES_RADIUS = 3;
+    static final int CAR_CIRCLES_CENTRE_Y = 6;
     static final int CAR_CIRCLE1_CENTRE_X = 12;
     static final int CAR_CIRCLE2_CENTRE_X = 24;
 
