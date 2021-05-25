@@ -139,13 +139,13 @@ final class DecksViewCreator {
      * Method creates the graphical representation of cards.
      */
     private static void createRectangles(StackPane stackPane){
-        Rectangle outside = new Rectangle(OUTSIDE_RECTANGLE_WIDTH, OUTSIDE_RECTANGLE_HEIGHT);
+        Rectangle outside = new Rectangle(OUTSIDE_CARD_WIDTH, OUTSIDE_CARD_HEIGHT);
         outside.getStyleClass().add(OUTSIDE_SC);
 
-        Rectangle filledInside = new Rectangle(INSIDE_RECTANGLE_WIDTH, INSIDE_RECTANGLE_HEIGHT);
+        Rectangle filledInside = new Rectangle(INSIDE_CARD_WIDTH, INSIDE_CARD_HEIGHT);
         filledInside.getStyleClass().addAll(INSIDE_SC, FILLED_SC);
 
-        Rectangle trainImage = new Rectangle(INSIDE_RECTANGLE_WIDTH, INSIDE_RECTANGLE_HEIGHT);
+        Rectangle trainImage = new Rectangle(TRAIN_CARD_WIDTH, TRAIN_CARD_HEIGHT);
         trainImage.getStyleClass().add(TRAIN_IMAGE_SC);
 
         stackPane.getChildren().addAll(outside,filledInside,trainImage);

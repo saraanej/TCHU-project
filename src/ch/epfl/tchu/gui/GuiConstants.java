@@ -1,21 +1,32 @@
 package ch.epfl.tchu.gui;
 
+/**
+ * Class containing the components used
+ * for the graphical realisation of the game.
+ *
+ * @author Yasmin Ben Rahhal (329912)
+ * @author Sara Anejjar (329905)
+ */
 final class GuiConstants {
 
     private GuiConstants() {}
 
-    //The constant int values //TODO : trouver mieux comme comm
-    static final int OUTSIDE_RECTANGLE_WIDTH = 60; //TODO : ameliorer les noms pour les rectangles prcq on voit ps ils correspondent a quoi
-    static final int OUTSIDE_RECTANGLE_HEIGHT = 90;
-    static final int INSIDE_RECTANGLE_WIDTH = 40;
-    static final int INSIDE_RECTANGLE_HEIGHT = 70;
+    // The decks' view components' dimensions.
+    static final int OUTSIDE_CARD_WIDTH = 60;
+    static final int OUTSIDE_CARD_HEIGHT = 90;
+    static final int INSIDE_CARD_WIDTH = 40;
+    static final int INSIDE_CARD_HEIGHT = 70;
+    static final int TRAIN_CARD_WIDTH = 40;
+    static final int TRAIN_CARD_HEIGHT = 70;
     static final int GAUGE_RECTANGLE_WIDTH = 50;
     static final int GAUGE_RECTANGLE_HEIGHT = 5;
     static final int MINIMUM_VISIBLE_CARD = 0;
     static final int MINIMUM_VISIBLE_TEXT = 1;
-    static final int CIRCLE_RADIUS_INFO = 5;
 
-    // The map view components' dimensions
+    // The info view components' dimensions.
+    static final int CIRCLE_RADIUS_PLAYER_INFO = 5;
+
+    // The map view components' dimensions.
     static final int TRACK_WIDTH = 36;
     static final int TRACK_HEIGHT = 12;
     static final int CAR_CIRCLES_RADIUS = 3;
@@ -23,14 +34,14 @@ final class GuiConstants {
     static final int CAR_CIRCLE1_CENTRE_X = 12;
     static final int CAR_CIRCLE2_CENTRE_X = 24;
 
-    // The style sheets
+    // The style sheets.
     static final String DECK_SS = "decks.css";
     static final String COLORS_SS = "colors.css";
     static final String MAP_SS = "map.css";
     static final String INFO_SS = "info.css";
     static final String CHOOSER_SS = "chooser.css";
 
-    // The style classes
+    // The style classes.
     static final String NEUTRAL_SC = "NEUTRAL";
     static final String FILLED_SC = "filled";
     static final String COUNT_SC = "count";
@@ -45,7 +56,7 @@ final class GuiConstants {
     static final String TRACK_SC = "track";
     static final String CAR_SC = "car";
 
-    // The ID setters
+    // The ID setters.
     static final String HAND_PANE_ID = "hand-pane";
     static final String CARD_PANE_ID = "card-pane";
     static final String TICKETS_ID = "tickets";

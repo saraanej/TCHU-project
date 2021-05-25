@@ -62,7 +62,7 @@ final class InfoViewCreator {
            TextFlow nPlayer = new TextFlow();
            nPlayer.getStyleClass().add(player.name());
 
-           Circle circle = new Circle(CIRCLE_RADIUS_INFO);
+           Circle circle = new Circle(CIRCLE_RADIUS_PLAYER_INFO);
            circle.getStyleClass().add(FILLED_SC);
 
            Text text = new Text();

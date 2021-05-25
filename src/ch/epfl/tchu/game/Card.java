@@ -36,8 +36,8 @@ public enum Card {
 	public final static int COUNT = ALL.size();
 
 	/**
-	 * @param color (Color) : The card's color.
-	 * @return (Card) The type of the corresponding wagon card depending on the card's color.
+	 * @param color The card's color.
+	 * @return The type of the corresponding wagon card depending on the card's color.
 	 */
 	public static Card of(Color color) {
 		switch (color) {
@@ -69,7 +69,7 @@ public enum Card {
 	/**
 	 * Constructor initializing the color of the wagon cards.
 	 *
-	 * @param color (Color) : The color of the wagon's card.
+	 * @param color The color of the wagon's card.
 	 */
 	Card(Color color) {
 		colorName = color;
@@ -77,7 +77,7 @@ public enum Card {
 
 
 	/**
-	 * @return (Color) The color of the card's type if it's a wagon card. null if not.
+	 * @return The color of the card's type if it's a wagon card. null if not.
 	 */
 	public Color color() {
 		return colorName;

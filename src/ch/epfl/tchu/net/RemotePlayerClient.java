@@ -43,7 +43,6 @@ public class RemotePlayerClient {
      * and calls the player's corresponding method;
      * If this method returns a result, the method run serializes it
      * to return it to the proxy in response.
-     * @throws UncheckedIOException if an IOException is thrown.
      */
     public void run(){
         try(Socket socket = new Socket(name, port);
@@ -111,7 +110,6 @@ public class RemotePlayerClient {
      * @param socket the socket being used to exchange data
      *                          with the entity connected at the other end.
      * @param message The serialized message to send to the client.
-     * @throws UncheckedIOException if an IOException is thrown.
      */
     private void sendMessage(Socket socket, String message){
         try{BufferedWriter writer =
