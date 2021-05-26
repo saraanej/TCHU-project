@@ -10,6 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import static ch.epfl.tchu.net.MessageId.*;
+import static ch.epfl.tchu.net.Serdes.*;
+
 /**
  * The RemotePlayerProxy instantiable class from the package ch.epfl.tchu.net represents a remote player proxy.
  * It implements the Player interface and can thus play the role of a player.
@@ -40,8 +43,8 @@ public final class RemotePlayerProxy implements Player {
     public void initPlayers(PlayerId ownId, Map<PlayerId, String> playerNames) {
         List<String> namesValues = new ArrayList<>();
         for (PlayerId p : PlayerId.values()) namesValues.add(playerNames.get(p));
-        String message = String.join(SPACE, Serdes.PLAYER_ID.serialize(ownId),
-                Serdes.LIST_STRING.serialize(namesValues));
+        String message = String.join(SPACE, PLAYER_ID.serialize(ownId),
+                LIST_STRING.serialize(namesValues));
         sendMessage(MessageId.INIT_PLAYERS,message);
     }
 
@@ -51,7 +54,7 @@ public final class RemotePlayerProxy implements Player {
      */
     @Override
     public void receiveInfo(String info) {
-        sendMessage(MessageId.RECEIVE_INFO, Serdes.STRING.serialize(info));
+        sendMessage(MessageId.RECEIVE_INFO, STRING.serialize(info));
     }
 
     /**
@@ -60,8 +63,8 @@ public final class RemotePlayerProxy implements Player {
      */
     @Override
     public void updateState(PublicGameState newState, PlayerState ownState) {
-        String message = String.join(SPACE,Serdes.PUBLIC_GAMESTATE.serialize(newState),
-                Serdes.PLAYERSTATE.serialize(ownState));
+        String message = String.join(SPACE,PUBLIC_GAMESTATE.serialize(newState),
+                PLAYERSTATE.serialize(ownState));
         sendMessage(MessageId.UPDATE_STATE, message);
     }
 
@@ -71,7 +74,7 @@ public final class RemotePlayerProxy implements Player {
      */
     @Override
     public void setInitialTicketChoice(SortedBag<Ticket> tickets) {
-        sendMessage(MessageId.SET_INITIAL_TICKETS, Serdes.SORTED_TICKET.serialize(tickets));
+        sendMessage(SET_INITIAL_TICKETS, SORTED_TICKET.serialize(tickets));
     }
 
     /**
@@ -81,7 +84,7 @@ public final class RemotePlayerProxy implements Player {
     @Override
     public int drawSlot() {
         sendMessage(MessageId.DRAW_SLOT, EMPTY_STRING);
-        return Serdes.INTEGER.deserialize(receiveMessage());
+        return INTEGER.deserialize(receiveMessage());
     }
 
     /**
@@ -90,8 +93,8 @@ public final class RemotePlayerProxy implements Player {
      */
     @Override
     public TurnKind nextTurn() {
-        sendMessage(MessageId.NEXT_TURN, EMPTY_STRING);
-        return Serdes.TURN_KIND.deserialize(receiveMessage());
+        sendMessage(NEXT_TURN, EMPTY_STRING);
+        return TURN_KIND.deserialize(receiveMessage());
     }
 
     /**
@@ -100,8 +103,8 @@ public final class RemotePlayerProxy implements Player {
      */
     @Override
     public SortedBag<Ticket> chooseTickets(SortedBag<Ticket> options) {
-        sendMessage(MessageId.CHOOSE_TICKETS,Serdes.SORTED_TICKET.serialize(options));
-        return Serdes.SORTED_TICKET.deserialize(receiveMessage());
+        sendMessage(CHOOSE_TICKETS,SORTED_TICKET.serialize(options));
+        return SORTED_TICKET.deserialize(receiveMessage());
     }
 
     /**
@@ -110,8 +113,8 @@ public final class RemotePlayerProxy implements Player {
      */
     @Override
     public SortedBag<Ticket> chooseInitialTickets() {
-        sendMessage(MessageId.CHOOSE_INITIAL_TICKETS, EMPTY_STRING);
-        return Serdes.SORTED_TICKET.deserialize(receiveMessage());
+        sendMessage(CHOOSE_INITIAL_TICKETS, EMPTY_STRING);
+        return SORTED_TICKET.deserialize(receiveMessage());
     }
 
     /**
@@ -120,8 +123,8 @@ public final class RemotePlayerProxy implements Player {
      */
     @Override
     public SortedBag<Card> initialClaimCards() {
-        sendMessage(MessageId.CARDS,EMPTY_STRING);
-        return Serdes.SORTED_CARD.deserialize(receiveMessage());
+        sendMessage(CARDS,EMPTY_STRING);
+        return SORTED_CARD.deserialize(receiveMessage());
     }
 
     /**
@@ -130,8 +133,8 @@ public final class RemotePlayerProxy implements Player {
      */
     @Override
     public SortedBag<Card> chooseAdditionalCards(List<SortedBag<Card>> options) {
-        sendMessage(MessageId.CHOOSE_ADDITIONAL_CARDS,Serdes.LIST_SORTED_CARD.serialize(options));
-        return Serdes.SORTED_CARD.deserialize(receiveMessage());
+        sendMessage(CHOOSE_ADDITIONAL_CARDS,LIST_SORTED_CARD.serialize(options));
+        return SORTED_CARD.deserialize(receiveMessage());
     }
 
     /**

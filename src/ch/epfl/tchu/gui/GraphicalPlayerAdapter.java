@@ -52,7 +52,7 @@ public final class GraphicalPlayerAdapter implements Player {
     }
 
     /**
-     * Sends the message info to the graphical player's through the javaFX thread.
+     * Sends the message info to the graphical player through the javaFX thread.
      *
      * @see Player#receiveInfo(String)
      */
