@@ -43,7 +43,6 @@ public class Game {
         GameState gameState = GameState.initial(tickets, rng);
         gameState = begin(playerNames, playersInfo, players, gameState);
 
-
         boolean lastTurnPlayed = false;
         while (!lastTurnPlayed) {
             receiveInfo(players, playersInfo.get(gameState.currentPlayerId()).canPlay());
@@ -62,17 +61,14 @@ public class Game {
                     break;
             }
 
-
             if (gameState.lastTurnBegins())
                 receiveInfo(players, playersInfo.get(gameState.currentPlayerId())
                         .lastTurnBegins(gameState.currentPlayerState().carCount()));
             if (gameState.lastPlayer() != null && gameState.currentPlayerId() == gameState.lastPlayer())
                 lastTurnPlayed = true;
 
-
             gameState = gameState.forNextTurn();
         }
-
         finish(playerNames, playersInfo, players, gameState);
     }
 

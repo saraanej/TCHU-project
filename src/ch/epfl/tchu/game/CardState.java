@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
+import static ch.epfl.tchu.game.Constants.FACE_UP_CARDS_COUNT;
 
 /**
  * The CardState class of the ch.epfl.tchu.game package, public, final and immutable.
@@ -29,9 +30,9 @@ public final class CardState extends PublicCardState {
 	 * @throws IllegalArgumentException if the deck's size is strictly smaller than 5
 	 */
 	public static CardState of(Deck<Card> deck) {
-		Preconditions.checkArgument(deck.size() >= Constants.FACE_UP_CARDS_COUNT);
-		return new CardState(deck.topCards(Constants.FACE_UP_CARDS_COUNT).toList(),
-				deck.withoutTopCards(Constants.FACE_UP_CARDS_COUNT),
+		Preconditions.checkArgument(deck.size() >= FACE_UP_CARDS_COUNT);
+		return new CardState(deck.topCards(FACE_UP_CARDS_COUNT).toList(),
+				deck.withoutTopCards(FACE_UP_CARDS_COUNT),
 				SortedBag.of());
 	}
 
@@ -79,7 +80,7 @@ public final class CardState extends PublicCardState {
 	public CardState withDrawnFaceUpCard(int slot) {
 		Preconditions.checkArgument(!deck.isEmpty());
 		List<Card> newFaceUpcards = new ArrayList<>(this.faceUpCards());
-		newFaceUpcards.set(Objects.checkIndex(slot, Constants.FACE_UP_CARDS_COUNT), deck.topCard());
+		newFaceUpcards.set(Objects.checkIndex(slot, FACE_UP_CARDS_COUNT), deck.topCard());
 		return new CardState(newFaceUpcards, deck.withoutTopCard(), this.discard);
 	}
 
