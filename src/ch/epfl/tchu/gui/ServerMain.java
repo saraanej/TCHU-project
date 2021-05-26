@@ -21,7 +21,7 @@ import java.util.Random;
  * @author Yasmin Ben Rahhal (329912)
  * @author Sara Anejjar (329905)
  */
-public class ServerMain extends Application {
+public final class ServerMain extends Application {
 
     private static final int SOCKET_PORT = 5108;
     private static final String PLAYER_1_DEFAULT = "Ada";

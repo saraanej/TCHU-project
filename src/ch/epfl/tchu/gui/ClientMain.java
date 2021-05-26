@@ -12,7 +12,7 @@ import java.util.List;
  * @author Yasmin Ben Rahhal (329912)
  * @author Sara Anejjar (329905)
  */
-public class ClientMain extends Application {
+public final class ClientMain extends Application {
 
     private final static int PORT_DEFAULT = 5108;
     private final static String NAME_DEFAULT = "localhost";
