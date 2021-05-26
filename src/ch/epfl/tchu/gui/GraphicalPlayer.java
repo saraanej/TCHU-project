@@ -206,9 +206,9 @@ public final class GraphicalPlayer {
         listView.setCellFactory(v ->
                 new TextFieldListCell<>(new CardBagStringConverter()));
 
-        SortedBag<Card> selectedCards = listView.getSelectionModel().getSelectedItem();
         createDialogStage(MIN_CARDS_CHOICE_ADDITIONAL,StringsFr.CARDS_CHOICE,StringsFr.CHOOSE_ADDITIONAL_CARDS, listView,
-                e -> cardsHandler.onChooseCards(selectedCards == null ? SortedBag.of() : selectedCards));
+                e -> cardsHandler.onChooseCards(listView.getSelectionModel().getSelectedItem() == null ? SortedBag.of() :
+                        listView.getSelectionModel().getSelectedItem()));
     }
 
     /**
