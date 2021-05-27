@@ -25,6 +25,8 @@ public final class RemotePlayerClient {
     private final String name;
     private final int port;
     private final Player player;
+    private BufferedWriter writer;
+
 
 
     /**
@@ -52,6 +54,9 @@ public final class RemotePlayerClient {
                             new InputStreamReader(socket.getInputStream(),
                                     US_ASCII))) {
 
+            writer = new BufferedWriter(
+                    new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.US_ASCII));
+
             String readLine = reader.readLine();
             while(readLine != null){
                 String[] split = readLine.split(Pattern.quote(SPACE),-1);
@@ -73,30 +78,30 @@ public final class RemotePlayerClient {
                         player.setInitialTicketChoice(SORTED_TICKET.deserialize(split[1]));
                         break;
                     case DRAW_SLOT:
-                        sendMessage(socket,INTEGER.serialize(player.drawSlot()));
+                        sendMessage(INTEGER.serialize(player.drawSlot()));
                         break;
                     case NEXT_TURN:
-                        sendMessage(socket, TURN_KIND.serialize(player.nextTurn()));
+                        sendMessage(TURN_KIND.serialize(player.nextTurn()));
                         break;
                     case CHOOSE_TICKETS:
-                        sendMessage(socket, SORTED_TICKET.serialize(
+                        sendMessage(SORTED_TICKET.serialize(
                                             player.chooseTickets(
                                             SORTED_TICKET.deserialize(split[1]))));
                         break;
                     case CHOOSE_INITIAL_TICKETS:
-                        sendMessage(socket, SORTED_TICKET.serialize(
+                        sendMessage(SORTED_TICKET.serialize(
                                             player.chooseInitialTickets()));
                         break;
                     case CARDS:
-                        sendMessage(socket, SORTED_CARD.serialize(player.initialClaimCards()));
+                        sendMessage(SORTED_CARD.serialize(player.initialClaimCards()));
                         break;
                     case CHOOSE_ADDITIONAL_CARDS:
-                        sendMessage(socket, SORTED_CARD.serialize(
+                        sendMessage(SORTED_CARD.serialize(
                                             player.chooseAdditionalCards(
                                             LIST_SORTED_CARD.deserialize(split[1]))));
                         break;
                     case ROUTE:
-                        sendMessage(socket, ROUTE.serialize(player.claimedRoute()));
+                        sendMessage(ROUTE.serialize(player.claimedRoute()));
                         break;
                 }
                 readLine= reader.readLine();
@@ -108,14 +113,10 @@ public final class RemotePlayerClient {
 
 
     /**
-     * @param socket the socket being used to exchange data
-     *                          with the entity connected at the other end.
      * @param message The serialized message to send to the client.
      */
-    private void sendMessage(Socket socket, String message){
-        try{BufferedWriter writer =
-                    new BufferedWriter(
-                            new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.US_ASCII));
+    private void sendMessage(String message){
+        try{
             writer.write(String.format("%s\n",message));
             writer.flush();
         } catch (IOException e){

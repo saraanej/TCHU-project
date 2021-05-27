@@ -91,14 +91,14 @@ public interface Serde<C> {
                 Preconditions.checkArgument(t != null);
                 List<String> serialized = new ArrayList<>();
                 if(t.isEmpty()) return "";
-                for (T s : t)
-                    serialized.add(serde.serialize(s));
+                for (T s : t){
+                    serialized.add(serde.serialize(s));}
                 return String.join(separator,
                         serialized);
             }
             @Override
             public List<T> deserialize(String str){
-                if(str.isEmpty()) return List.of();
+                if(str == null || str.isEmpty()) return List.of();
                 String[] split = str.split(Pattern.quote(separator), -1);
                 List<T> deserialized = new ArrayList<>();
                 for (String s: split)

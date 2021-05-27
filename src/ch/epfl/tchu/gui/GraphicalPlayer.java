@@ -2,6 +2,7 @@ package ch.epfl.tchu.gui;
 
 import ch.epfl.tchu.SortedBag;
 import ch.epfl.tchu.game.*;
+import javafx.beans.binding.BooleanBinding;
 import javafx.beans.binding.IntegerBinding;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
@@ -42,9 +43,8 @@ import static javafx.application.Platform.isFxApplicationThread;
  */
 public final class GraphicalPlayer {
 
-    private static final int MIN_CLAIM_CARDS_CHOICE = 1;
-    private static final int MIN_CARDS_CHOICE_ADDITIONAL = 0;
     private static final int INFO_MESSAGE_COUNT = 5;
+    private static final BooleanBinding FALSE_BINDING = Bindings.createBooleanBinding(() -> false);
 
     private final Stage primaryStage;
 
@@ -168,9 +168,9 @@ public final class GraphicalPlayer {
 
         int minTicketsChoice = options.size() - DISCARDABLE_TICKETS_COUNT;
 
-        createDialogStage(minTicketsChoice,StringsFr.TICKETS_CHOICE,
-                String.format(StringsFr.CHOOSE_TICKETS, minTicketsChoice, StringsFr.plural(minTicketsChoice)),
-                listView,
+        createDialogStage(Bindings.size(listView.getSelectionModel().getSelectedItems()).lessThan(minTicketsChoice),
+                StringsFr.TICKETS_CHOICE, String.format(StringsFr.CHOOSE_TICKETS, minTicketsChoice,
+                        StringsFr.plural(minTicketsChoice)), listView,
                 e -> chooseTickets.onChooseTickets(SortedBag.of(listView.getSelectionModel().getSelectedItems())));
     }
 
@@ -188,7 +188,7 @@ public final class GraphicalPlayer {
         listView.setCellFactory(v ->
                 new TextFieldListCell<>(new CardBagStringConverter()));
 
-        createDialogStage(MIN_CLAIM_CARDS_CHOICE,StringsFr.CARDS_CHOICE,StringsFr.CHOOSE_CARDS,listView,
+        createDialogStage(listView.getSelectionModel().selectedItemProperty().isNull(),StringsFr.CARDS_CHOICE,StringsFr.CHOOSE_CARDS,listView,
                 e -> cardsHandler.onChooseCards(listView.getSelectionModel().getSelectedItem())
         );
     }
@@ -206,21 +206,21 @@ public final class GraphicalPlayer {
         listView.setCellFactory(v ->
                 new TextFieldListCell<>(new CardBagStringConverter()));
 
-        createDialogStage(MIN_CARDS_CHOICE_ADDITIONAL,StringsFr.CARDS_CHOICE,StringsFr.CHOOSE_ADDITIONAL_CARDS, listView,
+        createDialogStage(FALSE_BINDING,StringsFr.CARDS_CHOICE,StringsFr.CHOOSE_ADDITIONAL_CARDS, listView,
                 e -> cardsHandler.onChooseCards(listView.getSelectionModel().getSelectedItem() == null ? SortedBag.of() :
                         listView.getSelectionModel().getSelectedItem()));
     }
 
     /**
      * Creates the dialog window to choose the cards or the tickets.
-     * @param minItems the minimum choice allowed.
+     * @param selected
      * @param title the title of the window.
      * @param intro the introduction text of the window.
      * @param listView the list of choices.
      * @param handler the handler for the action after pressing the choice button.
      * @param <E> the type of the elements to choose from.
      */
-    private <E> void  createDialogStage(int minItems, String title, String intro, ListView<E> listView, EventHandler<ActionEvent> handler){
+    private <E> void  createDialogStage(BooleanBinding selected, String title, String intro, ListView<E> listView, EventHandler<ActionEvent> handler){
         Stage dialogStage = new Stage(StageStyle.UTILITY);
 
         Text textIntro = new Text(intro);
@@ -228,8 +228,7 @@ public final class GraphicalPlayer {
 
         Button chooseButton = new Button(StringsFr.CHOOSE);
 
-        IntegerBinding selected = Bindings.size(listView.getSelectionModel().getSelectedItems());
-        chooseButton.disableProperty().bind(Bindings.lessThan(selected,minItems));
+        chooseButton.disableProperty().bind(selected);
         chooseButton.setOnAction(e -> {
             dialogStage.hide();
             handler.handle(e);
