@@ -84,21 +84,21 @@ public final class Trail {
      * @return the first station of the trail. null if the trail's length is zero.
      */
     public Station station1() {
-        return this.station1;
+        return station1;
     }
 
     /**
      * @return the last station of the trail. null if the trail's length is zero.
      */
     public Station station2() {
-        return this.station2;
+        return station2;
     }
 
     /**
      * @return the trail's length.
      */
     public int length() {
-        return this.length;
+        return length;
     }
 
 

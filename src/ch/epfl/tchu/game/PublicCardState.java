@@ -1,14 +1,13 @@
 package ch.epfl.tchu.game;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-
+import static ch.epfl.tchu.game.Constants.FACE_UP_CARDS_COUNT;
 import ch.epfl.tchu.Preconditions;
 
 /**
- * The public and immutable PublicCardState class represents (a part of) the state of the wagon/locomotive cards that are not in the hands of the players.
+ * The public and immutable PublicCardState class represents (a part of) the state
+ * of the wagon/locomotive cards that are not in the hands of the players.
  * By "public part of a state" is meant the part of this state which is known to all the players.
  *
  * @author Yasmin Ben Rahhal (329912)
@@ -31,7 +30,7 @@ public class PublicCardState {
 	 *                if the sizes of the deck or the discard pile are negative.
 	 */
 	public PublicCardState(List<Card> faceUpCards, int deckSize, int discardsSize) {
-		Preconditions.checkArgument(faceUpCards.size() == Constants.FACE_UP_CARDS_COUNT);
+		Preconditions.checkArgument(faceUpCards.size() == FACE_UP_CARDS_COUNT);
 		Preconditions.checkArgument(deckSize >= 0);
 		Preconditions.checkArgument(discardsSize >= 0);
 		this.faceUpCards = List.copyOf(faceUpCards);
@@ -75,6 +74,6 @@ public class PublicCardState {
 	             if slot is less than 0 or bigger or equal than 5.
 	 */
 	public Card faceUpCard(int slot) {
-		return faceUpCards().get(Objects.checkIndex(slot,Constants.FACE_UP_CARDS_COUNT));
+		return faceUpCards().get(Objects.checkIndex(slot,FACE_UP_CARDS_COUNT));
 	}
 }

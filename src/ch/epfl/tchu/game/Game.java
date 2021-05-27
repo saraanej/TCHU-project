@@ -4,7 +4,7 @@ import ch.epfl.tchu.Preconditions;
 import ch.epfl.tchu.SortedBag;
 import ch.epfl.tchu.gui.Info;
 import com.sun.source.tree.Tree;
-
+import static ch.epfl.tchu.game.Constants.*;
 import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -84,8 +84,8 @@ public class Game {
 
         SortedBag<Ticket> initialTickets;
         for (PlayerId playerId : PlayerId.values()) {
-            initialTickets = gameState.topTickets(Constants.INITIAL_TICKETS_COUNT);
-            gameState = gameState.withoutTopTickets(Constants.INITIAL_TICKETS_COUNT);
+            initialTickets = gameState.topTickets(INITIAL_TICKETS_COUNT);
+            gameState = gameState.withoutTopTickets(INITIAL_TICKETS_COUNT);
             players.get(playerId).setInitialTicketChoice(initialTickets);
         }
         updateState(players, gameState);
@@ -107,8 +107,8 @@ public class Game {
     private static GameState drawTickets(Map<PlayerId, Info> playersInfo, Map<PlayerId, Player> players, GameState gameState) {
         PlayerId currentPlayerId = gameState.currentPlayerId();
 
-        SortedBag<Ticket> drawnTickets = gameState.topTickets(Constants.IN_GAME_TICKETS_COUNT);
-        receiveInfo(players, playersInfo.get(currentPlayerId).drewTickets(Constants.IN_GAME_TICKETS_COUNT));
+        SortedBag<Ticket> drawnTickets = gameState.topTickets(IN_GAME_TICKETS_COUNT);
+        receiveInfo(players, playersInfo.get(currentPlayerId).drewTickets(IN_GAME_TICKETS_COUNT));
 
         SortedBag<Ticket> chosenTickets = players.get(currentPlayerId).chooseTickets(drawnTickets);
         gameState = gameState.withChosenAdditionalTickets(drawnTickets, chosenTickets);
@@ -131,10 +131,10 @@ public class Game {
             updateState(players, gameState);
 
             int slot = players.get(currentPlayerId).drawSlot();
-            if (slot == Constants.DECK_SLOT) {
+            if (slot == DECK_SLOT) {
                 gameState = gameState.withBlindlyDrawnCard();
                 receiveInfo(players, playersInfo.get(currentPlayerId).drewBlindCard());
-            } else if (slot < Constants.FACE_UP_CARDS_COUNT) {
+            } else if (slot < FACE_UP_CARDS_COUNT) {
                 receiveInfo(players, playersInfo.get(currentPlayerId)
                         .drewVisibleCard(gameState.cardState().faceUpCard(slot)));
                 gameState = gameState.withDrawnFaceUpCard(slot);
@@ -159,7 +159,7 @@ public class Game {
                 receiveInfo(players, playersInfo.get(currentPlayerId).attemptsTunnelClaim(route, claimCards));
 
                 List<Card> drawn = new ArrayList<>();
-                for (int i = 0; i < Constants.ADDITIONAL_TUNNEL_CARDS; ++i) {
+                for (int i = 0; i < ADDITIONAL_TUNNEL_CARDS; ++i) {
                     gameState = gameState.withCardsDeckRecreatedIfNeeded(rng);
                     drawn.add(gameState.topCard());
                     gameState = gameState.withoutTopCard();
@@ -214,11 +214,11 @@ public class Game {
 
         if (bonusPlayer == null) {
             playersPoints.forEach(((playerId, integer) ->
-                    playersPoints.put(playerId, integer + Constants.LONGEST_TRAIL_BONUS_POINTS)));
+                    playersPoints.put(playerId, integer + LONGEST_TRAIL_BONUS_POINTS)));
             playersTrail.forEach(((playerId, trail) ->
                     receiveInfo(players, playersInfo.get(playerId).getsLongestTrailBonus(trail))));
         } else {
-            playersPoints.put(bonusPlayer, playersPoints.get(bonusPlayer) + Constants.LONGEST_TRAIL_BONUS_POINTS);
+            playersPoints.put(bonusPlayer, playersPoints.get(bonusPlayer) + LONGEST_TRAIL_BONUS_POINTS);
             receiveInfo(players, playersInfo.get(bonusPlayer).getsLongestTrailBonus(playersTrail.get(bonusPlayer)));
         }
         //Used this method (.min) to determine the points of the loser player since there might be more than 2 players in the future
@@ -257,10 +257,8 @@ public class Game {
      * if null, both players are ex-quo.
      */
     private static Map.Entry<PlayerId, Integer> winner(Map<PlayerId, Integer> playersPoints, int minPoints) {
-
         Map.Entry<PlayerId, Integer> winner = playersPoints.entrySet().stream()
                 .max(Comparator.comparingInt(e -> e.getValue())).get();;
-
         return winner.getValue() == minPoints ? null : winner;
     }
 
@@ -271,7 +269,6 @@ public class Game {
      * if null, both players have the longestTrail.
      */
     private static PlayerId longest(Map<PlayerId, Trail> playersTrail) {
-
         //Used this method (.min) to determine the smallest Trail's length because there might be more than 2 players in the future
         Map.Entry<PlayerId, Trail> min = playersTrail.entrySet().stream()
                 .min(Comparator.comparingInt(e -> e.getValue().length())).get();

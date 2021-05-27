@@ -11,6 +11,7 @@ final class GuiConstants {
 
     private GuiConstants() {}
 
+
     // The decks' view components' dimensions.
     static final int OUTSIDE_CARD_WIDTH = 60;
     static final int OUTSIDE_CARD_HEIGHT = 90;

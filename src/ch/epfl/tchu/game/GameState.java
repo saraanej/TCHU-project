@@ -2,7 +2,7 @@ package ch.epfl.tchu.game;
 
 import ch.epfl.tchu.Preconditions;
 import ch.epfl.tchu.SortedBag;
-
+import static ch.epfl.tchu.game.Constants.*;
 import java.util.*;
 
 /**
@@ -34,13 +34,13 @@ public final class GameState extends PublicGameState{
      */
     public static GameState initial(SortedBag<Ticket> tickets, Random rng) {
         Preconditions.checkArgument(tickets != null && !tickets.isEmpty());
-        Deck<Card> deckCard = Deck.of(Constants.ALL_CARDS, rng);
+        Deck<Card> deckCard = Deck.of(ALL_CARDS, rng);
 
         Map<PlayerId, PlayerState> playerState = new EnumMap<>(PlayerId.class);
         for (PlayerId playerId : PlayerId.values()) {
             playerState.put(playerId, PlayerState
-                    .initial(deckCard.topCards(Constants.INITIAL_CARDS_COUNT)));
-            deckCard = deckCard.withoutTopCards(Constants.INITIAL_CARDS_COUNT);
+                    .initial(deckCard.topCards(INITIAL_CARDS_COUNT)));
+            deckCard = deckCard.withoutTopCards(INITIAL_CARDS_COUNT);
         }
 
         return new GameState(Deck.of(tickets, rng), CardState.of(deckCard),

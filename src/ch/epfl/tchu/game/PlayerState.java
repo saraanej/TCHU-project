@@ -3,7 +3,8 @@ package ch.epfl.tchu.game;
 
 import ch.epfl.tchu.Preconditions;
 import ch.epfl.tchu.SortedBag;
-
+import static ch.epfl.tchu.game.Constants.*;
+import static ch.epfl.tchu.game.Card.LOCOMOTIVE;
 import java.util.*;
 
 /**
@@ -28,7 +29,7 @@ public final class PlayerState extends PublicPlayerState {
      * @throws IllegalArgumentException if the number of initial cards is not equal to 4
      */
     public static PlayerState initial(SortedBag<Card> initialCards) {
-        Preconditions.checkArgument(initialCards.size() == Constants.INITIAL_CARDS_COUNT);
+        Preconditions.checkArgument(initialCards.size() == INITIAL_CARDS_COUNT);
         return new PlayerState(SortedBag.of(), initialCards, List.of());
     }
 
@@ -107,7 +108,7 @@ public final class PlayerState extends PublicPlayerState {
      *                                  if drawnCards doesn't contain exactly 3 cards
      */
     public List<SortedBag<Card>> possibleAdditionalCards(int additionalCardsCount, SortedBag<Card> initialCards) {
-        Preconditions.checkArgument(additionalCardsCount >= 1 && additionalCardsCount <= Constants.ADDITIONAL_TUNNEL_CARDS);
+        Preconditions.checkArgument(additionalCardsCount >= 1 && additionalCardsCount <= ADDITIONAL_TUNNEL_CARDS);
         Preconditions.checkArgument(!initialCards.isEmpty());
         Set<Card> initial = initialCards.toSet();
         Preconditions.checkArgument(initial.size() <= 2);
@@ -115,14 +116,14 @@ public final class PlayerState extends PublicPlayerState {
         SortedBag<Card> cardsWithoutInitials = cards.difference(initialCards);
         SortedBag.Builder<Card> canUse = new SortedBag.Builder<>();
         for (Card c : cardsWithoutInitials) {
-            if (c.equals(Card.LOCOMOTIVE) || initialCards.contains(c))
+            if (c.equals(LOCOMOTIVE) || initialCards.contains(c))
                 canUse.add(c);
         }
         List<SortedBag<Card>> all = new ArrayList<>();
         if (canUse.size() >= 0 && additionalCardsCount <= canUse.size()) {
             Set<SortedBag<Card>> allSubSets = canUse.build().subsetsOfSize(additionalCardsCount);
             all.addAll(allSubSets);
-            all.sort(Comparator.comparingInt(cs -> cs.countOf(Card.LOCOMOTIVE)));
+            all.sort(Comparator.comparingInt(cs -> cs.countOf(LOCOMOTIVE)));
         }
         return all;
     }

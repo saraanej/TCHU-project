@@ -2,7 +2,9 @@ package ch.epfl.tchu.game;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
-
+import static ch.epfl.tchu.game.Constants.*;
+import static ch.epfl.tchu.game.Card.LOCOMOTIVE;
+import static ch.epfl.tchu.game.Route.Level.*;
 import ch.epfl.tchu.Preconditions;
 import ch.epfl.tchu.SortedBag;
 
@@ -44,8 +46,8 @@ public final class Route {
 	 */
 	public Route(String id, Station station1, Station station2, int length, Level level, Color color){
 		Preconditions.checkArgument(!station1.equals(station2));
-		Preconditions.checkArgument(length >= Constants.MIN_ROUTE_LENGTH);
-		Preconditions.checkArgument(length <= Constants.MAX_ROUTE_LENGTH);
+		Preconditions.checkArgument(length >= MIN_ROUTE_LENGTH);
+		Preconditions.checkArgument(length <= MAX_ROUTE_LENGTH);
 
 		this.id = Objects.requireNonNull(id);
 		this.level = Objects.requireNonNull(level);
@@ -61,14 +63,14 @@ public final class Route {
 	 * @return The route's length.
 	 */
 	public int length() {
-		return this.length;
+		return length;
 	}
 
 	/**
 	 * @return The points of construction earned by the player when he/she gets the route.
 	 */
 	public int claimPoints() {
-		return Constants.ROUTE_CLAIM_POINTS.get(length);
+		return ROUTE_CLAIM_POINTS.get(length);
 	}
 
 	/**
@@ -79,11 +81,11 @@ public final class Route {
 	   if the route is not a tunnel or if drawnCards doesn't contain exactly three cards.
 	 */
 	public int additionalClaimCardsCount(SortedBag<Card> claimCards, SortedBag<Card> drawnCards) {
-		Preconditions.checkArgument(level.equals(Level.UNDERGROUND));
-		Preconditions.checkArgument(drawnCards.size() == Constants.ADDITIONAL_TUNNEL_CARDS);
+		Preconditions.checkArgument(level.equals(UNDERGROUND));
+		Preconditions.checkArgument(drawnCards.size() == ADDITIONAL_TUNNEL_CARDS);
 
 		AtomicInteger additionalCards = new AtomicInteger(0);
-		drawnCards.forEach(drawnCard -> { if(claimCards.contains(drawnCard) || drawnCard == Card.LOCOMOTIVE) {
+		drawnCards.forEach(drawnCard -> { if(claimCards.contains(drawnCard) || drawnCard == LOCOMOTIVE) {
 			additionalCards.incrementAndGet(); }
 		});
 
@@ -94,14 +96,14 @@ public final class Route {
 	 * Public getter for the route's identity.
 	 * @return The route's identity.
 	 */
-	public String id() { return this.id; }
+	public String id() { return id; }
 
 	/**
 	 * Public getter for the level to which the route belongs.
 	 * @return The level to which the route belongs.
 	 */
 	public Level level() {
-		return this.level;
+		return level;
 	}
 
 	/**
@@ -109,7 +111,7 @@ public final class Route {
 	 * @return The route's color, null if it's a neutral route.
 	 */
 	public Color color() {
-		return this.color;
+		return color;
 	}
 	
 	/**
@@ -117,7 +119,7 @@ public final class Route {
 	 * @return The first station of the route.
 	 */
 	public Station station1() {
-		return this.station1;
+		return station1;
 	}
 	
 	/**
@@ -125,7 +127,7 @@ public final class Route {
 	 * @return The second station of the route.
 	 */
 	public Station station2() {
-		return this.station2;
+		return station2;
 	}
 
 	/**
@@ -152,16 +154,16 @@ public final class Route {
 	 */
 	public List<SortedBag<Card>> possibleClaimCards(){
 		List<SortedBag<Card>> possibleCards = new ArrayList<>();
-		var maxLoco = level == Level.OVERGROUND ? 0 : length;
+		var maxLoco = level == OVERGROUND ? 0 : length;
 		if(color == null) {
 			for(int i = 0; maxLoco == length ? i < maxLoco : i <= maxLoco ; ++i) {
 				for(Card c : Card.CARS)
-					possibleCards.add(SortedBag.of(length - i, c, i , Card.LOCOMOTIVE));
+					possibleCards.add(SortedBag.of(length - i, c, i , LOCOMOTIVE));
 			}
-			if (maxLoco == length) possibleCards.add(SortedBag.of(length, Card.LOCOMOTIVE));
+			if (maxLoco == length) possibleCards.add(SortedBag.of(length, LOCOMOTIVE));
 		} else {
 			for(int i = 0; i <= maxLoco ; ++i)
-				possibleCards.add(SortedBag.of(length - i, Card.of(color), i, Card.LOCOMOTIVE));
+				possibleCards.add(SortedBag.of(length - i, Card.of(color), i, LOCOMOTIVE));
 		}
 		return possibleCards;
 	}

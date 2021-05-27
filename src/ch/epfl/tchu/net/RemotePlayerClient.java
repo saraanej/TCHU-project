@@ -8,6 +8,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
+import static ch.epfl.tchu.net.Serdes.*;
 import static java.nio.charset.StandardCharsets.US_ASCII;
 
 /**
@@ -56,46 +57,46 @@ public final class RemotePlayerClient {
                 String[] split = readLine.split(Pattern.quote(SPACE),-1);
                 switch (MessageId.valueOf(split[0])) {
                     case INIT_PLAYERS:
-                        List<String> deserialized = Serdes.LIST_STRING.deserialize(split[2]);
-                        player.initPlayers(Serdes.PLAYER_ID.deserialize(split[1]),
+                        List<String> deserialized = LIST_STRING.deserialize(split[2]);
+                        player.initPlayers(PLAYER_ID.deserialize(split[1]),
                                            Map.of(PlayerId.PLAYER_1, deserialized.get(0),
                                                    PlayerId.PLAYER_2, deserialized.get(1)));
                         break;
                     case RECEIVE_INFO:
-                        player.receiveInfo(Serdes.STRING.deserialize(split[1]));
+                        player.receiveInfo(STRING.deserialize(split[1]));
                         break;
                     case UPDATE_STATE:
-                        player.updateState(Serdes.PUBLIC_GAMESTATE.deserialize(split[1]),
-                                           Serdes.PLAYERSTATE.deserialize(split[2]));
+                        player.updateState(PUBLIC_GAMESTATE.deserialize(split[1]),
+                                           PLAYERSTATE.deserialize(split[2]));
                         break;
                     case SET_INITIAL_TICKETS:
-                        player.setInitialTicketChoice(Serdes.SORTED_TICKET.deserialize(split[1]));
+                        player.setInitialTicketChoice(SORTED_TICKET.deserialize(split[1]));
                         break;
                     case DRAW_SLOT:
-                        sendMessage(socket,Serdes.INTEGER.serialize(player.drawSlot()));
+                        sendMessage(socket,INTEGER.serialize(player.drawSlot()));
                         break;
                     case NEXT_TURN:
-                        sendMessage(socket, Serdes.TURN_KIND.serialize(player.nextTurn()));
+                        sendMessage(socket, TURN_KIND.serialize(player.nextTurn()));
                         break;
                     case CHOOSE_TICKETS:
-                        sendMessage(socket, Serdes.SORTED_TICKET.serialize(
+                        sendMessage(socket, SORTED_TICKET.serialize(
                                             player.chooseTickets(
-                                            Serdes.SORTED_TICKET.deserialize(split[1]))));
+                                            SORTED_TICKET.deserialize(split[1]))));
                         break;
                     case CHOOSE_INITIAL_TICKETS:
-                        sendMessage(socket, Serdes.SORTED_TICKET.serialize(
+                        sendMessage(socket, SORTED_TICKET.serialize(
                                             player.chooseInitialTickets()));
                         break;
                     case CARDS:
-                        sendMessage(socket, Serdes.SORTED_CARD.serialize(player.initialClaimCards()));
+                        sendMessage(socket, SORTED_CARD.serialize(player.initialClaimCards()));
                         break;
                     case CHOOSE_ADDITIONAL_CARDS:
-                        sendMessage(socket, Serdes.SORTED_CARD.serialize(
+                        sendMessage(socket, SORTED_CARD.serialize(
                                             player.chooseAdditionalCards(
-                                            Serdes.LIST_SORTED_CARD.deserialize(split[1]))));
+                                            LIST_SORTED_CARD.deserialize(split[1]))));
                         break;
                     case ROUTE:
-                        sendMessage(socket, Serdes.ROUTE.serialize(player.claimedRoute()));
+                        sendMessage(socket, ROUTE.serialize(player.claimedRoute()));
                         break;
                 }
                 readLine= reader.readLine();
