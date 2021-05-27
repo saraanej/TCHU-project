@@ -12,7 +12,7 @@ import static ch.epfl.tchu.net.Serdes.*;
 import static java.nio.charset.StandardCharsets.US_ASCII;
 
 /**
- * The RemotePlayerClient instantiable class
+ * The RemotePlayerClient instantiable class from the package ch.epfl.tchu.net
  * represents a remote player client.
  *
  * @author Yasmin Ben Rahhal (329912)

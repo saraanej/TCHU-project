@@ -14,7 +14,8 @@ import static ch.epfl.tchu.net.MessageId.*;
 import static ch.epfl.tchu.net.Serdes.*;
 
 /**
- * The RemotePlayerProxy instantiable class from the package ch.epfl.tchu.net represents a remote player proxy.
+ * The RemotePlayerProxy instantiable class from the package ch.epfl.tchu.net
+ * represents a remote player proxy.
  * It implements the Player interface and can thus play the role of a player.
  *
  * @author Yasmin Ben Rahhal (329912)
@@ -25,14 +26,24 @@ public final class RemotePlayerProxy implements Player {
     private final static String SPACE = " ";
     private final static String EMPTY_STRING = "";
 
-    private final Socket socket;
+    private final BufferedReader reader;
+    private final BufferedWriter writer;
 
     /**
-     * Public default constructor of a RemotePlayerProxy
+     * Public default constructor of a RemotePlayerProxy, creates the BufferedWriters and the BufferedReader
+     * to receive and send the messages through the socket's streams.
      * @param socket the socket port of this player
      */
     public RemotePlayerProxy(Socket socket) {
-        this.socket = socket;
+        try {
+            reader = new BufferedReader(
+                    new InputStreamReader(socket.getInputStream(), StandardCharsets.US_ASCII));
+            writer = new BufferedWriter(
+                    new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.US_ASCII));
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new UncheckedIOException(e);
+        }
     }
 
     /**
@@ -155,13 +166,11 @@ public final class RemotePlayerProxy implements Player {
      */
     private void sendMessage(MessageId Id, String message){
         try{
-            BufferedWriter writer =
-                    new BufferedWriter(
-                            new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.US_ASCII));
             String send = String.join(SPACE, Id.name(), message);
             writer.write(String.format("%s\n",send));
             writer.flush();
         } catch (IOException e){
+            e.printStackTrace();
             throw new UncheckedIOException(e);
         }
     }
@@ -171,11 +180,9 @@ public final class RemotePlayerProxy implements Player {
      */
     private String receiveMessage(){
         try {
-            BufferedReader reader =
-                    new BufferedReader(
-                            new InputStreamReader(socket.getInputStream(), StandardCharsets.US_ASCII));
             return reader.readLine();
         } catch (IOException e){
+            e.printStackTrace();
             throw new UncheckedIOException(e);
         }
     }
