@@ -79,7 +79,7 @@ public final class GraphicalPlayerAdapter implements Player {
      */
     @Override
     public void setInitialTicketChoice(SortedBag<Ticket> tickets) {
-        runLater(() -> player.chooseTickets(tickets,t -> queueTickets.add(t)));
+        runLater(() -> player.chooseTickets(tickets, queueTickets::add));
     }
 
     /**
@@ -92,7 +92,7 @@ public final class GraphicalPlayerAdapter implements Player {
     public int drawSlot() {
         if(!queueSlots.isEmpty()) return queueSlots.remove();
         else {
-            runLater(() -> player.drawCard(i -> queueSlots.add(i)));
+            runLater(() -> player.drawCard(queueSlots::add));
             return take(queueSlots);
         }
     }
@@ -106,7 +106,7 @@ public final class GraphicalPlayerAdapter implements Player {
      */
     @Override
     public TurnKind nextTurn() {
-        runLater(() -> { player.startTurn(() -> queueTurn.add(TurnKind.DRAW_TICKETS),
+        runLater(() -> player.startTurn(() -> queueTurn.add(TurnKind.DRAW_TICKETS),
 
                 i -> { queueTurn.add(TurnKind.DRAW_CARDS);
                 queueSlots.add(i); },
@@ -114,8 +114,7 @@ public final class GraphicalPlayerAdapter implements Player {
                 (r,c) -> { queueTurn.add(TurnKind.CLAIM_ROUTE);
                 queueCards.add(c);
                 queueRoute.add(r);
-                });
-        });
+                }));
         return take(queueTurn);
     }
 
@@ -128,7 +127,7 @@ public final class GraphicalPlayerAdapter implements Player {
      */
     @Override
     public SortedBag<Ticket> chooseTickets(SortedBag<Ticket> options) {
-        runLater(() -> player.chooseTickets(options,t -> queueTickets.add(t)));
+        runLater(() -> player.chooseTickets(options, queueTickets::add));
         return take(queueTickets);
     }
 
@@ -161,7 +160,7 @@ public final class GraphicalPlayerAdapter implements Player {
      */
     @Override
     public SortedBag<Card> chooseAdditionalCards(List<SortedBag<Card>> options) {
-        runLater(() -> player.chooseAdditionalCards(options,s -> queueCards.add(s)));
+        runLater(() -> player.chooseAdditionalCards(options, queueCards::add));
         return take(queueCards);
     }
 

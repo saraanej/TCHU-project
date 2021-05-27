@@ -213,14 +213,14 @@ public final class GraphicalPlayer {
 
     /**
      * Creates the dialog window to choose the cards or the tickets.
-     * @param selected
+     * @param binding the boolean binding to disable the choice button (true to disable it)
      * @param title the title of the window.
      * @param intro the introduction text of the window.
      * @param listView the list of choices.
      * @param handler the handler for the action after pressing the choice button.
      * @param <E> the type of the elements to choose from.
      */
-    private <E> void  createDialogStage(BooleanBinding selected, String title, String intro, ListView<E> listView, EventHandler<ActionEvent> handler){
+    private <E> void  createDialogStage(BooleanBinding binding, String title, String intro, ListView<E> listView, EventHandler<ActionEvent> handler){
         Stage dialogStage = new Stage(StageStyle.UTILITY);
 
         Text textIntro = new Text(intro);
@@ -228,7 +228,7 @@ public final class GraphicalPlayer {
 
         Button chooseButton = new Button(StringsFr.CHOOSE);
 
-        chooseButton.disableProperty().bind(selected);
+        chooseButton.disableProperty().bind(binding);
         chooseButton.setOnAction(e -> {
             dialogStage.hide();
             handler.handle(e);
