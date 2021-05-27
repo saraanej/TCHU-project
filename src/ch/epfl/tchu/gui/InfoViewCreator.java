@@ -48,7 +48,7 @@ final class InfoViewCreator {
            if(player != id) players.add(player);
 
        int lastIndex = PlayerId.COUNT - 1;
-       int lastSep = id.ordinal() == lastIndex ? LAST_SEPARATOR_WHEN_ID_IS_LAST : LAST_SEPARATOR;
+       int lastStep = id.ordinal() == lastIndex ? LAST_SEPARATOR_WHEN_ID_IS_LAST : LAST_SEPARATOR;
 
        VBox infoView = new VBox();
        infoView.getStylesheets().addAll(INFO_SS,COLORS_SS);
@@ -58,27 +58,8 @@ final class InfoViewCreator {
 
        Separator separator = new Separator();
 
-       for(PlayerId player : players){
-           TextFlow nPlayer = new TextFlow();
-           nPlayer.getStyleClass().add(player.name());
-
-           Circle circle = new Circle(CIRCLE_RADIUS_PLAYER_INFO);
-           circle.getStyleClass().add(FILLED_SC);
-
-           Text text = new Text();
-           text.textProperty().bind(Bindings.format(StringsFr.PLAYER_STATS,
-                   playerNames.get(player),
-                   gameState.playerTicketCount(player),
-                   gameState.playerCardCount(player),
-                   gameState.playerCarCount(player),
-                   gameState.playerClaimPoints(player)));
-           nPlayer.getChildren().addAll(circle,text);
-           playerStats.getChildren().add(nPlayer);
-
-           if(lastSep == LAST_SEPARATOR_WHEN_ID_IS_LAST && player == id)
-               nPlayer.getChildren().add(separator);
-           if(player.ordinal() < PlayerId.COUNT - lastSep) nPlayer.getChildren().add(separator);
-       }
+       for(PlayerId player : players)
+           playersInfo(player, playerStats, id, playerNames, gameState, lastStep, separator);
 
        TextFlow gameInfo = new TextFlow();
        gameInfo.setId(GAME_INFO_ID);
@@ -87,5 +68,30 @@ final class InfoViewCreator {
        infoView.getChildren().addAll(playerStats, separator, gameInfo);
 
     return infoView;
+    }
+
+
+    private static void playersInfo(PlayerId player, VBox playerStats, PlayerId id,
+                                    Map<PlayerId,String> playerNames, ObservableGameState gameState,
+                                    int lastStep, Separator separator){
+            TextFlow nPlayer = new TextFlow();
+            nPlayer.getStyleClass().add(player.name());
+
+            Circle circle = new Circle(CIRCLE_RADIUS_PLAYER_INFO);
+            circle.getStyleClass().add(FILLED_SC);
+
+            Text text = new Text();
+            text.textProperty().bind(Bindings.format(StringsFr.PLAYER_STATS,
+                    playerNames.get(player),
+                    gameState.playerTicketCount(player),
+                    gameState.playerCardCount(player),
+                    gameState.playerCarCount(player),
+                    gameState.playerClaimPoints(player)));
+            nPlayer.getChildren().addAll(circle,text);
+            playerStats.getChildren().add(nPlayer);
+
+        if(lastStep == LAST_SEPARATOR_WHEN_ID_IS_LAST && player == id)
+            nPlayer.getChildren().add(separator);
+        if(player.ordinal() < PlayerId.COUNT - lastStep) nPlayer.getChildren().add(separator);
     }
 }
