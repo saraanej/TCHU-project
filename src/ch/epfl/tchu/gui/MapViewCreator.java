@@ -42,6 +42,7 @@ final class MapViewCreator {
         Pane mapPane = new Pane();
         mapPane.getStylesheets().addAll(MAP_SS,COLORS_SS);
         mapPane.getChildren().add(new ImageView());
+
         for (Route r : ChMap.routes()) {
             //creates the group of the Route
             Group groupRoute = new Group();
@@ -49,34 +50,10 @@ final class MapViewCreator {
             groupRoute.getStyleClass().addAll(EMPTY_STRING,ROUTE_SC,r.level().name(),
                     r.color() == null ? NEUTRAL_SC : r.color().name());
 
-            //creates the boxes of the group groupRoute
-            for (int i = 1; i <= r.length(); ++i) {
-                //creates the rectangle representing the track of the box
-                Rectangle trackBox = new Rectangle(TRACK_WIDTH,TRACK_HEIGHT);
-                trackBox.getStyleClass().addAll(TRACK_SC,FILLED_SC);
 
-                //creates the rectangle and the circles of the wagon car
-                Rectangle trackWagon = new Rectangle(TRACK_WIDTH,TRACK_HEIGHT);
-                trackWagon.getStyleClass().add(FILLED_SC);
-                Circle circle1 = new Circle(CAR_CIRCLE1_CENTRE_X, CAR_CIRCLES_CENTRE_Y, CAR_CIRCLES_RADIUS);
-                Circle circle2 = new Circle(CAR_CIRCLE2_CENTRE_X, CAR_CIRCLES_CENTRE_Y, CAR_CIRCLES_RADIUS);
-
-                //creates a group representing the wagon car
-                Group wagon = new Group();
-                wagon.getStyleClass().add(CAR_SC);
-                wagon.getChildren().addAll(trackWagon, circle1, circle2);
-
-                //creates the group of the box
-                Group groupBox = new Group();
-                groupBox.setId(String.format("%s_%s", r.id(),i));
-
-                groupBox.getChildren().addAll(trackBox,wagon);
-                groupRoute.getChildren().add(groupBox);
-
-                observable.routeOwner(r).addListener((o,oV,nV) -> {
-                    if(nV != null) groupRoute.getStyleClass().set(0,nV.name());
-                });
-            }
+            observable.routeOwner(r).addListener((o,oV,nV) -> {
+                if(nV != null) groupRoute.getStyleClass().set(0,nV.name());
+            });
 
             groupRoute.disableProperty().bind(
                     routeHandler.isNull().or(observable.canClaimRoute(r).not()));
@@ -88,10 +65,40 @@ final class MapViewCreator {
                 else cardChooser.chooseCards(possibleClaimCards,
                         chosenCards -> routeHandler.get().onClaimRoute(r, chosenCards));
             });
+
+            //creates the boxes of the group groupRoute
+            for (int i = 1; i <= r.length(); ++i)
+                createBox(groupRoute,String.format("%s_%s", r.id(),i));
+
             //Adds the groupRoute to the mapPane
             mapPane.getChildren().add(groupRoute);
         }
         return mapPane;
+    }
+
+    private static void createBox(Group groupRoute, String id){
+        //creates the rectangle representing the track of the box
+        Rectangle trackBox = new Rectangle(TRACK_WIDTH,TRACK_HEIGHT);
+        trackBox.getStyleClass().addAll(TRACK_SC,FILLED_SC);
+
+        //creates the rectangle and the circles of the wagon car
+        Rectangle trackWagon = new Rectangle(TRACK_WIDTH,TRACK_HEIGHT);
+        trackWagon.getStyleClass().add(FILLED_SC);
+        Circle circle1 = new Circle(CAR_CIRCLE1_CENTRE_X, CAR_CIRCLES_CENTRE_Y, CAR_CIRCLES_RADIUS);
+        Circle circle2 = new Circle(CAR_CIRCLE2_CENTRE_X, CAR_CIRCLES_CENTRE_Y, CAR_CIRCLES_RADIUS);
+
+        //creates a group representing the wagon car
+        Group wagon = new Group();
+        wagon.getStyleClass().add(CAR_SC);
+        wagon.getChildren().addAll(trackWagon, circle1, circle2);
+
+        //creates the group of the box
+        Group groupBox = new Group();
+        groupBox.setId(id);
+
+        //adds the box to the groupRoute's children
+        groupBox.getChildren().addAll(trackBox,wagon);
+        groupRoute.getChildren().add(groupBox);
     }
 
     @FunctionalInterface
