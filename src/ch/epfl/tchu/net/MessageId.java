@@ -1,9 +1,5 @@
 package ch.epfl.tchu.net;
 
-import ch.epfl.tchu.game.PlayerId;
-
-import java.util.List;
-
 public enum MessageId {
 
     INIT_PLAYERS,

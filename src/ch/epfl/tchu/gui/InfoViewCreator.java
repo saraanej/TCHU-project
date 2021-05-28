@@ -10,9 +10,9 @@ import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
-import java.util.ArrayList;
-import java.util.List;
+
 import java.util.Map;
+
 import static ch.epfl.tchu.gui.GuiConstants.*;
 
 /**
@@ -24,39 +24,40 @@ import static ch.epfl.tchu.gui.GuiConstants.*;
  */
 final class InfoViewCreator {
 
-    private InfoViewCreator(){}
+    private InfoViewCreator() {
+    }
 
 
     /**
-     * @param id The identity of the player to which the interface corresponds.
+     * @param id          The identity of the player to which the interface corresponds.
      * @param playerNames The associative table of the players' names.
-     * @param gameState The observable game state.
-     * @param infos A list containing information on the progress of the game.
+     * @param gameState   The observable game state.
+     * @param infos       A list containing information on the progress of the game.
      * @return The informations' view.
      */
-    public static Node createInfoView(PlayerId id, Map<PlayerId,String> playerNames,
+    public static Node createInfoView(PlayerId id, Map<PlayerId, String> playerNames,
                                       ObservableGameState gameState,
-                                      ObservableList<Text> infos){
-       VBox infoView = new VBox();
-       infoView.getStylesheets().addAll(INFO_SS,COLORS_SS);
+                                      ObservableList<Text> infos) {
+        VBox infoView = new VBox();
+        infoView.getStylesheets().addAll(INFO_SS, COLORS_SS);
 
-       VBox playerStats = new VBox();
-       playerStats.setId(PLAYER_STATS_ID);
+        VBox playerStats = new VBox();
+        playerStats.setId(PLAYER_STATS_ID);
 
-       for(PlayerId player : PlayerId.values())
-           playersInfo(player, playerStats, playerNames, gameState);
+        for (PlayerId player : PlayerId.values())
+            playersInfo(player, playerStats, playerNames, gameState);
 
-       FXCollections.rotate(playerStats.getChildren(), -id.ordinal());
-       TextFlow gameInfo = gameInfo(infos);
+        FXCollections.rotate(playerStats.getChildren(), -id.ordinal());
+        TextFlow gameInfo = gameInfo(infos);
 
-       infoView.getChildren().addAll(playerStats, new Separator(), gameInfo);
+        infoView.getChildren().addAll(playerStats, new Separator(), gameInfo);
 
-    return infoView;
+        return infoView;
     }
 
 
     private static void playersInfo(PlayerId player, VBox playerStats,
-                                    Map<PlayerId,String> playerNames, ObservableGameState gameState){
+                                    Map<PlayerId, String> playerNames, ObservableGameState gameState) {
         TextFlow nPlayer = new TextFlow();
         nPlayer.getStyleClass().add(player.name());
 
@@ -70,14 +71,14 @@ final class InfoViewCreator {
                 gameState.playerCardCount(player),
                 gameState.playerCarCount(player),
                 gameState.playerClaimPoints(player)));
-        nPlayer.getChildren().addAll(circle,text);
+        nPlayer.getChildren().addAll(circle, text);
         playerStats.getChildren().add(nPlayer);
     }
 
-    private static TextFlow gameInfo(ObservableList<Text> infos){
+    private static TextFlow gameInfo(ObservableList<Text> infos) {
         TextFlow gameInfo = new TextFlow();
         gameInfo.setId(GAME_INFO_ID);
-        for(Text info : infos) gameInfo.getChildren().add(info);
+        for (Text info : infos) gameInfo.getChildren().add(info);
         Bindings.bindContent(gameInfo.getChildren(), infos);
 
         return gameInfo;

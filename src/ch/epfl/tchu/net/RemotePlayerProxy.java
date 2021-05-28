@@ -32,6 +32,7 @@ public final class RemotePlayerProxy implements Player {
     /**
      * Public default constructor of a RemotePlayerProxy, creates the BufferedWriters and the BufferedReader
      * to receive and send the messages through the socket's streams.
+     *
      * @param socket the socket port of this player
      */
     public RemotePlayerProxy(Socket socket) {
@@ -48,7 +49,8 @@ public final class RemotePlayerProxy implements Player {
 
     /**
      * Sends a message through the network to call the same method on the actual player hosted in another program.
-     * @see Player#initPlayers(PlayerId, Map) 
+     *
+     * @see Player#initPlayers(PlayerId, Map)
      */
     @Override
     public void initPlayers(PlayerId ownId, Map<PlayerId, String> playerNames) {
@@ -56,12 +58,13 @@ public final class RemotePlayerProxy implements Player {
         for (PlayerId p : PlayerId.values()) namesValues.add(playerNames.get(p));
         String message = String.join(SPACE, PLAYER_ID.serialize(ownId),
                 LIST_STRING.serialize(namesValues));
-        sendMessage(MessageId.INIT_PLAYERS,message);
+        sendMessage(MessageId.INIT_PLAYERS, message);
     }
 
     /**
      * Sends a message through the network to call the same method on the actual player hosted in another program
-     * @see Player#receiveInfo(String) 
+     *
+     * @see Player#receiveInfo(String)
      */
     @Override
     public void receiveInfo(String info) {
@@ -70,17 +73,19 @@ public final class RemotePlayerProxy implements Player {
 
     /**
      * Sends a message through the network to call the same method on the actual player hosted in another program
-     * @see Player#updateState(PublicGameState, PlayerState) 
+     *
+     * @see Player#updateState(PublicGameState, PlayerState)
      */
     @Override
     public void updateState(PublicGameState newState, PlayerState ownState) {
-        String message = String.join(SPACE,PUBLIC_GAMESTATE.serialize(newState),
+        String message = String.join(SPACE, PUBLIC_GAMESTATE.serialize(newState),
                 PLAYERSTATE.serialize(ownState));
         sendMessage(MessageId.UPDATE_STATE, message);
     }
 
     /**
      * Sends a message through the network to call the same method on the actual player hosted in another program
+     *
      * @see Player#setInitialTicketChoice(SortedBag<Ticket>)
      */
     @Override
@@ -90,6 +95,7 @@ public final class RemotePlayerProxy implements Player {
 
     /**
      * Sends a message through the network to call the same method on the actual player hosted in another program
+     *
      * @see Player#drawSlot()
      */
     @Override
@@ -100,6 +106,7 @@ public final class RemotePlayerProxy implements Player {
 
     /**
      * Sends a message through the network to call the same method on the actual player hosted in another program
+     *
      * @see Player#nextTurn()
      */
     @Override
@@ -110,16 +117,18 @@ public final class RemotePlayerProxy implements Player {
 
     /**
      * Sends a message through the network to call the same method on the actual player hosted in another program
+     *
      * @see Player#chooseTickets(SortedBag<Ticket>)
      */
     @Override
     public SortedBag<Ticket> chooseTickets(SortedBag<Ticket> options) {
-        sendMessage(CHOOSE_TICKETS,SORTED_TICKET.serialize(options));
+        sendMessage(CHOOSE_TICKETS, SORTED_TICKET.serialize(options));
         return SORTED_TICKET.deserialize(receiveMessage());
     }
 
     /**
      * Sends a message through the network to call the same method on the actual player hosted in another program
+     *
      * @see Player#chooseInitialTickets()
      */
     @Override
@@ -130,26 +139,29 @@ public final class RemotePlayerProxy implements Player {
 
     /**
      * Sends a message through the network to call the same method on the actual player hosted in another program
+     *
      * @see Player#initialClaimCards()
      */
     @Override
     public SortedBag<Card> initialClaimCards() {
-        sendMessage(CARDS,EMPTY_STRING);
+        sendMessage(CARDS, EMPTY_STRING);
         return SORTED_CARD.deserialize(receiveMessage());
     }
 
     /**
      * Sends a message through the network to call the same method on the actual player hosted in another program
+     *
      * @see Player#chooseAdditionalCards(List<SortedBag<Card>>)
      */
     @Override
     public SortedBag<Card> chooseAdditionalCards(List<SortedBag<Card>> options) {
-        sendMessage(CHOOSE_ADDITIONAL_CARDS,LIST_SORTED_CARD.serialize(options));
+        sendMessage(CHOOSE_ADDITIONAL_CARDS, LIST_SORTED_CARD.serialize(options));
         return SORTED_CARD.deserialize(receiveMessage());
     }
 
     /**
      * Sends a message through the network to call the same method on the actual player hosted in another program
+     *
      * @see Player#claimedRoute()
      */
     @Override
@@ -161,15 +173,16 @@ public final class RemotePlayerProxy implements Player {
 
     /**
      * Writes the message in the outputStream of the socket
-     * @param Id the type of the message to send
+     *
+     * @param Id      the type of the message to send
      * @param message the serialized message to send to the client
      */
-    private void sendMessage(MessageId Id, String message){
-        try{
+    private void sendMessage(MessageId Id, String message) {
+        try {
             String send = String.join(SPACE, Id.name(), message);
-            writer.write(String.format("%s\n",send));
+            writer.write(String.format("%s\n", send));
             writer.flush();
-        } catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
             throw new UncheckedIOException(e);
         }
@@ -178,10 +191,10 @@ public final class RemotePlayerProxy implements Player {
     /**
      * @return the last message received from the inputStream of the socket
      */
-    private String receiveMessage(){
+    private String receiveMessage() {
         try {
             return reader.readLine();
-        } catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
             throw new UncheckedIOException(e);
         }

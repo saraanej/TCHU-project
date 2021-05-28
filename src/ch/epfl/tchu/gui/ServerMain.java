@@ -9,7 +9,6 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.ServerSocket;
-import java.net.Socket;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -54,7 +53,7 @@ public final class ServerMain extends Application {
                     Map.of(PlayerId.PLAYER_1, player1, PlayerId.PLAYER_2, player2);
             Map<PlayerId, Player> players =
                     Map.of(PlayerId.PLAYER_1, new GraphicalPlayerAdapter(),
-                           PlayerId.PLAYER_2, new RemotePlayerProxy(socket.accept()));
+                            PlayerId.PLAYER_2, new RemotePlayerProxy(socket.accept()));
 
             new Thread(() -> Game.play(players, names, tickets, rng)).start();
         } catch (IOException e) {

@@ -2,12 +2,14 @@ package ch.epfl.tchu.net;
 
 import ch.epfl.tchu.game.Player;
 import ch.epfl.tchu.game.PlayerId;
+
 import java.io.*;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
+
 import static ch.epfl.tchu.net.Serdes.*;
 import static java.nio.charset.StandardCharsets.US_ASCII;
 
@@ -28,12 +30,12 @@ public final class RemotePlayerClient {
     private BufferedWriter writer;
 
 
-
     /**
      * Default constructor.
+     *
      * @param player The given player to which the constructor gives a distant access.
-     * @param name The name to use to connect the proxy.
-     * @param port The port to use to connect the proxy.
+     * @param name   The name to use to connect the proxy.
+     * @param port   The port to use to connect the proxy.
      */
     public RemotePlayerClient(Player player, String name, int port) {
         this.player = player;
@@ -47,32 +49,32 @@ public final class RemotePlayerClient {
      * If this method returns a result, the method run serializes it
      * to return it to the proxy in response.
      */
-    public void run(){
-        try(Socket socket = new Socket(name, port);
-            BufferedReader reader =
-                    new BufferedReader(
-                            new InputStreamReader(socket.getInputStream(),
-                                    US_ASCII))) {
+    public void run() {
+        try (Socket socket = new Socket(name, port);
+             BufferedReader reader =
+                     new BufferedReader(
+                             new InputStreamReader(socket.getInputStream(),
+                                     US_ASCII))) {
 
             writer = new BufferedWriter(
                     new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.US_ASCII));
 
             String readLine = reader.readLine();
-            while(readLine != null){
-                String[] split = readLine.split(Pattern.quote(SPACE),-1);
+            while (readLine != null) {
+                String[] split = readLine.split(Pattern.quote(SPACE), -1);
                 switch (MessageId.valueOf(split[0])) {
                     case INIT_PLAYERS:
                         List<String> deserialized = LIST_STRING.deserialize(split[2]);
                         player.initPlayers(PLAYER_ID.deserialize(split[1]),
-                                           Map.of(PlayerId.PLAYER_1, deserialized.get(0),
-                                                   PlayerId.PLAYER_2, deserialized.get(1)));
+                                Map.of(PlayerId.PLAYER_1, deserialized.get(0),
+                                        PlayerId.PLAYER_2, deserialized.get(1)));
                         break;
                     case RECEIVE_INFO:
                         player.receiveInfo(STRING.deserialize(split[1]));
                         break;
                     case UPDATE_STATE:
                         player.updateState(PUBLIC_GAMESTATE.deserialize(split[1]),
-                                           PLAYERSTATE.deserialize(split[2]));
+                                PLAYERSTATE.deserialize(split[2]));
                         break;
                     case SET_INITIAL_TICKETS:
                         player.setInitialTicketChoice(SORTED_TICKET.deserialize(split[1]));
@@ -85,26 +87,26 @@ public final class RemotePlayerClient {
                         break;
                     case CHOOSE_TICKETS:
                         sendMessage(SORTED_TICKET.serialize(
-                                            player.chooseTickets(
-                                            SORTED_TICKET.deserialize(split[1]))));
+                                player.chooseTickets(
+                                        SORTED_TICKET.deserialize(split[1]))));
                         break;
                     case CHOOSE_INITIAL_TICKETS:
                         sendMessage(SORTED_TICKET.serialize(
-                                            player.chooseInitialTickets()));
+                                player.chooseInitialTickets()));
                         break;
                     case CARDS:
                         sendMessage(SORTED_CARD.serialize(player.initialClaimCards()));
                         break;
                     case CHOOSE_ADDITIONAL_CARDS:
                         sendMessage(SORTED_CARD.serialize(
-                                            player.chooseAdditionalCards(
-                                            LIST_SORTED_CARD.deserialize(split[1]))));
+                                player.chooseAdditionalCards(
+                                        LIST_SORTED_CARD.deserialize(split[1]))));
                         break;
                     case ROUTE:
                         sendMessage(ROUTE.serialize(player.claimedRoute()));
                         break;
                 }
-                readLine= reader.readLine();
+                readLine = reader.readLine();
             }
         } catch (IOException e) {
             throw new UncheckedIOException(e);
@@ -115,11 +117,11 @@ public final class RemotePlayerClient {
     /**
      * @param message The serialized message to send to the client.
      */
-    private void sendMessage(String message){
-        try{
-            writer.write(String.format("%s\n",message));
+    private void sendMessage(String message) {
+        try {
+            writer.write(String.format("%s\n", message));
             writer.flush();
-        } catch (IOException e){
+        } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
     }

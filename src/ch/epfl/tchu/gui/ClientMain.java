@@ -3,6 +3,7 @@ package ch.epfl.tchu.gui;
 import ch.epfl.tchu.net.RemotePlayerClient;
 import javafx.application.Application;
 import javafx.stage.Stage;
+
 import java.util.List;
 
 /**
@@ -38,7 +39,7 @@ public final class ClientMain extends Application {
         name = (parameters.size() > 0) ? parameters.get(0) : NAME_DEFAULT;
         port = (parameters.size() > 1) ? Integer.parseInt(parameters.get(1)) : PORT_DEFAULT;
         RemotePlayerClient distantPlayer = new RemotePlayerClient(
-                                                  new GraphicalPlayerAdapter(),name,port);
+                new GraphicalPlayerAdapter(), name, port);
         new Thread(distantPlayer::run).start();
     }
 }

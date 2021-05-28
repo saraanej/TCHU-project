@@ -31,8 +31,8 @@ public final class Serdes {
     /**
      * A Serde able to (de)serialize String values.
      */
-   public static final Serde<String> STRING = Serde.of(
-           i -> Base64.getEncoder().encodeToString(i.getBytes(StandardCharsets.UTF_8)),
+    public static final Serde<String> STRING = Serde.of(
+            i -> Base64.getEncoder().encodeToString(i.getBytes(StandardCharsets.UTF_8)),
             s -> new String(Base64.getDecoder().decode(s), StandardCharsets.UTF_8));
 
     /**
@@ -81,7 +81,7 @@ public final class Serdes {
     public static final Serde<SortedBag<Card>> SORTED_CARD = Serde.bagOf(CARD, COMMA_SEPARATOR);
 
     /**
-     *  Serde able to (de)serialize a SortedBag of Ticket's elements.
+     * Serde able to (de)serialize a SortedBag of Ticket's elements.
      */
     public static final Serde<SortedBag<Ticket>> SORTED_TICKET = Serde.bagOf(TICKET, COMMA_SEPARATOR);
 
@@ -103,7 +103,7 @@ public final class Serdes {
 
         @Override
         public PublicCardState deserialize(String str) {
-            String[] split = str.split(Pattern.quote(SEMICOLON_SEPARATOR),-1);
+            String[] split = str.split(Pattern.quote(SEMICOLON_SEPARATOR), -1);
             return new PublicCardState(LIST_CARD.deserialize(split[0]),
                     INTEGER.deserialize(split[1]), INTEGER.deserialize(split[2]));
         }
@@ -124,7 +124,7 @@ public final class Serdes {
         public PublicPlayerState deserialize(String str) {
             String[] split = str.split(Pattern.quote(SEMICOLON_SEPARATOR), -1);
             return new PublicPlayerState(INTEGER.deserialize(split[0]), INTEGER.deserialize(split[1]),
-                   LIST_ROUTE.deserialize(split[2]));
+                    LIST_ROUTE.deserialize(split[2]));
         }
     };
 
@@ -176,9 +176,10 @@ public final class Serdes {
 
     /**
      * Private default constructor, should not be used.
+     *
      * @throws UnsupportedOperationException if called.
      */
-    private Serdes(){
+    private Serdes() {
         throw new UnsupportedOperationException();
     }
 }

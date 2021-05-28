@@ -30,7 +30,7 @@ public final class GraphicalPlayerAdapter implements Player {
     /**
      * Public default constructor initializes the queues attributes.
      */
-    public GraphicalPlayerAdapter(){
+    public GraphicalPlayerAdapter() {
         queueTickets = new ArrayBlockingQueue<>(1);
         queueCards = new ArrayBlockingQueue<>(1);
         queueTurn = new ArrayBlockingQueue<>(1);
@@ -68,7 +68,7 @@ public final class GraphicalPlayerAdapter implements Player {
      */
     @Override
     public void updateState(PublicGameState newState, PlayerState ownState) {
-        runLater(() -> player.setState(newState,ownState));
+        runLater(() -> player.setState(newState, ownState));
     }
 
     /**
@@ -90,7 +90,7 @@ public final class GraphicalPlayerAdapter implements Player {
      */
     @Override
     public int drawSlot() {
-        if(!queueSlots.isEmpty()) return queueSlots.remove();
+        if (!queueSlots.isEmpty()) return queueSlots.remove();
         else {
             runLater(() -> player.drawCard(queueSlots::add));
             return take(queueSlots);
@@ -100,20 +100,23 @@ public final class GraphicalPlayerAdapter implements Player {
     /**
      * Calls the startTurn method of the graphical player through the javaFX thread with
      * the corresponding handlers which add the player's choice to a queue.
-     * @return the taken value from the corresponding queue.
      *
+     * @return the taken value from the corresponding queue.
      * @see Player#nextTurn()
      */
     @Override
     public TurnKind nextTurn() {
         runLater(() -> player.startTurn(() -> queueTurn.add(TurnKind.DRAW_TICKETS),
 
-                i -> { queueTurn.add(TurnKind.DRAW_CARDS);
-                queueSlots.add(i); },
+                i -> {
+                    queueTurn.add(TurnKind.DRAW_CARDS);
+                    queueSlots.add(i);
+                },
 
-                (r,c) -> { queueTurn.add(TurnKind.CLAIM_ROUTE);
-                queueCards.add(c);
-                queueRoute.add(r);
+                (r, c) -> {
+                    queueTurn.add(TurnKind.CLAIM_ROUTE);
+                    queueCards.add(c);
+                    queueRoute.add(r);
                 }));
         return take(queueTurn);
     }
@@ -121,8 +124,8 @@ public final class GraphicalPlayerAdapter implements Player {
     /**
      * Calls the chooseTickets method of the graphical player on the javaFX thread,
      * with a handler that adds the player's choice to the queue.
-     * @return the taken value from the corresponding queue.
      *
+     * @return the taken value from the corresponding queue.
      * @see Player#chooseTickets(SortedBag)
      */
     @Override
@@ -154,8 +157,8 @@ public final class GraphicalPlayerAdapter implements Player {
     /**
      * Calls the chooseAdditionalCards method of the graphical player on the javaFX thread,
      * with a handler that adds the player's choice to the queue.
-     * @return the taken value from the corresponding queue.
      *
+     * @return the taken value from the corresponding queue.
      * @see Player#chooseAdditionalCards(List)
      */
     @Override
@@ -175,7 +178,7 @@ public final class GraphicalPlayerAdapter implements Player {
     }
 
 
-    private <E> E take(BlockingQueue<E> queue){
+    private <E> E take(BlockingQueue<E> queue) {
         try {
             return queue.take();
         } catch (InterruptedException e) {

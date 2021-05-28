@@ -63,7 +63,7 @@ public interface ActionHandlers {
          * Called when the player wishes to seize the given route
          * by means of the given (initial) cards.
          *
-         * @param route the Route to claim.
+         * @param route        the Route to claim.
          * @param initialCards the cards used to claim the route.
          */
         void onClaimRoute(Route route, SortedBag<Card> initialCards);
