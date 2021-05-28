@@ -2,6 +2,7 @@ package ch.epfl.tchu.gui;
 
 import ch.epfl.tchu.game.PlayerId;
 import javafx.beans.binding.Bindings;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.control.Separator;
@@ -23,10 +24,6 @@ import static ch.epfl.tchu.gui.GuiConstants.*;
  */
 final class InfoViewCreator {
 
-    private static final int LAST_SEPARATOR_WHEN_ID_IS_LAST = 2;
-    private static final int LAST_SEPARATOR = 1;
-
-
     private InfoViewCreator(){}
 
 
@@ -40,38 +37,26 @@ final class InfoViewCreator {
     public static Node createInfoView(PlayerId id, Map<PlayerId,String> playerNames,
                                       ObservableGameState gameState,
                                       ObservableList<Text> infos){
-
-       //Flexible for more than two players.
-       List<PlayerId> players = new ArrayList<>();
-       players.add(id);
-       for(PlayerId player : PlayerId.ALL)
-           if(player != id) players.add(player);
-
-       int lastIndex = PlayerId.COUNT - 1;
-       int lastSep = id.ordinal() == lastIndex ? LAST_SEPARATOR_WHEN_ID_IS_LAST : LAST_SEPARATOR;
-
        VBox infoView = new VBox();
        infoView.getStylesheets().addAll(INFO_SS,COLORS_SS);
 
        VBox playerStats = new VBox();
        playerStats.setId(PLAYER_STATS_ID);
 
-       Separator separator = new Separator();
+       for(PlayerId player : PlayerId.values())
+           playersInfo(player, playerStats, playerNames, gameState);
 
-       for(PlayerId player : players)
-           playersInfo(player, playerStats, id, playerNames, gameState, lastSep, separator);
-
+       FXCollections.rotate(playerStats.getChildren(), -id.ordinal());
        TextFlow gameInfo = gameInfo(infos);
 
-       infoView.getChildren().addAll(playerStats, separator, gameInfo);
+       infoView.getChildren().addAll(playerStats, new Separator(), gameInfo);
 
     return infoView;
     }
 
 
-    private static void playersInfo(PlayerId player, VBox playerStats, PlayerId id,
-                                    Map<PlayerId,String> playerNames, ObservableGameState gameState,
-                                    int lastSep, Separator separator){
+    private static void playersInfo(PlayerId player, VBox playerStats,
+                                    Map<PlayerId,String> playerNames, ObservableGameState gameState){
         TextFlow nPlayer = new TextFlow();
         nPlayer.getStyleClass().add(player.name());
 
@@ -87,10 +72,6 @@ final class InfoViewCreator {
                 gameState.playerClaimPoints(player)));
         nPlayer.getChildren().addAll(circle,text);
         playerStats.getChildren().add(nPlayer);
-
-        if(lastSep == LAST_SEPARATOR_WHEN_ID_IS_LAST && player == id)
-            nPlayer.getChildren().add(separator);
-        if(player.ordinal() < PlayerId.COUNT - lastSep) nPlayer.getChildren().add(separator);
     }
 
     private static TextFlow gameInfo(ObservableList<Text> infos){
