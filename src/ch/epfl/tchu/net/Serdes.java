@@ -154,22 +154,34 @@ public final class Serdes {
     public final static Serde<PublicGameState> PUBLIC_GAMESTATE = new Serde<>() {
         @Override
         public String serialize(PublicGameState p) {
-            String[] serialized = new String[]{INTEGER.serialize(p.ticketsCount()),
-                    PUBLIC_CARDSTATE.serialize(p.cardState()), PLAYER_ID.serialize(p.currentPlayerId()),
-                    PUBLIC_PLAYERSTATE.serialize(p.playerState(PlayerId.PLAYER_1)),
-                    PUBLIC_PLAYERSTATE.serialize(p.playerState(PlayerId.PLAYER_2)),
-                    p.lastPlayer() == null ? EMPTY_STRING : PLAYER_ID.serialize(p.lastPlayer())};
+
+            List<String> serialized = new ArrayList<>();
+            List<String> s1 = List.of(INTEGER.serialize(p.ticketsCount()),
+                    PUBLIC_CARDSTATE.serialize(p.cardState()), PLAYER_ID.serialize(p.currentPlayerId()));
+
+            serialized.addAll(s1);
+
+            for (PlayerId id : PlayerId.ALL)
+                serialized.add(PUBLIC_PLAYERSTATE.serialize(p.playerState(id)));
+
+            serialized.add(p.lastPlayer() == null ? EMPTY_STRING : PLAYER_ID.serialize(p.lastPlayer()));
+
             return String.join(COLON_SEPARATOR, serialized);
         }
 
         @Override
         public PublicGameState deserialize(String str) {
             String[] split = str.split(Pattern.quote(COLON_SEPARATOR), -1);
+
+            //create the map here with for each
+            Map<PlayerId,PublicPlayerState> playerState = new EnumMap<>(PlayerId.class);
+            for (PlayerId id: PlayerId.ALL)
+                playerState.put(id, PUBLIC_PLAYERSTATE.deserialize(split[3 + id.ordinal()]));
+
+            int lastIndex = split.length-1;
             return new PublicGameState(INTEGER.deserialize(split[0]), PUBLIC_CARDSTATE.deserialize(split[1]),
-                    PLAYER_ID.deserialize(split[2]),
-                    Map.of(PlayerId.PLAYER_1, PUBLIC_PLAYERSTATE.deserialize(split[3]),
-                            PlayerId.PLAYER_2, PUBLIC_PLAYERSTATE.deserialize(split[4])),
-                    split[5].isEmpty() ? null : PLAYER_ID.deserialize(split[5]));
+                    PLAYER_ID.deserialize(split[2]), playerState,
+                    split[lastIndex].isEmpty() ? null : PLAYER_ID.deserialize(split[lastIndex]));
         }
     };
 

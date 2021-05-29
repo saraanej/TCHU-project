@@ -6,6 +6,7 @@ import ch.epfl.tchu.game.PlayerId;
 import java.io.*;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
+import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -65,9 +66,11 @@ public final class RemotePlayerClient {
                 switch (MessageId.valueOf(split[0])) {
                     case INIT_PLAYERS:
                         List<String> deserialized = LIST_STRING.deserialize(split[2]);
-                        player.initPlayers(PLAYER_ID.deserialize(split[1]),
-                                Map.of(PlayerId.PLAYER_1, deserialized.get(0),
-                                        PlayerId.PLAYER_2, deserialized.get(1)));
+                        Map<PlayerId,String> names = new EnumMap<>(PlayerId.class);
+                        for (PlayerId id: PlayerId.ALL)
+                            names.put(id,deserialized.get(id.ordinal()));
+
+                        player.initPlayers(PLAYER_ID.deserialize(split[1]), names);
                         break;
                     case RECEIVE_INFO:
                         player.receiveInfo(STRING.deserialize(split[1]));
