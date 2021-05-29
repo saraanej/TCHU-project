@@ -4,7 +4,6 @@ import java.util.List;
 
 /**
  * The public enumerated type PlayerId, represents the identity of a player.
- * As tCHu is played with two players, this enumerated type contains only two elements.
  *
  * @author Yasmin Ben Rahhal (329912)
  * @author Sara Anejjar (329905)
@@ -12,7 +11,8 @@ import java.util.List;
 public enum PlayerId {
 
     PLAYER_1,
-    PLAYER_2;
+    PLAYER_2,
+    PLAYER_3;
 
     /**
      * List containing all the values of the enum type PlayerId.

@@ -18,8 +18,8 @@ import java.util.stream.Collectors;
  */
 public class Game {
 
-    private static final int DRAWN_CARDS_COUNT = 2;
-    private static final int NUMBER_OF_PLAYERS = 2;
+    private static final int DRAWN_CARDS_COUNT = 3;
+    private static final int NUMBER_OF_PLAYERS = 3;
 
 
     /**

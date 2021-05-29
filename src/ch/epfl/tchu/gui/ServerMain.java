@@ -51,7 +51,7 @@ public final class ServerMain extends Application {
                 int indexId = id.ordinal();
                 names.put(id, (raw.size() > indexId) ? raw.get(indexId) : PLAYER_NAMES.get(indexId));
                 players.put(id, id.equals(PLAYER_1) ? new GraphicalPlayerAdapter() :
-                        new RemotePlayerProxy(new ServerSocket(SOCKET_PORT).accept()));
+                        new RemotePlayerProxy(new ServerSocket(SOCKET_PORT + indexId).accept()));
             }
 
             SortedBag<Ticket> tickets = SortedBag.of(ChMap.tickets());
