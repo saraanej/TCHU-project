@@ -9,9 +9,12 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.ServerSocket;
+import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+
+import static ch.epfl.tchu.game.PlayerId.PLAYER_1;
 
 /**
  * The public ServerMain class contains
@@ -23,8 +26,7 @@ import java.util.Random;
 public final class ServerMain extends Application {
 
     private static final int SOCKET_PORT = 5108;
-    private static final String PLAYER_1_DEFAULT = "Ada";
-    private static final String PLAYER_2_DEFAULT = "Charles";
+    private static final List<String> PLAYER_NAMES = List.of("Ada","Charles","Yasmin","Sara");
 
 
     /**
@@ -34,27 +36,26 @@ public final class ServerMain extends Application {
         launch(args);
     }
 
-
     /**
      * @see Application#start(Stage);
      */
     @Override
     public void start(Stage primaryStage) {
         try {
-            ServerSocket socket = new ServerSocket(SOCKET_PORT);
-            List<String> parameters = getParameters().getRaw();
-            String player1, player2;
+            List<String> raw = getParameters().getRaw();
 
-            player1 = (parameters.size() > 0) ? parameters.get(0) : PLAYER_1_DEFAULT;
-            player2 = (parameters.size() > 1) ? parameters.get(1) : PLAYER_2_DEFAULT;
-            Random rng = new Random();
+            Map<PlayerId, String> names = new EnumMap<>(PlayerId.class);
+            Map<PlayerId, Player> players = new EnumMap<>(PlayerId.class);
+
+            for (PlayerId id : PlayerId.values()) {
+                int indexId = id.ordinal();
+                names.put(id, (raw.size() > indexId) ? raw.get(indexId) : PLAYER_NAMES.get(indexId));
+                players.put(id, id.equals(PLAYER_1) ? new GraphicalPlayerAdapter() :
+                        new RemotePlayerProxy(new ServerSocket(SOCKET_PORT).accept()));
+            }
+
             SortedBag<Ticket> tickets = SortedBag.of(ChMap.tickets());
-            Map<PlayerId, String> names =
-                    Map.of(PlayerId.PLAYER_1, player1, PlayerId.PLAYER_2, player2);
-            Map<PlayerId, Player> players =
-                    Map.of(PlayerId.PLAYER_1, new GraphicalPlayerAdapter(),
-                            PlayerId.PLAYER_2, new RemotePlayerProxy(socket.accept()));
-
+            Random rng = new Random();
             new Thread(() -> Game.play(players, names, tickets, rng)).start();
         } catch (IOException e) {
             throw new UncheckedIOException(e);
