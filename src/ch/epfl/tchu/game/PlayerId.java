@@ -1,5 +1,7 @@
 package ch.epfl.tchu.game;
 
+import ch.epfl.tchu.Preconditions;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +18,8 @@ public enum PlayerId {
     PLAYER_3,
     PLAYER_4;
 
+    private final static int MIN_NUMBER_PLAYERS = 2;
+    private final static int MAX_NUMBER_PLAYERS = 4;
     private static List<PlayerId> ALL = new ArrayList<>();
 
     /**
@@ -23,9 +27,9 @@ public enum PlayerId {
      * @param number the number of players in the game
      */
     public static void setNumberPlayers(int number) { //todo: check si solution correcte
-        for (int i = 1; i <= number; ++i) {
+        Preconditions.checkArgument(number >= MIN_NUMBER_PLAYERS && number <= MAX_NUMBER_PLAYERS;
+        for (int i = 1; i <= number; ++i)
             ALL.add(PlayerId.valueOf(String.format("PLAYER_%d",i)));
-        }
     }
 
     /**
