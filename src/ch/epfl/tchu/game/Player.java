@@ -52,6 +52,12 @@ public interface Player {
     void setInitialTicketChoice(SortedBag<Ticket> tickets);
 
     /**
+     * @param winner the winner of the Tchu's game with the maximal points.
+     * @param longestTrail the player who got the longest trail.
+     */
+    void endGame(Map.Entry<PlayerId, Integer> winner, Map.Entry<PlayerId, Trail> longestTrailWinner);
+
+    /**
      * @return The emplacement where the player wishes to draw his cards.
      */
     int drawSlot();
