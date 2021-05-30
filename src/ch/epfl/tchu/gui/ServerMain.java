@@ -26,7 +26,8 @@ import static ch.epfl.tchu.game.PlayerId.PLAYER_1;
 public final class ServerMain extends Application {
 
     private static final int SOCKET_PORT = 5108;
-    private static final List<String> PLAYER_NAMES = List.of("Ada","Charles","Yasmin","Sara");
+    private static final List<String> PLAYER_NAMES = List.of("Ada","Charles","Alice","Bob");
+    private static final int DEFAULT_NUMBER_PLAYERS = 2;
 
 
     /**
@@ -42,14 +43,18 @@ public final class ServerMain extends Application {
     @Override
     public void start(Stage primaryStage) {
         try {
+
+
             List<String> raw = getParameters().getRaw();
 
             Map<PlayerId, String> names = new EnumMap<>(PlayerId.class);
             Map<PlayerId, Player> players = new EnumMap<>(PlayerId.class);
 
+            PlayerId.setNumberPlayers(raw.size() > 0 ? Integer.parseInt(raw.get(0)) : DEFAULT_NUMBER_PLAYERS);
+
             for (PlayerId id : PlayerId.all()) {
                 int indexId = id.ordinal();
-                names.put(id, (raw.size() > indexId) ? raw.get(indexId) : PLAYER_NAMES.get(indexId));
+                names.put(id, (raw.size() > indexId + 1) ? raw.get(indexId + 1) : PLAYER_NAMES.get(indexId));
                 players.put(id, id.equals(PLAYER_1) ? new GraphicalPlayerAdapter() :
                         new RemotePlayerProxy(new ServerSocket(SOCKET_PORT + indexId).accept()));
             }

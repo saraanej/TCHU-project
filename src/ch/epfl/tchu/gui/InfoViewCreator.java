@@ -44,7 +44,7 @@ final class InfoViewCreator {
         VBox playerStats = new VBox();
         playerStats.setId(PLAYER_STATS_ID);
 
-        for (PlayerId player : PlayerId.values())
+        for (PlayerId player : PlayerId.all())
             playersInfo(player, playerStats, playerNames, gameState);
 
         FXCollections.rotate(playerStats.getChildren(), -id.ordinal());

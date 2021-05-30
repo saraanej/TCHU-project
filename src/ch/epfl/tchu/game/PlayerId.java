@@ -19,9 +19,7 @@ public enum PlayerId {
     /**
      * List containing all the values of the enum type PlayerId.
      */
-    public static List<PlayerId> ALL = List.of(PlayerId.values());
-
-    //private static List<PlayerId> ALL = new ArrayList<>();
+    private static List<PlayerId> ALL = new ArrayList<>();
 
     public static void setNumberPlayers(int number) { //todo: check si solution correcte
         for (int i = 1; i <= number; i++) {
