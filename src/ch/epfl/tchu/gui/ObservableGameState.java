@@ -121,7 +121,7 @@ public final class ObservableGameState {
                 if (gameState.playerState(id).routes().contains(r)) routeOwner.get(r).set(id);
         }
 
-        for (PlayerId id : PlayerId.values()) {
+        for (PlayerId id : PlayerId.ALL) {
             ticketsCount.get(id).set(gameState.playerState(id).ticketCount());
             cardsCount.get(id).set(gameState.playerState(id).cardCount());
             carCount.get(id).set(gameState.playerState(id).carCount());

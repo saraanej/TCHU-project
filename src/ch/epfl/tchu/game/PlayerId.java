@@ -12,7 +12,8 @@ public enum PlayerId {
 
     PLAYER_1,
     PLAYER_2,
-    PLAYER_3;
+    PLAYER_3,
+    PLAYER_4;
 
     /**
      * List containing all the values of the enum type PlayerId.

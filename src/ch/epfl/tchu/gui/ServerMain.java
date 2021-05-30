@@ -47,7 +47,7 @@ public final class ServerMain extends Application {
             Map<PlayerId, String> names = new EnumMap<>(PlayerId.class);
             Map<PlayerId, Player> players = new EnumMap<>(PlayerId.class);
 
-            for (PlayerId id : PlayerId.values()) {
+            for (PlayerId id : PlayerId.ALL) {
                 int indexId = id.ordinal();
                 names.put(id, (raw.size() > indexId) ? raw.get(indexId) : PLAYER_NAMES.get(indexId));
                 players.put(id, id.equals(PLAYER_1) ? new GraphicalPlayerAdapter() :

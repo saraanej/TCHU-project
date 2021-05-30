@@ -6,9 +6,9 @@ import javafx.stage.Stage;
 
 import java.util.List;
 
-public class Client2 extends Application{
+public class Client3 extends Application{
 
-    private final static int PORT_DEFAULT = 5108 + 2;
+    private final static int PORT_DEFAULT = 5108 + 3;
     private final static String NAME_DEFAULT = "localhost";
 
 

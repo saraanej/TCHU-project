@@ -50,7 +50,7 @@ public class PublicGameState {
      * @return true if the tickets' deck is not empty. false if not.
      */
     public boolean canDrawTickets(){
-        return ticketsCount != 0;
+        return ticketsCount >= 3; //TODO CHECK IF IT IS A GOOD SOLUTION TO THE NUMBER PR TICKETS NO LONGER DIVISIBLE PAR 3
     }
 
     /**
