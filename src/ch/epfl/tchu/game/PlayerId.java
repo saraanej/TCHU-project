@@ -1,5 +1,6 @@
 package ch.epfl.tchu.game;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -18,7 +19,20 @@ public enum PlayerId {
     /**
      * List containing all the values of the enum type PlayerId.
      */
-    public final static List<PlayerId> ALL = List.of(PlayerId.values());
+    public static List<PlayerId> ALL = List.of(PlayerId.values());
+
+    //private static List<PlayerId> ALL = new ArrayList<>();
+
+    public static void setNumberPlayers(int number) { //todo: check si solution correcte
+        for (int i = 1; i <= number; i++) {
+            ALL.add(PlayerId.valueOf(String.format("PLAYER_%d",i)));
+        }
+    }
+
+    public static List<PlayerId> all(){
+        return List.copyOf(ALL);
+    }
+
     /**
      * Integer containing the size of the enum type PlayerId.
      */

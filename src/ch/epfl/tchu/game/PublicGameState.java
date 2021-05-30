@@ -109,7 +109,7 @@ public class PublicGameState {
      */
     public List<Route> claimedRoutes(){
         List<Route> routes = new ArrayList<>();
-        for (PlayerId id : PlayerId.ALL) routes.addAll(playerState(id).routes());
+        for (PlayerId id : PlayerId.all()) routes.addAll(playerState(id).routes());
 //        routes.addAll(currentPlayerState().routes());
 //        routes.addAll(playerState(currentPlayerId.next()).routes());
         return routes;

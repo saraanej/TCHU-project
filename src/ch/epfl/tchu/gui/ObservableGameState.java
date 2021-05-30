@@ -37,7 +37,7 @@ public final class ObservableGameState {
 
     private static Map<PlayerId, IntegerProperty> initMapIdInteger() {
         Map<PlayerId, IntegerProperty> map = new EnumMap<>(PlayerId.class);
-        for (PlayerId p : PlayerId.values()) {
+        for (PlayerId p : PlayerId.all()) {
             map.put(p, new SimpleIntegerProperty(0));
         }
         return map;
@@ -45,7 +45,7 @@ public final class ObservableGameState {
 
     private static Map<Card, IntegerProperty> createNumberCardType() {
         Map<Card, IntegerProperty> map = new EnumMap<>(Card.class);
-        for (Card c : Card.values()) {
+        for (Card c : Card.ALL) {
             map.put(c, new SimpleIntegerProperty(0));
         }
         return map;
@@ -117,11 +117,11 @@ public final class ObservableGameState {
             faceUpCards.get(slot).set(newCard);
         }
         for (Route r : gameState.claimedRoutes()) {
-            for (PlayerId id : PlayerId.ALL)
+            for (PlayerId id : PlayerId.all())
                 if (gameState.playerState(id).routes().contains(r)) routeOwner.get(r).set(id);
         }
 
-        for (PlayerId id : PlayerId.ALL) {
+        for (PlayerId id : PlayerId.all()) {
             ticketsCount.get(id).set(gameState.playerState(id).ticketCount());
             cardsCount.get(id).set(gameState.playerState(id).cardCount());
             carCount.get(id).set(gameState.playerState(id).carCount());
@@ -130,7 +130,7 @@ public final class ObservableGameState {
 
         ticketList.setAll(player.tickets().toList());
 
-        for (Card c : Card.values())
+        for (Card c : Card.ALL)
             numberCardType.get(c).set(Collections.frequency(player.cards().toList(), c));
 
         for (Route r : ChMap.routes())

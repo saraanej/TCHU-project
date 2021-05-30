@@ -38,7 +38,7 @@ public final class Serdes {
     /**
      * A Serde able to (de)serialize Player_Id's elements.
      */
-    public static final Serde<PlayerId> PLAYER_ID = Serde.oneOf(PlayerId.ALL);
+    public static final Serde<PlayerId> PLAYER_ID = Serde.oneOf(PlayerId.all());
 
     /**
      * A Serde able to (de)serialize TurnKind's elements.
@@ -161,7 +161,7 @@ public final class Serdes {
 
             serialized.addAll(s1);
 
-            for (PlayerId id : PlayerId.ALL)
+            for (PlayerId id : PlayerId.all())
                 serialized.add(PUBLIC_PLAYERSTATE.serialize(p.playerState(id)));
 
             serialized.add(p.lastPlayer() == null ? EMPTY_STRING : PLAYER_ID.serialize(p.lastPlayer()));
@@ -175,7 +175,7 @@ public final class Serdes {
 
             //create the map here with for each
             Map<PlayerId,PublicPlayerState> playerState = new EnumMap<>(PlayerId.class);
-            for (PlayerId id: PlayerId.ALL)
+            for (PlayerId id: PlayerId.all())
                 playerState.put(id, PUBLIC_PLAYERSTATE.deserialize(split[3 + id.ordinal()]));
 
             int lastIndex = split.length-1;
