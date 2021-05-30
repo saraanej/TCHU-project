@@ -83,6 +83,15 @@ public final class GraphicalPlayerAdapter implements Player {
     }
 
     /**
+     *
+     * @see Player#endGame(Map.Entry, Map.Entry)
+     */
+    @Override
+    public void endGame(Map.Entry<PlayerId, Integer> winner, Map.Entry<PlayerId, Trail> longestTrailWinner){
+        runLater(() -> player.);
+    }
+
+    /**
      * Takes the slot already put in the queue if it is called for the first time,
      * otherwise it calls the drawCard method on the javaFX thread before taking the slot from the queue.
      *
