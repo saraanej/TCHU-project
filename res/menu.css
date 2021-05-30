@@ -1,0 +1,19 @@
+
+Button.press {
+    -fx-content-display: bottom;
+}
+
+Button.press .play{
+    -fx-fill: url("play.png");
+    -fx-opacity: 0.6;
+}
+
+Button.press .trophee{
+    -fx-fill: url("trophee.png");
+    -fx-opacity: 0.6;
+}
+
+Button.press .victory{
+    -fx-fill: url("victory.png");
+    -fx-opacity: 0.3;
+}
