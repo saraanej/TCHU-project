@@ -27,7 +27,7 @@ public enum PlayerId {
      * @param number the number of players in the game
      */
     public static void setNumberPlayers(int number) { //todo: check si solution correcte
-        Preconditions.checkArgument(number >= MIN_NUMBER_PLAYERS && number <= MAX_NUMBER_PLAYERS;
+        Preconditions.checkArgument(number >= MIN_NUMBER_PLAYERS && number <= MAX_NUMBER_PLAYERS);
         for (int i = 1; i <= number; ++i)
             ALL.add(PlayerId.valueOf(String.format("PLAYER_%d",i)));
     }
