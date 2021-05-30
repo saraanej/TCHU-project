@@ -117,7 +117,8 @@ public final class ObservableGameState {
             faceUpCards.get(slot).set(newCard);
         }
         for (Route r : gameState.claimedRoutes()) {
-            routeOwner.get(r).set(player.routes().contains(r) ? playerId : playerId.next());
+            for (PlayerId id : PlayerId.ALL)
+                if (gameState.playerState(id).routes().contains(r)) routeOwner.get(r).set(id);
         }
 
         for (PlayerId id : PlayerId.values()) {
