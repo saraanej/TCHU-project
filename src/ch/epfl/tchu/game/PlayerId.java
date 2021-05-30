@@ -16,17 +16,21 @@ public enum PlayerId {
     PLAYER_3,
     PLAYER_4;
 
-    /**
-     * List containing all the values of the enum type PlayerId.
-     */
     private static List<PlayerId> ALL = new ArrayList<>();
 
+    /**
+     *
+     * @param number the number of players in the game
+     */
     public static void setNumberPlayers(int number) { //todo: check si solution correcte
-        for (int i = 1; i <= number; i++) {
+        for (int i = 1; i <= number; ++i) {
             ALL.add(PlayerId.valueOf(String.format("PLAYER_%d",i)));
         }
     }
 
+    /**
+     * Returns a list containing as many values of Player_IDs as wanted players.
+     */
     public static List<PlayerId> all(){
         return List.copyOf(ALL);
     }
@@ -34,8 +38,8 @@ public enum PlayerId {
     /**
      * Integer containing the size of the enum type PlayerId.
      */
-    public final static int COUNT = ALL.size();
 
+    public static int count(){return ALL.size();}
 
     /**
      * @return The identity of the player following the one to whom
@@ -44,6 +48,6 @@ public enum PlayerId {
      */
     public PlayerId next() {
         int index = this.ordinal();
-        return index == COUNT - 1 ? ALL.get(0) : ALL.get(index + 1);
+        return index == count() - 1 ? ALL.get(0) : ALL.get(index + 1);
     }
 }

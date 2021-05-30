@@ -252,7 +252,7 @@ public final class ObservableGameState {
      */
     private boolean routeIsNotClaimed(Route r) {
 
-       if (PlayerId.COUNT == 2) {
+       if (PlayerId.count() == 2) {
            List<List<Station>> stations = new ArrayList<>();
            for (Route route : gameState.claimedRoutes()) stations.add(route.stations());
            return !stations.contains(r.stations());

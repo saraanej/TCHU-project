@@ -37,7 +37,7 @@ public class PublicGameState {
      */
     public PublicGameState(int ticketsCount, PublicCardState cardState, PlayerId currentPlayerId, Map<PlayerId, PublicPlayerState> playerState, PlayerId lastPlayer){
         Preconditions.checkArgument(ticketsCount >= 0);
-        Preconditions.checkArgument(playerState.size() == PlayerId.COUNT);
+        Preconditions.checkArgument(playerState.size() == PlayerId.count());
         this.cardState = Objects.requireNonNull(cardState);
         this.currentPlayerId = Objects.requireNonNull(currentPlayerId);
         this.playerState = Objects.requireNonNull(Map.copyOf(playerState));

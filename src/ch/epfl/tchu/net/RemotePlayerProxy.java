@@ -55,7 +55,7 @@ public final class RemotePlayerProxy implements Player {
     @Override
     public void initPlayers(PlayerId ownId, Map<PlayerId, String> playerNames) {
         List<String> namesValues = new ArrayList<>();
-        for (PlayerId p : PlayerId.values()) namesValues.add(playerNames.get(p));
+        for (PlayerId p : PlayerId.all()) namesValues.add(playerNames.get(p));
         String message = String.join(SPACE, PLAYER_ID.serialize(ownId),
                 LIST_STRING.serialize(namesValues));
         sendMessage(MessageId.INIT_PLAYERS, message);
