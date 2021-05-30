@@ -36,7 +36,7 @@ public class Game {
         Preconditions.checkArgument(playerNames.size() == NUMBER_OF_PLAYERS);
 
         Map<PlayerId, Info> playersInfo = new EnumMap<>(PlayerId.class);
-        for (PlayerId playerId : PlayerId.values()) {
+        for (PlayerId playerId : PlayerId.all()) {
             playersInfo.put(playerId, new Info(playerNames.get(playerId)));
         }
 
@@ -83,14 +83,14 @@ public class Game {
         receiveInfo(players, playersInfo.get(gameState.currentPlayerId()).willPlayFirst());
 
         SortedBag<Ticket> initialTickets;
-        for (PlayerId playerId : PlayerId.values()) {
+        for (PlayerId playerId : PlayerId.all()) {
             initialTickets = gameState.topTickets(INITIAL_TICKETS_COUNT);
             gameState = gameState.withoutTopTickets(INITIAL_TICKETS_COUNT);
             players.get(playerId).setInitialTicketChoice(initialTickets);
         }
         updateState(players, gameState);
         Map<PlayerId,SortedBag<Ticket>> pTickets = new EnumMap<>(PlayerId.class);
-        for (PlayerId id : PlayerId.values()) {
+        for (PlayerId id : PlayerId.all()) {
             pTickets.put(id, players.get(id).chooseInitialTickets());
             gameState = gameState.withInitiallyChosenTickets(id, pTickets.get(id));
         }
@@ -205,7 +205,7 @@ public class Game {
         Map<PlayerId, Integer> playersPoints = new EnumMap<>(PlayerId.class);
         Map<PlayerId, Trail> playersTrail = new EnumMap<>(PlayerId.class);
 
-        for (PlayerId playerId : PlayerId.values()) {
+        for (PlayerId playerId : PlayerId.all()) {
             playersPoints.put(playerId, gameState.playerState(playerId).finalPoints());
             playersTrail.put(playerId, Trail.longest(gameState.playerState(playerId).routes()));
         }
@@ -258,7 +258,7 @@ public class Game {
      */
     private static Map.Entry<PlayerId, Integer> winner(Map<PlayerId, Integer> playersPoints, int minPoints) {
         Map.Entry<PlayerId, Integer> winner = playersPoints.entrySet().stream()
-                .max(Comparator.comparingInt(e -> e.getValue())).get();;
+                .max(Comparator.comparingInt(e -> e.getValue())).get();
         return winner.getValue() == minPoints ? null : winner;
     }
 

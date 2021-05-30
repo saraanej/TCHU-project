@@ -251,11 +251,11 @@ public final class ObservableGameState {
      * @return if the given route is already claimed or not.
      */
     private boolean routeIsNotClaimed(Route r) {
-//        CASE WITH ONLY 2 PLAYERS
-//        List<List<Station>> stations = new ArrayList<>();
-//        for (Route route : gameState.claimedRoutes()) stations.add(route.stations());
-//        return !stations.contains(r.stations());
-        //case with more than 2 players
-        return !gameState.claimedRoutes().contains(r);
+
+       if (PlayerId.COUNT == 2) {
+           List<List<Station>> stations = new ArrayList<>();
+           for (Route route : gameState.claimedRoutes()) stations.add(route.stations());
+           return !stations.contains(r.stations());
+       } return !gameState.claimedRoutes().contains(r);
     }
 }
