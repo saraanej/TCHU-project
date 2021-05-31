@@ -45,8 +45,9 @@ final class InfoViewCreator {
         playerStats.setId(PLAYER_STATS_ID);
 
         for (PlayerId player : PlayerId.all())
-            playersInfo(player, playerStats, playerNames, gameState);
+            playersInfo(player, id, playerStats, playerNames, gameState);
 
+        playerStats.getChildren().get(0);
         FXCollections.rotate(playerStats.getChildren(), -id.ordinal());
         TextFlow gameInfo = gameInfo(infos);
 
@@ -56,7 +57,7 @@ final class InfoViewCreator {
     }
 
 
-    private static void playersInfo(PlayerId player, VBox playerStats,
+    private static void playersInfo(PlayerId player, PlayerId ownId, VBox playerStats,
                                     Map<PlayerId, String> playerNames, ObservableGameState gameState) {
         TextFlow nPlayer = new TextFlow();
         nPlayer.getStyleClass().add(player.name());
@@ -65,7 +66,13 @@ final class InfoViewCreator {
         circle.getStyleClass().add(FILLED_SC);
 
         Text text = new Text();
-        text.textProperty().bind(Bindings.format(StringsFr.PLAYER_STATS,
+        text.textProperty().bind(player == ownId ? Bindings.format(StringsFr.PRIVATE_PLAYER_STATS,
+                playerNames.get(player),
+                gameState.playerTicketCount(player),
+                gameState.playerCardCount(player),
+                gameState.playerCarCount(player),
+                gameState.playerClaimPoints(player),
+                gameState.playerTicketPoints()) : Bindings.format(StringsFr.PUBLIC_PLAYER_STATS,
                 playerNames.get(player),
                 gameState.playerTicketCount(player),
                 gameState.playerCardCount(player),

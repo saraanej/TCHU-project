@@ -59,6 +59,7 @@ public final class ObservableGameState {
         return map;
     }
 
+
     private PlayerState player;
     private PublicGameState gameState;
     private final PlayerId playerId;
@@ -79,6 +80,7 @@ public final class ObservableGameState {
     private final ObservableList<Ticket> ticketList;
     private final Map<Card, IntegerProperty> numberCardType;
     private final Map<Route, BooleanProperty> canClaimRoute;
+    private final IntegerProperty ticketPoints;
 
     /**
      * Public default constructor.
@@ -98,6 +100,7 @@ public final class ObservableGameState {
         ticketList = FXCollections.observableArrayList();
         numberCardType = createNumberCardType();
         canClaimRoute = createCanClaimRoute();
+        ticketPoints = new SimpleIntegerProperty(0);
     }
 
     /**
@@ -136,6 +139,8 @@ public final class ObservableGameState {
         for (Route r : ChMap.routes())
             canClaimRoute.get(r).set(playerId.equals(gameState.currentPlayerId())
                     && routeIsNotClaimed(r) && player.canClaimRoute(r));
+
+        ticketPoints.set(playerState.ticketPoints());
     }
 
     /**
@@ -190,6 +195,14 @@ public final class ObservableGameState {
      */
     public ReadOnlyIntegerProperty playerClaimPoints(PlayerId id) {
         return claimPoints.get(id);
+    }
+
+    /**
+     *
+     * @return the ticket points owned by this player.
+     */
+    public ReadOnlyIntegerProperty playerTicketPoints(){
+        return ticketPoints;
     }
 
     /**

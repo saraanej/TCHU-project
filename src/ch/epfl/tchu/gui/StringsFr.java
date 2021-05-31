@@ -69,9 +69,11 @@ public final class StringsFr {
             "\n%s remporte la victoire avec %s point%s !\n";
 
     // Statistiques des joueurs
-    public static final String PLAYER_STATS =
+    public static final String PUBLIC_PLAYER_STATS =
             " %s :\n– %s billets,\n– %s cartes,\n– %s wagons,\n– %s points.";
 
+    public static final String PRIVATE_PLAYER_STATS =
+            " %s :\n– %s billets,\n– %s cartes,\n– %s wagons,\n– %s points,\n– %s points de billets.";
     // Séparateurs textuels
     public static final String AND_SEPARATOR = " et ";
     public static final String EN_DASH_SEPARATOR = " – ";
