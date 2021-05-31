@@ -306,35 +306,31 @@ public final class GraphicalPlayer {
 
     private void endViewCreator(PlayerId id, PlayerId winner, int points,
                                 PlayerId longestTrailWinner, Trail longestTrail){
-        VBox infos = new VBox();
 
+        Label topLabel = new Label(id == winner ? "Victoire !" : "Défaite !");
+        topLabel.setStyle(id == winner ? "-fx-alignment: center; -fx-background-color: lightgreen;" :
+                                         "-fx-alignment: center; -fx-background-color: red;" );
+        topLabel.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+        topLabel.setMinHeight(50);
+
+
+        VBox infos = new VBox();
         Info winnerName = new Info(winner.name());
         Info trailWinnerName = new Info(longestTrailWinner.name());
         menuText.addAll(new Text(winnerName.winsMenu(points)),
                 new Text(trailWinnerName.winsLongestTrail(longestTrail)));
         infos.getChildren().addAll(menuText);
-
-
-        Label topLabel = new Label(id == winner ? "Victoire !" : "Défaite !");
-        topLabel.setStyle(id == winner ? "-fx-alignment: center; -fx-background-color: green;" :
-                                         "-fx-alignment: center; -fx-background-color: red;" );
-        topLabel.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-        topLabel.setMinHeight(50);
-
-        Label centerLabel = new Label();
-        centerLabel.setStyle("-fx-alignment: center; -fx-background-color: white;");
-        centerLabel.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
         
 
-        Label bottomLabel = new Label("Bas");
+        /*Label bottomLabel = new Label("Bas");
         bottomLabel.setStyle("-fx-alignment: center; -fx-background-color: yellow;");
         bottomLabel.setMinHeight(50);
         bottomLabel.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-
+*/
         BorderPane root = new BorderPane();
         root.setTop(topLabel);
-        root.setBottom(bottomLabel);
-        root.setCenter(centerLabel);
+        root.setBottom(infos);
+        //root.setCenter(centerLabel);
 
         Scene scene = new Scene(root, 350, 300);
         primaryStage.setTitle("End Game");
