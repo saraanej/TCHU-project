@@ -241,7 +241,7 @@ public final class GraphicalPlayer {
      *
      * @param c the drawn Card to show
      */
-    public void showDrawnCard(Card c){
+    public void showDrawnCard(Card c){ //todo fx-translate
         Stage drawnCard = new Stage();
 
         StackPane stackPane = new StackPane();
@@ -259,11 +259,10 @@ public final class GraphicalPlayer {
 
         stackPane.getChildren().addAll(outside, filledInside, trainImage);
         stackPane.disableProperty().bind(FALSE_BINDING);
-        
-        drawnCard.setScene(new Scene(stackPane));
-
 
         drawnCard.initOwner(primaryStage);
+        drawnCard.setScene(new Scene(stackPane));
+        drawnCard.show();
     }
 
     /**

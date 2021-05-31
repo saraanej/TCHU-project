@@ -102,7 +102,7 @@ final class DecksViewCreator {
             });
             createRectangles(stackPane);
             stackPane.disableProperty().bind(cardsHandler.isNull());
-            stackPane.setOnMouseClicked(e -> cardsHandler.get().onDrawCard(i));
+            stackPane.setOnMouseClicked(e -> cardsHandler.get().onDrawCard(i)); //todo animation avec css et fx-translate
             deckView.getChildren().add(stackPane);
         }
 

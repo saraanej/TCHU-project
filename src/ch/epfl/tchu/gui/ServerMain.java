@@ -51,6 +51,7 @@ public final class ServerMain extends Application {
             Map<PlayerId, Player> players = new EnumMap<>(PlayerId.class);
 
             PlayerId.setNumberPlayers(raw.size() > 0 ? Integer.parseInt(raw.get(0)) : DEFAULT_NUMBER_PLAYERS);
+            // todo mettre un seul serversocket
 
             for (PlayerId id : PlayerId.all()) {
                 int indexId = id.ordinal();
