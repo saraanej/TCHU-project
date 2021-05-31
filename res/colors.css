@@ -12,6 +12,7 @@
 
 .PLAYER_1 .filled { -fx-fill: lightblue; }
 .PLAYER_2 .filled { -fx-fill: lightpink; }
-.PLAYER_3 .filled { -fx-fill: lightgreen;}
-.PLAYER_4 .filled { -fx-fill: lightyellow;}
+.PLAYER_3 .filled { -fx-fill: greenyellow;}
+.PLAYER_4 .filled { -fx-fill: lightsalmon;}
+.PLAYER_5 .filled { -fx-fill: khaki;}
 
