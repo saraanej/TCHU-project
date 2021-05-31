@@ -65,6 +65,8 @@ public final class StringsFr {
             "\n%s remporte la victoire avec %s point%s, contre %s point%s !\n";
     public static final String DRAW =
             "\n%s sont ex æqo avec %s points !\n";
+    public static final String WINS_MENU =
+            "\n%s remporte la victoire avec %s point%s !\n";
 
     // Statistiques des joueurs
     public static final String PLAYER_STATS =

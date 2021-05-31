@@ -227,6 +227,17 @@ public final class Info {
 	}
 
 	/**
+	 * @param points The points earned by the player in the game.
+	 * @return The message declaring that the player won with the given points.
+	 */
+	public String winsMenu(int points){
+		return String.format(WINS_MENU,
+				playerName,
+				points,
+				plural(points));
+	}
+
+	/**
 	 * @param cards The given list of cards.
 	 * @return The message containing all the specifics of the cards
 	 *                  contained in the given list.

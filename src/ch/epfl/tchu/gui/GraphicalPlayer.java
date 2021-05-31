@@ -2,6 +2,7 @@ package ch.epfl.tchu.gui;
 
 import ch.epfl.tchu.SortedBag;
 import ch.epfl.tchu.game.*;
+import ch.epfl.tchu.gui.Info.*;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
@@ -23,7 +24,6 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.StringConverter;
-
 import javafx.beans.binding.Bindings;
 
 import java.util.List;
@@ -49,6 +49,7 @@ public final class GraphicalPlayer {
 
     private final ObservableGameState gameState;
     private final ObservableList<Text> infoList;
+    private final ObservableList<Text> menuText;
 
     private final ObjectProperty<ActionHandlers.DrawTicketsHandler> drawTickets;
     private final ObjectProperty<ActionHandlers.DrawCardHandler> drawCard;
@@ -67,6 +68,7 @@ public final class GraphicalPlayer {
         drawCard = new SimpleObjectProperty<>(null);
         claimRoute = new SimpleObjectProperty<>(null);
         infoList = FXCollections.observableArrayList();
+        menuText = FXCollections.observableArrayList();
 
         Node mapView = MapViewCreator
                 .createMapView(gameState, claimRoute, this::chooseClaimCards);
@@ -76,6 +78,7 @@ public final class GraphicalPlayer {
                 .createHandView(gameState);
         Node infoView = InfoViewCreator
                 .createInfoView(id, playerNames, gameState, infoList);
+        //Node menuView = MenuViewCreator.createMenuView();
 
         BorderPane mainPane =
                 new BorderPane(mapView, null, cardsView, handView, infoView);
@@ -107,6 +110,21 @@ public final class GraphicalPlayer {
         assert isFxApplicationThread();
         if (infoList.size() == INFO_MESSAGE_COUNT) infoList.remove(0);
         infoList.add(new Text(message));
+    }
+
+    /**
+     * Adds the messages to the game's menu.
+     *
+     * @param winner The winner of the game.
+     * @param longestTrailWinner The player who got the longest trail.
+     */
+    public void endGame(Map.Entry<PlayerId, Integer> winner, Map.Entry<PlayerId, Trail> longestTrailWinner){
+        assert isFxApplicationThread();
+        Info winnerName = new Info(winner.getKey().name());
+        Info trailWinnerName = new Info(longestTrailWinner.getKey().name());
+        menuText.addAll(new Text(winnerName.winsMenu(winner.getValue())),
+                new Text(trailWinnerName.getsLongestTrailBonus(longestTrailWinner.getValue())));
+
     }
 
     /**
