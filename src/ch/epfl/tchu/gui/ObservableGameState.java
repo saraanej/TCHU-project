@@ -269,6 +269,6 @@ public final class ObservableGameState {
            List<List<Station>> stations = new ArrayList<>();
            for (Route route : gameState.claimedRoutes()) stations.add(route.stations());
            return !stations.contains(r.stations());
-       } return !gameState.claimedRoutes().contains(r);
+       } return !gameState.claimedRoutes().contains(r.stations());
     }
 }
