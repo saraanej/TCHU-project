@@ -16,10 +16,12 @@ public enum PlayerId {
     PLAYER_1,
     PLAYER_2,
     PLAYER_3,
-    PLAYER_4;
+    PLAYER_4,
+    PLAYER_5;
 
     private final static int MIN_NUMBER_PLAYERS = 2;
-    private final static int MAX_NUMBER_PLAYERS = 4;
+    private final static int MAX_NUMBER_PLAYERS = 5;
+
     private static List<PlayerId> ALL = new ArrayList<>();
 
     /**
