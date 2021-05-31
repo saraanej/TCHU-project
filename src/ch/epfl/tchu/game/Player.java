@@ -55,7 +55,7 @@ public interface Player {
      * @param winner the winner of the Tchu's game with the maximal points.
      * @param longestTrail the player who got the longest trail.
      */
-    void endGame(Map.Entry<PlayerId, Integer> winner, Map.Entry<PlayerId, Trail> longestTrailWinner);
+    void endGame(PlayerId winner, int points, PlayerId longestTrailWinner, Trail longestTrail);
 
     /**
      * @return The emplacement where the player wishes to draw his cards.

@@ -20,6 +20,13 @@ import static ch.epfl.tchu.gui.StringsFr.*;
 
 public final class Info {
 
+	// Statistiques des joueurs
+	public static final String PUBLIC_PLAYER_STATS =
+			" %s :\n– %s billets,\n– %s cartes,\n– %s wagons,\n– %s points.";
+
+	public static final String PRIVATE_PLAYER_STATS =
+			" %s :\n– %s billets,\n– %s cartes,\n– %s wagons,\n– %s points,\n– %s points de billets.";
+
 	private final String playerName;
 
 

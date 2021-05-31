@@ -85,11 +85,11 @@ public final class GraphicalPlayerAdapter implements Player {
     /**
      * Calls the endGame method of the graphical player on the javaFX thread.
      *
-     * @see Player#endGame(Map.Entry, Map.Entry)
+     * @see Player#endGame(PlayerId, int, PlayerId, Trail)
      */
     @Override
-    public void endGame(Map.Entry<PlayerId, Integer> winner, Map.Entry<PlayerId, Trail> longestTrailWinner){
-        runLater(() -> player.endGame(winner, longestTrailWinner));
+    public void endGame(PlayerId winner, int points, PlayerId longestTrailWinner, Trail longestTrail){
+        runLater(() -> player.endGame(winner, points, longestTrailWinner, longestTrail));
     }
 
     /**

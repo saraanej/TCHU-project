@@ -118,13 +118,12 @@ public final class GraphicalPlayer {
      * @param winner The winner of the game.
      * @param longestTrailWinner The player who got the longest trail.
      */
-    public void endGame(Map.Entry<PlayerId, Integer> winner, Map.Entry<PlayerId, Trail> longestTrailWinner){
+    public void endGame(PlayerId winner, int points, PlayerId longestTrailWinner, Trail longestTrail){
         assert isFxApplicationThread();
-        Info winnerName = new Info(winner.getKey().name());
-        Info trailWinnerName = new Info(longestTrailWinner.getKey().name());
-        menuText.addAll(new Text(winnerName.winsMenu(winner.getValue())),
-                new Text(trailWinnerName.getsLongestTrailBonus(longestTrailWinner.getValue())));
-
+        Info winnerName = new Info(winner.name());
+        Info trailWinnerName = new Info(longestTrailWinner.name());
+        menuText.addAll(new Text(winnerName.winsMenu(points)),
+                new Text(trailWinnerName.getsLongestTrailBonus(longestTrail)));
     }
 
     /**
