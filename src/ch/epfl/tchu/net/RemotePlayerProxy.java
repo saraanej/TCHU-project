@@ -72,14 +72,16 @@ public final class RemotePlayerProxy implements Player {
     }
 
     /**
-     *
+     * Sends a message through the network to call the same method on the actual player hosted in another program
      *
      * @see Player#endGame(PlayerId, int, PlayerId, Trail)
      */
     @Override
     public void endGame(PlayerId winner, int points, PlayerId longestTrailWinner, Trail longestTrail){
-        //String message = String.join(SPACE, PLAYER_ID)
-        //sendMessage(MessageId.END_GAME, );
+        String message = String.join(SPACE, PLAYER_ID.serialize(winner),
+                INTEGER.serialize(points), PLAYER_ID.serialize(longestTrailWinner),
+                LIST_ROUTE.serialize(longestTrail.getRoutes()));
+        sendMessage(MessageId.END_GAME, message);
     }
 
     /**

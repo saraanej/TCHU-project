@@ -101,6 +101,13 @@ public final class Trail {
         return length;
     }
 
+    /**
+     * @return the routes composing the trail.
+     */
+    public List<Route> getRoutes(){ //TODO
+        return routes;
+    }
+
 
     /**
      * Computes the length of the Trail using the length of its routes.

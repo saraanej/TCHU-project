@@ -2,6 +2,8 @@ package ch.epfl.tchu.net;
 
 import ch.epfl.tchu.game.Player;
 import ch.epfl.tchu.game.PlayerId;
+import ch.epfl.tchu.game.Route;
+import ch.epfl.tchu.game.Trail;
 
 import java.io.*;
 import java.net.Socket;
@@ -69,7 +71,6 @@ public final class RemotePlayerClient {
                         Map<PlayerId,String> names = new EnumMap<>(PlayerId.class);
                         for (PlayerId id: PlayerId.all())
                             names.put(id,deserialized.get(id.ordinal()));
-
                         player.initPlayers(PLAYER_ID.deserialize(split[1]), names);
                         break;
                     case RECEIVE_INFO:
@@ -82,6 +83,11 @@ public final class RemotePlayerClient {
                     case SET_INITIAL_TICKETS:
                         player.setInitialTicketChoice(SORTED_TICKET.deserialize(split[1]));
                         break;
+                    case END_GAME:
+                        player.endGame(PLAYER_ID.deserialize(split[1]),
+                                       INTEGER.deserialize(split[2]),
+                                       PLAYER_ID.deserialize(split[3]),
+                                       Trail.longest(LIST_ROUTE.deserialize(split[4])));
                     case DRAW_SLOT:
                         sendMessage(INTEGER.serialize(player.drawSlot()));
                         break;
