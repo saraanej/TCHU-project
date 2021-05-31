@@ -227,7 +227,7 @@ public class Game {
 
         if (winner.getKey() == null) receiveInfo(players, Info.draw(new ArrayList<>(playerNames.values()), minPoints));
         else receiveInfo(players, playersInfo.get(winner.getKey())
-                .won(winner.getValue(), minPoints));
+                .won(winner.getValue(), minPoints)); //todo receiveinfo a changer avec multijoueurs et fenetre de fin
     }
 
     /**

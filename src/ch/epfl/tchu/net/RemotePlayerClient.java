@@ -68,6 +68,7 @@ public final class RemotePlayerClient {
                 switch (MessageId.valueOf(split[0])) {
                     case INIT_PLAYERS:
                         List<String> deserialized = LIST_STRING.deserialize(split[2]);
+                        PlayerId.setNumberPlayers(deserialized.size());
                         Map<PlayerId,String> names = new EnumMap<>(PlayerId.class);
                         for (PlayerId id: PlayerId.all())
                             names.put(id,deserialized.get(id.ordinal()));

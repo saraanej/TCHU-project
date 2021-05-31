@@ -9,9 +9,8 @@ import java.util.List;
 
 public class Client2 extends Application{
 
-    private final static int PORT_DEFAULT = 5108 + 2;
+    private final static int PORT_DEFAULT = 5108;
     private final static String NAME_DEFAULT = "localhost";
-    private static final int DEFAULT_NUMBER_PLAYERS = 2;
 
 
     /**
@@ -31,11 +30,8 @@ public class Client2 extends Application{
         int port;
         List<String> raw = getParameters().getRaw();
 
-        PlayerId.setNumberPlayers(raw.size() > 0 ? Integer.parseInt(raw.get(0)) : DEFAULT_NUMBER_PLAYERS);
-        //TODO : FIND A WAY PR QUE CETTE INFO SOIT OBTENUE PAR LE SERVEUR pas en parametres
-
-        name = (raw.size() > 1) ? raw.get(1) : NAME_DEFAULT;
-        port = (raw.size() > 2) ? Integer.parseInt(raw.get(2)) : PORT_DEFAULT;
+        name = (raw.size() > 0) ? raw.get(0) : NAME_DEFAULT;
+        port = (raw.size() > 1) ? Integer.parseInt(raw.get(1)) : PORT_DEFAULT;
         RemotePlayerClient distantPlayer = new RemotePlayerClient(
                 new GraphicalPlayerAdapter(), name, port);
         new Thread(distantPlayer::run).start();

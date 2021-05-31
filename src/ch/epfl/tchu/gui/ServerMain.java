@@ -53,11 +53,13 @@ public final class ServerMain extends Application {
             PlayerId.setNumberPlayers(raw.size() > 0 ? Integer.parseInt(raw.get(0)) : DEFAULT_NUMBER_PLAYERS);
             // todo mettre un seul serversocket
 
+            ServerSocket socket = new ServerSocket(SOCKET_PORT)
+;
             for (PlayerId id : PlayerId.all()) {
                 int indexId = id.ordinal();
                 names.put(id, (raw.size() > indexId + 1) ? raw.get(indexId + 1) : PLAYER_NAMES.get(indexId));
                 players.put(id, id.equals(PLAYER_1) ? new GraphicalPlayerAdapter() :
-                        new RemotePlayerProxy(new ServerSocket(SOCKET_PORT + indexId).accept()));
+                        new RemotePlayerProxy(socket.accept()));
             }
 
             SortedBag<Ticket> tickets = SortedBag.of(ChMap.tickets());

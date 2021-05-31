@@ -22,7 +22,7 @@ public enum PlayerId {
     private final static int MIN_NUMBER_PLAYERS = 2;
     private final static int MAX_NUMBER_PLAYERS = 5;
 
-    private static List<PlayerId> ALL = new ArrayList<>();
+    private static List<PlayerId> ALL = List.of(values());
 
     /**
      *
@@ -30,8 +30,7 @@ public enum PlayerId {
      */
     public static void setNumberPlayers(int number) { //todo: check si solution correcte
         Preconditions.checkArgument(number >= MIN_NUMBER_PLAYERS && number <= MAX_NUMBER_PLAYERS);
-        for (int i = 1; i <= number; ++i)
-            ALL.add(PlayerId.valueOf(String.format("PLAYER_%d",i)));
+        ALL = ALL.subList(0,number);
     }
 
     /**
