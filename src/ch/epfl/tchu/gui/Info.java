@@ -212,6 +212,19 @@ public final class Info {
 	}
 
 	/**
+	 * @param longestTrail The trail that made the player earn the final game bonus.
+	 * @return The message declaring the player who got the longest or one of the longest trails.
+	 */
+	public String winsLongestTrail(Trail longestTrail) {
+		return String.format(LONGEST_TRAIL,
+				playerName,
+				String.join("" ,
+						longestTrail.station1().name(),
+						EN_DASH_SEPARATOR,
+						longestTrail.station2().name()));
+	}
+
+	/**
 	 * @param points The points earned by the player in the game.
 	 * @param loserPoints The points made by the player's opponent in the game.
 	 * @return The message declaring that the player won with the given points

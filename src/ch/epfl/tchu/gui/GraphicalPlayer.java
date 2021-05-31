@@ -18,7 +18,9 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.cell.TextFieldListCell;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Modality;
@@ -31,8 +33,7 @@ import java.util.List;
 import java.util.Map;
 
 import static ch.epfl.tchu.game.Constants.DISCARDABLE_TICKETS_COUNT;
-import static ch.epfl.tchu.gui.GuiConstants.CHOOSER_SS;
-import static ch.epfl.tchu.gui.GuiConstants.COLORS_SS;
+import static ch.epfl.tchu.gui.GuiConstants.*;
 import static javafx.application.Platform.isFxApplicationThread;
 
 /**
@@ -80,7 +81,6 @@ public final class GraphicalPlayer {
                 .createHandView(gameState);
         Node infoView = InfoViewCreator
                 .createInfoView(id, playerNames, gameState, infoList);
-        //Node menuView = MenuViewCreator.createMenuView();
 
         BorderPane mainPane =
                 new BorderPane(mapView, null, cardsView, handView, infoView);
@@ -125,7 +125,7 @@ public final class GraphicalPlayer {
         Info winnerName = new Info(winner.name());
         Info trailWinnerName = new Info(longestTrailWinner.name());
         menuText.addAll(new Text(winnerName.winsMenu(points)),
-                new Text(trailWinnerName.getsLongestTrailBonus(longestTrail)));
+                new Text(trailWinnerName.winsLongestTrail(longestTrail)));
     }
 
     /**
@@ -238,6 +238,35 @@ public final class GraphicalPlayer {
     }
 
     /**
+     *
+     * @param c the drawn Card to show
+     */
+    public void showDrawnCard(Card c){
+        Stage drawnCard = new Stage();
+
+        StackPane stackPane = new StackPane();
+        stackPane.getStyleClass().addAll(CARD_SC, c == Card.LOCOMOTIVE ? NEUTRAL_SC : c.name());
+
+        //create the rectangles for the card 
+        Rectangle outside = new Rectangle(OUTSIDE_CARD_WIDTH, OUTSIDE_CARD_HEIGHT);
+        outside.getStyleClass().add(OUTSIDE_SC);
+
+        Rectangle filledInside = new Rectangle(INSIDE_CARD_WIDTH, INSIDE_CARD_HEIGHT);
+        filledInside.getStyleClass().addAll(INSIDE_SC, FILLED_SC);
+
+        Rectangle trainImage = new Rectangle(TRAIN_CARD_WIDTH, TRAIN_CARD_HEIGHT);
+        trainImage.getStyleClass().add(TRAIN_IMAGE_SC);
+
+        stackPane.getChildren().addAll(outside, filledInside, trainImage);
+        stackPane.disableProperty().bind(FALSE_BINDING);
+        
+        drawnCard.setScene(new Scene(stackPane));
+
+
+        drawnCard.initOwner(primaryStage);
+    }
+
+    /**
      * Creates the dialog window to choose the cards or the tickets.
      *
      * @param binding  the boolean binding to disable the choice button (true to disable it)
@@ -275,28 +304,42 @@ public final class GraphicalPlayer {
         dialogStage.show();
     }
 
-    private void endViewCreator(){
-        VBox handView = new VBox();
-        handView.getStylesheets().addAll("menu.css", COLORS_SS);
+    private void endViewCreator(PlayerId id, PlayerId winner, int points,
+                                PlayerId longestTrailWinner, Trail longestTrail){
+        VBox infos = new VBox();
 
-        final Label topLabel = new Label("Haut");
-        topLabel.setStyle("-fx-alignment: center; -fx-background-color: yellow;");
+        Info winnerName = new Info(winner.name());
+        Info trailWinnerName = new Info(longestTrailWinner.name());
+        menuText.addAll(new Text(winnerName.winsMenu(points)),
+                new Text(trailWinnerName.winsLongestTrail(longestTrail)));
+        infos.getChildren().addAll(menuText);
+
+
+        Label topLabel = new Label(id == winner ? "Victoire !" : "Défaite !");
+        topLabel.setStyle(id == winner ? "-fx-alignment: center; -fx-background-color: green;" :
+                                         "-fx-alignment: center; -fx-background-color: red;" );
         topLabel.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
         topLabel.setMinHeight(50);
 
-        final Label centerLabel = new Label("Centre");
+        Label centerLabel = new Label();
         centerLabel.setStyle("-fx-alignment: center; -fx-background-color: white;");
         centerLabel.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+        
 
-        final Label bottomLabel = new Label("Bas");
-        bottomLabel.setStyle("-fx-alignment: center; -fx-background-color: limegreen;");
+        Label bottomLabel = new Label("Bas");
+        bottomLabel.setStyle("-fx-alignment: center; -fx-background-color: yellow;");
         bottomLabel.setMinHeight(50);
         bottomLabel.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
 
-        final BorderPane root = new BorderPane();
+        BorderPane root = new BorderPane();
         root.setTop(topLabel);
         root.setBottom(bottomLabel);
         root.setCenter(centerLabel);
+
+        Scene scene = new Scene(root, 350, 300);
+        primaryStage.setTitle("End Game");
+        primaryStage.setScene(scene);
+        primaryStage.show();
     }
 
 
