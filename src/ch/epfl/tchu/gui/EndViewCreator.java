@@ -13,7 +13,7 @@ final class EndViewCreator {
     private EndViewCreator() {
     }
 
-    public static Node createEndView(){
+    public static Node createEndView(PlayerId id){
         VBox handView = new VBox();
         handView.getStylesheets().addAll("menu.css", COLORS_SS);
 
@@ -30,7 +30,7 @@ final class EndViewCreator {
         bottomLabel.setStyle("-fx-alignment: center; -fx-background-color: limegreen;");
         bottomLabel.setMinHeight(50);
         bottomLabel.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-        
+
         final BorderPane root = new BorderPane();
         root.setTop(topLabel);
         root.setBottom(bottomLabel);
