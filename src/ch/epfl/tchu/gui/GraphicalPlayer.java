@@ -18,6 +18,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.cell.TextFieldListCell;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
@@ -34,6 +35,7 @@ import java.util.Map;
 
 import static ch.epfl.tchu.game.Constants.DISCARDABLE_TICKETS_COUNT;
 import static ch.epfl.tchu.gui.GuiConstants.*;
+import static ch.epfl.tchu.gui.StringsFr.CAN_PLAY;
 import static javafx.application.Platform.isFxApplicationThread;
 
 /**
@@ -49,6 +51,8 @@ public final class GraphicalPlayer {
     private static final BooleanBinding FALSE_BINDING = Bindings.createBooleanBinding(() -> false);
 
     private final Stage primaryStage;
+    private final PlayerId playerId;
+    private final Map<PlayerId, String> playerNames;
 
     private final ObservableGameState gameState;
     private final ObservableList<Text> infoList;
@@ -72,6 +76,8 @@ public final class GraphicalPlayer {
         claimRoute = new SimpleObjectProperty<>(null);
         infoList = FXCollections.observableArrayList();
         menuText = FXCollections.observableArrayList();
+        playerId = id;
+        this.playerNames = playerNames;
 
         Node mapView = MapViewCreator
                 .createMapView(gameState, claimRoute, this::chooseClaimCards);
@@ -118,14 +124,13 @@ public final class GraphicalPlayer {
      * Adds the messages to the game's menu.
      *
      * @param winner The winner of the game.
+     * @param points The points earned by the winner of the game.
      * @param longestTrailWinner The player who got the longest trail.
+     * @param longestTrail The longest trail made by a player.
      */
     public void endGame(PlayerId winner, int points, PlayerId longestTrailWinner, Trail longestTrail){
         assert isFxApplicationThread();
-        Info winnerName = new Info(winner.name());
-        Info trailWinnerName = new Info(longestTrailWinner.name());
-        menuText.addAll(new Text(winnerName.winsMenu(points)),
-                new Text(trailWinnerName.winsLongestTrail(longestTrail)));
+        endViewCreator(playerId, playerNames, winner, points, longestTrailWinner, longestTrail);
     }
 
     /**
@@ -138,6 +143,8 @@ public final class GraphicalPlayer {
     public void startTurn(ActionHandlers.DrawTicketsHandler ticketHandler, ActionHandlers.DrawCardHandler cardHandler,
                           ActionHandlers.ClaimRouteHandler routeHandler) {
         assert isFxApplicationThread();
+        //todo show a temporary text
+
         claimRoute.set((r, c) -> {
             drawCard.set(null);
             drawTickets.set(null);
@@ -303,7 +310,12 @@ public final class GraphicalPlayer {
         dialogStage.show();
     }
 
-    private void endViewCreator(PlayerId id, PlayerId winner, int points,
+    private void yourTurnToPlay(){
+        Text text = new Text(String.format(CAN_PLAY,"ton tour"));
+        Scene scene = new Scene(new HBox(text));
+    }
+
+    private void endViewCreator(PlayerId id, Map<PlayerId, String> playerNames, PlayerId winner, int points,
                                 PlayerId longestTrailWinner, Trail longestTrail){
 
         Label topLabel = new Label(id == winner ? "Victoire !" : "Défaite !");
@@ -314,9 +326,10 @@ public final class GraphicalPlayer {
 
 
         VBox infos = new VBox();
-        Info winnerName = new Info(winner.name());
-        Info trailWinnerName = new Info(longestTrailWinner.name());
-        menuText.addAll(new Text(winnerName.winsMenu(points)),
+        Info winnerName = new Info(playerNames.get(winner));
+        Info trailWinnerName = new Info(playerNames.get(longestTrailWinner));
+        menuText.addAll(
+                new Text(winnerName.winsMenu(points)),
                 new Text(trailWinnerName.winsLongestTrail(longestTrail)));
         infos.getChildren().addAll(menuText);
         
@@ -332,7 +345,7 @@ public final class GraphicalPlayer {
         //root.setCenter(centerLabel);
 
         Scene scene = new Scene(root, 350, 300);
-        primaryStage.setTitle("End Game");
+        primaryStage.setTitle("Fin du jeu");
         primaryStage.setScene(scene);
         primaryStage.show();
     }

@@ -43,8 +43,6 @@ public final class ServerMain extends Application {
     @Override
     public void start(Stage primaryStage) {
         try {
-
-
             List<String> raw = getParameters().getRaw();
 
             Map<PlayerId, String> names = new EnumMap<>(PlayerId.class);
@@ -53,8 +51,7 @@ public final class ServerMain extends Application {
             PlayerId.setNumberPlayers(raw.size() > 0 ? Integer.parseInt(raw.get(0)) : DEFAULT_NUMBER_PLAYERS);
             // todo mettre un seul serversocket
 
-            ServerSocket socket = new ServerSocket(SOCKET_PORT)
-;
+            ServerSocket socket = new ServerSocket(SOCKET_PORT);
             for (PlayerId id : PlayerId.all()) {
                 int indexId = id.ordinal();
                 names.put(id, (raw.size() > indexId + 1) ? raw.get(indexId + 1) : PLAYER_NAMES.get(indexId));
