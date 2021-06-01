@@ -25,9 +25,9 @@ import static ch.epfl.tchu.game.PlayerId.PLAYER_1;
  */
 public final class ServerMain extends Application {
 
-    private static final int SOCKET_PORT = 5108;
-    private static final List<String> PLAYER_NAMES = List.of("Ada","Charles","Alice","Bob","Michel");
-    private static final int DEFAULT_NUMBER_PLAYERS = 2;
+    private static int SOCKET_PORT = 5108;
+    private static List<String> PLAYER_NAMES = List.of("Ada","Charles","Alice","Bob","Michel");
+    private static int NUMBER_PLAYERS = 2;
 
 
     /**
@@ -48,7 +48,7 @@ public final class ServerMain extends Application {
             Map<PlayerId, String> names = new EnumMap<>(PlayerId.class);
             Map<PlayerId, Player> players = new EnumMap<>(PlayerId.class);
 
-            PlayerId.setNumberPlayers(raw.size() > 0 ? Integer.parseInt(raw.get(0)) : DEFAULT_NUMBER_PLAYERS);
+            PlayerId.setNumberPlayers(raw.size() > 0 ? Integer.parseInt(raw.get(0)) : NUMBER_PLAYERS);
 
             ServerSocket socket = new ServerSocket(SOCKET_PORT);
             for (PlayerId id : PlayerId.all()) {
@@ -65,4 +65,10 @@ public final class ServerMain extends Application {
             throw new UncheckedIOException(e);
         }
     }
+
+//    public void setParameters(int numberPlayers, List<String> playernames, int Port){
+//        SOCKET_PORT = Port;
+//        NUMBER_PLAYERS = numberPlayers;
+//        PLAYER_NAMES = playernames;
+//    }
 }
