@@ -71,6 +71,8 @@ public final class StringsFr {
             "\n%s remporte la victoire avec %s point%s !\n";
     public static final String CURRENT_PLAYER_POINTS =
             "\nVous avez remporté %s point%s !\n";
+    public static final String ALL_WINNERS_POINTS =
+            "\n%s ont tous remporté cette partie avec %s point%s !\n";
 
     // Statistiques des joueurs
     public static final String PUBLIC_PLAYER_STATS =

@@ -231,13 +231,10 @@ public class Game {
 
 
         ArrayList<PlayerId> winners = new ArrayList<>();
-        for(){
-
-        }
-        players.get(gameState.currentPlayerId()).endGame(winner.getKey() == null ?  ,
+       /* players.get(gameState.currentPlayerId()).endGame(winner.getKey() == null ?  ,
                 minPoints,
                 bonusPlayer,
-                playersTrail.get(bonusPlayer));
+                playersTrail.get(bonusPlayer));*/
 
     }
 

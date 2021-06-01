@@ -77,9 +77,9 @@ public final class RemotePlayerProxy implements Player {
      * @see Player#endGame(PlayerId, int, PlayerId, Trail)
      */
     @Override
-    public void endGame(ArrayList<PlayerId> winner, int points, PlayerId longestTrailWinner, Trail longestTrail){
+    public void endGame(PlayerId winner, Map<PlayerId, Integer> points, PlayerId longestTrailWinner, Map<PlayerId, Trail> longestTrail){
         String message = String.join(SPACE,
-                winner == null ? EMPTY_STRING : PLAYER_ID.serialize(winner.get(0)), // TODO A CHANGER
+                winner == null ? EMPTY_STRING : PLAYER_ID.serialize(winner),
                 INTEGER.serialize(points),
                 longestTrailWinner == null ? EMPTY_STRING : PLAYER_ID.serialize(longestTrailWinner),
                 longestTrailWinner == null ? EMPTY_STRING : LIST_ROUTE.serialize(longestTrail.getRoutes()));

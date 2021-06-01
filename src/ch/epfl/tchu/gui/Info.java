@@ -251,12 +251,24 @@ public final class Info {
 	}
 
 	/**
-	 *
 	 * @param points The points earned by the player in the game.
 	 * @return The message declaring that the player won the given points at the end of the game.
 	 */
 	public String endGamePlayerStats(int points){
 		return String.format(CURRENT_PLAYER_POINTS,
+				points,
+				plural(points));
+	}
+
+	/**
+	 *
+	 * @param names Names of all the players of the game.
+	 * @param points The maximal points earned.
+	 * @return The message declaring that all the players won with the same points.
+	 */
+	public String allPlayersWin(String names, int points){
+		return String.format(ALL_WINNERS_POINTS,
+				names,
 				points,
 				plural(points));
 	}

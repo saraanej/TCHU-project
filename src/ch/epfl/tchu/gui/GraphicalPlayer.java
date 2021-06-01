@@ -31,12 +31,13 @@ import javafx.util.StringConverter;
 import javafx.beans.binding.Bindings;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
 import static ch.epfl.tchu.game.Constants.DISCARDABLE_TICKETS_COUNT;
 import static ch.epfl.tchu.gui.GuiConstants.*;
-import static ch.epfl.tchu.gui.StringsFr.CAN_PLAY;
+import static ch.epfl.tchu.gui.StringsFr.*;
 import static javafx.application.Platform.isFxApplicationThread;
 
 /**
@@ -54,6 +55,8 @@ public final class GraphicalPlayer {
     private final Stage primaryStage;
     private final PlayerId playerId;
     private final Map<PlayerId, String> playerNames;
+    private final Text yourTurn;
+
 
     private final ObservableGameState gameState;
     private final ObservableList<Text> infoList;
@@ -89,8 +92,12 @@ public final class GraphicalPlayer {
         Node infoView = InfoViewCreator
                 .createInfoView(id, playerNames, gameState, infoList);
 
+        yourTurn = new Text(String.format(CAN_PLAY,"ton tour"));
+        yourTurn.setVisible(Boolean.FALSE);
+
+        //todo setstyle text
         BorderPane mainPane =
-                new BorderPane(mapView, null, cardsView, handView, infoView);
+                new BorderPane(mapView, yourTurn, cardsView, handView, infoView);
 
         primaryStage = new Stage();
         primaryStage.setTitle(String.format("tChu - %s", playerNames.get(id)));
@@ -144,11 +151,11 @@ public final class GraphicalPlayer {
     public void startTurn(ActionHandlers.DrawTicketsHandler ticketHandler, ActionHandlers.DrawCardHandler cardHandler,
                           ActionHandlers.ClaimRouteHandler routeHandler) {
         assert isFxApplicationThread();
-        Stage turn = showTurn();
-        turn.show();
+
+        yourTurn.setVisible(Boolean.TRUE);
 
         claimRoute.set((r, c) -> {
-            turn.hide();
+            yourTurn.setVisible(Boolean.FALSE);
             drawCard.set(null);
             drawTickets.set(null);
             routeHandler.onClaimRoute(r, c);
@@ -157,7 +164,7 @@ public final class GraphicalPlayer {
 
         if (gameState.canDrawTickets())
             drawTickets.set(() -> {
-                turn.hide();
+                yourTurn.setVisible(Boolean.FALSE);
                 drawCard.set(null);
                 claimRoute.set(null);
                 ticketHandler.onDrawTickets();
@@ -166,7 +173,7 @@ public final class GraphicalPlayer {
 
         if (gameState.canDrawCards())
             drawCard.set(i -> {
-                turn.hide();
+                yourTurn.setVisible(Boolean.FALSE);
                 drawTickets.set(null);
                 claimRoute.set(null);
                 cardHandler.onDrawCard(i);
@@ -327,25 +334,57 @@ public final class GraphicalPlayer {
                                 Map<PlayerId, Integer> points, PlayerId longestTrailWinner,
                                 Map<PlayerId, Trail> longestTrail){
 
-        Label topLabel = new Label(id == winner.get(0) ? "Victoire !" : "Défaite !");
-        topLabel.setStyle(id == winner.get(0) ? "-fx-alignment: center; -fx-background-color: lightgreen;" :
-                                         "-fx-alignment: center; -fx-background-color: red;" );
-        //topLabel.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-        //topLabel.setMinHeight(50);
-
         VBox infos = new VBox();
+        Label topLabel;
         Info winnerName = new Info(playerNames.get(winner));
         Info trailWinnerName = new Info(playerNames.get(longestTrailWinner));
-        menuText.addAll(
-                new Text(winnerName.winsMenu(points)),
-                new Text(trailWinnerName.winsLongestTrail(longestTrail)));
-        infos.getChildren().addAll(menuText);
-        
 
-        /*Label bottomLabel = new Label("Bas");
-        bottomLabel.setStyle("-fx-alignment: center; -fx-background-color: yellow;");
-        bottomLabel.setMinHeight(50);
-        bottomLabel.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);*/
+
+        //if all the players won the game
+        ArrayList<String> firstNames1 = new ArrayList<>();
+        for(String player : playerNames.values()) {
+            if(!player.equals(playerNames.get(playerNames.size() - 1))) firstNames1.add(player);
+        }
+        String sub = String.join(", ", firstNames1);
+        String namesAllWinners = String.join("", sub, AND_SEPARATOR, playerNames.get(playerNames.size() - 1));
+
+
+
+        //if some players won the game
+        ArrayList<String> SomeWinners = new ArrayList<>();
+        String namesSomeWinners;
+        for(String player : playerNames.values()) {
+            if(points.get(winner) == points.get(player)) SomeWinners.add(player);
+        }
+        if (SomeWinners.size() == 1) namesSomeWinners = playerNames.get(winner);
+        else {
+            ArrayList<String> sub1 = new ArrayList<>();
+            for (String player : SomeWinners) {
+                if (!player.equals(SomeWinners.get(SomeWinners.size() - 1))) sub1.add(player);
+            }
+            String sub2 = String.join(" ,", sub1);
+            namesSomeWinners = String.join("", sub2, AND_SEPARATOR, SomeWinners.get(SomeWinners.size() - 1));
+        }
+
+
+
+
+        if(winner == null){
+            topLabel = new Label("Victoire !");
+            topLabel.setStyle("-fx-alignment: center; -fx-background-color: lightgreen;");
+            menuText.add(new Text(winnerName.allPlayersWin(namesAllWinners, points.get(0))));
+        } else {
+            topLabel = new Label(id == winner ? "Victoire !" : "Défaite !");
+            topLabel.setStyle(id == winner ? "-fx-alignment: center; -fx-background-color: lightgreen;" :
+                    "-fx-alignment: center; -fx-background-color: red;" );
+            if(SomeWinners.size() == 1) menuText.add(new Text(winnerName.winsMenu(points.get(winner))));
+            else menuText.add(new Text(winnerName.allPlayersWin(namesSomeWinners, points.get(winner))));
+            //topLabel.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+            //topLabel.setMinHeight(50);
+        }
+
+
+        infos.getChildren().addAll(menuText);
 
         BorderPane root = new BorderPane();
         root.setTop(topLabel);
@@ -361,6 +400,11 @@ public final class GraphicalPlayer {
         endStage.setOnCloseRequest(Event::consume);
         endStage.setScene(scene);
         endStage.show();
+    }
+
+    private String listNames(Collection<String> playerNames){
+
+        return null;
     }
 
 
@@ -385,4 +429,6 @@ public final class GraphicalPlayer {
             throw new UnsupportedOperationException();
         }
     }
+
+
 }
