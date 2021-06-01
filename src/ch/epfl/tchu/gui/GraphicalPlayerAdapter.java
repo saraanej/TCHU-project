@@ -90,7 +90,7 @@ public final class GraphicalPlayerAdapter implements Player {
      */
     @Override
     public void endGame(PlayerId winner, Map<PlayerId, Integer> points, PlayerId longestTrailWinner, Map<PlayerId, Trail> longestTrail) {
-   //     runLater(() -> player.endGame(winner, points, longestTrailWinner, longestTrail));
+        runLater(() -> player.endGame(winner, points, longestTrailWinner, longestTrail));
     }
 
     /**
