@@ -73,7 +73,10 @@ public final class StringsFr {
     public static final String CURRENT_PLAYER_POINTS =
             "\nVous avez remporté %s point%s !\n";
     public static final String ALL_WINNERS_POINTS =
-            "\n%s ont tous remporté cette partie avec %s point%s !\n";
+            "\n%s ont remporté cette partie avec %s point%s !\n";
+    public static final String ALL_WINNERS_LONGEST_TRAIL =
+            "\n%s ont remporté le bonus du plus long trajet !\n";
+
 
     // Statistiques des joueurs
     public static final String PUBLIC_PLAYER_STATS =

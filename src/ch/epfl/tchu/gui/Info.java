@@ -266,11 +266,21 @@ public final class Info {
 	 * @param points The maximal points earned.
 	 * @return The message declaring that all the players won with the same points.
 	 */
-	public String allPlayersWin(String names, int points){
+	public String allPlayersWinPoints(String names, int points){
 		return String.format(ALL_WINNERS_POINTS,
 				names,
 				points,
 				plural(points));
+	}
+
+	/**
+	 *
+	 * @param names The name of the players who got the longest trail.
+	 * @return The message declaring all the players who got the longest trail.
+	 */
+	public String allPlayersWinTrail(String names){
+		return String.format(ALL_WINNERS_LONGEST_TRAIL,
+				names);
 	}
 
 	/**

@@ -2,7 +2,6 @@ package ch.epfl.tchu.gui;
 
 import ch.epfl.tchu.SortedBag;
 import ch.epfl.tchu.game.*;
-import ch.epfl.tchu.gui.Info.*;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
@@ -10,7 +9,6 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
-import javafx.geometry.HPos;
 import javafx.geometry.VPos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -56,11 +54,11 @@ public final class GraphicalPlayer {
 
     private static final int INFO_MESSAGE_COUNT = 5;
     private static final BooleanBinding FALSE_BINDING = Bindings.createBooleanBinding(() -> false);
+    private static final double SCALE_FACTOR = 2;
 
     private final Stage primaryStage;
     private final PlayerId playerId;
     private final Map<PlayerId, String> playerNames;
- //   private final Text yourTurn;
 
 
     private final ObservableGameState gameState;
@@ -210,13 +208,13 @@ public final class GraphicalPlayer {
         stackPane.getStyleClass().addAll(CARD_SC, c == Card.LOCOMOTIVE ? NEUTRAL_SC : c.name());
 
         //create the rectangles for the card
-        Rectangle outside = new Rectangle(OUTSIDE_CARD_WIDTH, OUTSIDE_CARD_HEIGHT);
+        Rectangle outside = new Rectangle(OUTSIDE_CARD_WIDTH * SCALE_FACTOR, OUTSIDE_CARD_HEIGHT * SCALE_FACTOR);
         outside.getStyleClass().add(OUTSIDE_SC);
 
-        Rectangle filledInside = new Rectangle(INSIDE_CARD_WIDTH, INSIDE_CARD_HEIGHT);
+        Rectangle filledInside = new Rectangle(INSIDE_CARD_WIDTH * SCALE_FACTOR, INSIDE_CARD_HEIGHT * SCALE_FACTOR);
         filledInside.getStyleClass().addAll(INSIDE_SC, FILLED_SC);
 
-        Rectangle trainImage = new Rectangle(TRAIN_CARD_WIDTH, TRAIN_CARD_HEIGHT);
+        Rectangle trainImage = new Rectangle(TRAIN_CARD_WIDTH * SCALE_FACTOR, TRAIN_CARD_HEIGHT * SCALE_FACTOR);
         trainImage.getStyleClass().add(TRAIN_IMAGE_SC);
 
         stackPane.getChildren().addAll(outside, filledInside, trainImage);
@@ -355,8 +353,7 @@ public final class GraphicalPlayer {
         Info winnerName = new Info(playerNames.get(winner));
         Info trailWinnerName = new Info(playerNames.get(longestTrailWinner));
 
-
-        //if all the players won the game
+        //if all the players won the game.
         ArrayList<String> firstNames1 = new ArrayList<>();
         for(String player : playerNames.values()) {
             if(!player.equals(playerNames.get(playerNames.size() - 1))) firstNames1.add(player);
@@ -364,41 +361,44 @@ public final class GraphicalPlayer {
         String sub = String.join(", ", firstNames1);
         String namesAllWinners = String.join("", sub, AND_SEPARATOR, playerNames.get(playerNames.size() - 1));
 
-
-
-        //if some players won the game
-        ArrayList<String> SomeWinners = new ArrayList<>();
-        String namesSomeWinners;
+        //if some players won the game with the same points.
+        ArrayList<String> someWinnersPoints = new ArrayList<>();
         for(String player : playerNames.values()) {
-            if(points.get(winner) == points.get(player)) SomeWinners.add(player);
-        }
-        if (SomeWinners.size() == 1) namesSomeWinners = playerNames.get(winner);
-        else {
-            ArrayList<String> sub1 = new ArrayList<>();
-            for (String player : SomeWinners) {
-                if (!player.equals(SomeWinners.get(SomeWinners.size() - 1))) sub1.add(player);
-            }
-            String sub2 = String.join(" ,", sub1);
-            namesSomeWinners = String.join("", sub2, AND_SEPARATOR, SomeWinners.get(SomeWinners.size() - 1));
+            if(points.get(winner) == points.get(player)) someWinnersPoints.add(player);
         }
 
-
-
+        //if some players won the longest trail.
+        ArrayList<String> someWinnerTrail = new ArrayList<>();
+        for(String player : playerNames.values()) {
+            if(longestTrail.get(longestTrailWinner).length() == longestTrail.get(player).length())
+                someWinnerTrail.add(player);
+        }
 
         if(winner == null){
             topLabel = new Label("Victoire !");
             topLabel.setStyle("-fx-alignment: center; -fx-background-color: lightgreen;");
-            menuText.add(new Text(winnerName.allPlayersWin(namesAllWinners, points.get(0))));
+            menuText.add(new Text(winnerName.allPlayersWinPoints(namesAllWinners, points.get(0))));
         } else {
-            topLabel = new Label(id == winner ? "Victoire !" : "Défaite !");
-            topLabel.setStyle(id == winner ? "-fx-alignment: center; -fx-background-color: lightgreen;" :
+            topLabel = new Label(someWinnersPoints.contains(playerNames.get(id)) ?
+                    "Victoire !" : "Défaite !");
+            topLabel.setStyle(someWinnersPoints.contains(playerNames.get(id)) ?
+                    "-fx-alignment: center; -fx-background-color: lightgreen;" :
                     "-fx-alignment: center; -fx-background-color: red;" );
-            if(SomeWinners.size() == 1) menuText.add(new Text(winnerName.winsMenu(points.get(winner))));
-            else menuText.add(new Text(winnerName.allPlayersWin(namesSomeWinners, points.get(winner))));
+            if(someWinnersPoints.size() == 1) menuText.add(new Text(winnerName.winsMenu(points.get(winner))));
+            else menuText.add(new Text(winnerName.allPlayersWinPoints(someWinners(someWinnersPoints, winner), points.get(winner))));
             //topLabel.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
             //topLabel.setMinHeight(50);
         }
 
+        if(longestTrailWinner == null){
+            menuText.add(new Text(trailWinnerName.allPlayersWinTrail(namesAllWinners)));
+        } else {
+            if (someWinnerTrail.size() == 1)
+                menuText.add(new Text(trailWinnerName.winsLongestTrail(longestTrail.get(trailWinnerName))));
+            else
+                menuText.add(new Text(trailWinnerName.allPlayersWinTrail(someWinners(someWinnerTrail, longestTrailWinner))));
+
+        }
 
         infos.getChildren().addAll(menuText);
 
@@ -418,9 +418,18 @@ public final class GraphicalPlayer {
         endStage.show();
     }
 
-    private String listNames(Collection<String> playerNames){
-
-        return null;
+    private String someWinners(ArrayList<String> names, PlayerId id){
+        String playernames;
+        if (names.size() == 1) playernames = playerNames.get(id);
+        else {
+            ArrayList<String> sub1 = new ArrayList<>();
+            for (String player : names) {
+                if (!player.equals(names.get(names.size() - 1))) sub1.add(player);
+            }
+            String sub2 = String.join(" ,", sub1);
+            playernames = String.join("", sub2, AND_SEPARATOR, names.get(names.size() - 1));
+        }
+        return playernames;
     }
 
 
