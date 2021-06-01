@@ -22,6 +22,7 @@ public final class StringsFr {
     // Titre des fenêtres
     public static final String TICKETS_CHOICE = "Choix de billets";
     public static final String CARDS_CHOICE = "Choix de cartes";
+    public static final String DRAWN_CARD = "Carte tirée";
 
     // Invites
     public static final String CHOOSE_TICKETS =

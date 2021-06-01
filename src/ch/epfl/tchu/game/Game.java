@@ -132,6 +132,7 @@ public class Game {
 
             int slot = players.get(currentPlayerId).drawSlot();
             if (slot == DECK_SLOT) {
+                players.get(currentPlayerId).showCard(gameState.topCard());
                 gameState = gameState.withBlindlyDrawnCard();
                 receiveInfo(players, playersInfo.get(currentPlayerId).drewBlindCard());
             } else if (slot < FACE_UP_CARDS_COUNT) {

@@ -64,6 +64,11 @@ public interface Player {
     int drawSlot();
 
     /**
+     * shows the drawn card to the player.
+     */
+    void showCard(Card c);
+
+    /**
      * @return The type of action the player wishes to do.
      */
     TurnKind nextTurn();

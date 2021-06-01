@@ -10,6 +10,8 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.geometry.HPos;
+import javafx.geometry.VPos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -21,7 +23,10 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Modality;
@@ -55,7 +60,7 @@ public final class GraphicalPlayer {
     private final Stage primaryStage;
     private final PlayerId playerId;
     private final Map<PlayerId, String> playerNames;
-    private final Text yourTurn;
+ //   private final Text yourTurn;
 
 
     private final ObservableGameState gameState;
@@ -92,12 +97,8 @@ public final class GraphicalPlayer {
         Node infoView = InfoViewCreator
                 .createInfoView(id, playerNames, gameState, infoList);
 
-        yourTurn = new Text(String.format(CAN_PLAY,"ton tour"));
-        yourTurn.setVisible(Boolean.FALSE);
-
-        //todo setstyle text
         BorderPane mainPane =
-                new BorderPane(mapView, yourTurn, cardsView, handView, infoView);
+                new BorderPane(mapView, null, cardsView, handView, infoView);
 
         primaryStage = new Stage();
         primaryStage.setTitle(String.format("tChu - %s", playerNames.get(id)));
@@ -151,11 +152,13 @@ public final class GraphicalPlayer {
     public void startTurn(ActionHandlers.DrawTicketsHandler ticketHandler, ActionHandlers.DrawCardHandler cardHandler,
                           ActionHandlers.ClaimRouteHandler routeHandler) {
         assert isFxApplicationThread();
+        Stage turn = showTurn();
+        turn.show();
 
-        yourTurn.setVisible(Boolean.TRUE);
+       // yourTurn.setVisible(true);
 
         claimRoute.set((r, c) -> {
-            yourTurn.setVisible(Boolean.FALSE);
+            turn.hide();
             drawCard.set(null);
             drawTickets.set(null);
             routeHandler.onClaimRoute(r, c);
@@ -164,7 +167,7 @@ public final class GraphicalPlayer {
 
         if (gameState.canDrawTickets())
             drawTickets.set(() -> {
-                yourTurn.setVisible(Boolean.FALSE);
+                turn.hide();
                 drawCard.set(null);
                 claimRoute.set(null);
                 ticketHandler.onDrawTickets();
@@ -173,7 +176,7 @@ public final class GraphicalPlayer {
 
         if (gameState.canDrawCards())
             drawCard.set(i -> {
-                yourTurn.setVisible(Boolean.FALSE);
+                turn.hide();
                 drawTickets.set(null);
                 claimRoute.set(null);
                 cardHandler.onDrawCard(i);
@@ -195,6 +198,36 @@ public final class GraphicalPlayer {
             cardHandler.onDrawCard(i);
             drawCard.set(null);
         });
+    }
+
+    /**
+     * @param c the drawn Card from the deck to show
+     */
+    public void showDrawnCard(Card c){
+        Stage drawnCard = new Stage();
+
+        StackPane stackPane = new StackPane();
+        stackPane.getStyleClass().addAll(CARD_SC, c == Card.LOCOMOTIVE ? NEUTRAL_SC : c.name());
+
+        //create the rectangles for the card
+        Rectangle outside = new Rectangle(OUTSIDE_CARD_WIDTH, OUTSIDE_CARD_HEIGHT);
+        outside.getStyleClass().add(OUTSIDE_SC);
+
+        Rectangle filledInside = new Rectangle(INSIDE_CARD_WIDTH, INSIDE_CARD_HEIGHT);
+        filledInside.getStyleClass().addAll(INSIDE_SC, FILLED_SC);
+
+        Rectangle trainImage = new Rectangle(TRAIN_CARD_WIDTH, TRAIN_CARD_HEIGHT);
+        trainImage.getStyleClass().add(TRAIN_IMAGE_SC);
+
+        stackPane.getChildren().addAll(outside, filledInside, trainImage);
+        stackPane.disableProperty().bind(FALSE_BINDING);
+
+        stackPane.getStylesheets().addAll(DECK_SS,COLORS_SS);
+
+        drawnCard.initOwner(primaryStage);
+        drawnCard.setScene(new Scene(stackPane));
+        drawnCard.setTitle(DRAWN_CARD);
+        drawnCard.show();
     }
 
     /**
@@ -256,32 +289,6 @@ public final class GraphicalPlayer {
                         listView.getSelectionModel().getSelectedItem()));
     }
 
-    /**
-     * @param c the drawn Card to show
-     */
-    public void showDrawnCard(Card c){ //todo fx-translate
-        Stage drawnCard = new Stage();
-
-        StackPane stackPane = new StackPane();
-        stackPane.getStyleClass().addAll(CARD_SC, c == Card.LOCOMOTIVE ? NEUTRAL_SC : c.name());
-
-        //create the rectangles for the card 
-        Rectangle outside = new Rectangle(OUTSIDE_CARD_WIDTH, OUTSIDE_CARD_HEIGHT);
-        outside.getStyleClass().add(OUTSIDE_SC);
-
-        Rectangle filledInside = new Rectangle(INSIDE_CARD_WIDTH, INSIDE_CARD_HEIGHT);
-        filledInside.getStyleClass().addAll(INSIDE_SC, FILLED_SC);
-
-        Rectangle trainImage = new Rectangle(TRAIN_CARD_WIDTH, TRAIN_CARD_HEIGHT);
-        trainImage.getStyleClass().add(TRAIN_IMAGE_SC);
-
-        stackPane.getChildren().addAll(outside, filledInside, trainImage);
-        stackPane.disableProperty().bind(FALSE_BINDING);
-
-        drawnCard.initOwner(primaryStage);
-        drawnCard.setScene(new Scene(stackPane));
-        drawnCard.show();
-    }
 
     /**
      * Creates the dialog window to choose the cards or the tickets.
@@ -322,11 +329,20 @@ public final class GraphicalPlayer {
     }
 
     private Stage showTurn(){
-        Text text = new Text(String.format(CAN_PLAY,"ton tour"));
-        Scene scene = new Scene(new HBox(text));
-        Stage stage = new Stage(StageStyle.UTILITY);
+        Text yourTurn = new Text(String.format(CAN_PLAY,"ton tour"));
+        yourTurn.setFill(Color.GOLDENROD);
+        yourTurn.setStroke(Color.BLACK);
+        yourTurn.setFont(Font.font("DeFonarts", FontWeight.EXTRA_BOLD, 40));
+        yourTurn.setTextOrigin(VPos.CENTER);
+        yourTurn.setX(10);
+        Stage stage = new Stage(StageStyle.DECORATED);
         stage.initOwner(primaryStage);
-        stage.setScene(scene);
+        HBox h = new HBox(yourTurn);
+       // h.setStyle("-fx-background-color: rgba(0, 0, 0, 0);");
+
+        Scene s = new Scene(h);
+        s.setFill(null);
+        stage.setScene(s);
         return stage;
     }
 

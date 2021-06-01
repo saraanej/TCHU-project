@@ -93,6 +93,9 @@ public final class RemotePlayerClient {
                     case DRAW_SLOT:
                         sendMessage(INTEGER.serialize(player.drawSlot()));
                         break;
+                    case SHOW_CARD:
+                        player.showCard(CARD.deserialize(split[1]));
+                        break;
                     case NEXT_TURN:
                         sendMessage(TURN_KIND.serialize(player.nextTurn()));
                         break;

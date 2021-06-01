@@ -10,6 +10,7 @@ public enum MessageId {
     NEXT_TURN,
     CHOOSE_TICKETS,
     DRAW_SLOT,
+    SHOW_CARD,
     ROUTE,
     CARDS,
     CHOOSE_ADDITIONAL_CARDS,

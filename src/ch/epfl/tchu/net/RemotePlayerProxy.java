@@ -74,16 +74,16 @@ public final class RemotePlayerProxy implements Player {
     /**
      * Sends a message through the network to call the same method on the actual player hosted in another program
      *
-     * @see Player#endGame(PlayerId, int, PlayerId, Trail)
+  //  * @see Player#endGame(PlayerId, int, PlayerId, Trail)
      */
     @Override
     public void endGame(PlayerId winner, Map<PlayerId, Integer> points, PlayerId longestTrailWinner, Map<PlayerId, Trail> longestTrail){
-        String message = String.join(SPACE,
-                winner == null ? EMPTY_STRING : PLAYER_ID.serialize(winner),
-                INTEGER.serialize(points),
-                longestTrailWinner == null ? EMPTY_STRING : PLAYER_ID.serialize(longestTrailWinner),
-                longestTrailWinner == null ? EMPTY_STRING : LIST_ROUTE.serialize(longestTrail.getRoutes()));
-        sendMessage(MessageId.END_GAME, message);
+//        String message = String.join(SPACE,
+//                winner == null ? EMPTY_STRING : PLAYER_ID.serialize(winner),
+//                INTEGER.serialize(points),
+//                longestTrailWinner == null ? EMPTY_STRING : PLAYER_ID.serialize(longestTrailWinner),
+//                longestTrailWinner == null ? EMPTY_STRING : LIST_ROUTE.serialize(longestTrail.getRoutes()));
+//        sendMessage(MessageId.END_GAME, message);
     }
 
     /**
@@ -117,6 +117,11 @@ public final class RemotePlayerProxy implements Player {
     public int drawSlot() {
         sendMessage(MessageId.DRAW_SLOT, EMPTY_STRING);
         return INTEGER.deserialize(receiveMessage());
+    }
+
+    @Override
+    public void showCard(Card c){
+        sendMessage(SHOW_CARD,CARD.serialize(c));
     }
 
     /**
