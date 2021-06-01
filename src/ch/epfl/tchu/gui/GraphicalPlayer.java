@@ -345,8 +345,7 @@ public final class GraphicalPlayer {
     private void endViewCreator(PlayerId id, Map<PlayerId, String> playerNames, PlayerId winner,
                                 Map<PlayerId, Integer> points, PlayerId longestTrailWinner,
                                 Map<PlayerId, Trail> longestTrail){
-        System.out.println("points length = " + points.size());
-        System.out.println("longestTrail length = " + longestTrail.size());
+
         ArrayList<PlayerId> playerMaxPoints = new ArrayList<>(points.keySet());
         ArrayList<PlayerId> playerLongestTrail = new ArrayList<>(longestTrail.keySet());
         ArrayList<PlayerId> idNames = new ArrayList<>(playerNames.keySet());
@@ -363,7 +362,6 @@ public final class GraphicalPlayer {
         String sub = String.join(", ", firstNames);
         String namesAllWinners = String.join("", sub, AND_SEPARATOR, playerNames.get(lastId));
 
-
         Info winnerName = new Info(playerNames.get(winner == null ?
                 playerMaxPoints.get(0) : winner));
         Info trailWinnerName = new Info(playerNames.get(longestTrailWinner == null ?
@@ -379,7 +377,6 @@ public final class GraphicalPlayer {
             for(PlayerId idN : idNames){
                   if((points.get(winner)).equals(points.get(idN))) someWinnersPoints.add(playerNames.get(idN));
             }
-            System.out.println("someWinnersPoints length = " + someWinnersPoints.size());
             topLabel = new Label(someWinnersPoints.contains(playerNames.get(id)) ?
                     "Victoire !" : "Défaite !");
             topLabel.setStyle(someWinnersPoints.contains(playerNames.get(id)) ?
@@ -399,7 +396,6 @@ public final class GraphicalPlayer {
                 int playerLgTrl = longestTrail.get(player).length();
                 if(winnerLgTrl == playerLgTrl) someWinnerTrail.add(playerNames.get(player));
             }
-            System.out.println("someWinnersTrail length = " + someWinnerTrail.size());
             if (someWinnerTrail.size() == 1)
                 menuText.add(new Text(trailWinnerName.winsLongestTrail(longestTrail.get(longestTrailWinner))));
             else
@@ -412,7 +408,7 @@ public final class GraphicalPlayer {
         root.setTop(topLabel);
         root.setBottom(infos);
         Stage endStage = new Stage();
-        Scene scene = new Scene(root);
+        Scene scene = new Scene(root, 350, 300);
         scene.getStylesheets().add(CHOOSER_SS);
         endStage.initOwner(primaryStage);
         endStage.setTitle("Fin du jeu");

@@ -230,10 +230,12 @@ public class Game {
         else receiveInfo(players, playersInfo.get(winner.getKey())
                 .won(winner.getValue(), minPoints)); //todo receiveinfo a changer avec multijoueurs et fenetre de fin
 
-        players.get(gameState.currentPlayerId()).endGame(winner.getKey() == null ? PlayerId.PLAYER_1 : winner.getKey() ,
-                playersPoints,
-                bonusPlayer == null ? PlayerId.PLAYER_1 : bonusPlayer,
-                playersTrail);
+        for(PlayerId playerId : PlayerId.all()) {
+            players.get(playerId).endGame(winner.getKey() == null ? PlayerId.PLAYER_1 : winner.getKey(),
+                    playersPoints,
+                    bonusPlayer == null ? PlayerId.PLAYER_1 : bonusPlayer,
+                    playersTrail);
+        }
     }
 
     /**
