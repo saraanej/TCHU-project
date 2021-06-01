@@ -65,7 +65,7 @@ public final class Constants {
     /**
      * Nombre de wagons dont dispose chaque joueur en début de partie.
      */
-    public static final int INITIAL_CAR_COUNT = 10; //TODO a changer
+    public static final int INITIAL_CAR_COUNT = 5; //TODO a changer
 
     /**
      * Nombre de billets tirés à la fois en cours de partie.

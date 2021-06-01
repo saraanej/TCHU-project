@@ -390,23 +390,26 @@ public final class GraphicalPlayer {
             menuText.add(new Text(trailWinnerName.allPlayersWinTrail(namesAllWinners)));
         } else {
             //if some players won the longest trail.
-            ArrayList<String> someWinnerTrail = new ArrayList<>();
+            ArrayList<String> someWinnersTrail = new ArrayList<>();
             for(PlayerId player : playerLongestTrail) {
                 int winnerLgTrl = longestTrail.get(longestTrailWinner).length();
                 int playerLgTrl = longestTrail.get(player).length();
-                if(winnerLgTrl == playerLgTrl) someWinnerTrail.add(playerNames.get(player));
+                if (winnerLgTrl == playerLgTrl) someWinnersTrail.add(playerNames.get(player));
             }
-            if (someWinnerTrail.size() == 1)
+            if (someWinnersTrail.size() == 1)
                 menuText.add(new Text(trailWinnerName.winsLongestTrail(longestTrail.get(longestTrailWinner))));
             else
-                menuText.add(new Text(trailWinnerName.allPlayersWinTrail(someWinners(someWinnerTrail, longestTrailWinner))));
+                menuText.add(new Text(trailWinnerName.allPlayersWinTrail(someWinners(someWinnersTrail, longestTrailWinner))));
         }
+
+        topLabel.setMaxSize(350, 50);
+        topLabel.setMinWidth(50);
 
         infos.getChildren().addAll(menuText);
 
         BorderPane root = new BorderPane();
         root.setTop(topLabel);
-        root.setBottom(infos);
+        root.setCenter(infos);
         Stage endStage = new Stage();
         Scene scene = new Scene(root, 350, 300);
         scene.getStylesheets().add(CHOOSER_SS);
