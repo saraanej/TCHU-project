@@ -3,6 +3,7 @@ package ch.epfl.tchu.gui;
 import ch.epfl.tchu.SortedBag;
 import ch.epfl.tchu.game.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -88,7 +89,7 @@ public final class GraphicalPlayerAdapter implements Player {
      * @see Player#endGame(PlayerId, int, PlayerId, Trail)
      */
     @Override
-    public void endGame(PlayerId winner, int points, PlayerId longestTrailWinner, Trail longestTrail){
+    public void endGame(ArrayList<PlayerId> winner, int points, PlayerId longestTrailWinner, Trail longestTrail){
         runLater(() -> player.endGame(winner, points, longestTrailWinner, longestTrail));
     }
 

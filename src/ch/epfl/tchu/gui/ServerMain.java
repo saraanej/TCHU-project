@@ -26,7 +26,7 @@ import static ch.epfl.tchu.game.PlayerId.PLAYER_1;
 public final class ServerMain extends Application {
 
     private static final int SOCKET_PORT = 5108;
-    private static final List<String> PLAYER_NAMES = List.of("Ada","Charles","Alice","Bob");
+    private static final List<String> PLAYER_NAMES = List.of("Ada","Charles","Alice","Bob","Michel");
     private static final int DEFAULT_NUMBER_PLAYERS = 2;
 
 
@@ -49,7 +49,6 @@ public final class ServerMain extends Application {
             Map<PlayerId, Player> players = new EnumMap<>(PlayerId.class);
 
             PlayerId.setNumberPlayers(raw.size() > 0 ? Integer.parseInt(raw.get(0)) : DEFAULT_NUMBER_PLAYERS);
-            // todo mettre un seul serversocket
 
             ServerSocket socket = new ServerSocket(SOCKET_PORT);
             for (PlayerId id : PlayerId.all()) {

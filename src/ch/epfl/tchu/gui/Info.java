@@ -257,7 +257,6 @@ public final class Info {
 	 */
 	public String endGamePlayerStats(int points){
 		return String.format(CURRENT_PLAYER_POINTS,
-				playerName,
 				points,
 				plural(points));
 	}

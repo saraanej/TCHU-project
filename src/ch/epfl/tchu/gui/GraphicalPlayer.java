@@ -30,6 +30,7 @@ import javafx.stage.StageStyle;
 import javafx.util.StringConverter;
 import javafx.beans.binding.Bindings;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -77,7 +78,7 @@ public final class GraphicalPlayer {
         infoList = FXCollections.observableArrayList();
         menuText = FXCollections.observableArrayList();
         playerId = id;
-        this.playerNames = playerNames;
+        this.playerNames = Map.copyOf(playerNames);
 
         Node mapView = MapViewCreator
                 .createMapView(gameState, claimRoute, this::chooseClaimCards);
@@ -128,7 +129,7 @@ public final class GraphicalPlayer {
      * @param longestTrailWinner The player who got the longest trail.
      * @param longestTrail The longest trail made by a player.
      */
-    public void endGame(PlayerId winner, int points, PlayerId longestTrailWinner, Trail longestTrail){
+    public void endGame(PlayerId winner, Map<PlayerId, Integer> points, PlayerId longestTrailWinner, Map<PlayerId, Trail> longestTrail){
         assert isFxApplicationThread();
         endViewCreator(playerId, playerNames, winner, points, longestTrailWinner, longestTrail);
     }
@@ -143,9 +144,11 @@ public final class GraphicalPlayer {
     public void startTurn(ActionHandlers.DrawTicketsHandler ticketHandler, ActionHandlers.DrawCardHandler cardHandler,
                           ActionHandlers.ClaimRouteHandler routeHandler) {
         assert isFxApplicationThread();
-        //todo show a temporary text
+        Stage turn = showTurn();
+        turn.show();
 
         claimRoute.set((r, c) -> {
+            turn.hide();
             drawCard.set(null);
             drawTickets.set(null);
             routeHandler.onClaimRoute(r, c);
@@ -154,6 +157,7 @@ public final class GraphicalPlayer {
 
         if (gameState.canDrawTickets())
             drawTickets.set(() -> {
+                turn.hide();
                 drawCard.set(null);
                 claimRoute.set(null);
                 ticketHandler.onDrawTickets();
@@ -162,6 +166,7 @@ public final class GraphicalPlayer {
 
         if (gameState.canDrawCards())
             drawCard.set(i -> {
+                turn.hide();
                 drawTickets.set(null);
                 claimRoute.set(null);
                 cardHandler.onDrawCard(i);
@@ -245,7 +250,6 @@ public final class GraphicalPlayer {
     }
 
     /**
-     *
      * @param c the drawn Card to show
      */
     public void showDrawnCard(Card c){ //todo fx-translate
@@ -310,20 +314,24 @@ public final class GraphicalPlayer {
         dialogStage.show();
     }
 
-    private void yourTurnToPlay(){
+    private Stage showTurn(){
         Text text = new Text(String.format(CAN_PLAY,"ton tour"));
         Scene scene = new Scene(new HBox(text));
+        Stage stage = new Stage(StageStyle.UTILITY);
+        stage.initOwner(primaryStage);
+        stage.setScene(scene);
+        return stage;
     }
 
-    private void endViewCreator(PlayerId id, Map<PlayerId, String> playerNames, PlayerId winner, int points,
-                                PlayerId longestTrailWinner, Trail longestTrail){
+    private void endViewCreator(PlayerId id, Map<PlayerId, String> playerNames, PlayerId winner,
+                                Map<PlayerId, Integer> points, PlayerId longestTrailWinner,
+                                Map<PlayerId, Trail> longestTrail){
 
-        Label topLabel = new Label(id == winner ? "Victoire !" : "Défaite !");
-        topLabel.setStyle(id == winner ? "-fx-alignment: center; -fx-background-color: lightgreen;" :
+        Label topLabel = new Label(id == winner.get(0) ? "Victoire !" : "Défaite !");
+        topLabel.setStyle(id == winner.get(0) ? "-fx-alignment: center; -fx-background-color: lightgreen;" :
                                          "-fx-alignment: center; -fx-background-color: red;" );
-        topLabel.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-        topLabel.setMinHeight(50);
-
+        //topLabel.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+        //topLabel.setMinHeight(50);
 
         VBox infos = new VBox();
         Info winnerName = new Info(playerNames.get(winner));
@@ -337,17 +345,22 @@ public final class GraphicalPlayer {
         /*Label bottomLabel = new Label("Bas");
         bottomLabel.setStyle("-fx-alignment: center; -fx-background-color: yellow;");
         bottomLabel.setMinHeight(50);
-        bottomLabel.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-*/
+        bottomLabel.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);*/
+
         BorderPane root = new BorderPane();
         root.setTop(topLabel);
         root.setBottom(infos);
         //root.setCenter(centerLabel);
 
-        Scene scene = new Scene(root, 350, 300);
-        primaryStage.setTitle("Fin du jeu");
-        primaryStage.setScene(scene);
-        primaryStage.show();
+        Stage endStage = new Stage();
+        Scene scene = new Scene(root);
+        scene.getStylesheets().add(CHOOSER_SS);
+
+        endStage.initOwner(primaryStage);
+        endStage.setTitle("Fin du jeu");
+        endStage.setOnCloseRequest(Event::consume);
+        endStage.setScene(scene);
+        endStage.show();
     }
 
 

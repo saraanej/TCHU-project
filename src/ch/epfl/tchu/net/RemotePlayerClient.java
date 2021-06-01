@@ -85,10 +85,11 @@ public final class RemotePlayerClient {
                         player.setInitialTicketChoice(SORTED_TICKET.deserialize(split[1]));
                         break;
                     case END_GAME:
-                        player.endGame(PLAYER_ID.deserialize(split[1]),
+                       /* player.endGame(//LIST_STRING.deserialize(split[1]), //TODO A CHANGER ARRAYLIST
                                        INTEGER.deserialize(split[2]),
                                        PLAYER_ID.deserialize(split[3]),
-                                       Trail.longest(LIST_ROUTE.deserialize(split[4])));
+                                       Trail.longest(LIST_ROUTE.deserialize(split[4])));*/
+                        break;
                     case DRAW_SLOT:
                         sendMessage(INTEGER.serialize(player.drawSlot()));
                         break;
