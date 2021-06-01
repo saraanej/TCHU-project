@@ -149,6 +149,75 @@ public final class Serdes {
     };
 
     /**
+     * A Serde able to (de)serialize Trail's elements.
+     */
+    public static final Serde<Trail> TRAIL = new Serde<>() {
+        @Override
+        public String serialize(Trail trail) {
+            List<String> serialized = new ArrayList<>();
+            for(Route route : trail.getRoutes()){
+                serialized.add(ROUTE.serialize(route));
+            }
+            return String.join(COMMA_SEPARATOR, serialized);
+        }
+
+        @Override
+        public Trail deserialize(String str) {
+            String[] split = str.split(Pattern.quote(COMMA_SEPARATOR), -1);
+            List<Route> routes = new ArrayList<>();
+            for(String route : split){
+                routes.add(ROUTE.deserialize(route));
+            }
+            return Trail.longest(routes);
+        }
+    };
+
+    /**
+     * A Serde able to (de)serialize Map<PlayerId, Integer> elements.
+     */
+    public static final Serde<Map<PlayerId, Integer>>  MAP_ID_INTEGER = new Serde<>() {
+        @Override
+        public String serialize(Map<PlayerId, Integer> playerIdIntegerMap) {
+            List<String> serialized = new ArrayList<>();
+            for (PlayerId id : PlayerId.all())
+                serialized.add(INTEGER.serialize(playerIdIntegerMap.get(id)));
+            return String.join(COMMA_SEPARATOR, serialized);
+        }
+
+        @Override
+        public Map<PlayerId, Integer> deserialize(String str) {
+            String[] split = str.split(Pattern.quote(COMMA_SEPARATOR), -1);
+            Map<PlayerId,Integer> playerPoints = new EnumMap<>(PlayerId.class);
+            for (PlayerId id : PlayerId.all())
+                playerPoints.put(id, INTEGER.deserialize(split[id.ordinal()]));
+            return playerPoints;
+        }
+    };
+
+    /**
+     * A Serde able to (de)serialize Map<PlayerId, Trail> elements.
+     */
+    public static final Serde<Map<PlayerId, Trail>>  MAP_ID_TRAIL = new Serde<>() {
+        @Override
+        public String serialize(Map<PlayerId, Trail> playerIdTrailMap) {
+            List<String> serialized = new ArrayList<>();
+            for (PlayerId id : PlayerId.all())
+                serialized.add(TRAIL.serialize(playerIdTrailMap.get(id)));
+            return String.join(COMMA_SEPARATOR, serialized);
+        }
+
+        @Override
+        public Map<PlayerId, Trail> deserialize(String str) {
+            String[] split = str.split(Pattern.quote(COMMA_SEPARATOR), -1);
+            Map<PlayerId, Trail> playersTrails = new EnumMap<>(PlayerId.class);
+            for (PlayerId id : PlayerId.all())
+                playersTrails.put(id, TRAIL.deserialize(split[id.ordinal()]));
+            return playersTrails;
+        }
+    };
+
+
+    /**
      * A Serde able to (de)serialize PublicGameState's elements.
      */
     public final static Serde<PublicGameState> PUBLIC_GAMESTATE = new Serde<>() {
@@ -175,7 +244,7 @@ public final class Serdes {
 
             //create the map here with for each
             Map<PlayerId,PublicPlayerState> playerState = new EnumMap<>(PlayerId.class);
-            for (PlayerId id: PlayerId.all())
+            for (PlayerId id : PlayerId.all())
                 playerState.put(id, PUBLIC_PLAYERSTATE.deserialize(split[3 + id.ordinal()]));
 
             int lastIndex = split.length-1;

@@ -32,9 +32,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.StringConverter;
 import javafx.beans.binding.Bindings;
-
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -347,7 +345,6 @@ public final class GraphicalPlayer {
     private void endViewCreator(PlayerId id, Map<PlayerId, String> playerNames, PlayerId winner,
                                 Map<PlayerId, Integer> points, PlayerId longestTrailWinner,
                                 Map<PlayerId, Trail> longestTrail){
-
         VBox infos = new VBox();
         Label topLabel;
         Info winnerName = new Info(playerNames.get(winner));
@@ -386,8 +383,6 @@ public final class GraphicalPlayer {
                     "-fx-alignment: center; -fx-background-color: red;" );
             if(someWinnersPoints.size() == 1) menuText.add(new Text(winnerName.winsMenu(points.get(winner))));
             else menuText.add(new Text(winnerName.allPlayersWinPoints(someWinners(someWinnersPoints, winner), points.get(winner))));
-            //topLabel.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-            //topLabel.setMinHeight(50);
         }
 
         if(longestTrailWinner == null){
@@ -397,7 +392,6 @@ public final class GraphicalPlayer {
                 menuText.add(new Text(trailWinnerName.winsLongestTrail(longestTrail.get(trailWinnerName))));
             else
                 menuText.add(new Text(trailWinnerName.allPlayersWinTrail(someWinners(someWinnerTrail, longestTrailWinner))));
-
         }
 
         infos.getChildren().addAll(menuText);
@@ -405,12 +399,9 @@ public final class GraphicalPlayer {
         BorderPane root = new BorderPane();
         root.setTop(topLabel);
         root.setBottom(infos);
-        //root.setCenter(centerLabel);
-
         Stage endStage = new Stage();
         Scene scene = new Scene(root);
         scene.getStylesheets().add(CHOOSER_SS);
-
         endStage.initOwner(primaryStage);
         endStage.setTitle("Fin du jeu");
         endStage.setOnCloseRequest(Event::consume);
@@ -418,18 +409,18 @@ public final class GraphicalPlayer {
         endStage.show();
     }
 
-    private String someWinners(ArrayList<String> names, PlayerId id){
-        String playernames;
-        if (names.size() == 1) playernames = playerNames.get(id);
+    private String someWinners(ArrayList<String> listPlayers, PlayerId id){
+        String names;
+        if (listPlayers.size() == 1) names = playerNames.get(id);
         else {
             ArrayList<String> sub1 = new ArrayList<>();
-            for (String player : names) {
-                if (!player.equals(names.get(names.size() - 1))) sub1.add(player);
+            for (String player : listPlayers) {
+                if (!player.equals(listPlayers.get(listPlayers.size() - 1))) sub1.add(player);
             }
             String sub2 = String.join(" ,", sub1);
-            playernames = String.join("", sub2, AND_SEPARATOR, names.get(names.size() - 1));
+            names = String.join("", sub2, AND_SEPARATOR, listPlayers.get(listPlayers.size() - 1));
         }
-        return playernames;
+        return names;
     }
 
 
