@@ -2,6 +2,7 @@ package ch.epfl.tchu.gui;
 
 import ch.epfl.tchu.SortedBag;
 import ch.epfl.tchu.game.*;
+import javafx.animation.PauseTransition;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
@@ -30,6 +31,7 @@ import javafx.scene.text.TextFlow;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.util.Duration;
 import javafx.util.StringConverter;
 import javafx.beans.binding.Bindings;
 import java.util.ArrayList;
@@ -149,13 +151,9 @@ public final class GraphicalPlayer {
     public void startTurn(ActionHandlers.DrawTicketsHandler ticketHandler, ActionHandlers.DrawCardHandler cardHandler,
                           ActionHandlers.ClaimRouteHandler routeHandler) {
         assert isFxApplicationThread();
-        Stage turn = showTurn();
-        turn.show();
-
-       // yourTurn.setVisible(true);
+        showTurn();
 
         claimRoute.set((r, c) -> {
-            turn.hide();
             drawCard.set(null);
             drawTickets.set(null);
             routeHandler.onClaimRoute(r, c);
@@ -164,7 +162,6 @@ public final class GraphicalPlayer {
 
         if (gameState.canDrawTickets())
             drawTickets.set(() -> {
-                turn.hide();
                 drawCard.set(null);
                 claimRoute.set(null);
                 ticketHandler.onDrawTickets();
@@ -173,7 +170,6 @@ public final class GraphicalPlayer {
 
         if (gameState.canDrawCards())
             drawCard.set(i -> {
-                turn.hide();
                 drawTickets.set(null);
                 claimRoute.set(null);
                 cardHandler.onDrawCard(i);
@@ -200,7 +196,8 @@ public final class GraphicalPlayer {
     /**
      * @param c the drawn Card from the deck to show
      */
-    public void showDrawnCard(Card c){
+    public void showCard(Card c){
+
         Stage drawnCard = new Stage();
 
         StackPane stackPane = new StackPane();
@@ -224,7 +221,13 @@ public final class GraphicalPlayer {
         drawnCard.initOwner(primaryStage);
         drawnCard.setScene(new Scene(stackPane));
         drawnCard.setTitle(DRAWN_CARD);
+
+
+        PauseTransition delay = new PauseTransition(Duration.seconds(1));
+        delay.setOnFinished(e -> drawnCard.hide());
+
         drawnCard.show();
+        delay.play();
     }
 
     /**
@@ -325,22 +328,24 @@ public final class GraphicalPlayer {
         dialogStage.show();
     }
 
-    private Stage showTurn(){
+    private void showTurn(){
         Text yourTurn = new Text(String.format(CAN_PLAY,"ton tour"));
         yourTurn.setFill(Color.GOLDENROD);
         yourTurn.setStroke(Color.BLACK);
         yourTurn.setFont(Font.font("DeFonarts", FontWeight.EXTRA_BOLD, 40));
         yourTurn.setTextOrigin(VPos.CENTER);
-        yourTurn.setX(10);
         Stage stage = new Stage(StageStyle.DECORATED);
         stage.initOwner(primaryStage);
         HBox h = new HBox(yourTurn);
-       // h.setStyle("-fx-background-color: rgba(0, 0, 0, 0);");
-
         Scene s = new Scene(h);
         s.setFill(null);
         stage.setScene(s);
-        return stage;
+
+        PauseTransition delay = new PauseTransition(Duration.seconds(3));
+        delay.setOnFinished(e -> stage.hide());
+
+        stage.show();
+        delay.play();
     }
 
     private void endViewCreator(PlayerId id, Map<PlayerId, String> playerNames, PlayerId winner,
