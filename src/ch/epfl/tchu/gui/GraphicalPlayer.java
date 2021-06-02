@@ -352,7 +352,6 @@ public final class GraphicalPlayer {
                                 Map<PlayerId, Integer> playersPoints, PlayerId longestTrailWinner,
                                 Map<PlayerId, Trail> playersTrails){
 
-        ArrayList<PlayerId> playerIds = new ArrayList<>(PlayerId.all());
         VBox infos = new VBox();
         Label topLabel;
 
@@ -361,7 +360,7 @@ public final class GraphicalPlayer {
 
         //if multiple players won the game with the same points.
         ArrayList<String> someWinnersPoints = new ArrayList<>();
-        for(PlayerId idN : playerIds){
+        for(PlayerId idN : PlayerId.all()){
             if((playersPoints.get(winner)).equals(playersPoints.get(idN)))
                 someWinnersPoints.add(playerNames.get(idN));
         }
@@ -373,14 +372,14 @@ public final class GraphicalPlayer {
         if(someWinnersPoints.size() == 1) menuText.add(new Text(
                 winnerName.winsMenu(playersPoints.get(winner))));
         else menuText.add(new Text(winnerName.allPlayersWinPoints(
-                someWinners(someWinnersPoints, winner), playersPoints.get(winner))));
+                winnersNames(someWinnersPoints), playersPoints.get(winner))));
 
 
         //if multiple players won the longest trail.
         //renseigne le nombre de joueurs ayant le plus long trajet ==
         // ils ont un Trail de meme longueur que the longestTrail
         ArrayList<String> someWinnersTrail = new ArrayList<>();
-        for(PlayerId player : playerIds) {
+        for(PlayerId player : PlayerId.all()) {
             int winnerLgTrl = playersTrails.get(longestTrailWinner).length();
             int playerLgTrl = playersTrails.get(player).length();
             if (winnerLgTrl == playerLgTrl)
@@ -391,10 +390,9 @@ public final class GraphicalPlayer {
                     playerNames.get(longestTrailWinner))));
         else
             menuText.add(new Text(trailWinnerName.allPlayersWinTrail(
-                    someWinners(someWinnersTrail, longestTrailWinner))));
+                    winnersNames(someWinnersTrail))));
 
-
-        topLabel.setMaxSize(350, 50);
+        topLabel.setMaxSize(350, 100);
         topLabel.setMinWidth(50);
 
         infos.getChildren().addAll(menuText);
@@ -412,16 +410,16 @@ public final class GraphicalPlayer {
         endStage.show();
     }
 
-    private String someWinners(ArrayList<String> listPlayers, PlayerId id){
+    private String winnersNames(ArrayList<String> listPlayers){
             ArrayList<String> sub1 = new ArrayList<>();
             for (String player : listPlayers) {
                 if (!player.equals(listPlayers.get(listPlayers.size() - 1))) sub1.add(player);
             }
             String sub2 = String.join(" ,", sub1);
-            String names = String.join("", sub2,
+            String winnersName = String.join("", sub2,
                     AND_SEPARATOR, listPlayers.get(listPlayers.size() - 1));
 
-        return names;
+        return winnersName;
     }
 
 
