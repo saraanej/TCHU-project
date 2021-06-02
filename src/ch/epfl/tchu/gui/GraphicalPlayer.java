@@ -151,9 +151,10 @@ public final class GraphicalPlayer {
     public void startTurn(ActionHandlers.DrawTicketsHandler ticketHandler, ActionHandlers.DrawCardHandler cardHandler,
                           ActionHandlers.ClaimRouteHandler routeHandler) {
         assert isFxApplicationThread();
-        showTurn();
+        Stage s = showTurn();
 
         claimRoute.set((r, c) -> {
+            s.hide();
             drawCard.set(null);
             drawTickets.set(null);
             routeHandler.onClaimRoute(r, c);
@@ -162,6 +163,7 @@ public final class GraphicalPlayer {
 
         if (gameState.canDrawTickets())
             drawTickets.set(() -> {
+                s.hide();
                 drawCard.set(null);
                 claimRoute.set(null);
                 ticketHandler.onDrawTickets();
@@ -170,6 +172,7 @@ public final class GraphicalPlayer {
 
         if (gameState.canDrawCards())
             drawCard.set(i -> {
+                s.hide();
                 drawTickets.set(null);
                 claimRoute.set(null);
                 cardHandler.onDrawCard(i);
@@ -218,9 +221,9 @@ public final class GraphicalPlayer {
 
         stackPane.getStylesheets().addAll(DECK_SS,COLORS_SS);
 
+        drawnCard.initStyle(StageStyle.TRANSPARENT);
         drawnCard.initOwner(primaryStage);
         drawnCard.setScene(new Scene(stackPane));
-        drawnCard.setTitle(DRAWN_CARD);
 
 
         PauseTransition delay = new PauseTransition(Duration.seconds(1));
@@ -328,24 +331,25 @@ public final class GraphicalPlayer {
         dialogStage.show();
     }
 
-    private void showTurn(){
+    private Stage showTurn(){
         Text yourTurn = new Text(String.format(CAN_PLAY,"ton tour"));
         yourTurn.setFill(Color.GOLDENROD);
         yourTurn.setStroke(Color.BLACK);
         yourTurn.setFont(Font.font("DeFonarts", FontWeight.EXTRA_BOLD, 40));
         yourTurn.setTextOrigin(VPos.CENTER);
-        Stage stage = new Stage(StageStyle.DECORATED);
+        Stage stage = new Stage(StageStyle.UNIFIED);
         stage.initOwner(primaryStage);
         HBox h = new HBox(yourTurn);
         Scene s = new Scene(h);
         s.setFill(null);
         stage.setScene(s);
 
-        PauseTransition delay = new PauseTransition(Duration.seconds(3));
+        PauseTransition delay = new PauseTransition(Duration.seconds(2));
         delay.setOnFinished(e -> stage.hide());
 
         stage.show();
         delay.play();
+        return stage;
     }
 
     private void endViewCreator(PlayerId id, Map<PlayerId, String> playerNames, PlayerId winner,
