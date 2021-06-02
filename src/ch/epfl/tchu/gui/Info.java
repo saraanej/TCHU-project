@@ -279,7 +279,17 @@ public final class Info {
 	 * @return The message declaring all the players who got the longest trail.
 	 */
 	public String allPlayersWinTrail(String names){
-		return String.format(ALL_WINNERS_LONGEST_TRAIL,
+		return String.format(ALL_WINNERS_LONGEST_TRAIL, // est appelée si size >= 2
+				names);
+	}
+
+	/**
+	 *
+	 * @param names The name of the player who got the longest trail.
+	 * @return The message declaring the player who got the longest trail.
+	 */
+	public String oneWinnerTrail(String names){
+		return String.format(ONE_WINNER_TRAIL_END, // est appelée si size == 1
 				names);
 	}
 

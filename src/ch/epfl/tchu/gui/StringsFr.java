@@ -76,6 +76,8 @@ public final class StringsFr {
             "\n%s ont remporté cette partie avec %s point%s !\n";
     public static final String ALL_WINNERS_LONGEST_TRAIL =
             "\n%s ont remporté le bonus du plus long trajet !\n";
+    public static final String ONE_WINNER_TRAIL_END =
+            "\n%s a remporté le bonus du plus long trajet !\n";
 
 
     // Statistiques des joueurs

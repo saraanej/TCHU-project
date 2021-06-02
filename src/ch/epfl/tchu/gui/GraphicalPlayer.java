@@ -351,64 +351,43 @@ public final class GraphicalPlayer {
         VBox infos = new VBox();
         Label topLabel;
 
-        //if all the players won the game.
-        ArrayList<String> firstNames = new ArrayList<>();
-        PlayerId lastId = null;
+        Info winnerName = new Info(playerNames.get(winner));
+        Info trailWinnerName = new Info(playerNames.get(longestTrailWinner));
+
+        //if multiple players won the game with the same points.
+        ArrayList<String> someWinnersPoints = new ArrayList<>();
+        for(PlayerId idN : playerIds){
+            if((playersPoints.get(winner)).equals(playersPoints.get(idN)))
+                someWinnersPoints.add(playerNames.get(idN));
+        }
+        topLabel = new Label(someWinnersPoints.contains(playerNames.get(id)) ?
+                "Victoire !" : "Défaite !");
+        topLabel.setStyle(someWinnersPoints.contains(playerNames.get(id)) ?
+                "-fx-alignment: center; -fx-background-color: lightgreen;" :
+                "-fx-alignment: center; -fx-background-color: red;" );
+        if(someWinnersPoints.size() == 1) menuText.add(new Text(
+                winnerName.winsMenu(playersPoints.get(winner))));
+        else menuText.add(new Text(winnerName.allPlayersWinPoints(
+                someWinners(someWinnersPoints, winner), playersPoints.get(winner))));
+
+
+        //if multiple players won the longest trail.
+        //renseigne le nombre de joueurs ayant le plus long trajet ==
+        // ils ont un Trail de meme longueur que the longestTrail
+        ArrayList<String> someWinnersTrail = new ArrayList<>();
         for(PlayerId player : playerIds) {
-            if(player != playerIds.get(playerNames.size() - 1))
-                firstNames.add(playerNames.get(player));
-            else lastId = player;
+            int winnerLgTrl = playersTrails.get(longestTrailWinner).length();
+            int playerLgTrl = playersTrails.get(player).length();
+            if (winnerLgTrl == playerLgTrl)
+                someWinnersTrail.add(playerNames.get(player));
         }
-        String sub = String.join(", ", firstNames);
-        String namesAllPlayers = String.join("", sub,
-                AND_SEPARATOR, playerNames.get(lastId));
+        if (someWinnersTrail.size() == 1)
+            menuText.add(new Text(trailWinnerName.oneWinnerTrail(
+                    playerNames.get(longestTrailWinner))));
+        else
+            menuText.add(new Text(trailWinnerName.allPlayersWinTrail(
+                    someWinners(someWinnersTrail, longestTrailWinner))));
 
-        Info winnerName = new Info(playerNames.get(winner == null ?
-                PlayerId.PLAYER_1 : winner));
-        Info trailWinnerName = new Info(playerNames.get(longestTrailWinner == null ?
-                PlayerId.PLAYER_1 : longestTrailWinner));
-
-        if(winner == null){
-            topLabel = new Label("Victoire !");
-            topLabel.setStyle("-fx-alignment: center; -fx-background-color: lightgreen;");
-            menuText.add(new Text(winnerName.allPlayersWinPoints(
-                    namesAllPlayers, playersPoints.get(PlayerId.PLAYER_1))));
-        } else {
-            //if some players won the game with the same points.
-            ArrayList<String> someWinnersPoints = new ArrayList<>();
-            for(PlayerId idN : playerIds){
-                  if((playersPoints.get(winner)).equals(playersPoints.get(idN)))
-                      someWinnersPoints.add(playerNames.get(idN));
-            }
-            topLabel = new Label(someWinnersPoints.contains(playerNames.get(id)) ?
-                    "Victoire !" : "Défaite !");
-            topLabel.setStyle(someWinnersPoints.contains(playerNames.get(id)) ?
-                    "-fx-alignment: center; -fx-background-color: lightgreen;" :
-                    "-fx-alignment: center; -fx-background-color: red;" );
-            if(someWinnersPoints.size() == 1) menuText.add(new Text(
-                    winnerName.winsMenu(playersPoints.get(winner))));
-            else menuText.add(new Text(winnerName.allPlayersWinPoints(
-                    someWinners(someWinnersPoints, winner), playersPoints.get(winner))));
-        }
-
-        if(longestTrailWinner == null){
-            menuText.add(new Text(trailWinnerName.allPlayersWinTrail(namesAllPlayers)));
-        } else {
-            //if some players won the longest trail.
-            ArrayList<String> someWinnersTrail = new ArrayList<>();
-            for(PlayerId player : playerIds) {
-                int winnerLgTrl = playersTrails.get(longestTrailWinner).length();
-                int playerLgTrl = playersTrails.get(player).length();
-                if (winnerLgTrl == playerLgTrl)
-                    someWinnersTrail.add(playerNames.get(player));
-            }
-            if (someWinnersTrail.size() == 1)
-                menuText.add(new Text(trailWinnerName.winsLongestTrail(
-                        playersTrails.get(longestTrailWinner))));
-            else
-                menuText.add(new Text(trailWinnerName.allPlayersWinTrail(
-                        someWinners(someWinnersTrail, longestTrailWinner))));
-        }
 
         topLabel.setMaxSize(350, 50);
         topLabel.setMinWidth(50);
@@ -429,17 +408,14 @@ public final class GraphicalPlayer {
     }
 
     private String someWinners(ArrayList<String> listPlayers, PlayerId id){
-        String names;
-        if (listPlayers.size() == 1 || listPlayers.size() == 0) names = playerNames.get(id);
-        else {
             ArrayList<String> sub1 = new ArrayList<>();
             for (String player : listPlayers) {
                 if (!player.equals(listPlayers.get(listPlayers.size() - 1))) sub1.add(player);
             }
             String sub2 = String.join(" ,", sub1);
-            names = String.join("", sub2,
+            String names = String.join("", sub2,
                     AND_SEPARATOR, listPlayers.get(listPlayers.size() - 1));
-        }
+
         return names;
     }
 
