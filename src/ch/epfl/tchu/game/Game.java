@@ -234,7 +234,7 @@ public class Game {
             players.
                     get(playerId).
                     endGame(
-                            winner.getKey() == null ? PlayerId.PLAYER_1 : winner.getKey(),
+                            winner == null ? PlayerId.PLAYER_1 : winner.getKey(),
                     playersPoints,
                     bonusPlayer == null ? PlayerId.PLAYER_1 : bonusPlayer,
                     playersTrail);
