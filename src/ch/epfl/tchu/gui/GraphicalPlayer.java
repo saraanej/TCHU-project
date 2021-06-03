@@ -374,22 +374,19 @@ public final class GraphicalPlayer {
                 someWinnersPoints.add(playerNames.get(idN));
         }
         Text text = FontSize(new Text(someWinnersPoints.contains(playerNames.get(id)) ? "Victoire !" : "Défaite !"),20);
-        topLabel = new Label(text.getText());
-        topLabel.setStyle(someWinnersPoints.contains(playerNames.get(id)) ?
+        //topLabel = new Label(text.getText());
+        outside.setStyle(someWinnersPoints.contains(playerNames.get(id)) ?
                 "-fx-alignment: center; -fx-background-color: lightgreen;" :
                 "-fx-alignment: center; -fx-background-color: red;" );
-
 
         if(someWinnersPoints.size() == 1) menuText.add(FontSize(
                 new Text(winnerName.winsMenu(playersPoints.get(winner))), 10));
         else menuText.add(FontSize(new Text(winnerName.allPlayersWinPoints(
                 winnersNames(someWinnersPoints), playersPoints.get(winner))), 10));
 
-        stackPane.getChildren().addAll(outside, topLabel);
+        stackPane.getChildren().addAll(outside, text);
 
         //if multiple players won the longest trail.
-        //renseigne le nombre de joueurs ayant le plus long trajet ==
-        // ils ont un Trail de meme longueur que the longestTrail
         ArrayList<String> someWinnersTrail = new ArrayList<>();
         for(PlayerId player : PlayerId.all()) {
             int winnerLgTrl = playersTrails.get(longestTrailWinner).length();
@@ -398,13 +395,18 @@ public final class GraphicalPlayer {
                 someWinnersTrail.add(playerNames.get(player));
         }
         if (someWinnersTrail.size() == 1)
-            menuText.add(FontSize(new Text(trailWinnerName.oneWinnerTrail(
-                    playerNames.get(longestTrailWinner))),10));
+            menuText.add(FontSize(new Text(trailWinnerName.
+                    winsLongestTrail(playersTrails.get(longestTrailWinner))),10));
         else
             menuText.add(FontSize(new Text(trailWinnerName.allPlayersWinTrail(
                     winnersNames(someWinnersTrail))),10));
+            for(PlayerId player : PlayerId.all()) {
+                Info playerInfo = new Info(playerNames.get(player));
+                menuText.add(new Text(playerInfo.playerLongestTrail(playersTrails.get(player))));
+        }
 
-        topLabel.setMaxSize(250 * SCALE_FACTOR, 50 * SCALE_FACTOR);
+
+        //topLabel.setMaxSize(250 * SCALE_FACTOR, 50 * SCALE_FACTOR);
         infos.getChildren().addAll(menuText);
 
         BorderPane root = new BorderPane();
@@ -432,7 +434,7 @@ public final class GraphicalPlayer {
     }
 
     private Text FontSize(Text text, int size){
-        text.setFont(Font.font("Doland-Regular.otf", FontWeight.EXTRA_BOLD, size));
+        text.setFont(Font.font("Doland-Regular.otf", FontWeight.BOLD, size));
         return text;
     }
 

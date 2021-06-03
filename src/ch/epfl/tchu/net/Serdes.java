@@ -194,12 +194,12 @@ public final class Serdes {
             List<String> serialized = new ArrayList<>();
             for (PlayerId id : PlayerId.all())
                 serialized.add(TRAIL.serialize(playerIdTrailMap.get(id)));
-            return String.join(COMMA_SEPARATOR, serialized);
+            return String.join(COLON_SEPARATOR, serialized);
         }
 
         @Override
         public Map<PlayerId, Trail> deserialize(String str) {
-            String[] split = str.split(Pattern.quote(COMMA_SEPARATOR), -1);
+            String[] split = str.split(Pattern.quote(COLON_SEPARATOR), -1);
             Map<PlayerId, Trail> playersTrails = new EnumMap<>(PlayerId.class);
             for (PlayerId id : PlayerId.all())
                 playersTrails.put(id, TRAIL.deserialize(split[id.ordinal()]));

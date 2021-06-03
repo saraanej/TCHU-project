@@ -293,6 +293,15 @@ public final class Info {
 				names);
 	}
 
+	public String playerLongestTrail(Trail longestTrail){
+		return String.format(PLAYER_LONGEST_TRAIL,
+				playerName,
+				String.join("" ,
+						longestTrail.station1().name(),
+						EN_DASH_SEPARATOR,
+						longestTrail.station2().name()));
+	}
+
 	/**
 	 * @param cards The given list of cards.
 	 * @return The message containing all the specifics of the cards
