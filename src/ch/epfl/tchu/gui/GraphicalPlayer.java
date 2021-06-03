@@ -34,6 +34,9 @@ import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import javafx.util.StringConverter;
 import javafx.beans.binding.Bindings;
+
+import javax.swing.text.StyledEditorKit;
+import java.awt.font.TextAttribute;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -335,13 +338,12 @@ public final class GraphicalPlayer {
         Text yourTurn = new Text(String.format(CAN_PLAY,"ton tour"));
         yourTurn.setFill(Color.GOLDENROD);
         yourTurn.setStroke(Color.BLACK);
-        yourTurn.setFont(Font.font("DeFonarts", FontWeight.EXTRA_BOLD, 40));
+        yourTurn.setFont(Font.font("DeFonarts Bold.otf", FontWeight.EXTRA_BOLD, 40));
         yourTurn.setTextOrigin(VPos.CENTER);
         Stage stage = new Stage(StageStyle.UNIFIED);
         stage.initOwner(primaryStage);
         HBox h = new HBox(yourTurn);
         Scene s = new Scene(h);
-        h.setStyle("-fx-background-color: rgba(0, 0, 0, 0);");
         s.setFill(null);
         stage.setScene(s);
 
@@ -359,17 +361,8 @@ public final class GraphicalPlayer {
 
         VBox infos = new VBox();
         Label topLabel;
-
-
         StackPane stackPane = new StackPane();
-        stackPane.getStyleClass().addAll( "#92db98");
-        stackPane.getStylesheets().addAll(DECK_SS,COLORS_SS);
-
-
-        //create the rectangles for the card
         Rectangle outside = new Rectangle(250 * SCALE_FACTOR, 50 * SCALE_FACTOR);
-        outside.getStyleClass().addAll("#92db98");
-
 
         Info winnerName = new Info(playerNames.get(winner));
         Info trailWinnerName = new Info(playerNames.get(longestTrailWinner));
@@ -380,18 +373,19 @@ public final class GraphicalPlayer {
             if((playersPoints.get(winner)).equals(playersPoints.get(idN)))
                 someWinnersPoints.add(playerNames.get(idN));
         }
-        topLabel = new Label(someWinnersPoints.contains(playerNames.get(id)) ?
-                "Victoire !" : "Défaite !");
+        Text text = FontSize(new Text(someWinnersPoints.contains(playerNames.get(id)) ? "Victoire !" : "Défaite !"),20);
+        topLabel = new Label(text.getText());
         topLabel.setStyle(someWinnersPoints.contains(playerNames.get(id)) ?
                 "-fx-alignment: center; -fx-background-color: lightgreen;" :
                 "-fx-alignment: center; -fx-background-color: red;" );
-        if(someWinnersPoints.size() == 1) menuText.add(new Text(
-                winnerName.winsMenu(playersPoints.get(winner))));
-        else menuText.add(new Text(winnerName.allPlayersWinPoints(
-                winnersNames(someWinnersPoints), playersPoints.get(winner))));
 
-        stackPane.getChildren().addAll(outside, topLabel, new Text("Test"));
 
+        if(someWinnersPoints.size() == 1) menuText.add(FontSize(
+                new Text(winnerName.winsMenu(playersPoints.get(winner))), 10));
+        else menuText.add(FontSize(new Text(winnerName.allPlayersWinPoints(
+                winnersNames(someWinnersPoints), playersPoints.get(winner))), 10));
+
+        stackPane.getChildren().addAll(outside, topLabel);
 
         //if multiple players won the longest trail.
         //renseigne le nombre de joueurs ayant le plus long trajet ==
@@ -404,15 +398,13 @@ public final class GraphicalPlayer {
                 someWinnersTrail.add(playerNames.get(player));
         }
         if (someWinnersTrail.size() == 1)
-            menuText.add(new Text(trailWinnerName.oneWinnerTrail(
-                    playerNames.get(longestTrailWinner))));
+            menuText.add(FontSize(new Text(trailWinnerName.oneWinnerTrail(
+                    playerNames.get(longestTrailWinner))),10));
         else
-            menuText.add(new Text(trailWinnerName.allPlayersWinTrail(
-                    winnersNames(someWinnersTrail))));
+            menuText.add(FontSize(new Text(trailWinnerName.allPlayersWinTrail(
+                    winnersNames(someWinnersTrail))),10));
 
         topLabel.setMaxSize(250 * SCALE_FACTOR, 50 * SCALE_FACTOR);
-        //topLabel.setMinWidth(50);
-
         infos.getChildren().addAll(menuText);
 
         BorderPane root = new BorderPane();
@@ -438,6 +430,13 @@ public final class GraphicalPlayer {
 
         return winnersName;
     }
+
+    private Text FontSize(Text text, int size){
+        text.setFont(Font.font("Doland-Regular.otf", FontWeight.EXTRA_BOLD, size));
+        return text;
+    }
+
+
 
 
     /**
