@@ -154,21 +154,12 @@ public final class Serdes {
     public static final Serde<Trail> TRAIL = new Serde<>() {
         @Override
         public String serialize(Trail trail) {
-            List<String> serialized = new ArrayList<>();
-            for(Route route : trail.getRoutes()){
-                serialized.add(ROUTE.serialize(route));
-            }
-            return String.join(COMMA_SEPARATOR, serialized);
+            return LIST_ROUTE.serialize(trail.getRoutes());
         }
 
         @Override
         public Trail deserialize(String str) {
-            String[] split = str.split(Pattern.quote(COMMA_SEPARATOR), -1);
-            List<Route> routes = new ArrayList<>();
-            for(String route : split){
-                routes.add(ROUTE.deserialize(route));
-            }
-            return Trail.longest(routes);
+            return Trail.longest(LIST_ROUTE.deserialize(str));
         }
     };
 

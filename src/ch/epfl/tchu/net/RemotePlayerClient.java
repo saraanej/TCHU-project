@@ -85,6 +85,11 @@ public final class RemotePlayerClient {
                         player.setInitialTicketChoice(SORTED_TICKET.deserialize(split[1]));
                         break;
                     case END_GAME:
+                        System.out.println("RemotePlayerClient");
+                        System.out.println("winner = " + split[1]);
+                        System.out.println("points = " + split[2]);
+                        System.out.println("longestTrailWinner = " + split[3]);
+                        System.out.println("longestTrail = " + split[4]);;
                         player.endGame(PLAYER_ID.deserialize(split[1]),
                                        MAP_ID_INTEGER.deserialize(split[2]),
                                        PLAYER_ID.deserialize(split[3]),

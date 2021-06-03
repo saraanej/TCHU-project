@@ -341,6 +341,7 @@ public final class GraphicalPlayer {
         stage.initOwner(primaryStage);
         HBox h = new HBox(yourTurn);
         Scene s = new Scene(h);
+        h.setStyle("-fx-background-color: rgba(0, 0, 0, 0);");
         s.setFill(null);
         stage.setScene(s);
 
@@ -358,6 +359,17 @@ public final class GraphicalPlayer {
 
         VBox infos = new VBox();
         Label topLabel;
+
+
+        StackPane stackPane = new StackPane();
+        stackPane.getStyleClass().addAll( "#92db98");
+        stackPane.getStylesheets().addAll(DECK_SS,COLORS_SS);
+
+
+        //create the rectangles for the card
+        Rectangle outside = new Rectangle(250 * SCALE_FACTOR, 50 * SCALE_FACTOR);
+        outside.getStyleClass().addAll("#92db98");
+
 
         Info winnerName = new Info(playerNames.get(winner));
         Info trailWinnerName = new Info(playerNames.get(longestTrailWinner));
@@ -378,6 +390,8 @@ public final class GraphicalPlayer {
         else menuText.add(new Text(winnerName.allPlayersWinPoints(
                 winnersNames(someWinnersPoints), playersPoints.get(winner))));
 
+        stackPane.getChildren().addAll(outside, topLabel, new Text("Test"));
+
 
         //if multiple players won the longest trail.
         //renseigne le nombre de joueurs ayant le plus long trajet ==
@@ -396,20 +410,19 @@ public final class GraphicalPlayer {
             menuText.add(new Text(trailWinnerName.allPlayersWinTrail(
                     winnersNames(someWinnersTrail))));
 
-        topLabel.setMaxSize(350, 100);
-        topLabel.setMinWidth(50);
+        topLabel.setMaxSize(250 * SCALE_FACTOR, 50 * SCALE_FACTOR);
+        //topLabel.setMinWidth(50);
 
         infos.getChildren().addAll(menuText);
 
         BorderPane root = new BorderPane();
-        root.setTop(topLabel);
+        root.setTop(stackPane);
         root.setCenter(infos);
         Stage endStage = new Stage();
-        Scene scene = new Scene(root, 350, 300);
+        Scene scene = new Scene(root, 250 * SCALE_FACTOR, 150 * SCALE_FACTOR);
         scene.getStylesheets().add(CHOOSER_SS);
         endStage.initOwner(primaryStage);
         endStage.setTitle("Fin du jeu");
-        endStage.setOnCloseRequest(Event::consume);
         endStage.setScene(scene);
         endStage.show();
     }

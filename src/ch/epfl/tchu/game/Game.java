@@ -216,22 +216,25 @@ public class Game {
         if (bonusPlayer == null) {
             playersPoints.forEach(((playerId, integer) ->
                     playersPoints.put(playerId, integer + LONGEST_TRAIL_BONUS_POINTS)));
-            playersTrail.forEach(((playerId, trail) ->
-                    receiveInfo(players, playersInfo.get(playerId).getsLongestTrailBonus(trail))));
+            //playersTrail.forEach(((playerId, trail) ->
+                    //receiveInfo(players, playersInfo.get(playerId).getsLongestTrailBonus(trail))));
         } else {
             playersPoints.put(bonusPlayer, playersPoints.get(bonusPlayer) + LONGEST_TRAIL_BONUS_POINTS);
-            receiveInfo(players, playersInfo.get(bonusPlayer).getsLongestTrailBonus(playersTrail.get(bonusPlayer)));
+            //receiveInfo(players, playersInfo.get(bonusPlayer).getsLongestTrailBonus(playersTrail.get(bonusPlayer)));
         }
         //Used this method (.min) to determine the points of the loser player since there might be more than 2 players in the future
         int minPoints = Collections.min(playersPoints.values());
         Map.Entry<PlayerId, Integer> winner = winner(playersPoints, minPoints);
 
-        if (winner.getKey() == null) receiveInfo(players, Info.draw(new ArrayList<>(playerNames.values()), minPoints));
-        else receiveInfo(players, playersInfo.get(winner.getKey())
-                .won(winner.getValue(), minPoints)); //todo receiveinfo a changer avec multijoueurs et fenetre de fin
+        //if (winner.getKey() == null) receiveInfo(players, Info.draw(new ArrayList<>(playerNames.values()), minPoints));
+        //else receiveInfo(players, playersInfo.get(winner.getKey())
+                //.won(winner.getValue(), minPoints)); //todo receiveinfo a changer avec multijoueurs et fenetre de fin
 
         for(PlayerId playerId : PlayerId.all()) {
-            players.get(playerId).endGame(winner.getKey() == null ? PlayerId.PLAYER_1 : winner.getKey(),
+            players.
+                    get(playerId).
+                    endGame(
+                            winner.getKey() == null ? PlayerId.PLAYER_1 : winner.getKey(),
                     playersPoints,
                     bonusPlayer == null ? PlayerId.PLAYER_1 : bonusPlayer,
                     playersTrail);
