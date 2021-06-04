@@ -360,7 +360,6 @@ public final class GraphicalPlayer {
                                 Map<PlayerId, Trail> playersTrails){
 
         VBox infos = new VBox();
-        Label topLabel;
         StackPane stackPane = new StackPane();
         Rectangle outside = new Rectangle(250 * SCALE_FACTOR, 50 * SCALE_FACTOR);
 
@@ -397,8 +396,7 @@ public final class GraphicalPlayer {
         else
             menuText.add(new Text(trailWinnerName.allPlayersWinTrail(
                     winnersNames(someWinnersTrail))));
-        
-        //topLabel.setMaxSize(250 * SCALE_FACTOR, 50 * SCALE_FACTOR);
+
         infos.getChildren().addAll(menuText);
 
         BorderPane root = new BorderPane();
@@ -429,8 +427,6 @@ public final class GraphicalPlayer {
         text.setFont(Font.font("Doland-Regular.otf", FontWeight.BOLD, size));
         return text;
     }
-
-
 
 
     /**
