@@ -62,7 +62,7 @@ public final class StringsFr {
     public static final String GETS_BONUS =
             "\n%s reçoit un bonus de 10 points pour le plus long trajet (%s).\n";
     public static final String LONGEST_TRAIL =
-            "\n%s a pu acquérir le plus long trajet (\n%s).\n";
+            "\n%s a pu acquérir le plus long trajet (%s).\n";
     public static final String WINS =
             "\n%s remporte la victoire avec %s point%s, contre %s point%s !\n";
     public static final String DRAW =
