@@ -397,12 +397,7 @@ public final class GraphicalPlayer {
         else
             menuText.add(new Text(trailWinnerName.allPlayersWinTrail(
                     winnersNames(someWinnersTrail))));
-            for(PlayerId player : PlayerId.all()) {
-                Info playerInfo = new Info(playerNames.get(player));
-                menuText.add(new Text(playerInfo.playerLongestTrail(playersTrails.get(player))));
-        }
-
-
+        
         //topLabel.setMaxSize(250 * SCALE_FACTOR, 50 * SCALE_FACTOR);
         infos.getChildren().addAll(menuText);
 
