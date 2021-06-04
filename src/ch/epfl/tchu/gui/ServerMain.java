@@ -6,6 +6,8 @@ import ch.epfl.tchu.net.RemotePlayerProxy;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
+import java.awt.*;
+import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.ServerSocket;
@@ -34,6 +36,15 @@ public final class ServerMain extends Application {
      * @see ServerMain#start(Stage);
      */
     public static void main(String[] args) {
+        try {
+            GraphicsEnvironment ge =
+                    GraphicsEnvironment.getLocalGraphicsEnvironment();
+            ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("DeFonarts Bold.otf")));
+            ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("Doland-Regular.otf")));
+
+        } catch (IOException |FontFormatException e) {
+        }
+
         launch(args);
     }
 

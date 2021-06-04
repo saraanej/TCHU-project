@@ -5,6 +5,10 @@ import ch.epfl.tchu.net.RemotePlayerClient;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
+import java.awt.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.util.List;
 
 /**
@@ -23,6 +27,14 @@ public final class ClientMain extends Application {
      * @see ClientMain#start(Stage);
      */
     public static void main(String[] args) {
+        try {
+            GraphicsEnvironment ge =
+                    GraphicsEnvironment.getLocalGraphicsEnvironment();
+            ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("DeFonarts Bold.otf")));
+            ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("Doland-Regular.otf")));
+
+        } catch (IOException |FontFormatException e) {
+        }
         launch(args);
     }
 
