@@ -374,15 +374,12 @@ public final class GraphicalPlayer {
                 someWinnersPoints.add(playerNames.get(idN));
         }
         Text text = FontSize(new Text(someWinnersPoints.contains(playerNames.get(id)) ? "Victoire !" : "Défaite !"),20);
-        //topLabel = new Label(text.getText());
-        outside.setStyle(someWinnersPoints.contains(playerNames.get(id)) ?
-                "-fx-alignment: center; -fx-background-color: lightgreen;" :
-                "-fx-alignment: center; -fx-background-color: red;" );
+        outside.setFill(someWinnersPoints.contains(playerNames.get(id)) ? Color.LIGHTGREEN : Color.RED);
 
-        if(someWinnersPoints.size() == 1) menuText.add(FontSize(
-                new Text(winnerName.winsMenu(playersPoints.get(winner))), 10));
-        else menuText.add(FontSize(new Text(winnerName.allPlayersWinPoints(
-                winnersNames(someWinnersPoints), playersPoints.get(winner))), 10));
+        if(someWinnersPoints.size() == 1) menuText.add(
+                new Text(winnerName.winsMenu(playersPoints.get(winner))));
+        else menuText.add(new Text(winnerName.allPlayersWinPoints(
+                winnersNames(someWinnersPoints), playersPoints.get(winner))));
 
         stackPane.getChildren().addAll(outside, text);
 
@@ -395,11 +392,11 @@ public final class GraphicalPlayer {
                 someWinnersTrail.add(playerNames.get(player));
         }
         if (someWinnersTrail.size() == 1)
-            menuText.add(FontSize(new Text(trailWinnerName.
-                    winsLongestTrail(playersTrails.get(longestTrailWinner))),10));
+            menuText.add(new Text(trailWinnerName.
+                    winsLongestTrail(playersTrails.get(longestTrailWinner))));
         else
-            menuText.add(FontSize(new Text(trailWinnerName.allPlayersWinTrail(
-                    winnersNames(someWinnersTrail))),10));
+            menuText.add(new Text(trailWinnerName.allPlayersWinTrail(
+                    winnersNames(someWinnersTrail))));
             for(PlayerId player : PlayerId.all()) {
                 Info playerInfo = new Info(playerNames.get(player));
                 menuText.add(new Text(playerInfo.playerLongestTrail(playersTrails.get(player))));
@@ -413,7 +410,7 @@ public final class GraphicalPlayer {
         root.setTop(stackPane);
         root.setCenter(infos);
         Stage endStage = new Stage();
-        Scene scene = new Scene(root, 250 * SCALE_FACTOR, 150 * SCALE_FACTOR);
+        Scene scene = new Scene(root);
         scene.getStylesheets().add(CHOOSER_SS);
         endStage.initOwner(primaryStage);
         endStage.setTitle("Fin du jeu");
